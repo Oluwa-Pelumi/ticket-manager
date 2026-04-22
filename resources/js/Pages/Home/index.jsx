@@ -1,26 +1,9 @@
-import { Head, Link } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { useTheme } from '@/Contexts/ThemeContext';
 
 export default function Home({ auth }) {
-    const [theme, setTheme] = useState(() => {
-        if (typeof window !== 'undefined') {
-            return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        }
-        return 'light';
-    });
-
-    useEffect(() => {
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-        localStorage.setItem('theme', theme);
-    }, [theme]);
-
-    const toggleTheme = () => {
-        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-    };
+    const { flash } = usePage().props;
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <>
@@ -80,6 +63,14 @@ export default function Home({ auth }) {
                             Our support team is ready to assist you. Choose an option below to get started.
                         </p>
                     </div>
+
+                    {/* Alert Notifications */}
+                    {flash.success && (
+                        <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center shadow-lg animate-in slide-in-from-top duration-500">
+                            <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
+                            {flash.success}
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                         {/* Submit Ticket Card */}

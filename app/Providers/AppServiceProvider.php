@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use App\Models\User;
+use App\Broadcasting\WhatsappChannel;
+use Illuminate\Notifications\ChannelManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('admin-access', function (User $user) {
             return $user->role === 'admin';
+        });
+
+        app(ChannelManager::class)->extend('whatsapp', function() {
+            return new WhatsappChannel();
         });
     }
 }

@@ -1,46 +1,28 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useTheme } from '@/Contexts/ThemeContext';
+
+const subjects = [
+    {name: '1', value: '1'},
+    {name: '2', value: '2'},
+    {name: '3', value: '3'},
+    {name: '4', value: '4'},
+]
 
 export default function SubmitTicket({ auth }) {
-    const [theme, setTheme] = useState(() => {
-        if (typeof window !== 'undefined') {
-            return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        }
-        return 'light';
-    });
+    const { theme, toggleTheme } = useTheme();
 
-    const [previewUrl, setPreviewUrl] = useState(null);
+    const [previewUrls, setPreviewUrls] = useState([]);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: auth.user?.name || '',
         email: auth.user?.email || '',
         whatsapp_number: '',
-        priority: 'medium',
-        subject: 'technical_support',
+        priority: '',
+        subject: '',
         content: '',
-        image: null,
+        images: [],
     });
-
-    useEffect(() => {
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-        localStorage.setItem('theme', theme);
-    }, [theme]);
-
-    const toggleTheme = () => {
-        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-    };
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setData('image', file);
-            setPreviewUrl(URL.createObjectURL(file));
-        }
-    };
 
     const submit = (e) => {
         e.preventDefault();
@@ -54,7 +36,7 @@ export default function SubmitTicket({ auth }) {
             <Head title="Submit Ticket" />
 
             <div className="relative min-h-screen flex flex-col items-center justify-center bg-slate-50 selection:bg-[#FF2D20] selection:text-white dark:bg-slate-950 overflow-x-hidden transition-colors duration-500 py-20 px-6">
-                
+
                 {/* Theme Switcher FAB */}
                 <button
                     onClick={toggleTheme}
@@ -156,9 +138,10 @@ export default function SubmitTicket({ auth }) {
                                     onChange={e => setData('priority', e.target.value)}
                                     className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none appearance-none"
                                 >
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
+                                    <option value="" disabled>Select Priority</option>
+                                    <option value="low">⬇️ Low Priority</option>
+                                    <option value="medium">⚡ Medium Priority</option>
+                                    <option value="high">🚩 High Priority</option>
                                 </select>
                             </div>
                         </div>
@@ -172,10 +155,8 @@ export default function SubmitTicket({ auth }) {
                                 onChange={e => setData('subject', e.target.value)}
                                 className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none appearance-none"
                             >
-                                <option value="technical_support">Technical Support</option>
-                                <option value="billing">Billing Inquiry</option>
-                                <option value="general">General Question</option>
-                                <option value="account">Account Access</option>
+                                <option value="" disabled>Select Subject</option>
+                                {subjects.map((sub, idx) => <option key={idx} value={sub.value}>{sub.name}</option>)}
                             </select>
                         </div>
 
@@ -200,10 +181,16 @@ export default function SubmitTicket({ auth }) {
                             <div className="relative group/upload">
                                 <input
                                     type="file"
-                                    onChange={handleImageChange}
+                                    onChange={(e) => {
+                                        const files = Array.from(e.target.files);
+                                        setData('images', files);
+                                        const urls = files.map(file => URL.createObjectURL(file));
+                                        setPreviewUrls(urls);
+                                    }}
                                     className="hidden"
                                     id="image-upload"
                                     accept="image/*"
+                                    multiple
                                 />
                                 <label
                                     htmlFor="image-upload"
@@ -212,29 +199,43 @@ export default function SubmitTicket({ auth }) {
                                     <svg className="w-10 h-10 text-slate-400 group-hover:text-[#FF2D20] transition-colors mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
-                                    <span className="text-slate-600 dark:text-slate-400 font-medium">Click to upload or drag and drop</span>
-                                    <span className="text-slate-400 text-xs mt-1">Maximum file size: 5MB</span>
+                                    <span className="text-slate-600 dark:text-slate-400 font-medium">Click to upload multiple or drag and drop</span>
+                                    <span className="text-slate-400 text-xs mt-1">Maximum file size: 5MB per image</span>
                                 </label>
                             </div>
 
-                            {/* Preview */}
-                            {previewUrl && (
-                                <div className="relative inline-block mt-4 animate-in fade-in zoom-in duration-300">
-                                    <div className="text-xs font-semibold text-slate-500 mb-2">Image Preview:</div>
-                                    <img
-                                        src={previewUrl}
-                                        className="w-48 h-48 object-cover rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl"
-                                        alt="Preview"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => { setData('image', null); setPreviewUrl(null); }}
-                                        className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600 transition-colors"
-                                    >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
+                            {/* Previews */}
+                            {previewUrls.length > 0 && (
+                                <div className="mt-4 animate-in fade-in zoom-in duration-300">
+                                    <div className="text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider">Image Previews ({previewUrls.length}):</div>
+                                    <div className="flex flex-wrap gap-4">
+                                        {previewUrls.map((url, idx) => (
+                                            <div key={idx} className="relative group/preview">
+                                                <img
+                                                    src={url}
+                                                    className="w-32 h-32 object-cover rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl transition-transform group-hover/preview:scale-105"
+                                                    alt={`Preview ${idx + 1}`}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const newFiles = [...data.images];
+                                                        newFiles.splice(idx, 1);
+                                                        setData('images', newFiles);
+
+                                                        const newUrls = [...previewUrls];
+                                                        newUrls.splice(idx, 1);
+                                                        setPreviewUrls(newUrls);
+                                                    }}
+                                                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600 transition-colors opacity-0 group-hover/preview:opacity-100"
+                                                >
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
                         </div>
