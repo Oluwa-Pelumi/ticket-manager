@@ -1,51 +1,92 @@
 import { useTheme } from '@/Contexts/ThemeContext';
-import { Head, Link, usePage, useForm } from '@inertiajs/react';
+import { useAlert } from '@/Contexts/AlertContext';
 import { useState, useMemo, Fragment } from 'react';
+import FlashHandler from '@/Components/FlashHandler';
+import { Head, Link, usePage, useForm } from '@inertiajs/react';
 
-const subjects = [
-    {name: '1', value: '1'},
-    {name: '2', value: '2'},
-    {name: '3', value: '3'},
-    {name: '4', value: '4'},
-]
+const subjects =
+    [
+        {value: 'insurance_claim', name: 'Insurance Claim'},
+        {value: 'referral_request', name: 'Referral Request'},
+        {value: 'file_a_complaint', name: 'File a Complaint'},
+        {value: 'general_feedback', name: 'General Feedback'},
+        {value: 'cancel_appointment', name: 'Cancel Appointment'},
+        {value: 'request_lab_results', name: 'Request Lab Results'},
+        {value: 'book_new_appointment', name: 'Book New Appointment'},
+        {value: 'post_surgery_concern', name: 'Post-Surgery Concern'},
+        {value: 'reschedule_appointment', name: 'Reschedule Appointment'},
+        {value: 'request_medical_report', name: 'Request Medical Report'},
+        {value: 'follow_up_consultation', name: 'Follow-up Consultation'},
+        {value: 'urgent_medical_inquiry', name: 'Urgent Medical Inquiry'},
+        {value: 'billing_payment_issue', name: 'Billing & Payment Issue'},
+        {value: 'request_medical_records', name: 'Request Medical Records'},
+        {value: 'request_prescription_refill', name: 'Request Prescription Refill'},
+        {value: 'report_medication_side_effect', name: 'Report Medication Side Effect'},
+    ]
 
 export default function Dashboard({ auth, tickets }) {
-    const { flash } = usePage().props;
-    const { theme, toggleTheme } = useTheme();
-
-    const [selectedIds, setSelectedIds] = useState([]);
-    const [expandedId, setExpandedId] = useState(null);
-    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'desc' });
-    const [filters, setFilters] = useState({
-        status: '',
+    const { flash }                                  = usePage().props;
+    const { theme, toggleTheme }                     = useTheme();
+    const { showAlert, showConfirm }                 = useAlert();
+    const [selectedIds, setSelectedIds]              = useState([]);
+    const [expandedId, setExpandedId]                = useState(null);
+    const [sortConfig, setSortConfig]                = useState({ key: 'id', direction: 'desc' });
+    const [filters, setFilters]                      = useState({
+        status  : '',
+        subject : '',
         priority: '',
-        subject: '',
     });
-
+    const [copiedId, setCopiedId]                    = useState(null);
     // Editing State
-    const [editingTicket, setEditingTicket] = useState(null);
-    const [previewUrls, setPreviewUrls] = useState([]);
-    const editForm = useForm({
+    const [editingTicket, setEditingTicket]          = useState(null);
+    const [previewUrls, setPreviewUrls]              = useState([]);
+    const editForm                                   = useForm({
         subject: '',
         content: '',
         priority: 'medium',
-        images: [],
+        images  : [],
     });
-
-    const commentForm = useForm({
+    const commentForm                                 = useForm({
         content: '',
-        images: [],
+        images : [],
     });
-
     const [commentPreviewUrls, setCommentPreviewUrls] = useState([]);
+
+    const handleCopy = async (id) => {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(id);
+            } else {
+                // Fallback for non-secure contexts
+                const textArea                = document.createElement("textarea");
+                      textArea.value          = id;
+                      textArea.style.position = "fixed";
+                      textArea.style.left     = "-9999px";
+                      textArea.style.top      = "0";
+                      
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            }
+
+            setCopiedId(id);
+            showAlert(`Ticket ID #${id.substring(0, 8)} copied to clipboard!`, 'success');
+            setTimeout(() => setCopiedId(null), 2000);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+            showAlert('Failed to copy Ticket ID', 'error');
+        }
+    };
 
     const openEditModal = (ticket) => {
         setEditingTicket(ticket);
         editForm.setData({
-            subject: ticket.subject,
-            content: ticket.content,
+            images  : [],
+            subject : ticket.subject,
+            content : ticket.content,
             priority: ticket.priority,
-            images: [],
         });
         setPreviewUrls(ticket.images ? ticket.images.map(img => `/storage/${img}`) : []);
     };
@@ -59,10 +100,10 @@ export default function Dashboard({ auth, tickets }) {
     const handleEditSubmit = (e) => {
         e.preventDefault();
         editForm.post(route('update-ticket', { ticket: editingTicket.id }), {
-            _method: 'patch', // multipart/form-data doesn't support PATCH natively in some setups, we can spoof it
-            forceFormData: true,
+            _method       : 'patch',                  // multipart/form-data doesn't support PATCH natively in some setups, we can spoof it
+            forceFormData : true,
             preserveScroll: true,
-            onSuccess: () => closeEditModal(),
+            onSuccess     : () => closeEditModal(),
         });
     };
 
@@ -149,8 +190,15 @@ export default function Dashboard({ auth, tickets }) {
         });
     };
 
-    const handleDelete = (id) => {
-        if (confirm('Are you sure you want to delete this ticket?')) {
+    const handleDelete = async (id) => {
+        const confirmed = await showConfirm({
+            title: 'Delete Ticket',
+            message: 'Are you sure you want to delete this ticket? This action cannot be undone.',
+            confirmText: 'Delete Ticket',
+            type: 'danger'
+        });
+
+        if (confirmed) {
             destroy(route('delete-ticket', { id }), {
                 preserveScroll: true,
                 onSuccess: () => setSelectedIds([]),
@@ -158,8 +206,15 @@ export default function Dashboard({ auth, tickets }) {
         }
     };
 
-    const handleBulkDelete = () => {
-        if (confirm(`Are you sure you want to delete ${selectedIds.length} tickets?`)) {
+    const handleBulkDelete = async () => {
+        const confirmed = await showConfirm({
+            title: 'Bulk Delete',
+            message: `Are you sure you want to delete ${selectedIds.length} tickets? This action cannot be undone.`,
+            confirmText: `Delete ${selectedIds.length} Tickets`,
+            type: 'danger'
+        });
+
+        if (confirmed) {
             destroy(route('bulk-delete-tickets', { ids: selectedIds }), {
                 preserveScroll: true,
                 onSuccess: () => setSelectedIds([]),
@@ -292,13 +347,7 @@ export default function Dashboard({ auth, tickets }) {
                         </div>
                     </div>
 
-                    {/* Alert Notifications */}
-                    {flash.success && (
-                        <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center shadow-lg animate-in slide-in-from-top duration-500">
-                            <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
-                            {flash.success}
-                        </div>
-                    )}
+                    <FlashHandler />
 
                     {/* Filter Bar */}
                     <div className="flex flex-wrap items-center gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50">
@@ -435,7 +484,11 @@ export default function Dashboard({ auth, tickets }) {
                                                         onChange={() => toggleSelect(ticket.id)}
                                                     />
                                                 </td>
-                                                <td className="px-6 py-4 text-sm font-medium text-slate-500 group-hover:text-[#FF2D20] transition-colors">#{ticket.id.substring(0, 8)}</td>
+                                                <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                                                    <div className="flex items-center gap-2 group/id-cell">
+                                                        <span className="text-sm font-medium text-slate-500 group-hover:text-[#FF2D20] transition-colors uppercase tracking-tight">#{ticket.id.substring(0, 8)}...</span>
+                                                    </div>
+                                                </td>
                                                 <td className="px-6 py-4">
                                                     <div className="text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300">{subjects.find(sb => sb.value === ticket.subject).name}</div>
                                                     <div className="text-xs text-slate-500 dark:text-slate-400 truncate max-w-xs">{ticket.content}</div>
@@ -540,9 +593,29 @@ export default function Dashboard({ auth, tickets }) {
                                                                         <svg className="w-5 h-5 mr-2 text-[#FF2D20]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                                                         Ticket Details
                                                                     </h4>
+
                                                                     <div className="p-8 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                                                                        <div className="text-[10px] font-black text-[#FF2D20] mb-2 uppercase tracking-[0.2em]">Ticket ID</div>
+                                                                        <div className="flex items-center gap-3 mb-6 group/id">
+                                                                            <div className="text-xl text-slate-900 dark:text-white font-bold">{ticket.id}</div>
+                                                                            <button
+                                                                                onClick={(e) => { e.stopPropagation(); handleCopy(ticket.id); }}
+                                                                                className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-[#FF2D20] transition-all border border-transparent hover:border-[#FF2D20]/20"
+                                                                                title="Copy ID"
+                                                                            >
+                                                                                {copiedId === ticket.id ? (
+                                                                                    <>
+                                                                                        <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
+                                                                                        <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Copied!</span>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                                                                                )}
+                                                                            </button>
+                                                                        </div>
+
                                                                         <div className="text-[10px] font-black text-[#FF2D20] mb-2 uppercase tracking-[0.2em]">Subject</div>
-                                                                        <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{ticket.subject}</div>
+                                                                        <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{subjects.find(s => s.value == ticket.subject)?.name}</div>
 
                                                                         <div className="text-[10px] font-black text-[#FF2D20] mb-2 uppercase tracking-[0.2em]">Description</div>
                                                                         <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm">{ticket.content}</div>

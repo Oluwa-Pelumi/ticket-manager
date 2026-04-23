@@ -25,12 +25,21 @@ class Ticket extends Model
         'attended_to_by',
     ];
 
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
     protected $casts = [
         'images' => 'array',
     ];
 
     public function comments() {
-        return $this->hasMany(Comment::class)->with('user')->latest();
+        return $this->hasMany(
+            Comment::class, 
+            'ticket_id', 
+            'id'
+        )->with('user')->latest();
     }
 
     /**
@@ -39,7 +48,11 @@ class Ticket extends Model
      * @return void
      */
     public function user() {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(
+            User::class, 
+            'user_id', 
+            'id'
+        );
     }
 
     /**
@@ -48,6 +61,10 @@ class Ticket extends Model
      * @return void
      */
     public function attendant() {
-        return $this->belongsTo(User::class, 'attended_to_by', 'id');
+        return $this->belongsTo(
+            User::class, 
+            'attended_to_by', 
+            'id'
+        );
     }
 }

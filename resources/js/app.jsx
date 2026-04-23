@@ -1,11 +1,11 @@
-import '../css/app.css';
 import './bootstrap';
-
-import { createInertiaApp } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import '../css/app.css';
 import { createRoot } from 'react-dom/client';
-
+import AlertSystem from './Components/AlertSystem';
+import { createInertiaApp } from '@inertiajs/react';
 import { ThemeProvider } from './Contexts/ThemeContext';
+import { AlertProvider } from './Contexts/AlertContext';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -21,7 +21,10 @@ createInertiaApp({
 
         root.render(
             <ThemeProvider>
-                <App {...props} />
+                <AlertProvider>
+                    <App {...props} />
+                    <AlertSystem />
+                </AlertProvider>
             </ThemeProvider>
         );
     },

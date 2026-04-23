@@ -20,10 +20,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
-        'whatsapp_number',
-        'password',
         'role',
+        'email',
+        'password',
+        'whatsapp_number',
     ];
 
     /**
@@ -55,6 +55,10 @@ class User extends Authenticatable
     }
 
     public function tickets() {
-        return $this->hasMany(Ticket::class, 'user_id', 'id');
+        return $this->hasMany(
+            Ticket::class, 
+            'user_id', 
+            'id'
+        );
     }
 }

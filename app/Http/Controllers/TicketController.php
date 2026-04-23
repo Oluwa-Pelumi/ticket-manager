@@ -284,11 +284,6 @@ class TicketController extends Controller
         if (Auth::user()->isAdmin() && $ticket->user_id !== Auth::id()) {
             $ticket->user->notify(new TicketNotification(
                 subject: 'New Reply to Your Ticket',
-                message: 'An admin has replied to your ticket regarding: ' . $ticket->subject . '. Check the dashboard for details.'
-            ));
-
-            $ticket->user->notify(new TicketNotification(
-                subject: '',
                 message: $comment
             ));
         }

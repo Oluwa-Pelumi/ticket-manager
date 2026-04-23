@@ -14,7 +14,7 @@ class TicketNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(public string $subject, public string $message)
+    public function __construct(public string $subject, public string|object $message)
     {
         //
     }
@@ -34,15 +34,18 @@ class TicketNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $content = is_string($this->message) ? $this->message : $this->message->content;
+
         return (new MailMessage)
-        ->subject($this->subject)
+            ->subject($this->subject)
             ->greeting('Hello ' . $notifiable->name, '!')
-            ->line($this->message)
+            ->line($content)
             ->line('Thank you for using our platform!');
     }
 
     public function toWhatsapp(object $notifiable): string
     {
-        return "Hello {$notifiable->name}!\n\n{$this->message}";
+        $content = is_string($this->message) ? $this->message : $this->message->content;
+        return "Hello {$notifiable->name}!\n\n{$content}";
     }
 }

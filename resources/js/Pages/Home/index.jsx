@@ -1,8 +1,8 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useTheme } from '@/Contexts/ThemeContext';
+import FlashHandler from '@/Components/FlashHandler';
 
 export default function Home({ auth }) {
-    const { flash } = usePage().props;
     const { theme, toggleTheme } = useTheme();
 
     return (
@@ -64,13 +64,34 @@ export default function Home({ auth }) {
                         </p>
                     </div>
 
-                    {/* Alert Notifications */}
-                    {flash.success && (
-                        <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center shadow-lg animate-in slide-in-from-top duration-500">
-                            <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
-                            {flash.success}
-                        </div>
-                    )}
+                    <div className="mt-16 flex flex-wrap items-center justify-center gap-6 mb-10">
+                        {!auth.user ? (
+                            <>
+                                <Link
+                                    href={route('login')}
+                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
+                                >
+                                    Log in
+                                </Link>
+                                <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+                                <Link
+                                    href={route('register')}
+                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
+                                >
+                                    Register
+                                </Link>
+                            </>
+                        ) : (
+                            <Link
+                                href={route('dashboard')}
+                                className="text-sm font-semibold text-[#FF2D20] hover:underline"
+                            >
+                                Back to Dashboard
+                            </Link>
+                        )}
+                    </div>
+
+                    <FlashHandler />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                         {/* Submit Ticket Card */}
@@ -115,32 +136,7 @@ export default function Home({ auth }) {
                         </Link>
                     </div>
 
-                    <div className="mt-16 flex flex-wrap items-center justify-center gap-6">
-                        {!auth.user ? (
-                            <>
-                                <Link
-                                    href={route('login')}
-                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
-                                >
-                                    Log in
-                                </Link>
-                                <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
-                                <Link
-                                    href={route('register')}
-                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
-                                >
-                                    Register
-                                </Link>
-                            </>
-                        ) : (
-                            <Link
-                                href={route('dashboard')}
-                                className="text-sm font-semibold text-[#FF2D20] hover:underline"
-                            >
-                                Back to Dashboard
-                            </Link>
-                        )}
-                    </div>
+
                 </div>
 
                 {/* Footer aesthetic */}

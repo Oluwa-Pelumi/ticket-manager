@@ -1,27 +1,50 @@
-import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { useTheme } from '@/Contexts/ThemeContext';
+import FlashHandler from '@/Components/FlashHandler';
+import { Head, Link, useForm } from '@inertiajs/react';
 
-const subjects = [
-    {name: '1', value: '1'},
-    {name: '2', value: '2'},
-    {name: '3', value: '3'},
-    {name: '4', value: '4'},
-]
+const subjects =
+    {
+        'Appointments': [
+            {value: 'cancel_appointment', name: 'Cancel Appointment'},
+            {value: 'book_new_appointment', name: 'Book New Appointment'},
+            {value: 'reschedule_appointment', name: 'Reschedule Appointment'},
+        ],
+        'Medical': [
+            {value: 'referral_request', name: 'Referral Request'},
+            {value: 'request_lab_results', name: 'Request Lab Results'},
+            {value: 'request_medical_report', name: 'Request Medical Report'},
+            {value: 'request_prescription_refill', name: 'Request Prescription Refill'},
+        ],
+        'Consultation': [
+            {value: 'post_surgery_concern', name: 'Post-Surgery Concern'},
+            {value: 'follow_up_consultation', name: 'Follow-up Consultation'},
+            {value: 'urgent_medical_inquiry', name: 'Urgent Medical Inquiry'},
+        ],
+        'Billing & Admin': [
+            {value: 'insurance_claim', name: 'Insurance Claim'},
+            {value: 'billing_payment_issue', name: 'Billing & Payment Issue'},
+            {value: 'request_medical_records', name: 'Request Medical Records'},
+        ],
+        'Feedback': [
+            {value: 'file_a_complaint', name: 'File a Complaint'},
+            {value: 'general_feedback', name: 'General Feedback'},
+            {value: 'report_medication_side_effect', name: 'Report Medication Side Effect'},
+        ],
+
+    }
 
 export default function SubmitTicket({ auth }) {
-    const { theme, toggleTheme } = useTheme();
-
-    const [previewUrls, setPreviewUrls] = useState([]);
-
+    const { theme, toggleTheme }                             = useTheme();
+    const [previewUrls, setPreviewUrls]                      = useState([]);
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: auth.user?.name || '',
-        email: auth.user?.email || '',
-        whatsapp_number: '',
-        priority: '',
-        subject: '',
-        content: '',
-        images: [],
+        images         : [],
+        subject        : '',
+        content        : '',
+        priority       : '',
+        name           : auth.user?.name || '',
+        email          : auth.user?.email || '',
+        whatsapp_number: auth.user?.whatsapp_number || '',
     });
 
     const submit = (e) => {
@@ -81,6 +104,8 @@ export default function SubmitTicket({ auth }) {
                             Provide the details below and we'll help as soon as possible.
                         </p>
                     </div>
+
+                    <FlashHandler />
 
                     <form onSubmit={submit} className="group relative block p-8 rounded-3xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -156,7 +181,13 @@ export default function SubmitTicket({ auth }) {
                                 className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none appearance-none"
                             >
                                 <option value="" disabled>Select Subject</option>
-                                {subjects.map((sub, idx) => <option key={idx} value={sub.value}>{sub.name}</option>)}
+                                {Object.entries(subjects).map(([groupLabel, items]) => (
+                                    <optgroup key={groupLabel} label={groupLabel}>
+                                        {items.map((sub, idx) => (
+                                            <option key={idx} value={sub.value}>{sub.name}</option>
+                                        ))}
+                                    </optgroup>
+                                ))}
                             </select>
                         </div>
 

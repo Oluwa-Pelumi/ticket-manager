@@ -1,5 +1,5 @@
-import { Head, Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Users({ auth, users }) {
     const [theme, setTheme] = useState(() => {
@@ -25,6 +25,7 @@ export default function Users({ auth, users }) {
     const { patch, processing } = useForm({});
 
     const handleRoleUpdate = (user, newRole) => {
+        console.log(user, newRole )
         if (confirm(`Are you sure you want to change ${user.name}'s role to ${newRole}?`)) {
             patch(route('admin.users.update-role', { user: user.id }), {
                 data: { role: newRole },
@@ -87,7 +88,7 @@ export default function Users({ auth, users }) {
 
             <main className="relative z-10 flex-grow py-12 px-6">
                 <div className="max-w-7xl mx-auto">
-                    
+
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-slate-900 dark:text-white">User Management</h1>
                         <p className="text-slate-600 dark:text-slate-400 mt-1">Manage platform participants and internal roles.</p>

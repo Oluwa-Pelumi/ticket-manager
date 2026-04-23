@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -41,6 +41,8 @@ class AdminController extends Controller
         $validated = $request->validate([
             'role' => 'required|string|in:admin,user',
         ]);
+
+        dd($validated);
 
         $user->update([
             'role' => $validated['role'],
