@@ -27,6 +27,34 @@ export default function Home({ auth }) {
                     )}
                 </button>
 
+                {/* Auth Links */}
+                <div className="fixed top-8 left-8 z-50 flex items-center gap-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
+                    {!auth.user ? (
+                        <>
+                            <Link
+                                href={route('login')}
+                                className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
+                            >
+                                Log in
+                            </Link>
+                            <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+                            <Link
+                                href={route('register')}
+                                className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
+                            >
+                                Register
+                            </Link>
+                        </>
+                    ) : (
+                        <Link
+                            href={route('dashboard')}
+                            className="text-sm font-semibold text-[#FF2D20] hover:underline"
+                        >
+                            Go to Dashboard 
+                        </Link>
+                    )}
+                </div>
+
                 {/* Background Aesthetics */}
                 <div className="absolute inset-0 bg-white dark:bg-slate-950 pointer-events-none transition-colors duration-500">
                     <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#FF2D20]/20 blur-[120px] animate-pulse" />
@@ -64,39 +92,14 @@ export default function Home({ auth }) {
                         </p>
                     </div>
 
-                    <div className="mt-16 flex flex-wrap items-center justify-center gap-6 mb-10">
-                        {!auth.user ? (
-                            <>
-                                <Link
-                                    href={route('login')}
-                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
-                                >
-                                    Log in
-                                </Link>
-                                <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
-                                <Link
-                                    href={route('register')}
-                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
-                                >
-                                    Register
-                                </Link>
-                            </>
-                        ) : (
-                            <Link
-                                href={route('dashboard')}
-                                className="text-sm font-semibold text-[#FF2D20] hover:underline"
-                            >
-                                Back to Dashboard
-                            </Link>
-                        )}
-                    </div>
+
 
                     <FlashHandler />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                         {/* Submit Ticket Card */}
                         <Link
-                            href={auth.user ? route('submit-ticket') : route('login')}
+                            href={route('submit-ticket')}
                             className="group relative block p-8 rounded-3xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#FF2D20]/20 hover:-translate-y-1"
                         >
                             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#FF2D20]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -116,7 +119,7 @@ export default function Home({ auth }) {
 
                         {/* View Status Card */}
                         <Link
-                            href={auth.user ? route('dashboard') : route('login')}
+                            href={auth.user ? route('dashboard') : route('check-status')}
                             className="group relative block p-8 rounded-3xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-1"
                         >
                             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

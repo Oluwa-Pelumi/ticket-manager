@@ -38,35 +38,52 @@ class TicketController extends Controller
     public function save(Request $request)
     {
         $validated = $request->validate([
-            'content'  => 'required|string',
-            'subject'  => 'required|string|max:255',
-            'whatsapp_number' => ['required', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
-            'images'   => 'nullable|array',
-            'images.*' => 'image|max:5120',
-            'priority' => 'required|string|in:low,medium,high',
+            'images'          => 'nullable|array',
+            'images.*'        => 'image|max:5120',
+            'content'         => 'required|string',
+            'email'           => 'required|email|max:255',
+            'name'            => 'required|string|max:255',
+            'subject'         => 'required|string|max:255',
+            'priority'        => 'required|string|in:low,medium,high',
+            'whatsapp_number' => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
         ], [
             'whatsapp_number.regex' => 'The WhatsApp number must be a valid international phone number (e.g., +2348000000000).'
         ]);
 
         $user = Auth::user();
 
-        if ($user->whatsapp_number !== $validated['whatsapp_number']) {
+        if ($user && $user->whatsapp_number !== $validated['whatsapp_number']) {
             $user->update(['whatsapp_number' => $validated['whatsapp_number']]);
         }
 
+        $admins = \App\Models\User::where('role', 'admin')
+            ->withCount(['assignedTickets' => function ($query) {
+                $query->whereIn('status', ['open', 'in-progress']);
+            }])
+            ->get();
+
+        $assignedAdminId = null;
+        if ($admins->isNotEmpty()) {
+            $minCount = $admins->min('assigned_tickets_count');
+            $assignedAdminId = $admins->where('assigned_tickets_count', $minCount)->random()->id;
+        }
+
         $ticket = Ticket::create([
-            'status'   => 'open',
-            'user_id'  => Auth::id(),
-            'content'  => $validated['content'],
-            'subject'  => $validated['subject'],
-            'priority' => $validated['priority'],
+            'status'          => 'open',
+            'user_id'         => Auth::id(),
+            'name'            => $validated['name'],
+            'email'           => $validated['email'],
+            'whatsapp_number' => $validated['whatsapp_number'],
+            'content'         => $validated['content'],
+            'subject'         => $validated['subject'],
+            'priority'        => $validated['priority'],
+            'attended_to_by'  => $assignedAdminId,
         ]);
 
         $imagePaths = [];
         if ($request->hasFile('images')) {
-            $user      = Auth::user();
-            $username  = Str::slug($user->name, '_');
-            $folder    = $username . '-' . $user->id;
+            $username  = Str::slug($validated['name'], '_');
+            $folder    = $username . '-' . ($user ? $user->id : 'guest');
 
             foreach ($request->file('images') as $index => $file) {
                 $extension = $file->getClientOriginalExtension();
@@ -80,12 +97,17 @@ class TicketController extends Controller
             'images' => $imagePaths
         ]);
 
-        $user->notify(new TicketNotification(
-            subject: 'Ticket Received',
-            message: 'Your ticket has been submitted successfully. We will respond shortly.'
-        ));
+        $notificationMessage = "Your ticket (ID: {$ticket->id}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->id);
 
-        return redirect()->route('dashboard')->with('success', 'Ticket submitted successfully. You can now track your ticket.');
+        if ($user) {
+            $user->notify(new TicketNotification('Ticket Received', $notificationMessage));
+        } else {
+            \Illuminate\Support\Facades\Notification::route('mail', $validated['email'])
+                ->route('whatsapp', $validated['whatsapp_number'])
+                ->notify(new TicketNotification('Ticket Received', $notificationMessage));
+        }
+
+        return redirect()->route('ticket.show', $ticket->id)->with('success', 'Ticket submitted successfully. You can bookmark this page to track your ticket.');
     }
 
     /**
@@ -263,8 +285,8 @@ class TicketController extends Controller
         $imagePaths = [];
         if ($request->hasFile('images')) {
             $user      = Auth::user();
-            $username  = Str::slug($user->name, '_');
-            $folder    = 'comments/' . $username . '-' . $user->id;
+            $username  = $user ? Str::slug($user->name, '_') : 'guest';
+            $folder    = 'comments/' . $username . '-' . ($user ? $user->id : 'guest');
 
             foreach ($request->file('images') as $index => $file) {
                 $extension = $file->getClientOriginalExtension();
@@ -281,18 +303,52 @@ class TicketController extends Controller
         ]);
 
         // If an admin replies, notify the ticket owner
-        if (Auth::user()->isAdmin() && $ticket->user_id !== Auth::id()) {
-            $ticket->user->notify(new TicketNotification(
-                subject: 'New Reply to Your Ticket',
-                message: $comment
-            ));
+        if (Auth::user() && Auth::user()->isAdmin() && $ticket->user_id !== Auth::id()) {
+            $notificationMsg = 'New reply: ' . (is_string($comment) ? $comment : $comment->content) . "\nView here: " . route('ticket.show', $ticket->id);
+
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification('New Reply to Your Ticket', $notificationMsg));
+            } else if ($ticket->email) {
+                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                    ->route('whatsapp', $ticket->whatsapp_number)
+                    ->notify(new TicketNotification('New Reply to Your Ticket', $notificationMsg));
+            }
         }
 
         // If ticket is closed, don't change status, otherwise maybe mark as in-progress if admin comments
-        if ($ticket->status === 'open' && Auth::user()->isAdmin()) {
+        if ($ticket->status === 'open' && Auth::user() && Auth::user()->isAdmin()) {
             $ticket->update(['status' => 'in-progress', 'attended_to_by' => Auth::id()]);
         }
 
         return back()->with('success', 'Comment added successfully.');
+    }
+
+    public function searchTicketsByEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $tickets = Ticket::where('email', $request->email)
+            ->orWhereHas('user', function($q) use ($request) {
+                $q->where('email', $request->email);
+            })
+            ->with(['attendant'])
+            ->latest()
+            ->get();
+
+        return Inertia::render('CheckStatus/index', [
+            'tickets' => $tickets,
+            'searchedEmail' => $request->email
+        ]);
+    }
+
+    public function show(Ticket $ticket)
+    {
+        $ticket->load(['user', 'attendant', 'comments.user']);
+
+        return Inertia::render('Ticket/Show', [
+            'ticket' => $ticket,
+        ]);
     }
 }

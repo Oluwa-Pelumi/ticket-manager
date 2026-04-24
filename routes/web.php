@@ -16,11 +16,20 @@ Route::get('/home', function () {
 
 Route::get('/submit-ticket', function () {
     return Inertia::render('SubmitTicket/index');
-})->middleware(['auth', 'verified'])
-    ->name('submit-ticket');
+})->name('submit-ticket');
 
 Route::post('submit-ticket', [TicketController::class, 'save'])
     ->name('save-ticket');
+
+Route::get('/check-status', function () {
+    return Inertia::render('CheckStatus/index');
+})->name('check-status');
+
+Route::post('/search-tickets', [TicketController::class, 'searchTicketsByEmail'])
+    ->name('search-tickets');
+
+Route::get('/ticket/{ticket}', [TicketController::class, 'show'])
+    ->name('ticket.show');
 
 Route::patch('update-ticket-status', [TicketController::class, 'updateStatus'])
     ->name('update-ticket-status');
@@ -34,7 +43,6 @@ Route::patch('/update-ticket/{ticket}', [TicketController::class, 'update'])
     ->name('update-ticket');
 
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])
-    ->middleware(['auth', 'verified'])
     ->name('add-comment');
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -50,6 +58,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // User Management
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
     Route::patch('/admin/users/{user}/role', [AdminController::class, 'updateRole'])->name('admin.users.update-role');
+    Route::delete('/admin/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 Route::middleware('auth')->group(function () {

@@ -26,7 +26,17 @@ class TicketNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'whatsapp'];
+        $channels = ['mail'];
+        
+        $whatsappNumber = method_exists($notifiable, 'routeNotificationFor') 
+            ? $notifiable->routeNotificationFor('whatsapp') 
+            : ($notifiable->whatsapp_number ?? null);
+            
+        if (!empty($whatsappNumber)) {
+            $channels[] = 'whatsapp';
+        }
+
+        return $channels;
     }
 
     /**
@@ -35,10 +45,11 @@ class TicketNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $content = is_string($this->message) ? $this->message : $this->message->content;
+        $name = $notifiable->name ?? 'Guest';
 
         return (new MailMessage)
             ->subject($this->subject)
-            ->greeting('Hello ' . $notifiable->name, '!')
+            ->greeting('Hello ' . $name . '!')
             ->line($content)
             ->line('Thank you for using our platform!');
     }
@@ -46,6 +57,8 @@ class TicketNotification extends Notification
     public function toWhatsapp(object $notifiable): string
     {
         $content = is_string($this->message) ? $this->message : $this->message->content;
-        return "Hello {$notifiable->name}!\n\n{$content}";
+        $name = $notifiable->name ?? 'Guest';
+        
+        return "Hello {$name}!\n\n{$content}";
     }
 }

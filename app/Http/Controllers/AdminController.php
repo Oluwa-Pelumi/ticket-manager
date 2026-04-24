@@ -42,12 +42,28 @@ class AdminController extends Controller
             'role' => 'required|string|in:admin,user',
         ]);
 
-        dd($validated);
-
         $user->update([
             'role' => $validated['role'],
         ]);
 
         return back()->with('success', "Role for {$user->name} updated to {$validated['role']}.");
+    }
+
+    /**
+     * Delete a user.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(User $user)
+    {
+        // Prevent self-deletion
+        if (Auth::id() === $user->id) {
+            return back()->with('error', 'You cannot delete your own account.');
+        }
+
+        $user->delete();
+
+        return back()->with('success', "User {$user->name} deleted successfully.");
     }
 }

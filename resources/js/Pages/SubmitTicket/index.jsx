@@ -41,7 +41,7 @@ export default function SubmitTicket({ auth }) {
         images         : [],
         subject        : '',
         content        : '',
-        priority       : '',
+        priority       : 'low',
         name           : auth.user?.name || '',
         email          : auth.user?.email || '',
         whatsapp_number: auth.user?.whatsapp_number || '',
@@ -149,7 +149,6 @@ export default function SubmitTicket({ auth }) {
                                     onChange={e => setData('whatsapp_number', e.target.value)}
                                     className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none"
                                     placeholder="+234..."
-                                    required
                                 />
                                 {errors.whatsapp_number && <div className="text-red-500 text-xs mt-1">{errors.whatsapp_number}</div>}
                             </div>
@@ -163,7 +162,6 @@ export default function SubmitTicket({ auth }) {
                                     onChange={e => setData('priority', e.target.value)}
                                     className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none appearance-none"
                                 >
-                                    <option value="" disabled>Select Priority</option>
                                     <option value="low">⬇️ Low Priority</option>
                                     <option value="medium">⚡ Medium Priority</option>
                                     <option value="high">🚩 High Priority</option>

@@ -15,14 +15,17 @@ class Ticket extends Model
      * @var array
      */
     protected $fillable = [
+        'name',
+        'email',
         'status',
+        'images',
         'user_id',
         'subject',
         'content',
         'filename',
-        'images',
         'priority',
         'attended_to_by',
+        'whatsapp_number',
     ];
 
     /**
@@ -36,8 +39,8 @@ class Ticket extends Model
 
     public function comments() {
         return $this->hasMany(
-            Comment::class, 
-            'ticket_id', 
+            Comment::class,
+            'ticket_id',
             'id'
         )->with('user')->latest();
     }
@@ -49,8 +52,8 @@ class Ticket extends Model
      */
     public function user() {
         return $this->belongsTo(
-            User::class, 
-            'user_id', 
+            User::class,
+            'user_id',
             'id'
         );
     }
@@ -62,8 +65,8 @@ class Ticket extends Model
      */
     public function attendant() {
         return $this->belongsTo(
-            User::class, 
-            'attended_to_by', 
+            User::class,
+            'attended_to_by',
             'id'
         );
     }
