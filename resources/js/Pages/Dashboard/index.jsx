@@ -254,7 +254,7 @@ export default function Dashboard({ auth, tickets }) {
             {/* Theme Switcher FAB */}
             <button
                 onClick={toggleTheme}
-                className="fixed top-8 right-8 z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
+                className="fixed bottom-8 right-8 md:top-8 md:bottom-auto z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
                 aria-label="Toggle Theme"
             >
                 {theme === 'dark' ? (
@@ -279,8 +279,8 @@ export default function Dashboard({ auth, tickets }) {
                 />
             </div>
 
-            <nav className="relative z-10 w-full px-6 py-6 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl">
-                <div className="max-w-7xl mx-auto flex justify-between items-center">
+            <nav className="relative z-10 w-full px-4 md:px-6 py-4 md:py-6 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-center">
                     <Link href={route('home')} className="flex items-center space-x-3 group">
                         <div className="p-2 bg-[#FF2D20]/10 rounded-xl group-hover:bg-[#FF2D20] transition-colors duration-300">
                             <svg className="w-6 h-6 text-[#FF2D20] group-hover:text-white transition-colors duration-300" viewBox="0 0 62 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M61.8548 14.6253C61.8778 14.7102 61.8895 14.7978 61.8897 14.8858V28.5615C61.8898 28.737 61.8434 28.9095 61.7554 29.0614C61.6675 29.2132 61.5409 29.3392 61.3887 29.4265L49.9104 36.0351V49.1337C49.9104 49.4902 49.7209 49.8192 49.4118 49.9987L25.4519 63.7916C25.3971 63.8227 25.3372 63.8427 25.2774 63.8639C25.255 63.8714 25.2338 63.8851 25.2101 63.8913C25.0426 63.9354 24.8666 63.9354 24.6991 63.8913C24.6716 63.8838 24.6467 63.8689 24.6205 63.8589C24.5657 63.8389 24.5084 63.8215 24.456 63.7916L0.501061 49.9987C0.348882 49.9113 0.222437 49.7853 0.134469 49.6334C0.0465019 49.4816 0.000120578 49.3092 0 49.1337L0 8.10652C0 8.01678 0.0124642 7.92953 0.0348998 7.84477C0.0423783 7.8161 0.0598282 7.78993 0.0697995 7.76126C0.0884958 7.70891 0.105946 7.65531 0.133367 7.6067C0.152063 7.5743 0.179485 7.54812 0.20192 7.51821C0.230588 7.47832 0.256763 7.43719 0.290416 7.40229C0.319084 7.37362 0.356476 7.35243 0.388883 7.32751C0.425029 7.29759 0.457436 7.26518 0.498568 7.2415L12.4779 0.345059C12.6296 0.257786 12.8015 0.211853 12.9765 0.211853C13.1515 0.211853 13.3234 0.257786 13.475 0.345059L25.4531 7.2415H25.4556C25.4955 7.26643 25.5292 7.29759 25.5653 7.32626C25.5977 7.35119 25.6339 7.37362 25.6625 7.40104C25.6974 7.43719 25.7224 7.47832 25.7523 7.51821C25.7735 7.54812 25.8021 7.5743 25.8196 7.6067C25.8483 7.65656 25.8645 7.70891 25.8844 7.76126C25.8944 7.78993 25.9118 7.8161 25.9193 7.84602C25.9423 7.93096 25.954 8.01853 25.9542 8.10652V33.7317L35.9355 27.9844V14.8846C35.9355 14.7973 35.948 14.7088 35.9704 14.6253C35.9792 14.5954 35.9954 14.5692 36.0053 14.5405C36.0253 14.4882 36.0427 14.4346 36.0702 14.386C36.0888 14.3536 36.1163 14.3274 36.1375 14.2975C36.1674 14.2576 36.1923 14.2165 36.2272 14.1816C36.2559 14.1529 36.292 14.1317 36.3244 14.1068C36.3618 14.0769 36.3942 14.0445 36.4341 14.0208L48.4147 7.12434C48.5663 7.03694 48.7383 6.99094 48.9133 6.99094C49.0883 6.99094 49.2602 7.03694 49.4118 7.12434L61.3899 14.0208C61.4323 14.0457 61.4647 14.0769 61.5021 14.1055C61.5333 14.1305 61.5694 14.1529 61.5981 14.1803C61.633 14.2165 61.6579 14.2576 61.6878 14.2975C61.7103 14.3274 61.7377 14.3536 61.7551 14.386C61.7838 14.4346 61.8 14.4882 61.8199 14.5405C61.8312 14.5692 61.8474 14.5954 61.8548 14.6253ZM59.893 27.9844V16.6121L55.7013 19.0252L49.9104 22.3593V33.7317L59.8942 27.9844H59.893ZM47.9149 48.5566V37.1768L42.2187 40.4299L25.953 49.7133V61.2003L47.9149 48.5566ZM1.99677 9.83281V48.5566L23.9562 61.199V49.7145L12.4841 43.2219L12.4804 43.2194L12.4754 43.2169C12.4368 43.1945 12.4044 43.1621 12.3682 43.1347C12.3371 43.1097 12.3009 43.0898 12.2735 43.0624L12.271 43.0586C12.2386 43.0275 12.2162 42.9888 12.1887 42.9539C12.1638 42.9203 12.1339 42.8916 12.114 42.8567L12.1127 42.853C12.0903 42.8156 12.0766 42.7707 12.0604 42.7283C12.0442 42.6909 12.023 42.656 12.013 42.6161C12.0005 42.5688 11.998 42.5177 11.9931 42.4691C11.9881 42.4317 11.9781 42.3943 11.9781 42.3569V15.5801L6.18848 12.2446L1.99677 9.83281ZM12.9777 2.36177L2.99764 8.10652L12.9752 13.8513L22.9541 8.10527L12.9752 2.36177H12.9777ZM18.1678 38.2138L23.9574 34.8809V9.83281L19.7657 12.2459L13.9749 15.5801V40.6281L18.1678 38.2138ZM48.9133 9.14105L38.9344 14.8858L48.9133 20.6305L58.8909 14.8846L48.9133 9.14105ZM47.9149 22.3593L42.124 19.0252L37.9323 16.6121V27.9844L43.7219 31.3174L47.9149 33.7317V22.3593ZM24.9533 47.987L39.59 39.631L46.9065 35.4555L36.9352 29.7145L25.4544 36.3242L14.9907 42.3482L24.9533 47.987Z" fill="currentColor"/></svg>
@@ -288,18 +288,18 @@ export default function Dashboard({ auth, tickets }) {
                         <span className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-[#FF2D20] transition-colors">{import.meta.env.VITE_APP_NAME || 'MedTick'}</span>
                     </Link>
 
-                    <div className="flex items-center space-x-6">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">
+                    <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
+                        <span className="text-xs md:text-sm text-slate-600 dark:text-slate-400">
                             Welcome, <span className="font-bold text-slate-900 dark:text-white">{auth.user.name}</span>
-                            {auth.user.role === 'admin' && <span className="ml-2 px-3 py-1 rounded-full bg-[#FF2D20]/10 text-[#FF2D20] text-xs font-bold uppercase">Admin</span>}
+                            {auth.user.role === 'admin' && <span className="ml-2 px-3 py-1 rounded-full bg-[#FF2D20]/10 text-[#FF2D20] text-[10px] font-bold uppercase">Admin</span>}
                         </span>
                         {auth.user.role === 'admin' && (
-                            <Link href={route('admin.users')} className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-[#FF2D20] transition-colors flex items-center">
+                            <Link href={route('admin.users')} className="text-xs md:text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-[#FF2D20] transition-colors flex items-center">
                                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                                Manage Users
+                                Users
                             </Link>
                         )}
-                        <Link method="post" href={route('logout')} as="button" className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-[#FF2D20] transition-colors">
+                        <Link method="post" href={route('logout')} as="button" className="text-xs md:text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-[#FF2D20] transition-colors">
                             Logout
                         </Link>
                     </div>
@@ -309,30 +309,30 @@ export default function Dashboard({ auth, tickets }) {
             <main className="relative z-10 flex-grow py-12 px-6">
                 <div className="max-w-7xl mx-auto">
 
-                    <div className="flex justify-between items-end mb-8">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Ticket Management</h1>
-                            <p className="text-slate-600 dark:text-slate-400 mt-1">
+                            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Ticket Management</h1>
+                            <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mt-1">
                                 {auth.user.role === 'admin' ? 'Manage and resolve tickets from all users.' : 'Track and manage your submitted tickets.'}
                             </p>
                         </div>
-                        <div className="flex items-center space-x-4">
+                        <div className="flex w-full md:w-auto items-center justify-between md:justify-end gap-4">
                             {selectedIds.length > 0 && auth.user.role === 'admin' && (
-                                <div className="flex items-center space-x-2 p-2 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in duration-300">
-                                    <span className="text-xs font-bold text-slate-600 dark:text-slate-400 px-2">{selectedIds.length} Selected</span>
+                                <div className="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in duration-300">
+                                    <span className="hidden sm:inline text-xs font-bold text-slate-600 dark:text-slate-400 px-2">{selectedIds.length} Selected</span>
                                     <select
                                         onChange={(e) => handleBulkStatusChange(e.target.value)}
-                                        className="text-xs font-bold bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-none rounded-xl focus:ring-2 focus:ring-[#FF2D20]"
+                                        className="text-[10px] md:text-xs font-bold bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-none rounded-xl focus:ring-2 focus:ring-[#FF2D20] py-1 md:py-1.5"
                                         defaultValue=""
                                     >
-                                        <option value="" disabled>Update Status</option>
+                                        <option value="" disabled>Status</option>
                                         <option value="open">Open</option>
                                         <option value="in-progress">In Progress</option>
                                         <option value="closed">Closed</option>
                                     </select>
                                     <button
                                         onClick={handleBulkDelete}
-                                        className="p-2 text-rose-500 hover:bg-rose-500 hover:text-white rounded-xl transition-all"
+                                        className="p-1.5 md:p-2 text-rose-500 hover:bg-rose-500 hover:text-white rounded-xl transition-all"
                                         title="Delete Selected"
                                     >
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -340,7 +340,7 @@ export default function Dashboard({ auth, tickets }) {
                                 </div>
                             )}
                             {auth.user.role !== 'admin' && (
-                                <Link href={route('submit-ticket')} className="px-6 py-3 bg-[#FF2D20] text-white rounded-xl font-bold shadow-lg shadow-[#FF2D20]/20 hover:scale-105 active:scale-95 transition-all">
+                                <Link href={route('submit-ticket')} className="w-full md:w-auto text-center px-6 py-3 bg-[#FF2D20] text-white rounded-xl font-bold shadow-lg shadow-[#FF2D20]/20 hover:scale-105 active:scale-95 transition-all">
                                     New Ticket
                                 </Link>
                             )}
@@ -350,54 +350,56 @@ export default function Dashboard({ auth, tickets }) {
                     <FlashHandler />
 
                     {/* Filter Bar */}
-                    <div className="flex flex-wrap items-center gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50">
-                        <div className="flex items-center space-x-2">
+                    <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50">
+                        <div className="flex items-center space-x-2 w-full sm:w-auto">
                             <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                             <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Filters:</span>
                         </div>
 
-                        <select
-                            value={filters.status}
-                            onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-[#FF2D20] outline-none transition-all cursor-pointer"
-                        >
-                            <option value="">All Statuses</option>
-                            <option value="open">Open</option>
-                            <option value="in-progress">In-Progress</option>
-                            <option value="closed">Closed</option>
-                        </select>
-
-                        <select
-                            value={filters.priority}
-                            onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
-                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-[#FF2D20] outline-none transition-all cursor-pointer"
-                        >
-                            <option value="">All Priorities</option>
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
-
-                        <select
-                            value={filters.subject}
-                            onChange={(e) => setFilters(prev => ({ ...prev, subject: e.target.value }))}
-                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-[#FF2D20] outline-none transition-all cursor-pointer"
-                        >
-                            <option value="">All Subjects</option>
-                            {subjects.map((sub, idx) => <option key={idx} value={sub.value}>{sub.name}</option>)}
-                        </select>
-
-                        {(filters.status || filters.priority || filters.subject) && (
-                            <button
-                                onClick={clearFilters}
-                                className="text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center"
+                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-3 w-full sm:w-auto">
+                            <select
+                                value={filters.status}
+                                onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                                className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-[#FF2D20] outline-none transition-all cursor-pointer"
                             >
-                                <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                                Clear All
-                            </button>
-                        )}
+                                <option value="">All Statuses</option>
+                                <option value="open">Open</option>
+                                <option value="in-progress">In-Progress</option>
+                                <option value="closed">Closed</option>
+                            </select>
 
-                        <div className="ml-auto text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                            <select
+                                value={filters.priority}
+                                onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
+                                className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-[#FF2D20] outline-none transition-all cursor-pointer"
+                            >
+                                <option value="">All Priorities</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+
+                            <select
+                                value={filters.subject}
+                                onChange={(e) => setFilters(prev => ({ ...prev, subject: e.target.value }))}
+                                className="col-span-2 sm:col-span-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-[#FF2D20] outline-none transition-all cursor-pointer"
+                            >
+                                <option value="">All Subjects</option>
+                                {subjects.map((sub, idx) => <option key={idx} value={sub.value}>{sub.name}</option>)}
+                            </select>
+
+                            {(filters.status || filters.priority || filters.subject) && (
+                                <button
+                                    onClick={clearFilters}
+                                    className="col-span-2 sm:col-span-1 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center"
+                                >
+                                    <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    Clear All
+                                </button>
+                            )}
+                        </div>
+
+                        <div className="w-full sm:w-auto sm:ml-auto text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
                             Showing {filteredTickets.length} of {tickets.length}
                         </div>
                     </div>
@@ -407,7 +409,7 @@ export default function Dashboard({ auth, tickets }) {
                             <table className="w-full text-left table-fixed">
                                 <thead>
                                     <tr className="border-b border-slate-200 dark:border-slate-800">
-                                        <th className="w-16 px-6 py-4">
+                                        <th className="w-12 md:w-16 px-4 md:px-6 py-4">
                                             <input
                                                 type="checkbox"
                                                 className="rounded-lg border-slate-300 dark:border-slate-700 text-[#FF2D20] focus:ring-[#FF2D20] dark:bg-slate-800 transition-colors cursor-pointer"
@@ -415,57 +417,57 @@ export default function Dashboard({ auth, tickets }) {
                                                 onChange={toggleSelectAll}
                                             />
                                         </th>
-                                        <th className="w-24 px-6 py-4">
+                                        <th className="w-20 md:w-24 px-4 md:px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('id')}
-                                                className="flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
                                             >
                                                 ID {getSortIcon('id')}
                                             </button>
                                         </th>
-                                        <th className="px-6 py-4">
+                                        <th className="px-4 md:px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('subject')}
-                                                className="flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
                                             >
-                                                Information {getSortIcon('subject')}
+                                                Info {getSortIcon('subject')}
                                             </button>
                                         </th>
                                         {auth.user.role === 'admin' && (
-                                            <th className="px-6 py-4">
+                                            <th className="hidden lg:table-cell px-6 py-4">
                                                 <button
                                                     onClick={() => requestSort('user')}
-                                                    className="flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                    className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
                                                 >
                                                     User {getSortIcon('user')}
                                                 </button>
                                             </th>
                                         )}
-                                        <th className="w-32 px-6 py-4">
+                                        <th className="hidden sm:table-cell w-32 px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('priority')}
-                                                className="flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
                                             >
                                                 Priority {getSortIcon('priority')}
                                             </button>
                                         </th>
-                                        <th className="w-48 px-6 py-4">
+                                        <th className="w-32 md:w-48 px-4 md:px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('status')}
-                                                className="flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
                                             >
                                                 Status {getSortIcon('status')}
                                             </button>
                                         </th>
-                                        <th className="w-48 px-6 py-4">
+                                        <th className="hidden lg:table-cell w-48 px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('attendant')}
-                                                className="flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
                                             >
-                                                Attended By {getSortIcon('attendant')}
+                                                Attendant {getSortIcon('attendant')}
                                             </button>
                                         </th>
-                                        <th className="w-24 px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
+                                        <th className="w-20 md:w-24 px-4 md:px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
                                     </tr>
                                 </thead>
 
@@ -476,7 +478,7 @@ export default function Dashboard({ auth, tickets }) {
                                                 className={`group hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-all duration-300 cursor-pointer ${expandedId === ticket.id ? 'bg-slate-50/80 dark:bg-slate-800/80' : ''}`}
                                                 onClick={() => toggleExpand(ticket.id)}
                                             >
-                                                <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                                                <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                     <input
                                                         type="checkbox"
                                                         className="rounded-lg border-slate-300 dark:border-slate-700 text-[#FF2D20] focus:ring-[#FF2D20] dark:bg-slate-800 transition-colors cursor-pointer"
@@ -484,22 +486,22 @@ export default function Dashboard({ auth, tickets }) {
                                                         onChange={() => toggleSelect(ticket.id)}
                                                     />
                                                 </td>
-                                                <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                                                <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                     <div className="flex items-center gap-2 group/id-cell">
-                                                        <span className="text-sm font-medium text-slate-500 group-hover:text-[#FF2D20] transition-colors uppercase tracking-tight">#{ticket.id.substring(0, 8)}...</span>
+                                                        <span className="text-[10px] md:text-sm font-medium text-slate-500 group-hover:text-[#FF2D20] transition-colors uppercase tracking-tight">#{ticket.id.substring(0, 4)}...</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300">{subjects.find(sb => sb.value === ticket.subject).name}</div>
-                                                    <div className="text-xs text-slate-500 dark:text-slate-400 truncate max-w-xs">{ticket.content}</div>
+                                                <td className="px-4 md:px-6 py-4">
+                                                    <div className="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1">{subjects.find(sb => sb.value === ticket.subject).name}</div>
+                                                    <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[80px] md:max-w-xs">{ticket.content}</div>
                                                 </td>
                                                 {auth.user.role === 'admin' && (
-                                                    <td className="px-6 py-4">
+                                                    <td className="hidden lg:table-cell px-6 py-4">
                                                         <div className="text-sm font-medium text-slate-900 dark:text-white">{ticket.name || ticket.user?.name}</div>
                                                         <div className="text-xs text-slate-500 dark:text-slate-400">{ticket.email || ticket.user?.email}</div>
                                                     </td>
                                                 )}
-                                                <td className="px-6 py-4">
+                                                <td className="hidden sm:table-cell px-6 py-4">
                                                     <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
                                                         ticket.priority === 'high' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
                                                         ticket.priority === 'medium' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
@@ -514,15 +516,15 @@ export default function Dashboard({ auth, tickets }) {
                                                         {ticket.priority === 'low' && (
                                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
                                                         )}
-                                                        <span>{ticket.priority}</span>
+                                                        <span className="hidden md:inline">{ticket.priority}</span>
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                                                <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                     {auth.user.role === 'admin' ? (
                                                         <select
                                                             value={ticket.status}
                                                             onChange={(e) => handleStatusUpdate(ticket.id, e.target.value)}
-                                                            className={`text-xs font-bold rounded-xl border-none focus:ring-2 focus:ring-[#FF2D20] cursor-pointer py-1.5 px-3 transition-all ${
+                                                            className={`text-[10px] md:text-xs font-bold rounded-xl border-none focus:ring-2 focus:ring-[#FF2D20] cursor-pointer py-1 md:py-1.5 px-2 md:px-3 transition-all ${
                                                                 ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' :
                                                                 ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400' :
                                                                 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
@@ -533,7 +535,7 @@ export default function Dashboard({ auth, tickets }) {
                                                             <option value="closed">Closed</option>
                                                         </select>
                                                     ) : (
-                                                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase ${
+                                                        <span className={`inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase ${
                                                             ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10' :
                                                             ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 ring-4 ring-orange-500/10' :
                                                             'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
@@ -542,7 +544,7 @@ export default function Dashboard({ auth, tickets }) {
                                                         </span>
                                                     )}
                                                 </td>
-                                                <td className="px-6 py-4">
+                                                <td className="hidden lg:table-cell px-6 py-4">
                                                     {ticket.attendant ? (
                                                         <div className="flex items-center space-x-2">
                                                             <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-500">
@@ -554,12 +556,12 @@ export default function Dashboard({ auth, tickets }) {
                                                         <span className="text-[10px] italic text-slate-400 uppercase tracking-widest">Unassigned</span>
                                                     )}
                                                 </td>
-                                                <td className="px-6 py-4 text-right">
-                                                    <div className="flex items-center justify-end space-x-1">
+                                                <td className="px-4 md:px-6 py-4 text-right">
+                                                    <div className="flex items-center justify-end space-x-1 md:space-x-2">
                                                         {auth.user.id === ticket.user_id && ticket.status !== 'closed' && (
                                                             <button
                                                                 onClick={(e) => { e.stopPropagation(); openEditModal(ticket); }}
-                                                                className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-sm"
+                                                                className="p-1.5 md:p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-sm"
                                                                 title="Edit Ticket"
                                                             >
                                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
@@ -567,14 +569,14 @@ export default function Dashboard({ auth, tickets }) {
                                                         )}
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); toggleExpand(ticket.id); }}
-                                                            className={`p-2 rounded-lg transition-all ${expandedId === ticket.id ? 'bg-[#FF2D20] text-white rotate-180' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-[#FF2D20]'}`}
+                                                            className={`p-1.5 md:p-2 rounded-lg transition-all ${expandedId === ticket.id ? 'bg-[#FF2D20] text-white rotate-180' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-[#FF2D20]'}`}
                                                         >
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>
                                                         </button>
                                                         {auth.user.role === 'admin' && (
                                                             <button
                                                                 onClick={(e) => { e.stopPropagation(); handleDelete(ticket.id); }}
-                                                                className="p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm"
+                                                                className="p-1.5 md:p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm"
                                                                 disabled={processing}
                                                             >
                                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -585,7 +587,7 @@ export default function Dashboard({ auth, tickets }) {
                                             </tr>
                                             {expandedId === ticket.id && (
                                                 <tr className="bg-slate-50/50 dark:bg-slate-800/30 animate-in slide-in-from-top-2 duration-300">
-                                                    <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-12 py-8 border-l-4 border-[#FF2D20]">
+                                                    <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-[#FF2D20]">
                                                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                                             <div className="space-y-8">
                                                                 <div>

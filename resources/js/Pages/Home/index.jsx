@@ -13,7 +13,7 @@ export default function Home({ auth }) {
                 {/* Theme Switcher FAB */}
                 <button
                     onClick={toggleTheme}
-                    className="fixed top-8 right-8 z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
+                    className="fixed bottom-8 right-8 md:top-8 md:bottom-auto z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
                     aria-label="Toggle Theme"
                 >
                     {theme === 'dark' ? (
@@ -28,31 +28,33 @@ export default function Home({ auth }) {
                 </button>
 
                 {/* Auth Links */}
-                <div className="fixed top-8 left-8 z-50 flex items-center gap-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
-                    {!auth.user ? (
-                        <>
+                <div className="fixed top-6 left-6 right-6 md:right-auto md:w-auto z-50 flex items-center justify-between md:justify-start gap-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
+                    <div className="flex items-center gap-4">
+                        {!auth.user ? (
+                            <>
+                                <Link
+                                    href={route('login')}
+                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
+                                >
+                                    Log in
+                                </Link>
+                                <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+                                <Link
+                                    href={route('register')}
+                                    className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
+                                >
+                                    Register
+                                </Link>
+                            </>
+                        ) : (
                             <Link
-                                href={route('login')}
-                                className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
+                                href={route('dashboard')}
+                                className="text-sm font-semibold text-[#FF2D20] hover:underline"
                             >
-                                Log in
+                                Go to Dashboard 
                             </Link>
-                            <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
-                            <Link
-                                href={route('register')}
-                                className="text-sm font-semibold text-slate-900 dark:text-white hover:text-[#FF2D20] transition-colors"
-                            >
-                                Register
-                            </Link>
-                        </>
-                    ) : (
-                        <Link
-                            href={route('dashboard')}
-                            className="text-sm font-semibold text-[#FF2D20] hover:underline"
-                        >
-                            Go to Dashboard 
-                        </Link>
-                    )}
+                        )}
+                    </div>
                 </div>
 
                 {/* Background Aesthetics */}
@@ -72,7 +74,7 @@ export default function Home({ auth }) {
                     <div className="text-center mb-16 space-y-4">
                         <div className="inline-flex items-center justify-center p-3 mb-6 bg-white dark:bg-slate-900 rounded-2xl shadow-xl shadow-[#FF2D20]/10 border border-slate-200 dark:border-slate-800">
                             <svg
-                                className="h-12 w-auto text-[#FF2D20]"
+                                className="h-8 md:h-12 w-auto text-[#FF2D20]"
                                 viewBox="0 0 62 65"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -84,10 +86,10 @@ export default function Home({ auth }) {
                             </svg>
                         </div>
 
-                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-6xl">
+                        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-6xl">
                             How can we <span className="text-[#FF2D20]">help</span> today?
                         </h1>
-                        <p className="max-w-xl mx-auto text-lg text-slate-600 dark:text-slate-400">
+                        <p className="max-w-xl mx-auto text-base md:text-lg text-slate-600 dark:text-slate-400 px-4">
                             Our support team is ready to assist you. Choose an option below to get started.
                         </p>
                     </div>

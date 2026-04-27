@@ -63,7 +63,7 @@ export default function SubmitTicket({ auth }) {
                 {/* Theme Switcher FAB */}
                 <button
                     onClick={toggleTheme}
-                    className="fixed top-8 right-8 z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
+                    className="fixed bottom-8 right-8 md:top-8 md:bottom-auto z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
                     aria-label="Toggle Theme"
                 >
                     {theme === 'dark' ? (
@@ -91,7 +91,7 @@ export default function SubmitTicket({ auth }) {
 
                 <div className="relative z-10 w-full max-w-3xl">
                     <div className="text-center mb-10">
-                        <Link href={route('home')} className="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-[#FF2D20] dark:hover:text-[#FF2D20] transition-colors mb-4">
+                        <Link href={route('home')} className="inline-flex items-center text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-[#FF2D20] dark:hover:text-[#FF2D20] transition-colors mb-4">
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
@@ -100,7 +100,7 @@ export default function SubmitTicket({ auth }) {
                         <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
                             Submit a <span className="text-[#FF2D20]">Ticket</span>
                         </h1>
-                        <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
+                        <p className="mt-4 text-sm md:text-lg text-slate-600 dark:text-slate-400 px-4">
                             Provide the details below and we'll help as soon as possible.
                         </p>
                     </div>
@@ -223,13 +223,13 @@ export default function SubmitTicket({ auth }) {
                                 />
                                 <label
                                     htmlFor="image-upload"
-                                    className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 hover:border-[#FF2D20] dark:hover:border-[#FF2D20] hover:bg-[#FF2D20]/5 transition-all cursor-pointer group"
+                                    className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-6 md:p-8 hover:border-[#FF2D20] dark:hover:border-[#FF2D20] hover:bg-[#FF2D20]/5 transition-all cursor-pointer group"
                                 >
-                                    <svg className="w-10 h-10 text-slate-400 group-hover:text-[#FF2D20] transition-colors mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-8 h-8 md:w-10 md:h-10 text-slate-400 group-hover:text-[#FF2D20] transition-colors mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
-                                    <span className="text-slate-600 dark:text-slate-400 font-medium">Click to upload multiple or drag and drop</span>
-                                    <span className="text-slate-400 text-xs mt-1">Maximum file size: 5MB per image</span>
+                                    <span className="text-slate-600 dark:text-slate-400 font-medium text-xs md:text-sm text-center">Click to upload multiple or drag and drop</span>
+                                    <span className="text-slate-400 text-[10px] mt-1">Maximum file size: 5MB per image</span>
                                 </label>
                             </div>
 
@@ -237,12 +237,12 @@ export default function SubmitTicket({ auth }) {
                             {previewUrls.length > 0 && (
                                 <div className="mt-4 animate-in fade-in zoom-in duration-300">
                                     <div className="text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider">Image Previews ({previewUrls.length}):</div>
-                                    <div className="flex flex-wrap gap-4">
+                                    <div className="flex flex-wrap gap-3 md:gap-4">
                                         {previewUrls.map((url, idx) => (
                                             <div key={idx} className="relative group/preview">
                                                 <img
                                                     src={url}
-                                                    className="w-32 h-32 object-cover rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl transition-transform group-hover/preview:scale-105"
+                                                    className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl transition-transform group-hover/preview:scale-105"
                                                     alt={`Preview ${idx + 1}`}
                                                 />
                                                 <button

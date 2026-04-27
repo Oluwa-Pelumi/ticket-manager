@@ -10,7 +10,7 @@ export default function GuestLayout({ children }) {
             {/* Theme Switcher FAB */}
             <button
                 onClick={toggleTheme}
-                className="fixed top-8 right-8 z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
+                className="fixed bottom-8 right-8 md:top-8 md:bottom-auto z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
                 aria-label="Toggle Theme"
             >
                 {theme === 'dark' ? (
@@ -39,7 +39,7 @@ export default function GuestLayout({ children }) {
                     </Link>
                 </div>
 
-                <div className="group relative block p-8 rounded-[2.5rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-3xl border border-white/50 dark:border-white/5 shadow-2xl transition-all duration-300">
+                <div className="group relative block p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-3xl border border-white/50 dark:border-white/5 shadow-2xl transition-all duration-300">
                     {children}
                 </div>
             </div>
