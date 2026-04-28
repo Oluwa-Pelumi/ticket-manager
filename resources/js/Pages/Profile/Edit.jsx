@@ -18,7 +18,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                         <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
                             Identity Portal
                         </h2>
-                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Personal Management</span>
+                        <span className="text-[9px] font-black tracking-[0.3em] text-slate-400">Personal Management</span>
                     </div>
                 </div>
             }

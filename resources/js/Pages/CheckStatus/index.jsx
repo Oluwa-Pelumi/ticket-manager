@@ -34,15 +34,15 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
 
                     <div className="flex items-center gap-3">
                         <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
-                            <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                            <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                 Home
                             </Link>
                             {auth.user ? (
-                                <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl bg-white dark:bg-slate-900 text-indigo-500 shadow-sm border border-slate-200/50 dark:border-slate-800/50">
+                                <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl bg-white dark:bg-slate-900 text-indigo-500 shadow-sm border border-slate-200/50 dark:border-slate-800/50">
                                     Dashboard
                                 </Link>
                             ) : (
-                                <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                     Sign In
                                 </Link>
                             )}
@@ -78,7 +78,7 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                 <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                                     Search Tickets
                                 </h1>
-                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Historical Inquiries Retrieval</span>
+                                <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Historical Inquiries Retrieval</span>
                             </div>
                         </div>
                     </div>
@@ -109,9 +109,9 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="px-8 py-4 rounded-2xl bg-indigo-500 text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 transition-all whitespace-nowrap"
+                                className="px-8 py-4 rounded-2xl bg-indigo-500 text-white font-black text-xs tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 transition-all whitespace-nowrap"
                             >
-                                {processing ? 'Searching...' : 'Search Tickets'}
+                                {processing ? 'Searching Tickets...' : 'Search Tickets'}
                             </button>
                         </div>
                     </form>
@@ -132,14 +132,14 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                         >
                                             <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">
                                                 <div>
-                                                    <div className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em] mb-1">
+                                                    <div className="text-[10px] font-black text-indigo-500 tracking-[0.2em] mb-1">
                                                         #{ticket.id.substring(0, 8)}
                                                     </div>
                                                     <h3 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-500 transition-colors line-clamp-1">
                                                         {ticket.subject.replace(/_/g, ' ')}
                                                     </h3>
                                                 </div>
-                                                <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                                                <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest ${
                                                     ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10' :
                                                     ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 ring-4 ring-orange-500/10' :
                                                     'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
@@ -152,10 +152,10 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                             </p>
                                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[10px] md:text-xs text-slate-500">
                                                 <div className="flex flex-wrap items-center gap-3 md:gap-4">
-                                                    <span className="font-black uppercase tracking-widest text-slate-400">Priority: <span className="text-slate-900 dark:text-white">{ticket.priority}</span></span>
-                                                    <span className="font-black uppercase tracking-widest text-slate-400">Date: <span className="text-slate-900 dark:text-white">{new Date(ticket.created_at).toLocaleDateString()}</span></span>
+                                                    <span className="font-black tracking-widest text-slate-400">Priority: <span className="text-slate-900 dark:text-white">{ticket.priority}</span></span>
+                                                    <span className="font-black tracking-widest text-slate-400">Date: <span className="text-slate-900 dark:text-white">{new Date(ticket.created_at).toLocaleDateString()}</span></span>
                                                 </div>
-                                                <div className="flex items-center text-indigo-500 font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform self-end sm:self-auto">
+                                                <div className="flex items-center text-indigo-500 font-black tracking-widest group-hover:translate-x-1 transition-transform self-end sm:self-auto">
                                                     Open Ticket
                                                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"/></svg>
                                                 </div>

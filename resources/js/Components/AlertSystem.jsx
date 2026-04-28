@@ -63,7 +63,7 @@ const AlertSystem = () => {
                             )}
                         </div>
                         
-                        <h3 className="text-2xl font-black tracking-tight mb-2 uppercase italic">{confirm.title || 'Are you sure?'}</h3>
+                        <h3 className="text-2xl font-black tracking-tight mb-2 italic">{confirm.title || 'Are you sure?'}</h3>
                         <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed font-medium">
                             {confirm.message || 'This action cannot be undone. Please confirm to proceed.'}
                         </p>

@@ -72,15 +72,15 @@ export default function SubmitTicket({ auth }) {
                         </Link>
                         <div className="flex items-center gap-3">
                             <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
-                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                     Home
                                 </Link>
                                 {auth.user ? (
-                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                         Dashboard
                                     </Link>
                                 ) : (
-                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                         Sign In
                                     </Link>
                                 )}
@@ -115,13 +115,13 @@ export default function SubmitTicket({ auth }) {
                                 <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                                     Support Portal
                                 </h1>
-                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Initialize Assistance Request</span>
+                                <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Initialize Assistance Request</span>
                             </div>
                         </div>
                     </div>
 
                     <div className="text-center mb-10">
-                        <Link href={route('home')} className="inline-flex items-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors mb-4 uppercase tracking-widest">
+                        <Link href={route('home')} className="inline-flex items-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors mb-4 tracking-widest">
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
@@ -137,7 +137,7 @@ export default function SubmitTicket({ auth }) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Name */}
                             <div className="space-y-3">
-                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="name">Full Identity</label>
+                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="name">Full Identity</label>
                                 <input
                                     id="name"
                                     type="text"
@@ -152,7 +152,7 @@ export default function SubmitTicket({ auth }) {
 
                             {/* Email */}
                             <div className="space-y-3">
-                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="email">Email Address</label>
+                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="email">Email Address</label>
                                 <input
                                     id="email"
                                     type="email"
@@ -167,7 +167,7 @@ export default function SubmitTicket({ auth }) {
 
                             {/* WhatsApp */}
                             <div className="space-y-3">
-                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="whatsapp">WhatsApp Contact</label>
+                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="whatsapp">WhatsApp Contact</label>
                                 <input
                                     id="whatsapp"
                                     type="tel"
@@ -181,7 +181,7 @@ export default function SubmitTicket({ auth }) {
 
                             {/* Priority */}
                             <div className="space-y-3">
-                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="priority">Urgency Level</label>
+                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="priority">Urgency Level</label>
                                 <div className="relative">
                                     <select
                                         id="priority"
@@ -202,7 +202,7 @@ export default function SubmitTicket({ auth }) {
 
                         {/* Subject */}
                         <div className="space-y-3">
-                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="subject">Support Category</label>
+                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="subject">Support Category</label>
                             <div className="relative">
                                 <select
                                     id="subject"
@@ -227,7 +227,7 @@ export default function SubmitTicket({ auth }) {
 
                         {/* Content */}
                         <div className="space-y-3">
-                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="content">Issue Specification</label>
+                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="content">Issue Specification</label>
                             <textarea
                                 id="content"
                                 value={data.content}
@@ -242,7 +242,7 @@ export default function SubmitTicket({ auth }) {
 
                         {/* Image Upload */}
                         <div className="space-y-4">
-                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1 block">Evidence / Attachments</label>
+                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1 block">Evidence / Attachments</label>
                             <div className="relative group/upload">
                                 <input
                                     type="file"
@@ -272,7 +272,7 @@ export default function SubmitTicket({ auth }) {
                             {/* Previews */}
                             {previewUrls.length > 0 && (
                                 <div className="mt-6 animate-in fade-in zoom-in duration-500">
-                                    <div className="text-[10px] font-black text-indigo-500 mb-4 uppercase tracking-[0.2em]">Ready for Ticket ({previewUrls.length})</div>
+                                    <div className="text-[10px] font-black text-indigo-500 mb-4 tracking-[0.2em]">Ready for Ticket ({previewUrls.length})</div>
                                     <div className="flex flex-wrap gap-4">
                                         {previewUrls.map((url, idx) => (
                                             <div key={idx} className="relative group/preview">
@@ -311,7 +311,7 @@ export default function SubmitTicket({ auth }) {
                                 className="group w-full py-5 rounded-[2rem] bg-indigo-500 text-white font-black text-xl shadow-2xl shadow-indigo-500/30 hover:bg-indigo-600 hover:shadow-indigo-500/50 hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
                             >
                                 <span className="flex items-center justify-center gap-2">
-                                    {processing ? 'Processing...' : (
+                                    {processing ? 'Initializing Ticket...' : (
                                         <>
                                             Initialize Ticket
                                             <svg className="w-6 h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>

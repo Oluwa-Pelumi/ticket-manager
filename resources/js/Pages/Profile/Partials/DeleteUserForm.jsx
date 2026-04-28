@@ -47,7 +47,7 @@ export default function DeleteUserForm({ className = '' }) {
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
-                <h2 className="text-base font-black uppercase tracking-[0.2em] text-rose-500">
+                <h2 className="text-base font-black tracking-[0.2em] text-rose-500">
                     Account Deletion
                 </h2>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -98,7 +98,7 @@ export default function DeleteUserForm({ className = '' }) {
                             Cancel
                         </SecondaryButton>
                         <DangerButton disabled={processing}>
-                            Delete
+                            {processing ? 'Deleting...' : 'Delete'}
                         </DangerButton>
                     </div>
                 </form>

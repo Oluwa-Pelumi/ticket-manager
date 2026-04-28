@@ -13,7 +13,7 @@ export default function ResponsiveNavLink({
                 active
                     ? 'bg-indigo-500/10 text-indigo-500 border-l-4 border-indigo-500 font-black'
                     : 'border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-indigo-500 font-bold'
-            } text-xs uppercase tracking-[0.2em] ${className}`}
+            } text-xs tracking-[0.2em] ${className}`}
         >
             {children}
         </Link>

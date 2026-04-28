@@ -259,10 +259,10 @@ export default function Dashboard({ auth, tickets }) {
                         <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
                             Command Center
                         </h2>
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Overview & Management</span>
+                        <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Overview & Management</span>
                     </div>
                     {selectedIds.length > 0 && (
-                        <div className="ml-auto flex items-center px-4 py-2 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/30 animate-in zoom-in duration-300">
+                        <div className="ml-auto flex items-center px-4 py-2 rounded-xl bg-indigo-500 text-white text-[10px] font-black tracking-widest shadow-lg shadow-indigo-500/30 animate-in zoom-in duration-300">
                             Selected: {selectedIds.length} tickets
                         </div>
                     )}
@@ -304,7 +304,7 @@ export default function Dashboard({ auth, tickets }) {
                             </div>
                         )}
                         {auth.user.role !== 'admin' && (
-                            <Link href={route('submit-ticket')} className="w-full md:w-auto text-center px-6 py-3 bg-indigo-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all">
+                            <Link href={route('submit-ticket')} className="w-full md:w-auto text-center px-6 py-3 bg-indigo-500 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all">
                                 Submit Ticket
                             </Link>
                         )}
@@ -363,7 +363,7 @@ export default function Dashboard({ auth, tickets }) {
                         )}
                     </div>
 
-                    <div className="w-full sm:w-auto sm:ml-auto text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    <div className="w-full sm:w-auto sm:ml-auto text-right text-[10px] font-black tracking-[0.2em] text-slate-400">
                         Showing {filteredTickets.length} of {tickets.length}
                     </div>
                 </div>
@@ -384,7 +384,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="w-20 md:w-24 px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('id')}
-                                            className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
                                         >
                                             ID {getSortIcon('id')}
                                         </button>
@@ -392,7 +392,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('subject')}
-                                            className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
                                         >
                                             Info {getSortIcon('subject')}
                                         </button>
@@ -401,7 +401,7 @@ export default function Dashboard({ auth, tickets }) {
                                         <th className="hidden lg:table-cell px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('user')}
-                                                className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
                                             >
                                                 User {getSortIcon('user')}
                                             </button>
@@ -410,7 +410,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="hidden sm:table-cell w-32 px-6 py-4">
                                         <button
                                             onClick={() => requestSort('priority')}
-                                            className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
                                         >
                                             Priority {getSortIcon('priority')}
                                         </button>
@@ -418,7 +418,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="w-32 md:w-48 px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('status')}
-                                            className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
                                         >
                                             Status {getSortIcon('status')}
                                         </button>
@@ -426,12 +426,12 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="hidden lg:table-cell w-48 px-6 py-4">
                                         <button
                                             onClick={() => requestSort('attendant')}
-                                            className="flex items-center text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
                                         >
                                             Attendant {getSortIcon('attendant')}
                                         </button>
                                     </th>
-                                    <th className="w-20 md:w-24 px-4 md:px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
+                                    <th className="w-20 md:w-24 px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
                                 </tr>
                             </thead>
 
@@ -452,7 +452,7 @@ export default function Dashboard({ auth, tickets }) {
                                             </td>
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex items-center gap-2 group/id-cell">
-                                                    <span className="text-[10px] md:text-sm font-bold text-slate-500 group-hover:text-indigo-500 transition-colors uppercase tracking-tight">#{ticket.id.substring(0, 4)}...</span>
+                                                    <span className="text-[10px] md:text-sm font-bold text-slate-500 group-hover:text-indigo-500 transition-colors tracking-tight">#{ticket.id.substring(0, 4)}...</span>
                                                 </div>
                                             </td>
                                             <td className="px-4 md:px-6 py-4">
@@ -466,7 +466,7 @@ export default function Dashboard({ auth, tickets }) {
                                                 </td>
                                             )}
                                             <td className="hidden sm:table-cell px-6 py-4">
-                                                <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                                <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider ${
                                                     ticket.priority === 'high' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
                                                     ticket.priority === 'medium' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
                                                     'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
@@ -488,7 +488,7 @@ export default function Dashboard({ auth, tickets }) {
                                                     <select
                                                         value={ticket.status}
                                                         onChange={(e) => handleStatusUpdate(ticket.id, e.target.value)}
-                                                        className={`text-[10px] md:text-xs font-black uppercase tracking-widest rounded-xl border-none focus:ring-2 focus:ring-indigo-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all ${
+                                                        className={`text-[10px] md:text-xs font-black tracking-widest rounded-xl border-none focus:ring-2 focus:ring-indigo-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all ${
                                                             ticket.status === 'open' ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20' :
                                                             ticket.status === 'in-progress' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' :
                                                             'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -499,7 +499,7 @@ export default function Dashboard({ auth, tickets }) {
                                                         <option value="closed">Resolved</option>
                                                     </select>
                                                 ) : (
-                                                    <span className={`inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase ${
+                                                    <span className={`inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold ${
                                                         ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10' :
                                                         ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 ring-4 ring-orange-500/10' :
                                                         'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
@@ -517,7 +517,7 @@ export default function Dashboard({ auth, tickets }) {
                                                         <span className="text-xs font-medium text-slate-900 dark:text-white">{ticket.attendant.name}</span>
                                                     </div>
                                                 ) : (
-                                                    <span className="text-[10px] italic text-slate-400 uppercase tracking-widest">Unassigned</span>
+                                                    <span className="text-[10px] italic text-slate-400 tracking-widest">Unassigned</span>
                                                 )}
                                             </td>
                                             <td className="px-4 md:px-6 py-4 text-right">
@@ -562,7 +562,7 @@ export default function Dashboard({ auth, tickets }) {
 
                                                                 <div className="p-8 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
                                                                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-20" />
-                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 uppercase tracking-[0.3em]">Control Reference</div>
+                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.3em]">Control Reference</div>
                                                                     <div className="flex items-center gap-3 mb-8 group/id">
                                                                         <div className="text-2xl text-slate-900 dark:text-white font-black tracking-tight">{ticket.id}</div>
                                                 <button
@@ -573,7 +573,7 @@ export default function Dashboard({ auth, tickets }) {
                                                                             {copiedId === ticket.id ? (
                                                                                 <>
                                                                                     <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
-                                                                                    <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Copied!</span>
+                                                                                    <span className="text-[10px] font-bold text-emerald-500 tracking-wider">Copied!</span>
                                                                                 </>
                                                                             ) : (
                                                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
@@ -581,17 +581,17 @@ export default function Dashboard({ auth, tickets }) {
                                                                         </button>
                                                                     </div>
 
-                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 uppercase tracking-[0.2em]">Subject</div>
+                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Subject</div>
                                                                     <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{subjects.find(s => s.value == ticket.subject)?.name}</div>
 
-                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 uppercase tracking-[0.2em]">Description</div>
+                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Description</div>
                                                                     <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm">{ticket.content}</div>
                                                                 </div>
                                                             </div>
 
                                                             {(ticket.images?.length > 0 || ticket.filename) && (
                                                                 <div>
-                                                                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-widest flex items-center">
+                                                                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
                                                                         <svg className="w-4 h-4 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                                                         Attachments
                                                                     </h4>
@@ -629,7 +629,7 @@ export default function Dashboard({ auth, tickets }) {
                                                                         <div key={ci} className={`flex flex-col ${comment.user_id === auth.user.id ? 'items-end' : 'items-start'}`}>
                                                                             <div className={`max-w-[85%] p-5 rounded-[2rem] ${comment.user_id === auth.user.id ? 'bg-indigo-500 text-white shadow-xl shadow-indigo-500/10' : 'glass-card text-slate-900 dark:text-white'}`}>
                                                                                 <div className="flex items-center space-x-3 mb-2">
-                                                                                    <span className="text-[9px] font-black uppercase tracking-widest opacity-80">{comment.user?.name}</span>
+                                                                                    <span className="text-[9px] font-black tracking-widest opacity-80">{comment.user?.name}</span>
                                                                                     <span className="text-[9px] opacity-40">{new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                                                                 </div>
                                                                                 <div className="text-sm font-medium leading-relaxed">{comment.content}</div>
@@ -681,9 +681,9 @@ export default function Dashboard({ auth, tickets }) {
                                                                                     <button
                                                                                         type="submit"
                                                                                         disabled={commentForm.processing || !commentForm.data.content.trim()}
-                                                                                        className="px-6 py-3 bg-indigo-500 text-white rounded-2xl shadow-xl shadow-indigo-500/20 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 font-black text-xs uppercase tracking-widest"
+                                                                                        className="px-6 py-3 bg-indigo-500 text-white rounded-2xl shadow-xl shadow-indigo-500/20 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 font-black text-xs tracking-widest"
                                                                                     >
-                                                                                        Send
+                                                                                        {commentForm.processing ? 'Sending...' : 'Send'}
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
@@ -837,9 +837,9 @@ export default function Dashboard({ auth, tickets }) {
                                 <button
                                     type="submit"
                                     disabled={editForm.processing}
-                                    className="flex-[2] py-4 px-6 rounded-2xl bg-indigo-500 text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                                    className="flex-[2] py-4 px-6 rounded-2xl bg-indigo-500 text-white font-black text-xs tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
                                 >
-                                    {editForm.processing ? 'Saving Changes...' : 'Synchronize Ticket'}
+                                    {editForm.processing ? 'Synchronizing Ticket...' : 'Synchronize Ticket'}
                                 </button>
                             </div>
                         </form>

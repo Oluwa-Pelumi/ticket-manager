@@ -54,7 +54,7 @@ export default function Users({ auth, users }) {
                         <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
                             Identity Portal
                         </h2>
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">User Management</span>
+                        <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">User Management</span>
                     </div>
                 </div>
             }
@@ -75,12 +75,12 @@ export default function Users({ auth, users }) {
                         <table className="w-full text-left">
                             <thead>
                                 <tr className="border-b border-slate-200 dark:border-slate-800">
-                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">ID</th>
-                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">User Information</th>
-                                    <th className="hidden sm:table-cell px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Activity</th>
-                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Role</th>
-                                    <th className="hidden lg:table-cell px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Member Since</th>
-                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
+                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">ID</th>
+                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">User Information</th>
+                                    <th className="hidden sm:table-cell px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">Activity</th>
+                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">Role</th>
+                                    <th className="hidden lg:table-cell px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">Member Since</th>
+                                    <th className="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
@@ -98,7 +98,7 @@ export default function Users({ auth, users }) {
                                             </div>
                                         </td>
                                         <td className="px-4 md:px-6 py-4">
-                                            <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                                            <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest ${
                                                 user.role === 'admin' ? 'bg-indigo-500/10 text-indigo-500 ring-4 ring-indigo-500/5' : 'bg-slate-100 text-slate-600 dark:bg-slate-800/60 dark:text-slate-400'
                                             }`}>
                                                 {user.role}
@@ -114,7 +114,7 @@ export default function Users({ auth, users }) {
                                                         disabled={user.id === auth.user.id || processing}
                                                         value={user.role}
                                                         onChange={(e) => handleRoleUpdate(user, e.target.value)}
-                                                        className="text-[10px] md:text-xs font-black bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 uppercase tracking-widest"
+                                                        className="text-[10px] md:text-xs font-black bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
                                                     >
                                                         <option value="user">User</option>
                                                         <option value="admin">Admin</option>
@@ -129,7 +129,7 @@ export default function Users({ auth, users }) {
                                                     </button>
                                                 </div>
                                                 {user.id === auth.user.id && (
-                                                    <div className="text-[9px] md:text-[10px] text-slate-400 uppercase font-black tracking-widest">Self</div>
+                                                    <div className="text-[9px] md:text-[10px] text-slate-400 font-black tracking-widest">Self</div>
                                                 )}
                                             </div>
                                         </td>

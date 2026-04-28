@@ -115,9 +115,9 @@ export default function Register() {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="w-full py-4 rounded-2xl bg-indigo-500 text-white font-black text-lg shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all uppercase tracking-widest"
+                        className="w-full py-4 rounded-2xl bg-indigo-500 text-white font-black text-lg shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest"
                     >
-                        {processing ? 'Registering...' : 'Initialize Account'}
+                        {processing ? 'Initializing Account...' : 'Initialize Account'}
                     </button>
                 </div>
 

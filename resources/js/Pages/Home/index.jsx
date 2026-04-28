@@ -29,15 +29,15 @@ export default function Home({ auth }) {
 
                         <div className="flex items-center gap-3">
                             <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
-                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl bg-white dark:bg-slate-900 text-indigo-500 shadow-sm border border-slate-200/50 dark:border-slate-800/50">
+                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl bg-white dark:bg-slate-900 text-indigo-500 shadow-sm border border-slate-200/50 dark:border-slate-800/50">
                                     Home
                                 </Link>
                                 {!auth.user ? (
-                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                         Sign In
                                     </Link>
                                 ) : (
-                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                         Dashboard
                                     </Link>
                                 )}
@@ -127,14 +127,14 @@ export default function Home({ auth }) {
                     <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                         <div className="flex items-center gap-2 opacity-60">
                             <ApplicationLogo className="w-5 h-5" />
-                            <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white uppercase">laradrug</span>
+                            <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
                         </div>
                         <p className="text-sm text-slate-500 dark:text-slate-500">
                             &copy; {new Date().getFullYear()} laradrug. All rights reserved.
                         </p>
                         <div className="flex gap-6">
-                            <a href="#" className="text-xs font-semibold text-slate-400 hover:text-indigo-500 transition-colors uppercase tracking-widest">Privacy</a>
-                            <a href="#" className="text-xs font-semibold text-slate-400 hover:text-indigo-500 transition-colors uppercase tracking-widest">Terms</a>
+                            <a href="#" className="text-xs font-semibold text-slate-400 hover:text-indigo-500 transition-colors tracking-widest">Privacy</a>
+                            <a href="#" className="text-xs font-semibold text-slate-400 hover:text-indigo-500 transition-colors tracking-widest">Terms</a>
                         </div>
                     </div>
                 </footer>
