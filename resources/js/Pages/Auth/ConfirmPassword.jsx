@@ -40,7 +40,7 @@ export default function ConfirmPassword() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
                         isFocused={true}
                         placeholder="••••••••"
                         onChange={(e) => setData('password', e.target.value)}
@@ -53,9 +53,9 @@ export default function ConfirmPassword() {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="w-full py-4 rounded-2xl bg-[#FF2D20] text-white font-bold text-lg shadow-xl shadow-[#FF2D20]/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all font-sans"
+                        className="w-full py-4 rounded-2xl bg-indigo-500 text-white font-black text-lg shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all uppercase tracking-widest"
                     >
-                        {processing ? 'Checking...' : 'Confirm Password'}
+                        {processing ? 'Verifying...' : 'Validate Identity'}
                     </button>
                 </div>
             </form>

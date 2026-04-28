@@ -4,7 +4,7 @@ import { useAlert } from '@/Contexts/AlertContext';
 
 const FlashHandler = () => {
     const { showAlert } = useAlert();
-    const { flash } = usePage().props;
+    const { flash }     = usePage().props;
 
     useEffect(() => {
         if (flash.success) {

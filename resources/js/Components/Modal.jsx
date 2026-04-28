@@ -7,10 +7,10 @@ import {
 
 export default function Modal({
     children,
-    show = false,
-    maxWidth = '2xl',
     closeable = true,
-    onClose = () => {},
+    show      = false,
+    maxWidth  = '2xl',
+    onClose   = () => {},
 }) {
     const close = () => {
         if (closeable) {
@@ -19,10 +19,10 @@ export default function Modal({
     };
 
     const maxWidthClass = {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
+        sm   : 'sm:max-w-sm',
+        md   : 'sm:max-w-md',
+        lg   : 'sm:max-w-lg',
+        xl   : 'sm:max-w-xl',
         '2xl': 'sm:max-w-2xl',
     }[maxWidth];
 

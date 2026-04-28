@@ -42,7 +42,7 @@ export default function ForgotPassword({ status }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
                         isFocused={true}
                         placeholder="your@email.com"
                         onChange={(e) => setData('email', e.target.value)}
@@ -55,18 +55,18 @@ export default function ForgotPassword({ status }) {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="w-full py-4 rounded-2xl bg-[#FF2D20] text-white font-bold text-lg shadow-xl shadow-[#FF2D20]/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all"
+                        className="w-full py-4 rounded-2xl bg-indigo-500 text-white font-black text-lg shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all uppercase tracking-widest"
                     >
-                        {processing ? 'Sending...' : 'Email Reset Link'}
+                        {processing ? 'Transmitting...' : 'Request Recovery'}
                     </button>
                 </div>
 
                 <div className="text-center pt-4">
                     <Link
                         href={route('login')}
-                        className="text-sm font-bold text-slate-500 hover:text-[#FF2D20] transition-colors"
+                        className="text-sm font-black uppercase tracking-widest text-slate-500 hover:text-indigo-500 transition-colors"
                     >
-                        Back to Login
+                        Return to Access
                     </Link>
                 </div>
             </form>

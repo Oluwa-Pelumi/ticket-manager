@@ -5,33 +5,31 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 const subjects =
     {
-        'Appointments': [
-            {value: 'cancel_appointment', name: 'Cancel Appointment'},
-            {value: 'book_new_appointment', name: 'Book New Appointment'},
-            {value: 'reschedule_appointment', name: 'Reschedule Appointment'},
+        'Prescription Issues': [
+            {value: 'wrong_medication', name: 'Wrong medication dispensed'},
+            {value: 'wrong_dosage', name: 'Wrong dosage or strength on label'},
+            {value: 'prescription_expired', name: 'Prescription expired or needs renewal'},
         ],
-        'Medical': [
-            {value: 'referral_request', name: 'Referral Request'},
-            {value: 'request_lab_results', name: 'Request Lab Results'},
-            {value: 'request_medical_report', name: 'Request Medical Report'},
-            {value: 'request_prescription_refill', name: 'Request Prescription Refill'},
+        'Side Effects & Reactions': [
+            {value: 'allergic_reaction', name: 'Suspected allergic reaction'},
+            {value: 'side_effects', name: 'Experiencing unexpected side effects'},
+            {value: 'drug_interaction', name: 'Drug interaction concern (with another medication)'},
         ],
-        'Consultation': [
-            {value: 'post_surgery_concern', name: 'Post-Surgery Concern'},
-            {value: 'follow_up_consultation', name: 'Follow-up Consultation'},
-            {value: 'urgent_medical_inquiry', name: 'Urgent Medical Inquiry'},
+        'Administration & Usage': [
+            {value: 'missed_dose', name: 'Missed dose — guidance needed'},
+            {value: 'unclear_instructions', name: 'Unclear instructions on how to take the medication'},
+            {value: 'difficulty_using_drug_form', name: 'Difficulty using the drug form (inhaler, injection, patch)'},
         ],
-        'Billing & Admin': [
-            {value: 'insurance_claim', name: 'Insurance Claim'},
-            {value: 'billing_payment_issue', name: 'Billing & Payment Issue'},
-            {value: 'request_medical_records', name: 'Request Medical Records'},
+        'Refill & Continuity': [
+            {value: 'refill_request', name: 'Refill request'},
+            {value: 'running_out', name: 'Medication running out before next appointment'},
+            {value: 'transfer_prescription', name: 'Transfer of prescription from another facility'},
         ],
-        'Feedback': [
-            {value: 'file_a_complaint', name: 'File a Complaint'},
-            {value: 'general_feedback', name: 'General Feedback'},
-            {value: 'report_medication_side_effect', name: 'Report Medication Side Effect'},
+        'Counseling & Information': [
+            {value: 'speak_with_pharmacist', name: 'Request to speak with a pharmacist'},
+            {value: 'drug_interactions', name: 'Drug interactions with food or supplements'},
+            {value: 'storage_handling_questions', name: 'Questions about storage or handling'},
         ],
-
     }
 
 export default function SubmitTicket({ auth }) {
@@ -58,155 +56,193 @@ export default function SubmitTicket({ auth }) {
         <>
             <Head title="Submit Ticket" />
 
-            <div className="relative min-h-screen flex flex-col items-center justify-center bg-slate-50 selection:bg-[#FF2D20] selection:text-white dark:bg-slate-950 overflow-x-hidden transition-colors duration-500 py-20 px-6">
+            <div className="relative min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 overflow-x-hidden transition-colors duration-500 py-20 px-6 selection:bg-indigo-500 selection:text-white">
 
-                {/* Theme Switcher FAB */}
-                <button
-                    onClick={toggleTheme}
-                    className="fixed bottom-8 right-8 md:top-8 md:bottom-auto z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
-                    aria-label="Toggle Theme"
-                >
-                    {theme === 'dark' ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400 fill-current" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                        </svg>
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-700 fill-current" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 118.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    )}
-                </button>
+                {/* Background Layer */}
+                <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-60 dark:opacity-40" />
 
-                {/* Background Aesthetics */}
-                <div className="absolute inset-0 bg-white dark:bg-slate-950 pointer-events-none transition-colors duration-500">
-                    <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#FF2D20]/20 blur-[120px] animate-pulse" />
-                    <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-blue-500/20 blur-[120px]" />
-                    <img
-                        id="background"
-                        className="absolute inset-0 w-full h-full object-cover opacity-10 dark:opacity-20 invert dark:invert-0 pointer-events-none transition-all duration-500"
-                        src="https://laravel.com/assets/img/welcome/background.svg"
-                        alt=""
-                    />
-                </div>
+                {/* Navbar */}
+                <nav className="fixed top-0 z-50 w-full px-6 py-4 glass-navbar border-b border-slate-200/50 dark:border-slate-800/50">
+                    <div className="max-w-7xl mx-auto flex justify-between items-center">
+                        <Link href={route('home')} className="flex items-center space-x-3 group">
+                            <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200/50 dark:border-slate-800/50 transition-transform group-hover:scale-110">
+                                <ApplicationLogo className="w-full h-full text-indigo-500" />
+                            </div>
+                            <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">laradrug<span className="text-indigo-500">.</span></span>
+                        </Link>
+                        <div className="flex items-center gap-3">
+                            <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
+                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                    Home
+                                </Link>
+                                {auth.user ? (
+                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                        Dashboard
+                                    </Link>
+                                ) : (
+                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black uppercase tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                        Sign In
+                                    </Link>
+                                )}
+                            </div>
+                            <button
+                                onClick={toggleTheme}
+                                className="w-10 h-10 rounded-2xl flex items-center justify-center glass-card text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-all"
+                                title="Toggle Theme"
+                            >
+                                {theme === 'dark' ? (
+                                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
+                                ) : (
+                                    <svg className="w-5 h-5 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </nav>
 
                 <div className="relative z-10 w-full max-w-3xl">
+
+                    {/* Standardized Header */}
+                    <div className="mb-10 p-10 rounded-[2.5rem] glass-card border-white/20 dark:border-slate-800/50 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-30" />
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-white/20">
+                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </div>
+                            <div className="flex flex-col">
+                                <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                                    Support Portal
+                                </h1>
+                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Initialize Assistance Request</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="text-center mb-10">
-                        <Link href={route('home')} className="inline-flex items-center text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-[#FF2D20] dark:hover:text-[#FF2D20] transition-colors mb-4">
+                        <Link href={route('home')} className="inline-flex items-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors mb-4 uppercase tracking-widest">
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
-                            Back to Home
+                            Back to Homepage
                         </Link>
-                        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
-                            Submit a <span className="text-[#FF2D20]">Ticket</span>
-                        </h1>
-                        <p className="mt-4 text-sm md:text-lg text-slate-600 dark:text-slate-400 px-4">
-                            Provide the details below and we'll help as soon as possible.
-                        </p>
                     </div>
 
                     <FlashHandler />
 
-                    <form onSubmit={submit} className="group relative block p-8 rounded-3xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <form onSubmit={submit} className="relative block p-8 md:p-12 rounded-[2.5rem] glass-card space-y-8 overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Name */}
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-900 dark:text-white" htmlFor="name">Full Name</label>
+                            <div className="space-y-3">
+                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="name">Full Identity</label>
                                 <input
                                     id="name"
                                     type="text"
                                     value={data.name}
                                     onChange={e => setData('name', e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none"
-                                    placeholder="John Doe"
+                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-medium shadow-sm"
+                                    placeholder="Enter your name"
                                     required
                                 />
-                                {errors.name && <div className="text-red-500 text-xs mt-1">{errors.name}</div>}
+                                {errors.name && <div className="text-red-500 text-xs mt-1 font-semibold">{errors.name}</div>}
                             </div>
 
                             {/* Email */}
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-900 dark:text-white" htmlFor="email">Email Address</label>
+                            <div className="space-y-3">
+                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="email">Email Address</label>
                                 <input
                                     id="email"
                                     type="email"
                                     value={data.email}
                                     onChange={e => setData('email', e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none"
-                                    placeholder="john@example.com"
+                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-medium shadow-sm"
+                                    placeholder="email@example.com"
                                     required
                                 />
-                                {errors.email && <div className="text-red-500 text-xs mt-1">{errors.email}</div>}
+                                {errors.email && <div className="text-red-500 text-xs mt-1 font-semibold">{errors.email}</div>}
                             </div>
 
                             {/* WhatsApp */}
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-900 dark:text-white" htmlFor="whatsapp">WhatsApp Number</label>
+                            <div className="space-y-3">
+                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="whatsapp">WhatsApp Contact</label>
                                 <input
                                     id="whatsapp"
                                     type="tel"
                                     value={data.whatsapp_number}
                                     onChange={e => setData('whatsapp_number', e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none"
-                                    placeholder="+234..."
+                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-medium shadow-sm"
+                                    placeholder="+1..."
                                 />
-                                {errors.whatsapp_number && <div className="text-red-500 text-xs mt-1">{errors.whatsapp_number}</div>}
+                                {errors.whatsapp_number && <div className="text-red-500 text-xs mt-1 font-semibold">{errors.whatsapp_number}</div>}
                             </div>
 
                             {/* Priority */}
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-slate-900 dark:text-white" htmlFor="priority">Priority Level</label>
-                                <select
-                                    id="priority"
-                                    value={data.priority}
-                                    onChange={e => setData('priority', e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none appearance-none"
-                                >
-                                    <option value="low">⬇️ Low Priority</option>
-                                    <option value="medium">⚡ Medium Priority</option>
-                                    <option value="high">🚩 High Priority</option>
-                                </select>
+                            <div className="space-y-3">
+                                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="priority">Urgency Level</label>
+                                <div className="relative">
+                                    <select
+                                        id="priority"
+                                        value={data.priority}
+                                        onChange={e => setData('priority', e.target.value)}
+                                        className="w-full px-5 pr-12 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none appearance-none font-bold shadow-sm"
+                                    >
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         {/* Subject */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-slate-900 dark:text-white" htmlFor="subject">Subject</label>
-                            <select
-                                id="subject"
-                                value={data.subject}
-                                onChange={e => setData('subject', e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none appearance-none"
-                            >
-                                <option value="" disabled>Select Subject</option>
-                                {Object.entries(subjects).map(([groupLabel, items]) => (
-                                    <optgroup key={groupLabel} label={groupLabel}>
-                                        {items.map((sub, idx) => (
-                                            <option key={idx} value={sub.value}>{sub.name}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </select>
+                        <div className="space-y-3">
+                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="subject">Support Category</label>
+                            <div className="relative">
+                                <select
+                                    id="subject"
+                                    value={data.subject}
+                                    onChange={e => setData('subject', e.target.value)}
+                                    className="w-full pl-5 pr-12 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none appearance-none font-bold shadow-sm"
+                                >
+                                    <option value="" disabled>Select Department / Topic</option>
+                                    {Object.entries(subjects).map(([groupLabel, items]) => (
+                                        <optgroup key={groupLabel} label={groupLabel} className="font-bold text-indigo-500">
+                                            {items.map((sub, idx) => (
+                                                <option key={idx} value={sub.value} className="text-slate-900 dark:text-white font-medium">{sub.name}</option>
+                                            ))}
+                                        </optgroup>
+                                    ))}
+                                </select>
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Content */}
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-slate-900 dark:text-white" htmlFor="content">Description of Issue</label>
+                        <div className="space-y-3">
+                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="content">Issue Specification</label>
                             <textarea
                                 id="content"
                                 value={data.content}
                                 onChange={e => setData('content', e.target.value)}
-                                rows="5"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF2D20] transition-all outline-none resize-none"
-                                placeholder="Please describe your problem in detail..."
+                                rows="6"
+                                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none resize-none font-medium shadow-sm"
+                                placeholder="Describe the problem or inquiry with as much detail as possible..."
                                 required
                             ></textarea>
-                            {errors.content && <div className="text-red-500 text-xs mt-1">{errors.content}</div>}
+                            {errors.content && <div className="text-red-500 text-xs mt-1 font-semibold">{errors.content}</div>}
                         </div>
 
                         {/* Image Upload */}
                         <div className="space-y-4">
-                            <label className="text-sm font-semibold text-slate-900 dark:text-white block">Attachments (Images)</label>
+                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 ml-1 block">Evidence / Attachments</label>
                             <div className="relative group/upload">
                                 <input
                                     type="file"
@@ -223,26 +259,26 @@ export default function SubmitTicket({ auth }) {
                                 />
                                 <label
                                     htmlFor="image-upload"
-                                    className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-6 md:p-8 hover:border-[#FF2D20] dark:hover:border-[#FF2D20] hover:bg-[#FF2D20]/5 transition-all cursor-pointer group"
+                                    className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-3xl p-10 hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-indigo-500/5 transition-all cursor-pointer group"
                                 >
-                                    <svg className="w-8 h-8 md:w-10 md:h-10 text-slate-400 group-hover:text-[#FF2D20] transition-colors mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                                    </svg>
-                                    <span className="text-slate-600 dark:text-slate-400 font-medium text-xs md:text-sm text-center">Click to upload multiple or drag and drop</span>
-                                    <span className="text-slate-400 text-[10px] mt-1">Maximum file size: 5MB per image</span>
+                                    <div className="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-indigo-500 group-hover:text-white transition-all shadow-sm">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                    </div>
+                                    <span className="text-slate-900 dark:text-white font-bold text-sm">Upload System Snapshots</span>
+                                    <span className="text-slate-500 text-xs mt-1">PNG, JPG up to 5MB each. Drag and drop supported.</span>
                                 </label>
                             </div>
 
                             {/* Previews */}
                             {previewUrls.length > 0 && (
-                                <div className="mt-4 animate-in fade-in zoom-in duration-300">
-                                    <div className="text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider">Image Previews ({previewUrls.length}):</div>
-                                    <div className="flex flex-wrap gap-3 md:gap-4">
+                                <div className="mt-6 animate-in fade-in zoom-in duration-500">
+                                    <div className="text-[10px] font-black text-indigo-500 mb-4 uppercase tracking-[0.2em]">Ready for Ticket ({previewUrls.length})</div>
+                                    <div className="flex flex-wrap gap-4">
                                         {previewUrls.map((url, idx) => (
                                             <div key={idx} className="relative group/preview">
                                                 <img
                                                     src={url}
-                                                    className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl transition-transform group-hover/preview:scale-105"
+                                                    className="w-28 h-28 object-cover rounded-2xl border-2 border-white dark:border-slate-800 shadow-2xl transition-transform group-hover/preview:scale-110"
                                                     alt={`Preview ${idx + 1}`}
                                                 />
                                                 <button
@@ -256,11 +292,9 @@ export default function SubmitTicket({ auth }) {
                                                         newUrls.splice(idx, 1);
                                                         setPreviewUrls(newUrls);
                                                     }}
-                                                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600 transition-colors opacity-0 group-hover/preview:opacity-100"
+                                                    className="absolute -top-3 -right-3 bg-red-500 text-white p-2 rounded-xl shadow-xl hover:bg-red-600 transition-all opacity-0 group-hover/preview:opacity-100 scale-75 group-hover/preview:scale-100"
                                                 >
-                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
                                                 </button>
                                             </div>
                                         ))}
@@ -270,13 +304,20 @@ export default function SubmitTicket({ auth }) {
                         </div>
 
                         {/* Submit */}
-                        <div className="pt-4">
+                        <div className="pt-6">
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full py-4 rounded-2xl bg-[#FF2D20] text-white font-bold text-lg shadow-xl shadow-[#FF2D20]/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 transition-all"
+                                className="group w-full py-5 rounded-[2rem] bg-indigo-500 text-white font-black text-xl shadow-2xl shadow-indigo-500/30 hover:bg-indigo-600 hover:shadow-indigo-500/50 hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
                             >
-                                {processing ? 'Submitting...' : 'Submit Ticket'}
+                                <span className="flex items-center justify-center gap-2">
+                                    {processing ? 'Processing...' : (
+                                        <>
+                                            Initialize Ticket
+                                            <svg className="w-6 h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                        </>
+                                    )}
+                                </span>
                             </button>
                         </div>
                     </form>

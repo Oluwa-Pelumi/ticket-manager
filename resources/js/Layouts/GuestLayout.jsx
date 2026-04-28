@@ -1,46 +1,55 @@
 import { Link } from '@inertiajs/react';
 import { useTheme } from '@/Contexts/ThemeContext';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function GuestLayout({ children }) {
     const { theme, toggleTheme } = useTheme();
 
     return (
-        <div className="relative min-h-screen flex flex-col items-center justify-center bg-slate-50 selection:bg-[#FF2D20] selection:text-white dark:bg-slate-950 overflow-x-hidden transition-colors duration-500 py-12 px-6">
+        <div className="relative min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 overflow-x-hidden transition-colors duration-500 py-12 px-6 selection:bg-indigo-500 selection:text-white">
             
-            {/* Theme Switcher FAB */}
-            <button
-                onClick={toggleTheme}
-                className="fixed bottom-8 right-8 md:top-8 md:bottom-auto z-50 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group"
-                aria-label="Toggle Theme"
-            >
-                {theme === 'dark' ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400 fill-current" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                    </svg>
-                ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-700 fill-current" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 118.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                )}
-            </button>
+            {/* Background Layer */}
+            <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-60 dark:opacity-40" />
 
-            {/* Background Aesthetics */}
-            <div className="absolute inset-0 bg-white dark:bg-slate-950 pointer-events-none transition-colors duration-500">
-                <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#FF2D20]/10 blur-[120px] animate-pulse" />
-                <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-blue-500/10 blur-[120px]" />
-            </div>
+            {/* Top Navigation */}
+            <nav className="fixed top-0 right-0 z-50 p-6">
+                <button
+                    onClick={toggleTheme}
+                    className="p-3 rounded-2xl glass-card hover:scale-110 active:scale-95 transition-all shadow-xl"
+                    aria-label="Toggle Theme"
+                >
+                    {theme === 'dark' ? (
+                        <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
+                    ) : (
+                        <svg className="w-5 h-5 text-slate-700" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+                    )}
+                </button>
+            </nav>
 
             <div className="relative z-10 w-full max-w-md">
-                <div className="flex justify-center mb-8">
-                    <Link href="/">
-                        <div className="w-16 h-16 rounded-2xl bg-[#FF2D20] flex items-center justify-center shadow-2xl shadow-[#FF2D20]/40 transform hover:scale-110 transition-transform duration-500">
-                            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <div className="flex flex-col items-center mb-10 text-center">
+                    <Link href="/" className="group mb-6">
+                        <div className="w-20 h-20 p-4 rounded-[2rem] bg-white dark:bg-slate-900 shadow-2xl border border-slate-200/60 dark:border-slate-800/60 transition-transform group-hover:scale-110 group-hover:rotate-3">
+                            <ApplicationLogo className="w-full h-full" />
                         </div>
                     </Link>
+                    <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+                        laradrug <span className="text-indigo-500">.</span>
+                    </h2>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium tracking-wide">
+                        PORTAL ACCESS
+                    </p>
                 </div>
 
-                <div className="group relative block p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-3xl border border-white/50 dark:border-white/5 shadow-2xl transition-all duration-300">
+                <div className="relative p-8 md:p-10 rounded-[2.5rem] glass-card border-white/20 dark:border-slate-800/50">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
                     {children}
+                </div>
+
+                <div className="mt-8 text-center">
+                    <p className="text-sm text-slate-500 dark:text-slate-500">
+                        &copy; {new Date().getFullYear()} {import.meta.env.VITE_APP_NAME}. All rights reserved.
+                    </p>
                 </div>
             </div>
         </div>

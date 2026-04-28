@@ -38,20 +38,22 @@ class DatabaseSeeder extends Seeder
 
         $priorities = ['low', 'medium', 'high'];
         $subjects   = [
-            'insurance_claim',
-            'referral_request',
-            'file_a_complaint',
-            'general_feedback',
-            'cancel_appointment',
-            'request_lab_results',
-            'post_surgery_concern',
-            'book_new_appointment',
-            'billing_payment_issue',
-            'reschedule_appointment',
-            'request_medical_report',
-            'follow_up_consultation',
-            'urgent_medical_inquiry',
-            'request_medical_records',
+            'missed_dose',
+            'running_out',
+            'wrong_dosage',
+            'side_effects',
+            'refill_request',
+            'wrong_medication',
+            'drug_interaction',
+            'allergic_reaction',
+            'drug_interactions',
+            'prescription_expired',
+            'unclear_instructions',
+            'speak_with_pharmacist',
+            'transfer_prescription',
+            'storage_handling_questions',
+            'difficulty_using_drug_form',
+
         ];
         $statuses   = ['open', 'in-progress', 'closed'];
 
@@ -71,18 +73,18 @@ class DatabaseSeeder extends Seeder
                 'user_id'         => null,
                 'name'            => $faker->name,
                 'email'           => $faker->safeEmail,
-                'whatsapp_number' => '+23480' . $faker->randomNumber(8, true),
+                'attended_to_by'  => $assignedAdmin->id,
                 'subject'         => $subjects[array_rand($subjects)],
-                'content'         => $faker->paragraph(3) . "\n\nWe are experiencing issues.",
                 'status'          => $statuses[array_rand($statuses)],
                 'priority'        => $priorities[array_rand($priorities)],
-                'attended_to_by'  => $assignedAdmin->id,
+                'whatsapp_number' => '+23480' . $faker->randomNumber(8, true),
+                'content'         => $faker->paragraph(3) . "\n\nWe are experiencing issues.",
             ]);
 
             // Create a comment on the ticket from the guest
             Comment::create([
-                'ticket_id' => $ticket->id,
                 'user_id'   => null,
+                'ticket_id' => $ticket->id,
                 'content'   => 'Please look into this issue as soon as possible. ' . $faker->sentence,
             ]);
 

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { usePage } from '@inertiajs/react';
 import { useAlert } from '@/Contexts/AlertContext';
 import { useTheme } from '@/Contexts/ThemeContext';
 
@@ -85,7 +84,7 @@ const AlertSystem = () => {
                                 className={`flex-[2] py-4 px-6 rounded-2xl text-white font-bold shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]
                                     ${confirm.type === 'danger' 
                                         ? 'bg-rose-500 shadow-rose-500/20' 
-                                        : 'bg-[#FF2D20] shadow-[#FF2D20]/20'
+                                        : 'bg-indigo-500 shadow-indigo-500/20'
                                     }`}
                             >
                                 {confirm.confirmText || 'Confirm Action'}
