@@ -74,7 +74,7 @@ const Content = ({
                 >
                     <div
                         className={
-                            `rounded-2xl overflow-hidden bg-white/80 dark:bg-[#102824]/90 backdrop-blur-xl border border-slate-200/60 dark:border-[#1d3a34] py-1 ` +
+                            `rounded-2xl overflow-hidden bg-white/80 dark:bg-[#102824]/90 backdrop-blur-xl border border-emerald-900/10 dark:border-[#1d3a34] py-1 ` +
                             contentClasses
                         }
                     >
@@ -91,7 +91,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
         <Link
             {...props}
             className={
-                'block w-full px-4 py-2.5 text-start text-sm font-medium text-slate-700 dark:text-slate-200 transition duration-150 ease-in-out hover:bg-slate-50 dark:hover:bg-[#18342f] hover:text-teal-900 dark:hover:text-lime-400 focus:outline-none ' +
+                'block w-full px-4 py-2.5 text-start text-sm font-medium text-slate-700 dark:text-slate-200 transition duration-150 ease-in-out hover:bg-emerald-50/50 dark:hover:bg-[#18342f] hover:text-teal-900 dark:hover:text-lime-400 focus:outline-none ' +
                 className
             }
         >
@@ -105,3 +105,7 @@ Dropdown.Content = Content;
 Dropdown.Link    = DropdownLink;
 
 export default Dropdown;
+
+
+
+

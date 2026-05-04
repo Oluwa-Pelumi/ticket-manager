@@ -29,7 +29,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                 <div className="mx-auto max-w-3xl space-y-6 sm:px-6 lg:px-8">
 
                     {/* Update Profile Information */}
-                    <div className="glass-card p-6 sm:p-10 border-white/20 dark:border-slate-800/50">
+                    <div className="glass-card p-6 sm:p-10 border-white/20 dark:border-[#1d3a34]/50">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
@@ -38,7 +38,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                     </div>
 
                     {/* Update Password */}
-                    <div className="glass-card p-6 sm:p-10 border-white/20 dark:border-slate-800/50">
+                    <div className="glass-card p-6 sm:p-10 border-white/20 dark:border-[#1d3a34]/50">
                         <UpdatePasswordForm className="max-w-xl" />
                     </div>
 
@@ -52,3 +52,7 @@ export default function Edit({ mustVerifyEmail, status }) {
         </AuthenticatedLayout>
     );
 }
+
+
+
+

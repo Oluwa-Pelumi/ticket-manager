@@ -16,7 +16,7 @@ const AlertSystem = () => {
                         className={`pointer-events-auto flex items-center gap-4 p-5 rounded-[2rem] border backdrop-blur-2xl shadow-2xl animate-in slide-in-from-right-10 fade-in duration-500 min-w-[320px] max-w-md
                             ${theme === 'dark' 
                                 ? 'bg-slate-900/80 border-slate-800 text-white' 
-                                : 'bg-white/80 border-slate-200 text-slate-900'
+                                : 'bg-white/80 border-emerald-900/10 text-slate-900'
                             }`}
                     >
                         <div className={`p-3 rounded-2xl ${
@@ -35,7 +35,7 @@ const AlertSystem = () => {
                         </div>
                         <button
                             onClick={() => removeAlert(alert.id)}
-                            className="p-1 hover:bg-slate-500/10 rounded-lg transition-colors"
+                            className="p-1 hover:bg-emerald-50/500/10 rounded-lg transition-colors"
                         >
                             <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
@@ -50,7 +50,7 @@ const AlertSystem = () => {
                         className={`w-full max-w-md p-8 rounded-[3rem] border shadow-2xl animate-in zoom-in-95 duration-300
                             ${theme === 'dark' 
                                 ? 'bg-slate-900/90 border-slate-800 text-white' 
-                                : 'bg-white/90 border-slate-200 text-slate-900'
+                                : 'bg-white/90 border-emerald-900/10 text-slate-900'
                             }`}
                     >
                         <div className={`inline-flex p-4 rounded-[1.5rem] mb-6 ${
@@ -64,7 +64,7 @@ const AlertSystem = () => {
                         </div>
                         
                         <h3 className="text-2xl font-black tracking-tight mb-2 italic">{confirm.title || 'Are you sure?'}</h3>
-                        <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed font-medium">
+                        <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">
                             {confirm.message || 'This action cannot be undone. Please confirm to proceed.'}
                         </p>
 
@@ -98,3 +98,7 @@ const AlertSystem = () => {
 };
 
 export default AlertSystem;
+
+
+
+

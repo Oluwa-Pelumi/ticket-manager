@@ -8,7 +8,7 @@ export default function GuestLayout({ children }) {
     return (
         <div className="fauna-shell relative min-h-screen overflow-x-hidden py-10">
             <div className="container mx-auto px-4">
-                <nav className="mb-12 flex items-center justify-between border-b border-slate-200 py-6 dark:border-slate-700">
+                <nav className="mb-12 flex items-center justify-between border-b border-emerald-900/10 py-6 dark:border-[#1d3a34]">
                     <Link href="/" className="inline-flex items-center gap-3">
                         <ApplicationLogo className="h-8 w-8 text-teal-900 dark:text-lime-400" />
                         <span className="text-xl font-semibold tracking-tight">laradrug</span>
@@ -20,7 +20,7 @@ export default function GuestLayout({ children }) {
                         </Link>
                         <button
                             onClick={toggleTheme}
-                            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition hover:border-teal-900 hover:text-teal-900 dark:border-slate-600 dark:text-slate-200"
+                            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-emerald-900/20 text-slate-700 transition hover:border-teal-900 hover:text-teal-900 dark:border-slate-600 dark:text-slate-200"
                             aria-label="Toggle Theme"
                         >
                             {theme === 'dark' ? (
@@ -36,7 +36,7 @@ export default function GuestLayout({ children }) {
                     <div className="fauna-panel px-8 py-10 md:px-10 md:py-12">
                         {children}
                     </div>
-                    <p className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
+                    <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
                         &copy; {new Date().getFullYear()} {import.meta.env.VITE_APP_NAME}. All rights reserved.
                     </p>
                 </div>
@@ -44,3 +44,7 @@ export default function GuestLayout({ children }) {
         </div>
     );
 }
+
+
+
+

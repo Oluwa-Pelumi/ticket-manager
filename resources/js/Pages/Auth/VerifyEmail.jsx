@@ -16,7 +16,7 @@ export default function VerifyEmail({ status }) {
 
             <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Verify Email</h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">Almost there! Check your inbox</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">Almost there! Check your inbox</p>
             </div>
 
             <div className="mb-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -49,7 +49,7 @@ export default function VerifyEmail({ status }) {
                         href={route('logout')}
                         method="post"
                         as="button"
-                        className="text-sm font-black tracking-widest text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-colors"
+                        className="text-sm font-black tracking-widest text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors"
                     >
                         Terminate Session
                     </Link>
@@ -58,3 +58,7 @@ export default function VerifyEmail({ status }) {
         </GuestLayout>
     );
 }
+
+
+
+

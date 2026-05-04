@@ -5,26 +5,11 @@ import FlashHandler from '@/Components/FlashHandler';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-const subjects = [
-    {value: 'refill_request', name: 'Refill request'},
-    {value: 'missed_dose', name: 'Missed dose — guidance needed'},
-    {value: 'wrong_medication', name: 'Wrong medication dispensed'},
-    {value: 'allergic_reaction', name: 'Suspected allergic reaction'},
-    {value: 'wrong_dosage', name: 'Wrong dosage or strength on label'},
-    {value: 'side_effects', name: 'Experiencing unexpected side effects'},
-    {value: 'speak_with_pharmacist', name: 'Request to speak with a pharmacist'},
-    {value: 'running_out', name: 'Medication running out before next appointment'},
-    {value: 'prescription_expired', name: 'Prescription expired or needs renewal'},
-    {value: 'drug_interactions', name: 'Drug interactions with food or supplements'},
-    {value: 'storage_handling_questions', name: 'Questions about storage or handling'},
-    {value: 'drug_interaction', name: 'Drug interaction concern (with another medication)'},
-    {value: 'transfer_prescription', name: 'Transfer of prescription from another facility'},
-    {value: 'unclear_instructions', name: 'Unclear instructions on how to take the medication'},
-    {value: 'difficulty_using_drug_form', name: 'Difficulty using the drug form (inhaler, injection, patch)'},
-];
+// Categories will be passed from the backend
 
 
-export default function Dashboard({ auth, tickets }) {
+
+export default function Dashboard({ auth, tickets, categories = [] }) {
     const { theme, toggleTheme }                     = useTheme();
     const { showAlert, showConfirm }                 = useAlert();
     const [selectedIds, setSelectedIds]              = useState([]);
@@ -40,6 +25,7 @@ export default function Dashboard({ auth, tickets }) {
     const [previewUrls, setPreviewUrls]              = useState([]);
     const editForm                                   = useForm({
         subject: '',
+        category_id: '',
         content: '',
         priority: 'medium',
         images  : [],
@@ -84,6 +70,7 @@ export default function Dashboard({ auth, tickets }) {
         editForm.setData({
             images  : [],
             subject : ticket.subject,
+            category_id: ticket.category_id || '',
             content : ticket.content,
             priority: ticket.priority,
         });
@@ -129,7 +116,9 @@ export default function Dashboard({ auth, tickets }) {
         return tickets.filter(ticket => {
             const matchesStatus   = !filters.status   || ticket.status   === filters.status;
             const matchesPriority = !filters.priority || ticket.priority === filters.priority;
-            const matchesSubject  = !filters.subject  || ticket.subject  === filters.subject;
+            const matchesSubject  = !filters.subject  || 
+                                   (ticket.category?.slug === filters.subject) || 
+                                   (ticket.subject === filters.subject);
             return matchesStatus && matchesPriority && matchesSubject;
         });
     }, [tickets, filters]);
@@ -282,7 +271,7 @@ export default function Dashboard({ auth, tickets }) {
                     </div>
                     <div className="flex w-full md:w-auto items-center justify-between md:justify-end gap-4">
                         {selectedIds.length > 0 && auth.user.role === 'admin' && (
-                            <div className="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-[#102824] rounded-2xl border border-slate-200 dark:border-[#1d3a34] animate-in fade-in zoom-in duration-300">
+                            <div className="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-[#102824] rounded-2xl border border-emerald-900/10 dark:border-[#1d3a34] animate-in fade-in zoom-in duration-300">
                                 <span className="hidden sm:inline text-xs font-bold text-slate-600 dark:text-slate-400 px-2">{selectedIds.length} Selected</span>
                                 <select
                                     onChange={(e) => handleBulkStatusChange(e.target.value)}
@@ -314,17 +303,17 @@ export default function Dashboard({ auth, tickets }) {
                 <FlashHandler />
 
                 {/* Filter Bar */}
-                <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-slate-200/50 dark:border-[#1d3a34]">
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10/50 dark:border-[#1d3a34]">
                     <div className="flex items-center space-x-2 w-full sm:w-auto">
                         <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                        <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Filters:</span>
+                        <span className="text-sm font-bold text-slate-600 dark:text-slate-400">Filters:</span>
                     </div>
 
                     <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-3 w-full sm:w-auto">
                         <select
                             value={filters.status}
                             onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-                            className="bg-white dark:bg-[#18342f] border border-slate-200 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
+                            className="bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
                         >
                             <option value="">All Statuses</option>
                             <option value="open">Open</option>
@@ -335,7 +324,7 @@ export default function Dashboard({ auth, tickets }) {
                         <select
                             value={filters.priority}
                             onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
-                            className="bg-white dark:bg-[#18342f] border border-slate-200 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
+                            className="bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
                         >
                             <option value="">All Priorities</option>
                             <option value="low">Low</option>
@@ -346,10 +335,10 @@ export default function Dashboard({ auth, tickets }) {
                         <select
                             value={filters.subject}
                             onChange={(e) => setFilters(prev => ({ ...prev, subject: e.target.value }))}
-                            className="col-span-2 sm:col-span-1 bg-white dark:bg-[#18342f] border border-slate-200 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
+                            className="col-span-2 sm:col-span-1 bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
                         >
                             <option value="">All Subjects</option>
-                            {subjects.map((sub, idx) => <option key={idx} value={sub.value}>{sub.name}</option>)}
+                            {categories.map((sub, idx) => <option key={idx} value={sub.slug}>{sub.name}</option>)}
                         </select>
 
                         {(filters.status || filters.priority || filters.subject) && (
@@ -372,11 +361,11 @@ export default function Dashboard({ auth, tickets }) {
                     <div className="overflow-x-auto">
                         <table className="w-full text-left table-fixed">
                             <thead>
-                                <tr className="border-b border-slate-200 dark:border-[#1d3a34]">
+                                <tr className="border-b border-emerald-900/10 dark:border-[#1d3a34]">
                                     <th className="w-12 md:w-16 px-4 md:px-6 py-4">
                                         <input
                                             type="checkbox"
-                                            className="rounded-lg border-slate-300 dark:border-slate-700 text-teal-900 focus:ring-lime-500 dark:bg-slate-800 transition-colors cursor-pointer"
+                                            className="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
                                             checked={tickets.length > 0 && selectedIds.length === tickets.length}
                                             onChange={toggleSelectAll}
                                         />
@@ -384,7 +373,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="w-20 md:w-24 px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('id')}
-                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                         >
                                             ID {getSortIcon('id')}
                                         </button>
@@ -392,7 +381,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('subject')}
-                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                         >
                                             Info {getSortIcon('subject')}
                                         </button>
@@ -401,7 +390,7 @@ export default function Dashboard({ auth, tickets }) {
                                         <th className="hidden lg:table-cell px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('user')}
-                                                className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
+                                                className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                             >
                                                 User {getSortIcon('user')}
                                             </button>
@@ -410,7 +399,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="hidden sm:table-cell w-32 px-6 py-4">
                                         <button
                                             onClick={() => requestSort('priority')}
-                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                         >
                                             Priority {getSortIcon('priority')}
                                         </button>
@@ -418,7 +407,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="w-32 md:w-48 px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('status')}
-                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                         >
                                             Status {getSortIcon('status')}
                                         </button>
@@ -426,12 +415,12 @@ export default function Dashboard({ auth, tickets }) {
                                     <th className="hidden lg:table-cell w-48 px-6 py-4">
                                         <button
                                             onClick={() => requestSort('attendant')}
-                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 group"
+                                            className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                         >
                                             Attendant {getSortIcon('attendant')}
                                         </button>
                                     </th>
-                                    <th className="w-20 md:w-24 px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
+                                    <th className="w-20 md:w-24 px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">Actions</th>
                                 </tr>
                             </thead>
 
@@ -439,30 +428,32 @@ export default function Dashboard({ auth, tickets }) {
                                 {sortedTickets.length > 0 ? sortedTickets.map((ticket, idx) => (
                                     <Fragment key={idx}>
                                         <tr
-                                            className={`group hover:bg-slate-50/50 dark:hover:bg-[#18342f]/70 transition-all duration-300 cursor-pointer ${expandedId === ticket.id ? 'bg-slate-50/80 dark:bg-[#18342f]/80' : ''}`}
+                                            className={`group hover:bg-emerald-50/50 dark:hover:bg-[#18342f]/70 transition-all duration-300 cursor-pointer ${expandedId === ticket.id ? 'bg-emerald-50/50/80 dark:bg-[#18342f]/80' : ''}`}
                                             onClick={() => toggleExpand(ticket.id)}
                                         >
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <input
                                                     type="checkbox"
-                                                    className="rounded-lg border-slate-300 dark:border-slate-700 text-teal-900 focus:ring-lime-500 dark:bg-slate-800 transition-colors cursor-pointer"
+                                                    className="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
                                                     checked={selectedIds.includes(ticket.id)}
                                                     onChange={() => toggleSelect(ticket.id)}
                                                 />
                                             </td>
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex items-center gap-2 group/id-cell">
-                                                    <span className="text-[10px] md:text-sm font-bold text-slate-500 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight">#{ticket.id.substring(0, 4)}...</span>
+                                                    <span className="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight">#{ticket.id.substring(0, 4)}...</span>
                                                 </div>
                                             </td>
                                             <td className="px-4 md:px-6 py-4">
-                                                <div className="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1">{subjects.find(sb => sb.value === ticket.subject).name}</div>
-                                                <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[80px] md:max-w-xs">{ticket.content}</div>
+                                                <div className="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1">
+                                                    {ticket.category?.name || ticket.subject.replace(/_/g, ' ')}
+                                                </div>
+                                                <div className="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[80px] md:max-w-xs">{ticket.content}</div>
                                             </td>
                                             {auth.user.role === 'admin' && (
                                                 <td className="hidden lg:table-cell px-6 py-4">
                                                     <div className="text-sm font-medium text-slate-900 dark:text-white">{ticket.name || ticket.user?.name}</div>
-                                                    <div className="text-xs text-slate-500 dark:text-slate-400">{ticket.email || ticket.user?.email}</div>
+                                                    <div className="text-xs text-slate-600 dark:text-slate-400">{ticket.email || ticket.user?.email}</div>
                                                 </td>
                                             )}
                                             <td className="hidden sm:table-cell px-6 py-4">
@@ -491,7 +482,7 @@ export default function Dashboard({ auth, tickets }) {
                                                         className={`text-[10px] md:text-xs font-black tracking-widest rounded-xl border-none focus:ring-2 focus:ring-lime-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all ${
                                                             ticket.status === 'open' ? 'bg-teal-900 text-white shadow-lg' :
                                                             ticket.status === 'in-progress' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' :
-                                                            'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                                                            'bg-slate-200 dark:bg-[#18342f] text-slate-600 dark:text-slate-400'
                                                         }`}
                                                     >
                                                         <option value="open">Open</option>
@@ -502,7 +493,7 @@ export default function Dashboard({ auth, tickets }) {
                                                     <span className={`inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold ${
                                                         ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10' :
                                                         ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 ring-4 ring-orange-500/10' :
-                                                        'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                                                        'bg-slate-100 text-slate-600 dark:bg-[#18342f] dark:text-slate-400'
                                                     }`}>
                                                         {ticket.status.replace('-', ' ')}
                                                     </span>
@@ -511,7 +502,7 @@ export default function Dashboard({ auth, tickets }) {
                                             <td className="hidden lg:table-cell px-6 py-4">
                                                 {ticket.attendant ? (
                                                     <div className="flex items-center space-x-2">
-                                                        <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-500">
+                                                        <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
                                                             {ticket.attendant.name.charAt(0)}
                                                         </div>
                                                         <span className="text-xs font-medium text-slate-900 dark:text-white">{ticket.attendant.name}</span>
@@ -533,7 +524,7 @@ export default function Dashboard({ auth, tickets }) {
                                                     )}
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); toggleExpand(ticket.id); }}
-                                                    className={`p-1.5 md:p-2 rounded-lg transition-all ${expandedId === ticket.id ? 'bg-teal-900 text-white rotate-180' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-teal-900 dark:hover:text-lime-400'}`}
+                                                    className={`p-1.5 md:p-2 rounded-lg transition-all ${expandedId === ticket.id ? 'bg-teal-900 text-white rotate-180' : 'bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400'}`}
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>
                                                     </button>
@@ -550,7 +541,7 @@ export default function Dashboard({ auth, tickets }) {
                                             </td>
                                         </tr>
                                         {expandedId === ticket.id && (
-                                            <tr className="bg-slate-50/50 dark:bg-slate-800/30 animate-in slide-in-from-top-2 duration-300">
+                                            <tr className="bg-emerald-50/50 dark:bg-[#18342f]/30 animate-in slide-in-from-top-2 duration-300">
                                                 <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-lime-500">
                                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                                         <div className="space-y-8">
@@ -560,14 +551,14 @@ export default function Dashboard({ auth, tickets }) {
                                                                     Specifications
                                                                 </h4>
 
-                                                                <div className="p-8 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-slate-200 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
+                                                                <div className="p-8 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
                                                                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30" />
                                                                     <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em]">Control Reference</div>
                                                                     <div className="flex items-center gap-3 mb-8 group/id">
                                                                         <div className="text-2xl text-slate-900 dark:text-white font-black tracking-tight">{ticket.id}</div>
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); handleCopy(ticket.id); }}
-                                                    className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
+                                                    className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
                                                     title="Copy ID"
                                                 >
                                                                             {copiedId === ticket.id ? (
@@ -582,10 +573,32 @@ export default function Dashboard({ auth, tickets }) {
                                                                     </div>
 
                                                                     <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Subject</div>
-                                                                    <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{subjects.find(s => s.value == ticket.subject)?.name}</div>
+                                                                    <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{ticket.category?.name || ticket.subject.replace(/_/g, ' ')}</div>
 
                                                                     <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Description</div>
                                                                     <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm">{ticket.content}</div>
+
+                                                                    {ticket.order_type && (
+                                                                        <div className="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                                                                            <h4 className="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">Order Configuration</h4>
+                                                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                                                <div>
+                                                                                    <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
+                                                                                    <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">{ticket.order_type.replace('-', ' ')}</div>
+                                                                                </div>
+                                                                                {ticket.order_type === 'recurrent' && (
+                                                                                    <div>
+                                                                                        <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Interval / Period</div>
+                                                                                        <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">
+                                                                                            {ticket.recurrence_period === 'custom' 
+                                                                                                ? `Custom: ${ticket.custom_recurrence_date}` 
+                                                                                                : ticket.recurrence_period.replace('-', ' ')}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                             </div>
 
@@ -597,7 +610,7 @@ export default function Dashboard({ auth, tickets }) {
                                                                     </h4>
                                                                     <div className="flex flex-wrap gap-4">
                                                                         {ticket.filename && (
-                                                                            <a href={`/storage/${ticket.filename}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-md">
+                                                                            <a href={`/storage/${ticket.filename}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
                                                                                 <img src={`/storage/${ticket.filename}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                                                                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                                                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -605,7 +618,7 @@ export default function Dashboard({ auth, tickets }) {
                                                                             </a>
                                                                         )}
                                                                         {ticket.images?.map((img, i) => (
-                                                                            <a key={i} href={`/storage/${img}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-md">
+                                                                            <a key={i} href={`/storage/${img}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
                                                                                 <img src={`/storage/${img}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                                                                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                                                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -657,7 +670,7 @@ export default function Dashboard({ auth, tickets }) {
                                                                                     onChange={e => commentForm.setData('content', e.target.value)}
                                                                                     placeholder="Secure communication channel..."
                                                                                     rows="4"
-                                                                                    className="w-full px-6 py-5 rounded-[2rem] bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-inner font-medium"
+                                                                                    className="w-full px-6 py-5 rounded-[2rem] bg-slate-100 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-inner font-medium"
                                                                                 ></textarea>
 
                                                                                 <div className="absolute bottom-5 right-5 flex items-center space-x-3">
@@ -690,7 +703,7 @@ export default function Dashboard({ auth, tickets }) {
                                                                             <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
                                                                                 {commentPreviewUrls.map((url, i) => (
                                                                                     <div key={i} className="relative group/cp">
-                                                                                        <img src={url} className="w-12 h-12 rounded-lg object-cover border-2 border-white dark:border-slate-800 shadow-md" />
+                                                                                        <img src={url} className="w-12 h-12 rounded-lg object-cover border-2 border-white dark:border-[#1d3a34] shadow-md" />
                                                                                         <button
                                                                                             type="button"
                                                                                             onClick={() => {
@@ -718,7 +731,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <tr>
                                         <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-6 py-20 text-center">
                                             <div className="flex flex-col items-center">
-                                                <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-3xl mb-4">
+                                                <div className="p-4 bg-slate-100 dark:bg-[#18342f] rounded-3xl mb-4">
                                                     <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                                 </div>
                                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">No tickets found</h3>
@@ -736,7 +749,7 @@ export default function Dashboard({ auth, tickets }) {
             {/* Edit Ticket Modal */}
             {editingTicket && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-8 transform animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+                    <div className="relative w-full max-w-2xl bg-white dark:bg-[#102824] rounded-3xl shadow-2xl border border-emerald-900/10 dark:border-[#1d3a34] p-8 transform animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
                         <button
                             onClick={closeEditModal}
                             className="absolute top-6 right-6 p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all"
@@ -749,13 +762,28 @@ export default function Dashboard({ auth, tickets }) {
                         <form onSubmit={handleEditSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Subject</label>
-                                    <input
-                                        type="text"
-                                        value={editForm.data.subject}
-                                        onChange={e => editForm.setData('subject', e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all"
-                                    />
+                                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Subject / Category</label>
+                                    <select
+                                        value={editForm.data.category_id || editForm.data.subject}
+                                        onChange={e => {
+                                            const category = categories.find(c => c.id == e.target.value);
+                                            if (category) {
+                                                editForm.setData({
+                                                    ...editForm.data,
+                                                    category_id: category.id,
+                                                    subject: category.name
+                                                });
+                                            } else {
+                                                editForm.setData('subject', e.target.value);
+                                            }
+                                        }}
+                                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all"
+                                    >
+                                        <option value="" disabled>Select Category</option>
+                                        {categories.map((cat) => (
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        ))}
+                                    </select>
                                     {editForm.errors.subject && <p className="text-rose-500 text-xs">{editForm.errors.subject}</p>}
                                 </div>
                                 <div className="space-y-2">
@@ -763,7 +791,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <select
                                         value={editForm.data.priority}
                                         onChange={e => editForm.setData('priority', e.target.value)}
-                                        className="w-full pl-4 pr-10 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all"
+                                        className="w-full pl-4 pr-10 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all"
                                     >
                                         <option value="low">⬇️ Low</option>
                                         <option value="medium">⚡ Medium</option>
@@ -779,7 +807,7 @@ export default function Dashboard({ auth, tickets }) {
                                     value={editForm.data.content}
                                     onChange={e => editForm.setData('content', e.target.value)}
                                     rows="4"
-                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none"
+                                    className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none"
                                 ></textarea>
                                 {editForm.errors.content && <p className="text-rose-500 text-xs">{editForm.errors.content}</p>}
                             </div>
@@ -797,17 +825,17 @@ export default function Dashboard({ auth, tickets }) {
                                     />
                                     <label
                                         htmlFor="edit-images"
-                                        className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all border border-slate-200 dark:border-slate-700"
+                                        className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#18342f] text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all border border-emerald-900/10 dark:border-[#1d3a34]"
                                     >
                                         Add Images
                                     </label>
                                 </div>
 
                                 {previewUrls.length > 0 && (
-                                    <div className="flex flex-wrap gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
+                                    <div className="flex flex-wrap gap-4 p-4 rounded-2xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34]">
                                         {previewUrls.map((url, idx) => (
                                             <div key={idx} className="relative group/edit-preview">
-                                                <img src={url} className="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-slate-800 shadow-sm" />
+                                                <img src={url} className="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-sm" />
                                                 <button
                                                     type="button"
                                                     onClick={() => {
@@ -828,7 +856,7 @@ export default function Dashboard({ auth, tickets }) {
                                 <button
                                     type="button"
                                     onClick={closeEditModal}
-                                    className="flex-1 py-4 px-6 rounded-2xl bg-slate-100 items-center dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                                    className="flex-1 py-4 px-6 rounded-2xl bg-slate-100 items-center dark:bg-[#18342f] text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
                                 >
                                     Cancel
                                 </button>
@@ -847,3 +875,7 @@ export default function Dashboard({ auth, tickets }) {
         </AuthenticatedLayout>
     );
 }
+
+
+
+

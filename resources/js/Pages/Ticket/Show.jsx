@@ -5,23 +5,8 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-const subjects = [
-    {value: 'refill_request', name: 'Refill request'},
-    {value: 'missed_dose', name: 'Missed dose — guidance needed'},
-    {value: 'wrong_medication', name: 'Wrong medication dispensed'},
-    {value: 'allergic_reaction', name: 'Suspected allergic reaction'},
-    {value: 'wrong_dosage', name: 'Wrong dosage or strength on label'},
-    {value: 'side_effects', name: 'Experiencing unexpected side effects'},
-    {value: 'speak_with_pharmacist', name: 'Request to speak with a pharmacist'},
-    {value: 'running_out', name: 'Medication running out before next appointment'},
-    {value: 'prescription_expired', name: 'Prescription expired or needs renewal'},
-    {value: 'drug_interactions', name: 'Drug interactions with food or supplements'},
-    {value: 'storage_handling_questions', name: 'Questions about storage or handling'},
-    {value: 'drug_interaction', name: 'Drug interaction concern (with another medication)'},
-    {value: 'transfer_prescription', name: 'Transfer of prescription from another facility'},
-    {value: 'unclear_instructions', name: 'Unclear instructions on how to take the medication'},
-    {value: 'difficulty_using_drug_form', name: 'Difficulty using the drug form (inhaler, injection, patch)'},
-];
+// Categories will be passed from the backend
+
 
 export default function ShowTicket({ auth, ticket }) {
     const { showAlert }                               = useAlert();
@@ -93,7 +78,7 @@ export default function ShowTicket({ auth, ticket }) {
                     <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm ${
                         ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800' :
                         ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800' :
-                        'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
+                        'bg-slate-100 text-slate-600 dark:bg-[#18342f] dark:text-slate-400 border border-emerald-900/10 dark:border-[#1d3a34]'
                     }`}>
                         {ticket.status.replace('-', ' ')}
                     </span>
@@ -105,7 +90,7 @@ export default function ShowTicket({ auth, ticket }) {
             <div className="max-w-7xl mx-auto py-12 px-6 space-y-8">
 
                 <div className="flex items-center justify-between">
-                    <Link href={route('check-status')} className="inline-flex items-center text-sm font-bold text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
+                    <Link href={route('check-status')} className="inline-flex items-center text-sm font-bold text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                         Back to Status Search
                     </Link>
@@ -122,13 +107,14 @@ export default function ShowTicket({ auth, ticket }) {
                                Specifications
                             </h4>
 
-                            <div className="p-6 md:p-8 rounded-[2.5rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl">
+                            <div className="fauna-panel p-6 md:p-8 relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                                 <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Control Reference</div>
                                 <div className="flex items-center gap-3 mb-8 group/id">
                                     <div className="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{ticket.id}</div>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); handleCopy(ticket.id); }}
-                                        className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
+                                        className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
                                         title="Copy ID"
                                     >
                                         {copiedId === ticket.id ? (
@@ -140,21 +126,43 @@ export default function ShowTicket({ auth, ticket }) {
                                 </div>
 
                                 <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Subject</div>
-                                <div className="text-lg md:text-xl text-slate-900 dark:text-white font-bold mb-6">{subjects.find(s => s.value == ticket.subject)?.name || ticket.subject}</div>
+                                <div className="text-lg md:text-xl text-slate-900 dark:text-white font-bold mb-6">{ticket.category?.name || ticket.subject.replace(/_/g, ' ')}</div>
 
                                 <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Priority</div>
                                 <div className="mb-6">
                                     <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-[10px] md:text-xs font-black tracking-wider ${
                                         ticket.priority === 'high' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
                                         ticket.priority === 'medium' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
-                                        'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                                        'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
                                     }`}>
                                         {ticket.priority}
                                     </span>
                                 </div>
 
                                 <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Issue Specification</div>
-                                <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm">{ticket.content}</div>
+                                <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm mb-8">{ticket.content}</div>
+
+                                {ticket.order_type && (
+                                    <div className="pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                                        <h4 className="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">Order Configuration</h4>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div>
+                                                <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
+                                                <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">{ticket.order_type.replace('-', ' ')}</div>
+                                            </div>
+                                            {ticket.order_type === 'recurrent' && (
+                                                <div>
+                                                    <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Interval / Period</div>
+                                                    <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">
+                                                        {ticket.recurrence_period === 'custom' 
+                                                            ? `Custom: ${ticket.custom_recurrence_date}` 
+                                                            : ticket.recurrence_period.replace('-', ' ')}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -166,7 +174,7 @@ export default function ShowTicket({ auth, ticket }) {
                                 </h4>
                                 <div className="flex flex-wrap gap-4">
                                     {ticket.filename && (
-                                        <a href={`/storage/${ticket.filename}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-md">
+                                        <a href={`/storage/${ticket.filename}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
                                             <img src={`/storage/${ticket.filename}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -174,7 +182,7 @@ export default function ShowTicket({ auth, ticket }) {
                                         </a>
                                     )}
                                     {ticket.images?.map((img, i) => (
-                                        <a key={i} href={`/storage/${img}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-slate-800 shadow-md">
+                                        <a key={i} href={`/storage/${img}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
                                             <img src={`/storage/${img}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -194,10 +202,11 @@ export default function ShowTicket({ auth, ticket }) {
                                 Conversation
                             </h4>
 
-                            <div className="space-y-4 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar mb-6 p-4 md:p-6 rounded-[2.5rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl">
+                            <div className="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                                 {ticket.comments?.length > 0 ? ticket.comments.map((comment, ci) => (
                                     <div key={ci} className={`flex flex-col ${comment.user_id === ticket.user_id || (!comment.user_id && !ticket.user_id) ? 'items-end' : 'items-start'}`}>
-                                        <div className={`max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] ${comment.user_id === ticket.user_id || (!comment.user_id && !ticket.user_id) ? 'bg-teal-900 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-bl-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm'}`}>
+                                        <div className={`max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] ${comment.user_id === ticket.user_id || (!comment.user_id && !ticket.user_id) ? 'bg-teal-900 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#18342f] text-slate-900 dark:text-white rounded-bl-sm border border-emerald-900/10/50 dark:border-[#1d3a34] shadow-sm'}`}>
                                             <div className="flex items-center space-x-2 mb-2">
                                                 <span className="text-[9px] md:text-[10px] font-black opacity-70">{comment.user?.name || 'Guest'}</span>
                                                 <span className="text-[9px] md:text-[10px] opacity-50">{new Date(comment.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
@@ -230,7 +239,7 @@ export default function ShowTicket({ auth, ticket }) {
                                             onChange={e => commentForm.setData('content', e.target.value)}
                                             placeholder="Type your message..."
                                             rows="4"
-                                            className="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base"
+                                            className="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base"
                                             required
                                         ></textarea>
 
@@ -247,7 +256,7 @@ export default function ShowTicket({ auth, ticket }) {
                                                     setCommentPreviewUrls(files.map(f => URL.createObjectURL(f)));
                                                 }}
                                             />
-                                            <label htmlFor="comment-images" className="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl cursor-pointer transition-all bg-slate-50 dark:bg-slate-800">
+                                            <label htmlFor="comment-images" className="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl cursor-pointer transition-all bg-emerald-50/50 dark:bg-[#18342f]">
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                             </label>
                                             <button
@@ -264,7 +273,7 @@ export default function ShowTicket({ auth, ticket }) {
                                         <div className="flex flex-wrap gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
                                             {commentPreviewUrls.map((url, i) => (
                                                 <div key={i} className="relative group/cp">
-                                                    <img src={url} className="w-16 h-16 rounded-2xl object-cover border-2 border-white dark:border-slate-800 shadow-md" />
+                                                    <img src={url} className="w-16 h-16 rounded-2xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-md" />
                                                     <button
                                                         type="button"
                                                         onClick={() => {
@@ -282,7 +291,7 @@ export default function ShowTicket({ auth, ticket }) {
                                 </form>
                             )}
                             {ticket.status === 'closed' && (
-                                <div className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl text-center text-sm font-medium text-slate-500 border border-slate-200 dark:border-slate-700">
+                                <div className="p-4 bg-slate-100 dark:bg-[#18342f]/50 rounded-2xl text-center text-sm font-medium text-slate-600 border border-emerald-900/10 dark:border-[#1d3a34]">
                                     This ticket is closed. No further comments can be added.
                                 </div>
                             )}
@@ -292,13 +301,13 @@ export default function ShowTicket({ auth, ticket }) {
             </div>
 
             {/* Footer */}
-            <footer className="relative z-10 px-6 py-10 mt-12 border-t border-slate-200/60 dark:border-slate-800/60">
+            <footer className="relative z-10 px-6 py-10 mt-12 border-t border-emerald-900/10 dark:border-[#1d3a34]/60">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2 opacity-60">
                         <ApplicationLogo className="w-5 h-5" />
                         <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
                     </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-500">
+                    <p className="text-sm text-slate-600 dark:text-slate-600">
                         &copy; {new Date().getFullYear()} laradrug. All rights reserved.
                     </p>
 
@@ -307,3 +316,7 @@ export default function ShowTicket({ auth, ticket }) {
         </AuthenticatedLayout>
     );
 }
+
+
+
+

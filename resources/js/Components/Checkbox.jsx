@@ -4,9 +4,13 @@ export default function Checkbox({ className = '', ...props }) {
             {...props}
             type="checkbox"
             className={
-                'rounded-lg border-slate-300 dark:border-slate-700 text-teal-900 shadow-sm focus:ring-lime-500 dark:bg-slate-800 ' +
+                'rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 shadow-sm focus:ring-lime-500 dark:bg-[#18342f] ' +
                 className
             }
         />
     );
 }
+
+
+
+

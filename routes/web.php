@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return redirect()->route('home');
@@ -23,7 +24,9 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::get('/submit-ticket', function () {
-    return Inertia::render('SubmitTicket/index');
+    return Inertia::render('SubmitTicket/index', [
+        'categories' => \App\Models\Category::all(),
+    ]);
 })->name('submit-ticket');
 
 Route::post('submit-ticket', [TicketController::class, 'save'])
@@ -67,6 +70,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
     Route::patch('/admin/users/{user}/role', [AdminController::class, 'updateRole'])->name('admin.users.update-role');
     Route::delete('/admin/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+
+    // Category Management
+    Route::get('/admin/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+    Route::post('/admin/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::patch('/admin/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 });
 
 Route::middleware('auth')->group(function () {

@@ -44,7 +44,7 @@ export default function Login({ status, canResetPassword }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="w-full rounded-full border-slate-300 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-slate-700 dark:bg-slate-800"
+                        className="w-full rounded-full border-emerald-900/20 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-[#1d3a34] dark:bg-[#18342f]"
                         autoComplete="username"
                         isFocused={true}
                         placeholder="your@email.com"
@@ -72,7 +72,7 @@ export default function Login({ status, canResetPassword }) {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="w-full rounded-full border-slate-300 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-slate-700 dark:bg-slate-800"
+                        className="w-full rounded-full border-emerald-900/20 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-[#1d3a34] dark:bg-[#18342f]"
                         autoComplete="current-password"
                         placeholder="••••••••"
                         onChange={(e) => setData('password', e.target.value)}
@@ -85,12 +85,12 @@ export default function Login({ status, canResetPassword }) {
                     <Checkbox
                         name="remember"
                         checked={data.remember}
-                        className="rounded-lg bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-teal-900 shadow-sm focus:ring-lime-500 transition-all"
+                        className="rounded-lg bg-slate-100 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#1d3a34] text-teal-900 shadow-sm focus:ring-lime-500 transition-all"
                         onChange={(e) =>
                             setData('remember', e.target.checked)
                         }
                     />
-                    <span className="ms-3 text-[11px] font-bold tracking-widest text-slate-500 dark:text-slate-400">
+                    <span className="ms-3 text-[11px] font-bold tracking-widest text-slate-600 dark:text-slate-400">
                         Remember me
                     </span>
                 </div>
@@ -108,3 +108,7 @@ export default function Login({ status, canResetPassword }) {
         </GuestLayout>
     );
 }
+
+
+
+

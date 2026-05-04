@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\TicketNotification;
+use App\Models\Category;
 
 class TicketController extends Controller
 {
@@ -21,11 +22,12 @@ class TicketController extends Controller
     {
         $user    = Auth::user();
         $tickets = $user->role === 'admin'
-            ? Ticket::with(['user', 'attendant', 'comments'])->latest()->get()
-            : Ticket::where('user_id', $user->id)->with(['attendant', 'comments'])->latest()->get();
+            ? Ticket::with(['user', 'attendant', 'comments', 'category'])->latest()->get()
+            : Ticket::where('user_id', $user->id)->with(['attendant', 'comments', 'category'])->latest()->get();
 
         return Inertia::render('Dashboard/index', [
             'tickets' => $tickets,
+            'categories' => Category::all(),
         ]);
     }
 
@@ -46,6 +48,10 @@ class TicketController extends Controller
             'subject'         => 'required|string|max:255',
             'priority'        => 'required|string|in:low,medium,high',
             'whatsapp_number' => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
+            'category_id'     => 'nullable|exists:categories,id',
+            'order_type'      => 'nullable|string|in:one-time,recurrent',
+            'recurrence_period' => 'nullable|string',
+            'custom_recurrence_date' => 'nullable|date',
         ], [
             'whatsapp_number.regex' => 'The WhatsApp number must be a valid international phone number (e.g., +2348000000000).'
         ]);
@@ -78,6 +84,10 @@ class TicketController extends Controller
             'subject'         => $validated['subject'],
             'priority'        => $validated['priority'],
             'attended_to_by'  => $assignedAdminId,
+            'category_id'     => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
+            'order_type'      => $validated['order_type'] ?? null,
+            'recurrence_period' => $validated['recurrence_period'] ?? null,
+            'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
         ]);
 
         $imagePaths = [];
@@ -135,12 +145,20 @@ class TicketController extends Controller
             'priority' => 'required|string|in:low,medium,high',
             'images'   => 'nullable|array',
             'images.*' => 'image|max:5120',
+            'category_id' => 'nullable|exists:categories,id',
+            'order_type'      => 'nullable|string|in:one-time,recurrent',
+            'recurrence_period' => 'nullable|string',
+            'custom_recurrence_date' => 'nullable|date',
         ]);
 
         $updateData = [
-            'subject'  => $validated['subject'],
-            'content'  => $validated['content'],
-            'priority' => $validated['priority'],
+            'subject'     => $validated['subject'],
+            'content'     => $validated['content'],
+            'priority'    => $validated['priority'],
+            'category_id' => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
+            'order_type'      => $validated['order_type'] ?? null,
+            'recurrence_period' => $validated['recurrence_period'] ?? null,
+            'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
         ];
 
         if ($request->hasFile('images')) {
@@ -370,22 +388,24 @@ class TicketController extends Controller
             ->orWhereHas('user', function($q) use ($request) {
                 $q->where('email', $request->email);
             })
-            ->with(['attendant'])
+            ->with(['attendant', 'category'])
             ->latest()
             ->get();
 
         return Inertia::render('CheckStatus/index', [
             'tickets' => $tickets,
-            'searchedEmail' => $request->email
+            'searchedEmail' => $request->email,
+            'categories' => Category::all(),
         ]);
     }
 
     public function show(Ticket $ticket)
     {
-        $ticket->load(['user', 'attendant', 'comments.user']);
+        $ticket->load(['user', 'attendant', 'comments.user', 'category']);
 
         return Inertia::render('Ticket/Show', [
             'ticket' => $ticket,
+            'categories' => Category::all(),
         ]);
     }
 }

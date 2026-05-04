@@ -50,7 +50,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                 <h2 className="text-base font-black tracking-[0.2em] text-slate-800 dark:text-white">
                     Security Credentials
                 </h2>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                     Ensure your account is using a long, random password to stay secure.
                 </p>
             </header>
@@ -119,3 +119,7 @@ export default function UpdatePasswordForm({ className = '' }) {
         </section>
     );
 }
+
+
+
+

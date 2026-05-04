@@ -26,7 +26,7 @@ export default function ResetPassword({ token, email }) {
 
             <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">New Password</h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">Almost there! Set your new password</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">Almost there! Set your new password</p>
             </div>
 
             <form onSubmit={submit} className="space-y-5">
@@ -38,7 +38,7 @@ export default function ResetPassword({ token, email }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
                     />
@@ -54,7 +54,7 @@ export default function ResetPassword({ token, email }) {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         autoComplete="new-password"
                         isFocused={true}
                         placeholder="••••••••"
@@ -76,7 +76,7 @@ export default function ResetPassword({ token, email }) {
                         id="password_confirmation"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         autoComplete="new-password"
                         placeholder="••••••••"
                         onChange={(e) =>
@@ -103,3 +103,7 @@ export default function ResetPassword({ token, email }) {
         </GuestLayout>
     );
 }
+
+
+
+

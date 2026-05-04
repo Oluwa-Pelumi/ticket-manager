@@ -26,6 +26,10 @@ class Ticket extends Model
         'priority',
         'attended_to_by',
         'whatsapp_number',
+        'category_id',
+        'order_type',
+        'recurrence_period',
+        'custom_recurrence_date',
     ];
 
     /**
@@ -69,5 +73,9 @@ class Ticket extends Model
             'attended_to_by',
             'id'
         );
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 }

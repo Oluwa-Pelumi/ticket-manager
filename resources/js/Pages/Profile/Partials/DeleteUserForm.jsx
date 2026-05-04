@@ -50,7 +50,7 @@ export default function DeleteUserForm({ className = '' }) {
                 <h2 className="text-base font-black tracking-[0.2em] text-rose-500">
                     Account Deletion
                 </h2>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                     Once your account is purged, all resources and data will be permanently decommissioned.
                 </p>
             </header>
@@ -106,3 +106,7 @@ export default function DeleteUserForm({ className = '' }) {
         </section>
     );
 }
+
+
+
+

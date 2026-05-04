@@ -23,33 +23,33 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
             {/* Background Layer */}
             <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10" />
 
-            <nav className="relative z-50 w-full px-6 py-4 border-b border-slate-200 bg-white/90 dark:border-slate-700 dark:bg-slate-950/90 backdrop-blur">
+            <nav className="relative z-50 w-full px-6 py-4 border-b border-emerald-900/10 bg-white/90 dark:border-[#1d3a34] dark:bg-[#102824]/90 backdrop-blur">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     <Link href={route('home')} className="flex items-center space-x-3 group">
-                        <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200/50 dark:border-slate-800/50 transition-transform group-hover:scale-110">
+                        <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-[#102824] shadow-xl border border-emerald-900/10/50 dark:border-[#1d3a34]/50 transition-transform group-hover:scale-110">
                             <ApplicationLogo className="w-full h-full text-teal-900 dark:text-lime-400" />
                         </div>
                         <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">laradrug<span className="text-lime-500">.</span></span>
                     </Link>
 
                     <div className="flex items-center gap-3">
-                        <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
-                            <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-teal-900 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                        <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#18342f]/40 rounded-2xl border border-emerald-900/10/50 dark:border-[#1d3a34]/50 backdrop-blur-md">
+                            <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-600 dark:text-slate-400 hover:text-teal-900 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                 Home
                             </Link>
                             {auth.user ? (
-                                <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl bg-white dark:bg-slate-900 text-teal-900 dark:text-lime-400 shadow-sm border border-slate-200/50 dark:border-slate-800/50">
+                                <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl bg-white dark:bg-[#102824] text-teal-900 dark:text-lime-400 shadow-sm border border-emerald-900/10/50 dark:border-[#1d3a34]/50">
                                     Dashboard
                                 </Link>
                             ) : (
-                                <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-teal-900 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-600 dark:text-slate-400 hover:text-teal-900 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                     Sign In
                                 </Link>
                             )}
                         </div>
                         <button
                             onClick={toggleTheme}
-                            className="w-10 h-10 rounded-2xl flex items-center justify-center border border-slate-200 bg-white text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 hover:text-teal-900 transition-all"
+                            className="w-10 h-10 rounded-2xl flex items-center justify-center border border-emerald-900/10 bg-white text-slate-600 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400 hover:text-teal-900 transition-all"
                             title="Toggle Theme"
                         >
                             {theme === 'dark' ? (
@@ -100,7 +100,7 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                     type="email"
                                     value={data.email}
                                     onChange={e => setData('email', e.target.value)}
-                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                                     placeholder="Enter your email address..."
                                     required
                                 />
@@ -128,7 +128,7 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                         <Link
                                             key={ticket.id}
                                             href={route('ticket.show', ticket.id)}
-                                            className="block p-8 bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-lime-500/10 hover:border-teal-900/50 transition-all group"
+                                            className="block p-8 bg-white dark:bg-[#102824] rounded-[2.5rem] border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm hover:shadow-2xl hover:shadow-lime-500/10 hover:border-teal-900/50 transition-all group"
                                         >
                                             <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">
                                                 <div>
@@ -136,13 +136,13 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                                         #{ticket.id.substring(0, 8)}
                                                     </div>
                                                     <h3 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors line-clamp-1">
-                                                        {ticket.subject.replace(/_/g, ' ')}
+                                                        {ticket.category?.name || ticket.subject.replace(/_/g, ' ')}
                                                     </h3>
                                                 </div>
                                                 <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest ${
                                                     ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10' :
                                                     ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 ring-4 ring-orange-500/10' :
-                                                    'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                                                    'bg-slate-100 text-slate-600 dark:bg-[#18342f] dark:text-slate-400'
                                                 }`}>
                                                     {ticket.status.replace('-', ' ')}
                                                 </span>
@@ -150,7 +150,7 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                             <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-6 leading-relaxed">
                                                 {ticket.content}
                                             </p>
-                                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[10px] md:text-xs text-slate-500">
+                                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[10px] md:text-xs text-slate-600">
                                                 <div className="flex flex-wrap items-center gap-3 md:gap-4">
                                                     <span className="font-black tracking-widest text-slate-400">Priority: <span className="text-slate-900 dark:text-white">{ticket.priority}</span></span>
                                                     <span className="font-black tracking-widest text-slate-400">Date: <span className="text-slate-900 dark:text-white">{new Date(ticket.created_at).toLocaleDateString()}</span></span>
@@ -164,10 +164,10 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="p-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
+                                <div className="p-12 text-center bg-white dark:bg-[#102824] rounded-3xl border border-emerald-900/10 dark:border-[#1d3a34]">
                                     <svg className="w-16 h-16 mx-auto text-slate-300 dark:text-slate-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No tickets found</h3>
-                                    <p className="text-slate-500">We couldn't find any tickets associated with that email address.</p>
+                                    <p className="text-slate-600">We couldn't find any tickets associated with that email address.</p>
                                 </div>
                             )}
                         </div>
@@ -176,13 +176,13 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
             </main>
 
             {/* Footer */}
-            <footer className="relative z-10 px-6 py-16 mt-auto border-t border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/50">
+            <footer className="relative z-10 px-6 py-16 mt-auto border-t border-emerald-900/10 dark:border-[#1d3a34] bg-white dark:bg-[#0b1715]">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-2 opacity-60">
                         <ApplicationLogo className="w-5 h-5" />
                         <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
                     </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-500">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                         &copy; {new Date().getFullYear()} laradrug. All rights reserved.
                     </p>
                 </div>
@@ -190,3 +190,7 @@ export default function CheckStatus({ auth, tickets, searchedEmail }) {
         </div>
     );
 }
+
+
+
+

@@ -20,7 +20,7 @@ export default function ForgotPassword({ status }) {
 
             <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Recover Password</h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">We'll send you a recovery link</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">We'll send you a recovery link</p>
             </div>
 
             <div className="mb-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -42,7 +42,7 @@ export default function ForgotPassword({ status }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         isFocused={true}
                         placeholder="your@email.com"
                         onChange={(e) => setData('email', e.target.value)}
@@ -64,7 +64,7 @@ export default function ForgotPassword({ status }) {
                 <div className="text-center pt-4">
                     <Link
                         href={route('login')}
-                        className="text-sm font-black tracking-widest text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-colors"
+                        className="text-sm font-black tracking-widest text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors"
                     >
                         Return to Access
                     </Link>
@@ -73,3 +73,7 @@ export default function ForgotPassword({ status }) {
         </GuestLayout>
     );
 }
+
+
+
+

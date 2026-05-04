@@ -26,7 +26,7 @@ export default function Register() {
 
             <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Create Account</h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">Join us to start managing your tickets</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">Join us to start managing your tickets</p>
             </div>
 
             <form onSubmit={submit} className="space-y-5">
@@ -37,7 +37,7 @@ export default function Register() {
                         id="name"
                         name="name"
                         value={data.name}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         autoComplete="name"
                         isFocused={true}
                         placeholder="John Doe"
@@ -56,7 +56,7 @@ export default function Register() {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         autoComplete="username"
                         placeholder="john@example.com"
                         onChange={(e) => setData('email', e.target.value)}
@@ -74,7 +74,7 @@ export default function Register() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         autoComplete="new-password"
                         placeholder="••••••••"
                         onChange={(e) => setData('password', e.target.value)}
@@ -96,7 +96,7 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
                         autoComplete="new-password"
                         placeholder="••••••••"
                         onChange={(e) =>
@@ -136,3 +136,7 @@ export default function Register() {
         </GuestLayout>
     );
 }
+
+
+
+

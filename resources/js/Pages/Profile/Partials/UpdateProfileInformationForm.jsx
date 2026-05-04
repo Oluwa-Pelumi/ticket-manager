@@ -29,7 +29,7 @@ export default function UpdateProfileInformation({
                 <h2 className="text-base font-black tracking-[0.2em] text-slate-800 dark:text-white">
                     General Information
                 </h2>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                     Update your account's profile information and email address.
                 </p>
             </header>
@@ -107,3 +107,7 @@ export default function UpdateProfileInformation({
         </section>
     );
 }
+
+
+
+

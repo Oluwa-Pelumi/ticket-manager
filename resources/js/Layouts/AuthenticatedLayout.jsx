@@ -20,14 +20,14 @@ export default function AuthenticatedLayout({ header, children }) {
             <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10" />
 
             {/* Navigation Bar */}
-            <nav className="relative z-50 border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur dark:border-[#1d3a34] dark:bg-[#0b1715]/90">
+            <nav className="relative z-50 border-b border-emerald-900/10 bg-white/90 shadow-sm backdrop-blur dark:border-[#1d3a34] dark:bg-[#102824]/90">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-20 justify-between items-center">
 
                         {/* Left: Logo + Nav Links */}
                         <div className="flex items-center gap-8">
                             <Link href="/" className="flex items-center gap-3 group">
-                                <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200/50 dark:border-slate-800/50 transition-transform group-hover:scale-110">
+                                <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-[#102824] shadow-xl border border-emerald-900/10/50 dark:border-[#1d3a34]/50 transition-transform group-hover:scale-110">
                                     <ApplicationLogo className="w-full h-full text-teal-900 dark:text-lime-400" />
                                 </div>
                                 <span className="hidden sm:block text-xl font-black tracking-tight text-slate-900 dark:text-white">
@@ -36,7 +36,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             </Link>
 
                             {user?.role === 'admin' && (
-                                <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#102824]/70 rounded-2xl border border-slate-200/50 dark:border-[#1d3a34] backdrop-blur-md">
+                                <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#102824]/70 rounded-2xl border border-emerald-900/10/50 dark:border-[#1d3a34] backdrop-blur-md">
                                     <NavLink
                                         href={route('dashboard')}
                                         active={route().current('dashboard')}
@@ -59,7 +59,7 @@ export default function AuthenticatedLayout({ header, children }) {
                              {/* Theme Toggle */}
                             <button
                                 onClick={toggleTheme}
-                                className="w-10 h-10 rounded-2xl flex items-center justify-center border border-slate-200/50 bg-white text-slate-500 transition-all hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400"
+                                className="w-10 h-10 rounded-2xl flex items-center justify-center border border-emerald-900/10/50 bg-white text-slate-600 transition-all hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400"
                                 title="Toggle theme"
                             >
                                 {theme === 'dark' ? (
@@ -75,7 +75,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown.Trigger>
                                              <button
                                                 type="button"
-                                                className="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border-slate-200/50 dark:border-slate-800/50 hover:border-lime-500/50 transition-all"
+                                                className="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border-emerald-900/10/50 dark:border-[#1d3a34]/50 hover:border-lime-500/50 transition-all"
                                             >
                                                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-900 to-teal-700 flex items-center justify-center text-white text-[10px] font-black shadow-lg">
                                                     {user?.name?.charAt(0).toUpperCase()}
@@ -92,6 +92,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown.Content>
                                             <Dropdown.Link href={route('profile.edit')}>
                                                 Profile Settings
+                                            </Dropdown.Link>
+                                            <Dropdown.Link href={route('admin.categories.index')}>
+                                                Manage Categories
                                             </Dropdown.Link>
                                             <Dropdown.Link
                                                 href={route('logout')}
@@ -110,7 +113,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex items-center gap-2 sm:hidden">
                             <button
                                 onClick={toggleTheme}
-                                className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                                className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-400 bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34]"
                             >
                                 {theme === 'dark' ? (
                                     <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
@@ -121,7 +124,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <button
                                 onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
-                                className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                                className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-400 bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34]"
                             >
                                 <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -145,18 +148,19 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </ResponsiveNavLink>
                             </div>
 
-                            <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                            <div className="pt-4 border-t border-emerald-900/10 dark:border-[#1d3a34]">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-900 to-teal-700 flex items-center justify-center text-white font-black">
                                         {user?.name?.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
                                         <div className="text-base font-bold text-slate-900 dark:text-white">{user?.name}</div>
-                                        <div className="text-sm text-slate-500 dark:text-slate-400">{user?.email}</div>
+                                        <div className="text-sm text-slate-600 dark:text-slate-400">{user?.email}</div>
                                     </div>
                                 </div>
                                 <div className="space-y-1">
                                     <ResponsiveNavLink href={route('profile.edit')}>Profile Settings</ResponsiveNavLink>
+                                    <ResponsiveNavLink href={route('admin.categories.index')}>Manage Categories</ResponsiveNavLink>
                                     <ResponsiveNavLink method="post" href={route('logout')} as="button">Sign Out</ResponsiveNavLink>
                                 </div>
                             </div>
@@ -186,3 +190,7 @@ export default function AuthenticatedLayout({ header, children }) {
         </div>
     );
 }
+
+
+
+
