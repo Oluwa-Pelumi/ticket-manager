@@ -3,6 +3,7 @@ import { useAlert } from '@/Contexts/AlertContext';
 import FlashHandler from '@/Components/FlashHandler';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 
 const subjects = [
     {value: 'refill_request', name: 'Refill request'},
@@ -78,15 +79,15 @@ export default function ShowTicket({ auth, ticket }) {
             header={
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-white/20">
+                        <div className="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
                             <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </div>
                         <div className="flex flex-col">
-                            <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Ticket Intelligence</h2>
-                            <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Analysis & Monitoring</span>
+                            <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Ticket</h2>
+                            <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Details</span>
                         </div>
                     </div>
                     <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm ${
@@ -104,7 +105,7 @@ export default function ShowTicket({ auth, ticket }) {
             <div className="max-w-7xl mx-auto py-12 px-6 space-y-8">
 
                 <div className="flex items-center justify-between">
-                    <Link href={route('check-status')} className="inline-flex items-center text-sm font-bold text-slate-500 hover:text-indigo-500 transition-colors">
+                    <Link href={route('check-status')} className="inline-flex items-center text-sm font-bold text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                         Back to Status Search
                     </Link>
@@ -117,17 +118,17 @@ export default function ShowTicket({ auth, ticket }) {
                     <div className="space-y-8">
                         <div>
                             <h4 className="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                                <svg className="w-5 h-5 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <svg className="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                Specifications
                             </h4>
 
                             <div className="p-6 md:p-8 rounded-[2.5rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl">
-                                <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Control Reference</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Control Reference</div>
                                 <div className="flex items-center gap-3 mb-8 group/id">
                                     <div className="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{ticket.id}</div>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); handleCopy(ticket.id); }}
-                                        className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-500 transition-all border border-transparent hover:border-indigo-500/20"
+                                        className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
                                         title="Copy ID"
                                     >
                                         {copiedId === ticket.id ? (
@@ -138,10 +139,10 @@ export default function ShowTicket({ auth, ticket }) {
                                     </button>
                                 </div>
 
-                                <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Subject</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Subject</div>
                                 <div className="text-lg md:text-xl text-slate-900 dark:text-white font-bold mb-6">{subjects.find(s => s.value == ticket.subject)?.name || ticket.subject}</div>
 
-                                <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Urgency</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Priority</div>
                                 <div className="mb-6">
                                     <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-[10px] md:text-xs font-black tracking-wider ${
                                         ticket.priority === 'high' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
@@ -152,7 +153,7 @@ export default function ShowTicket({ auth, ticket }) {
                                     </span>
                                 </div>
 
-                                <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Issue Specification</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Issue Specification</div>
                                 <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm">{ticket.content}</div>
                             </div>
                         </div>
@@ -189,14 +190,14 @@ export default function ShowTicket({ auth, ticket }) {
                     <div className="space-y-8">
                         <div>
                             <h4 className="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                                <svg className="w-5 h-5 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                <svg className="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                                 Conversation
                             </h4>
 
                             <div className="space-y-4 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar mb-6 p-4 md:p-6 rounded-[2.5rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl">
                                 {ticket.comments?.length > 0 ? ticket.comments.map((comment, ci) => (
                                     <div key={ci} className={`flex flex-col ${comment.user_id === ticket.user_id || (!comment.user_id && !ticket.user_id) ? 'items-end' : 'items-start'}`}>
-                                        <div className={`max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] ${comment.user_id === ticket.user_id || (!comment.user_id && !ticket.user_id) ? 'bg-indigo-500 text-white rounded-br-sm shadow-xl shadow-indigo-500/20' : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-bl-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm'}`}>
+                                        <div className={`max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] ${comment.user_id === ticket.user_id || (!comment.user_id && !ticket.user_id) ? 'bg-teal-900 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-bl-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm'}`}>
                                             <div className="flex items-center space-x-2 mb-2">
                                                 <span className="text-[9px] md:text-[10px] font-black opacity-70">{comment.user?.name || 'Guest'}</span>
                                                 <span className="text-[9px] md:text-[10px] opacity-50">{new Date(comment.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
@@ -229,7 +230,7 @@ export default function ShowTicket({ auth, ticket }) {
                                             onChange={e => commentForm.setData('content', e.target.value)}
                                             placeholder="Type your message..."
                                             rows="4"
-                                            className="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base"
+                                            className="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base"
                                             required
                                         ></textarea>
 
@@ -246,13 +247,13 @@ export default function ShowTicket({ auth, ticket }) {
                                                     setCommentPreviewUrls(files.map(f => URL.createObjectURL(f)));
                                                 }}
                                             />
-                                            <label htmlFor="comment-images" className="p-3 text-slate-400 hover:text-indigo-500 hover:bg-indigo-500/10 rounded-2xl cursor-pointer transition-all bg-slate-50 dark:bg-slate-800">
+                                            <label htmlFor="comment-images" className="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl cursor-pointer transition-all bg-slate-50 dark:bg-slate-800">
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                             </label>
                                             <button
                                                 type="submit"
                                                 disabled={commentForm.processing || !commentForm.data.content.trim()}
-                                                className="p-3 bg-indigo-500 text-white rounded-2xl shadow-xl shadow-indigo-500/30 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
+                                                className="p-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
                                             >
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                             </button>
@@ -289,6 +290,20 @@ export default function ShowTicket({ auth, ticket }) {
                     </div>
                 </div>
             </div>
+
+            {/* Footer */}
+            <footer className="relative z-10 px-6 py-10 mt-12 border-t border-slate-200/60 dark:border-slate-800/60">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 opacity-60">
+                        <ApplicationLogo className="w-5 h-5" />
+                        <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
+                    </div>
+                    <p className="text-sm text-slate-500 dark:text-slate-500">
+                        &copy; {new Date().getFullYear()} laradrug. All rights reserved.
+                    </p>
+
+                </div>
+            </footer>
         </AuthenticatedLayout>
     );
 }

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useTheme } from '@/Contexts/ThemeContext';
 import FlashHandler from '@/Components/FlashHandler';
 import { Head, Link, useForm } from '@inertiajs/react';
+import ApplicationLogo from '@/Components/ApplicationLogo';
+
 
 const subjects =
     {
@@ -56,38 +58,38 @@ export default function SubmitTicket({ auth }) {
         <>
             <Head title="Submit Ticket" />
 
-            <div className="relative min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 overflow-x-hidden transition-colors duration-500 py-20 px-6 selection:bg-indigo-500 selection:text-white">
+            <div className="fauna-shell relative min-h-screen flex flex-col items-center overflow-x-hidden transition-colors duration-500 selection:bg-lime-500 selection:text-teal-900">
 
                 {/* Background Layer */}
-                <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-60 dark:opacity-40" />
+                <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10" />
 
                 {/* Navbar */}
-                <nav className="fixed top-0 z-50 w-full px-6 py-4 glass-navbar border-b border-slate-200/50 dark:border-slate-800/50">
+                <nav className="fixed top-0 z-50 w-full border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur dark:border-slate-700 dark:bg-slate-950/90">
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <Link href={route('home')} className="flex items-center space-x-3 group">
                             <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200/50 dark:border-slate-800/50 transition-transform group-hover:scale-110">
-                                <ApplicationLogo className="w-full h-full text-indigo-500" />
+                                <ApplicationLogo className="w-full h-full text-teal-900 dark:text-lime-400" />
                             </div>
-                            <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">laradrug<span className="text-indigo-500">.</span></span>
+                            <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">laradrug<span className="text-lime-500">.</span></span>
                         </Link>
                         <div className="flex items-center gap-3">
                             <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
-                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-teal-900 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                     Home
                                 </Link>
-                                {auth.user ? (
-                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                {auth.user?.role === 'admin' ? (
+                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-teal-900 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                         Dashboard
                                     </Link>
-                                ) : (
-                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                ) : !auth.user ? (
+                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-teal-900 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
                                         Sign In
                                     </Link>
-                                )}
+                                ) : null}
                             </div>
                             <button
                                 onClick={toggleTheme}
-                                className="w-10 h-10 rounded-2xl flex items-center justify-center glass-card text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-all"
+                                className="w-10 h-10 rounded-2xl flex items-center justify-center border border-slate-200 bg-white text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 hover:text-teal-900 transition-all"
                                 title="Toggle Theme"
                             >
                                 {theme === 'dark' ? (
@@ -100,13 +102,13 @@ export default function SubmitTicket({ auth }) {
                     </div>
                 </nav>
 
-                <div className="relative z-10 w-full max-w-3xl">
+                <div className="relative z-10 w-full max-w-3xl mx-auto px-6 pt-20 pb-16">
 
                     {/* Standardized Header */}
-                    <div className="mb-10 p-10 rounded-[2.5rem] glass-card border-white/20 dark:border-slate-800/50 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-30" />
+                    <div className="fauna-panel mb-10 p-10 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-white/20">
+                            <div className="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
                                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                                 </svg>
@@ -115,13 +117,13 @@ export default function SubmitTicket({ auth }) {
                                 <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                                     Support Portal
                                 </h1>
-                                <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Initialize Assistance Request</span>
+                                <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Submit Request</span>
                             </div>
                         </div>
                     </div>
 
                     <div className="text-center mb-10">
-                        <Link href={route('home')} className="inline-flex items-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors mb-4 tracking-widest">
+                        <Link href={route('home')} className="inline-flex items-center text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-teal-900 transition-colors mb-4 tracking-widest">
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
@@ -131,19 +133,19 @@ export default function SubmitTicket({ auth }) {
 
                     <FlashHandler />
 
-                    <form onSubmit={submit} className="relative block p-8 md:p-12 rounded-[2.5rem] glass-card space-y-8 overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
-                        
+                    <form onSubmit={submit} className="fauna-panel relative block p-8 md:p-12 space-y-8 overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Name */}
                             <div className="space-y-3">
-                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="name">Full Identity</label>
+                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="name">Name *</label>
                                 <input
                                     id="name"
                                     type="text"
                                     value={data.name}
                                     onChange={e => setData('name', e.target.value)}
-                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-medium shadow-sm"
+                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium shadow-sm"
                                     placeholder="Enter your name"
                                     required
                                 />
@@ -152,13 +154,13 @@ export default function SubmitTicket({ auth }) {
 
                             {/* Email */}
                             <div className="space-y-3">
-                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="email">Email Address</label>
+                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="email">Email Address *</label>
                                 <input
                                     id="email"
                                     type="email"
                                     value={data.email}
                                     onChange={e => setData('email', e.target.value)}
-                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-medium shadow-sm"
+                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium shadow-sm"
                                     placeholder="email@example.com"
                                     required
                                 />
@@ -173,67 +175,94 @@ export default function SubmitTicket({ auth }) {
                                     type="tel"
                                     value={data.whatsapp_number}
                                     onChange={e => setData('whatsapp_number', e.target.value)}
-                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-medium shadow-sm"
-                                    placeholder="+1..."
+                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium shadow-sm"
+                                    placeholder="+234..."
                                 />
                                 {errors.whatsapp_number && <div className="text-red-500 text-xs mt-1 font-semibold">{errors.whatsapp_number}</div>}
                             </div>
 
                             {/* Priority */}
                             <div className="space-y-3">
-                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="priority">Urgency Level</label>
-                                <div className="relative">
-                                    <select
-                                        id="priority"
-                                        value={data.priority}
-                                        onChange={e => setData('priority', e.target.value)}
-                                        className="w-full px-5 pr-12 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none appearance-none font-bold shadow-sm"
-                                    >
-                                        <option value="low">Low</option>
-                                        <option value="medium">Medium</option>
-                                        <option value="high">High</option>
-                                    </select>
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-                                    </div>
+                                <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1">Priority *</label>
+                                <div className="grid grid-cols-3 gap-3">
+                                    {[
+                                        {
+                                            value: 'low',
+                                            label: 'Low',
+                                            icon: (
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                                </svg>
+                                            ),
+                                            active: 'bg-blue-50 dark:bg-blue-900/20 border-blue-400 text-blue-600 dark:text-blue-400',
+                                            inactive: 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400',
+                                        },
+                                        {
+                                            value: 'medium',
+                                            label: 'Medium',
+                                            icon: (
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 12h14" />
+                                                </svg>
+                                            ),
+                                            active: 'bg-amber-50 dark:bg-amber-900/20 border-amber-400 text-amber-600 dark:text-amber-400',
+                                            inactive: 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400',
+                                        },
+                                        {
+                                            value: 'high',
+                                            label: 'High',
+                                            icon: (
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                                </svg>
+                                            ),
+                                            active: 'bg-red-50 dark:bg-red-900/20 border-red-400 text-red-600 dark:text-red-400',
+                                            inactive: 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400',
+                                        },
+                                    ].map(({ value, label, icon, active, inactive }) => (
+                                        <button
+                                            key={value}
+                                            type="button"
+                                            onClick={() => setData('priority', value)}
+                                            className={`flex flex-col items-center justify-center gap-2 py-4 rounded-2xl border-2 font-bold text-xs tracking-widest transition-all shadow-sm ${data.priority === value ? active : inactive}`}
+                                        >
+                                            {icon}
+                                            {label}
+                                        </button>
+                                    ))}
                                 </div>
                             </div>
                         </div>
 
                         {/* Subject */}
                         <div className="space-y-3">
-                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="subject">Support Category</label>
-                            <div className="relative">
-                                <select
-                                    id="subject"
-                                    value={data.subject}
-                                    onChange={e => setData('subject', e.target.value)}
-                                    className="w-full pl-5 pr-12 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none appearance-none font-bold shadow-sm"
-                                >
-                                    <option value="" disabled>Select Department / Topic</option>
-                                    {Object.entries(subjects).map(([groupLabel, items]) => (
-                                        <optgroup key={groupLabel} label={groupLabel} className="font-bold text-indigo-500">
-                                            {items.map((sub, idx) => (
-                                                <option key={idx} value={sub.value} className="text-slate-900 dark:text-white font-medium">{sub.name}</option>
-                                            ))}
-                                        </optgroup>
-                                    ))}
-                                </select>
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-                                </div>
-                            </div>
+                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="subject">Support Category *</label>
+                            <select
+                                id="subject"
+                                value={data.subject}
+                                onChange={e => setData('subject', e.target.value)}
+                                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-bold shadow-sm"
+                            >
+                                <option value="" disabled>Select Department / Topic</option>
+                                {Object.entries(subjects).map(([groupLabel, items]) => (
+                                    <optgroup key={groupLabel} label={groupLabel} className="font-bold text-teal-900 dark:text-lime-400">
+                                        {items.map((sub, idx) => (
+                                            <option key={idx} value={sub.value} className="text-slate-900 dark:text-white font-medium">{sub.name}</option>
+                                        ))}
+                                    </optgroup>
+                                ))}
+                            </select>
                         </div>
 
                         {/* Content */}
                         <div className="space-y-3">
-                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="content">Issue Specification</label>
+                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1" htmlFor="content">Support Specification *</label>
                             <textarea
                                 id="content"
                                 value={data.content}
                                 onChange={e => setData('content', e.target.value)}
                                 rows="6"
-                                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all outline-none resize-none font-medium shadow-sm"
+                                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none resize-none font-medium shadow-sm"
                                 placeholder="Describe the problem or inquiry with as much detail as possible..."
                                 required
                             ></textarea>
@@ -242,7 +271,7 @@ export default function SubmitTicket({ auth }) {
 
                         {/* Image Upload */}
                         <div className="space-y-4">
-                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1 block">Evidence / Attachments</label>
+                            <label className="text-xs font-bold tracking-widest text-slate-500 dark:text-slate-400 ml-1 block">Attachments</label>
                             <div className="relative group/upload">
                                 <input
                                     type="file"
@@ -259,9 +288,9 @@ export default function SubmitTicket({ auth }) {
                                 />
                                 <label
                                     htmlFor="image-upload"
-                                    className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-3xl p-10 hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-indigo-500/5 transition-all cursor-pointer group"
+                                    className="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-3xl p-10 hover:border-teal-900 dark:hover:border-lime-500 hover:bg-lime-500/5 transition-all cursor-pointer group"
                                 >
-                                    <div className="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-indigo-500 group-hover:text-white transition-all shadow-sm">
+                                    <div className="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-teal-900 group-hover:text-white transition-all shadow-sm">
                                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                                     </div>
                                     <span className="text-slate-900 dark:text-white font-bold text-sm">Upload System Snapshots</span>
@@ -272,7 +301,7 @@ export default function SubmitTicket({ auth }) {
                             {/* Previews */}
                             {previewUrls.length > 0 && (
                                 <div className="mt-6 animate-in fade-in zoom-in duration-500">
-                                    <div className="text-[10px] font-black text-indigo-500 mb-4 tracking-[0.2em]">Ready for Ticket ({previewUrls.length})</div>
+                                    <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em]">Ready for Ticket ({previewUrls.length})</div>
                                     <div className="flex flex-wrap gap-4">
                                         {previewUrls.map((url, idx) => (
                                             <div key={idx} className="relative group/preview">
@@ -308,12 +337,12 @@ export default function SubmitTicket({ auth }) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="group w-full py-5 rounded-[2rem] bg-indigo-500 text-white font-black text-xl shadow-2xl shadow-indigo-500/30 hover:bg-indigo-600 hover:shadow-indigo-500/50 hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
+                                className="group w-full py-5 rounded-[2rem] bg-teal-900 text-white font-black text-xl shadow-2xl hover:bg-lime-500 hover:text-teal-900 hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
                             >
                                 <span className="flex items-center justify-center gap-2">
-                                    {processing ? 'Initializing Ticket...' : (
+                                    {processing ? 'Submitting Ticket...' : (
                                         <>
-                                            Initialize Ticket
+                                            Submit Ticket
                                             <svg className="w-6 h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                                         </>
                                     )}
@@ -323,6 +352,19 @@ export default function SubmitTicket({ auth }) {
                     </form>
                 </div>
             </div>
+
+            {/* Footer */}
+            <footer className="relative z-10 px-6 py-16 mt-auto border-t border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/50">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="flex items-center gap-2 opacity-60">
+                        <ApplicationLogo className="w-5 h-5" />
+                        <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
+                    </div>
+                    <p className="text-sm text-slate-500 dark:text-slate-500">
+                        &copy; {new Date().getFullYear()} laradrug. All rights reserved.
+                    </p>
+                </div>
+            </footer>
         </>
     );
 }

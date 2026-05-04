@@ -45,7 +45,7 @@ export default function Users({ auth, users }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-white/20">
+                    <div className="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
                         <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
@@ -70,11 +70,11 @@ export default function Users({ auth, users }) {
 
                 <FlashHandler />
 
-                <div className="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 shadow-2xl">
+                <div className="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-slate-200/50 dark:border-[#1d3a34] shadow-2xl">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
                             <thead>
-                                <tr className="border-b border-slate-200 dark:border-slate-800">
+                                <tr className="border-b border-slate-200 dark:border-[#1d3a34]">
                                     <th className="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">ID</th>
                                     <th className="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">User Information</th>
                                     <th className="hidden sm:table-cell px-6 py-4 text-[10px] font-black tracking-wider text-slate-500 dark:text-slate-400">Activity</th>
@@ -85,7 +85,7 @@ export default function Users({ auth, users }) {
                             </thead>
                             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                                 {users.map((user) => (
-                                    <tr key={user.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <tr key={user.id} className="hover:bg-slate-50/50 dark:hover:bg-[#18342f]/70 transition-colors">
                                         <td className="px-4 md:px-6 py-4 text-xs md:text-sm font-medium text-slate-900 dark:text-white">#{user.id}</td>
                                         <td className="px-4 md:px-6 py-4">
                                             <div className="text-xs md:text-sm font-bold text-slate-900 dark:text-white line-clamp-1">{user.name}</div>
@@ -99,7 +99,7 @@ export default function Users({ auth, users }) {
                                         </td>
                                         <td className="px-4 md:px-6 py-4">
                                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest ${
-                                                user.role === 'admin' ? 'bg-indigo-500/10 text-indigo-500 ring-4 ring-indigo-500/5' : 'bg-slate-100 text-slate-600 dark:bg-slate-800/60 dark:text-slate-400'
+                                                user.role === 'admin' ? 'bg-lime-500/10 text-teal-900 dark:text-lime-400 ring-4 ring-lime-500/10' : 'bg-slate-100 text-slate-600 dark:bg-slate-800/60 dark:text-slate-400'
                                             }`}>
                                                 {user.role}
                                             </span>
@@ -114,7 +114,7 @@ export default function Users({ auth, users }) {
                                                         disabled={user.id === auth.user.id || processing}
                                                         value={user.role}
                                                         onChange={(e) => handleRoleUpdate(user, e.target.value)}
-                                                        className="text-[10px] md:text-xs font-black bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
+                                                        className="text-[10px] md:text-xs font-black bg-white dark:bg-[#18342f] border-slate-200 dark:border-[#28524a] rounded-xl focus:ring-2 focus:ring-lime-500 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
                                                     >
                                                         <option value="user">User</option>
                                                         <option value="admin">Admin</option>

@@ -69,12 +69,12 @@ const Content = ({
                 leaveTo="opacity-0 scale-95 translate-y-1"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-2xl shadow-xl shadow-slate-900/10 dark:shadow-slate-900/40 ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 mt-2 rounded-2xl shadow-xl shadow-slate-900/10 dark:shadow-black/30 ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div
                         className={
-                            `rounded-2xl overflow-hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 py-1 ` +
+                            `rounded-2xl overflow-hidden bg-white/80 dark:bg-[#102824]/90 backdrop-blur-xl border border-slate-200/60 dark:border-[#1d3a34] py-1 ` +
                             contentClasses
                         }
                     >
@@ -91,7 +91,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
         <Link
             {...props}
             className={
-                'block w-full px-4 py-2.5 text-start text-sm font-medium text-slate-700 dark:text-slate-300 transition duration-150 ease-in-out hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-indigo-500 dark:hover:text-indigo-400 focus:outline-none ' +
+                'block w-full px-4 py-2.5 text-start text-sm font-medium text-slate-700 dark:text-slate-200 transition duration-150 ease-in-out hover:bg-slate-50 dark:hover:bg-[#18342f] hover:text-teal-900 dark:hover:text-lime-400 focus:outline-none ' +
                 className
             }
         >

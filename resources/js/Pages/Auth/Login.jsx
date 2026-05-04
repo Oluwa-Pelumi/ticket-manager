@@ -24,9 +24,9 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
-            <div className="text-center mb-10">
-                <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Access Portal</h1>
-                <p className="text-[10px] font-black tracking-[0.3em] text-slate-500 dark:text-slate-400 mt-2 opacity-70">Credentials Required</p>
+            <div className="mb-10 text-center">
+                <h1 className="text-4xl font-medium text-slate-900 dark:text-white">Login</h1>
+                <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">Use your support account credentials to continue.</p>
             </div>
 
             {status && (
@@ -37,14 +37,14 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit} className="space-y-6">
                 <div className="space-y-2">
-                    <InputLabel htmlFor="email" value="Email Address" className="text-[10px] font-black tracking-widest text-slate-500 dark:text-slate-400 ms-1" />
+                    <InputLabel htmlFor="email" value="Email" className="pl-4 text-sm font-medium text-slate-700 dark:text-slate-300" />
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="w-full"
+                        className="w-full rounded-full border-slate-300 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-slate-700 dark:bg-slate-800"
                         autoComplete="username"
                         isFocused={true}
                         placeholder="your@email.com"
@@ -56,13 +56,13 @@ export default function Login({ status, canResetPassword }) {
 
                 <div className="space-y-2">
                     <div className="flex items-center justify-between px-1">
-                        <InputLabel htmlFor="password" value="Password" className="text-[10px] font-black tracking-widest text-slate-500 dark:text-slate-400" />
+                        <InputLabel htmlFor="password" value="Password" className="pl-3 text-sm font-medium text-slate-700 dark:text-slate-300" />
                         {canResetPassword && (
                             <Link
                                 href={route('password.request')}
-                                className="text-[10px] font-black tracking-widest text-indigo-500 hover:text-indigo-400 transition-colors"
+                                className="text-sm font-medium underline hover:text-lime-600 transition-colors"
                             >
-                                Recover Access?
+                                Forgot password?
                             </Link>
                         )}
                     </div>
@@ -72,7 +72,7 @@ export default function Login({ status, canResetPassword }) {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="w-full"
+                        className="w-full rounded-full border-slate-300 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-slate-700 dark:bg-slate-800"
                         autoComplete="current-password"
                         placeholder="••••••••"
                         onChange={(e) => setData('password', e.target.value)}
@@ -85,13 +85,13 @@ export default function Login({ status, canResetPassword }) {
                     <Checkbox
                         name="remember"
                         checked={data.remember}
-                        className="rounded-lg bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-indigo-500 shadow-sm focus:ring-indigo-500 transition-all"
+                        className="rounded-lg bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-teal-900 shadow-sm focus:ring-lime-500 transition-all"
                         onChange={(e) =>
                             setData('remember', e.target.checked)
                         }
                     />
                     <span className="ms-3 text-[11px] font-bold tracking-widest text-slate-500 dark:text-slate-400">
-                        Remember Session
+                        Remember me
                     </span>
                 </div>
 
@@ -99,9 +99,9 @@ export default function Login({ status, canResetPassword }) {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="w-full py-4 rounded-2xl bg-indigo-500 text-white font-black text-lg shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest"
+                        className="fauna-btn-primary w-full !py-3.5 text-lg disabled:opacity-50"
                     >
-                        {processing ? 'Signing In...' : 'Sign In'}
+                        {processing ? 'Signing In...' : 'Login'}
                     </button>
                 </div>
             </form>

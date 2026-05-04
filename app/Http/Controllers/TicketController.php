@@ -58,7 +58,7 @@ class TicketController extends Controller
 
         $admins = \App\Models\User::where('role', 'admin')
             ->withCount(['assignedTickets' => function ($query) {
-                $query->whereIn('status', ['open', 'in-progress']);
+                $query->whereIn('status', ['open', 'in-progress'], 'and', false);
             }])
             ->get();
 
@@ -99,12 +99,14 @@ class TicketController extends Controller
 
         $notificationMessage = "Your ticket (ID: {$ticket->id}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->id);
 
+        $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
+
         if ($user) {
-            $user->notify(new TicketNotification('Ticket Received', $notificationMessage));
+            $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->id), $user->name));
         } else {
             \Illuminate\Support\Facades\Notification::route('mail', $validated['email'])
                 ->route('whatsapp', $validated['whatsapp_number'])
-                ->notify(new TicketNotification('Ticket Received', $notificationMessage));
+                ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->id), $validated['name']));
         }
 
         return redirect()->route('ticket.show', $ticket->id)->with('success', 'Ticket submitted successfully. You can bookmark this page to track your ticket.');
@@ -189,7 +191,21 @@ class TicketController extends Controller
             $updateData['attended_to_by'] = Auth::id();
         }
 
+        $oldStatus = $ticket->status;
         $ticket->update($updateData);
+
+        if ($oldStatus !== 'closed' && $validated['status'] === 'closed' && $ticket->user_id !== Auth::id()) {
+            $notificationMsg = "Your ticket (ID: {$ticket->id}) has been closed.\nView here: " . route('ticket.show', $ticket->id);
+            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
+            } else if ($ticket->email) {
+                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                    ->route('whatsapp', $ticket->whatsapp_number)
+                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_closed'));
+            }
+        }
 
         return back()->with('success', 'Ticket updated successfully.');
     }
@@ -211,7 +227,7 @@ class TicketController extends Controller
             'ids.*' => 'exists:tickets,id',
         ]);
 
-        $tickets = Ticket::whereIn('id', $validated['ids'])->get();
+        $tickets = Ticket::query()->whereIn('id', $validated['ids'], 'and', false)->get();
 
         foreach ($tickets as $ticket) {
             if ($ticket->filename) {
@@ -241,10 +257,29 @@ class TicketController extends Controller
             'status' => 'required|string|in:open,in-progress,closed',
         ]);
 
-        Ticket::whereIn('id', $validated['ids'])->update([
+        $tickets = Ticket::whereIn('id', $validated['ids'])->get();
+        
+        \Illuminate\Support\Facades\DB::table('tickets')->whereIn('id', $validated['ids'])->update([
             'status'         => $validated['status'],
             'attended_to_by' => Auth::id(),             // Assign to current admin
         ]);
+
+        if ($validated['status'] === 'closed') {
+            foreach ($tickets as $ticket) {
+                if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
+                    $notificationMsg = "Your ticket (ID: {$ticket->id}) has been closed.\nView here: " . route('ticket.show', $ticket->id);
+                    $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
+                    } else if ($ticket->email) {
+                        \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                            ->route('whatsapp', $ticket->whatsapp_number)
+                            ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_closed'));
+                    }
+                }
+            }
+        }
 
         return back()->with('success', 'Status updated for ' . count($validated['ids']) . ' tickets.');
     }
@@ -304,14 +339,16 @@ class TicketController extends Controller
 
         // If an admin replies, notify the ticket owner
         if (Auth::user() && Auth::user()->isAdmin() && $ticket->user_id !== Auth::id()) {
-            $notificationMsg = 'New reply: ' . (is_string($comment) ? $comment : $comment->content) . "\nView here: " . route('ticket.show', $ticket->id);
+            $notificationMsg = "Subject: {$ticket->subject}\nView here: " . route('ticket.show', $ticket->id);
+
+            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
             if ($ticket->user) {
-                $ticket->user->notify(new TicketNotification('New Reply to Your Ticket', $notificationMsg));
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
             } else if ($ticket->email) {
                 \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
                     ->route('whatsapp', $ticket->whatsapp_number)
-                    ->notify(new TicketNotification('New Reply to Your Ticket', $notificationMsg));
+                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_is_replied'));
             }
         }
 

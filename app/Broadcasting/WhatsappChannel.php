@@ -13,8 +13,8 @@ class WhatsappChannel
             ? $notifiable->routeNotificationFor('whatsapp')
             : $notifiable->whatsapp_number;
 
-        $to           = preg_replace('/\D/', '', $whatsappNumber);              // Ensure digits only
-        $name         = $notifiable->name ?? 'Guest';
+        $to   = preg_replace('/\D/', '', $whatsappNumber);              // Ensure digits only
+        $name = $notification->recipientName ?? $notifiable->name ?? 'there';
 
         $phoneId      = config('services.meta_whatsapp.phone_id');
         $token        = config('services.meta_whatsapp.token');
@@ -22,28 +22,47 @@ class WhatsappChannel
 
         $version      = str_starts_with($rawVersion, 'v') ? $rawVersion : "v{$rawVersion}";
 
-        $payload = [
-            'messaging_product' => 'whatsapp',
-            'to'                => $to,
-            'type'              => 'template',
-            'template'          => [
-                'name'       => 'ticket_submitted',    // your template name
-                'language'   => ['code' => 'en'],
-                'components' => [
+        $components = [
+            [
+                'type'       => 'body',
+                'parameters' => [
                     [
-                        'type'       => 'body',
-                        'parameters' => [
-                            [
-                                'type' => 'text',
-                                'text' => $name,  // {{1}} patient name
-                            ],
-                            [
-                                'type' => 'text',
-                                'text' => preg_replace('/\s+/', ' ', trim($notification->subject)), // {{2}} subject
-                            ],
-                        ],
+                        'type' => 'text',
+                        'text' => $name,  // {{1}} patient name
+                    ],
+                    [
+                        'type' => 'text',
+                        'text' => preg_replace('/\s+/', ' ', trim($notification->subject)), // {{2}} subject
                     ],
                 ],
+            ],
+        ];
+
+        // Append button component only for templates that have URL buttons configured
+        if (!empty($notification->ticketUrl) &&
+        ($notification->templateName === 'ticket_submitted'
+        || $notification->templateName === 'ticket_is_replied')) {
+            $components[] = [
+                'type'       => 'button',
+                'sub_type'   => 'url',
+                'index'      => '0',
+                'parameters' => [
+                    [
+                        'type' => 'text',
+                        'text' => $notification->ticketUrl,
+                    ],
+                ],
+            ];
+        }
+
+        $payload = [
+            'to'                => $to,
+            'messaging_product' => 'whatsapp',
+            'type'              => 'template',
+            'template'          => [
+                'components'    => $components,
+                'language'      => ['code' => 'en'],
+                'name'          => $notification->templateName,   // Dynamic template name
             ],
         ];
 

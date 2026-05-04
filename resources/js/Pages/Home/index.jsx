@@ -3,139 +3,267 @@ import { useTheme } from '@/Contexts/ThemeContext';
 import FlashHandler from '@/Components/FlashHandler';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function Home({ auth }) {
+const ticketingSteps = [
+    {
+        step: 1,
+        title: 'Submit',
+        description:
+            'Create a ticket with the right category, your contact details, and what happened. Attach images if they help our team understand faster.',
+    },
+    {
+        step: 2,
+        title: 'Review',
+        description:
+            'Our team sees your ticket on the dashboard, filters by status or priority, and updates progress—including assigning someone when needed.',
+    },
+    {
+        step: 3,
+        title: 'Reply in thread',
+        description:
+            'Conversation stays on the ticket page: add comments or files anytime it is open. Check the same ticket for staff replies.',
+    },
+    {
+        step: 4,
+        title: 'Resolved',
+        description:
+            'When your request is complete, the ticket is marked closed. You can still open past tickets from your dashboard or by status search with your email.',
+    },
+];
+
+export default function Home({ auth, stats }) {
     const { theme, toggleTheme } = useTheme();
 
     return (
         <>
             <Head title="laradrug | Support System" />
 
-            <div className="relative min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 transition-colors duration-500 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+            <div className="fauna-shell min-h-screen">
+                <section className="relative overflow-hidden bg-teal-900 dark:bg-[#102824]">
+                    <div className="container mx-auto px-4">
+                        <nav className="py-6">
+                            <div className="flex items-center justify-between">
+                                <div className="inline-flex items-center gap-3 text-white">
+                                    <ApplicationLogo className="h-8 w-8" />
+                                    <span className="text-xl font-semibold tracking-tight">laradrug</span>
+                                </div>
 
-                {/* Background Layer */}
-                <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-60 dark:opacity-40" />
-
-                {/* Navbar */}
-                <nav className="fixed top-0 z-50 w-full px-6 py-4 glass-navbar border-b border-slate-200/50 dark:border-slate-800/50">
-                    <div className="max-w-7xl mx-auto flex justify-between items-center">
-                        <div className="flex items-center gap-3 group cursor-pointer">
-                            <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200/60 dark:border-slate-800/60 transition-transform group-hover:scale-110">
-                                <ApplicationLogo className="w-full h-full" />
+                                <div className="flex items-center gap-3">
+                                    {!auth.user ? (
+                                        <Link href={route('login')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
+                                            Login
+                                        </Link>
+                                    ) : (
+                                        <Link href={route('dashboard')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
+                                            Dashboard
+                                        </Link>
+                                    )}
+                                    <button
+                                        onClick={toggleTheme}
+                                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 text-white transition hover:border-lime-500 hover:text-lime-400 dark:border-lime-500/40"
+                                        aria-label="Toggle Theme"
+                                    >
+                                        {theme === 'dark' ? (
+                                            <svg className="w-5 h-5 text-lime-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
+                                        ) : (
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+                                        )}
+                                    </button>
+                                </div>
                             </div>
-                            <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                                laradrug<span className="text-indigo-500">.</span>
-                            </span>
-                        </div>
+                        </nav>
 
-                        <div className="flex items-center gap-3">
-                            <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
-                                <Link href={route('home')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl bg-white dark:bg-slate-900 text-indigo-500 shadow-sm border border-slate-200/50 dark:border-slate-800/50">
-                                    Home
+                        <div className="pb-20 pt-16 text-center">
+                            <h1 className="mx-auto mb-8 max-w-3xl text-5xl font-medium tracking-tight text-white md:text-7xl">
+                                Energizing a Green Future
+                            </h1>
+                            <p className="mx-auto mb-10 max-w-2xl text-lg text-white/80">
+                                Our commitment to green energy is paving the way for a cleaner, healthier planet.
+                            </p>
+                            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                                <Link href={route('submit-ticket')} className="fauna-btn-primary">
+                                    Create Ticket
                                 </Link>
-                                {!auth.user ? (
-                                    <Link href={route('login')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
-                                        Sign In
-                                    </Link>
-                                ) : (
-                                    <Link href={route('dashboard')} className="inline-flex items-center px-4 py-2 text-[10px] font-black tracking-widest transition duration-200 ease-in-out rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-300/20 dark:hover:bg-slate-700/20">
+                                <Link
+                                    href={auth.user ? route('dashboard') : route('check-status')}
+                                    className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]"
+                                >
+                                    View Ticket
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="py-14">
+                    <div className="container mx-auto px-4">
+                        <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
+                            {[
+                                { label: 'Total Tickets', value: stats?.totalTickets ?? 0 },
+                                { label: 'Open Tickets', value: stats?.openTickets ?? 0 },
+                                { label: 'In Progress', value: stats?.inProgressTickets ?? 0 },
+                                { label: 'Resolved Tickets', value: stats?.resolvedTickets ?? 0 },
+                            ].map((stat) => (
+                                <div key={stat.label} className="fauna-panel p-8 dark:bg-[#102824] dark:border-[#1d3a34]">
+                                    <h3 className="text-3xl font-semibold">{stat.value}</h3>
+                                    <p className="mt-2 text-slate-600 dark:text-slate-400">{stat.label}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section className="p-4 bg-white dark:bg-[#0b1715]">
+                    <div className="rounded-3xl bg-lime-500 px-6 py-16 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
+                        <div className="container mx-auto px-4">
+                            <p className="mb-4 text-sm font-medium text-teal-900 dark:text-lime-400">How it works</p>
+                            <h2 className="mb-4 text-4xl font-semibold text-teal-900 dark:text-white">How ticketing works</h2>
+                            <p className="mb-12 max-w-2xl text-teal-900/90 dark:text-slate-300">
+                                From your first message to a closed ticket—here is what happens in laradrug.
+                            </p>
+                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                                {ticketingSteps.map((item) => (
+                                    <div
+                                        key={item.step}
+                                        className="rounded-2xl bg-white p-8 dark:bg-[#18342f] dark:border dark:border-[#28524a]"
+                                    >
+                                        <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-teal-900 text-sm font-semibold text-white dark:bg-lime-500 dark:text-[#102824]">
+                                            {item.step}
+                                        </span>
+                                        <h3 className="text-2xl font-medium text-teal-900 dark:text-white">{item.title}</h3>
+                                        <p className="mt-3 text-slate-600 dark:text-slate-300">{item.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="mt-12 flex flex-wrap items-center justify-center gap-4 border-t border-teal-900/20 pt-10 dark:border-[#28524a]">
+                                <Link href={route('submit-ticket')} className="fauna-btn-primary text-sm">
+                                    Create ticket
+                                </Link>
+                                <Link
+                                    href={route('check-status')}
+                                    className="fauna-btn-secondary text-sm dark:!border-lime-500/50 dark:!text-lime-400 dark:hover:!bg-lime-500/10"
+                                >
+                                    Check status
+                                </Link>
+                                {auth.user && (
+                                    <Link
+                                        href={route('dashboard')}
+                                        className="fauna-btn-secondary text-sm dark:!border-lime-500/50 dark:!text-lime-400 dark:hover:!bg-lime-500/10"
+                                    >
                                         Dashboard
                                     </Link>
                                 )}
                             </div>
-
-                            <button
-                                onClick={toggleTheme}
-                                className="w-10 h-10 rounded-2xl flex items-center justify-center glass-card hover:scale-110 active:scale-95 transition-all"
-                                aria-label="Toggle Theme"
-                            >
-                                {theme === 'dark' ? (
-                                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
-                                ) : (
-                                    <svg className="w-5 h-5 text-slate-700" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
-                                )}
-                            </button>
                         </div>
                     </div>
-                </nav>
+                </section>
 
-                <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12">
-                    <div className="max-w-4xl w-full text-center space-y-12">
-
-                        {/* Hero Section */}
-                        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-xs font-semibold tracking-wide text-indigo-600 dark:text-indigo-400 border-indigo-500/20 mb-4">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                                </span>
-                                SUPPORT REDEFINED
-                            </div>
-
-                            <h1 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight">
-                                Reliable support, <br />
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-500 animate-gradient-x">
-                                    at your fingertips.
-                                </span>
-                            </h1>
-
-                            <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 dark:text-slate-400">
-                                laradrug provides a streamlined, professional support for all your needs and inquiries.
-                            </p>
+                <section className="py-16">
+                    <div className="container mx-auto px-4 text-center">
+                        <h2 className="mx-auto mb-10 max-w-5xl text-4xl font-semibold">
+                            Need help with a prescription, refill, or medication concern?
+                        </h2>
+                        <Link href={route('submit-ticket')} className="fauna-btn-primary">Create Ticket</Link>
+                        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+                            {[1, 2, 3, 4].map((n) => (
+                                <div key={n} className="h-40 rounded-2xl bg-slate-200 dark:bg-[#18342f] dark:border dark:border-[#28524a]" />
+                            ))}
                         </div>
+                    </div>
+                </section>
 
+                <section className="py-12">
+                    <div className="container mx-auto px-4">
+                        <div className="mb-12 text-center">
+                            <h2 className="text-5xl font-semibold">FAQ</h2>
+                            <p className="mt-3 text-slate-600 dark:text-slate-400">Here you will find answers to frequently asked questions.</p>
+                        </div>
+                        <div className="mx-auto max-w-4xl space-y-4">
+                            {[
+                                {
+                                    q: 'How do I create a support ticket?',
+                                    a: 'Click "Create Ticket", fill in your contact details, select the support category, describe your issue clearly, and submit.',
+                                },
+                                {
+                                    q: 'Can I check ticket status without logging in?',
+                                    a: 'Yes. Use the "View Ticket" option and search with the same email address used when the ticket was submitted.',
+                                },
+                                {
+                                    q: 'What should I include in my ticket description?',
+                                    a: 'Include medication name, dosage, when the issue happened, what you expected, and what happened instead. Add images when relevant.',
+                                },
+                                {
+                                    q: 'How do updates and replies work?',
+                                    a: 'Our support/admin team responds in the ticket conversation thread. You can return to the ticket page and continue the discussion.',
+                                },
+                                {
+                                    q: 'Can I edit or add more information after submission?',
+                                    a: 'Yes. Open your ticket to add comments and attachments. If the ticket is still open, you can provide additional context for faster resolution.',
+                                },
+                            ].map((item) => (
+                                <details key={item.q} className="fauna-panel p-6 dark:bg-[#102824] dark:border-[#1d3a34]">
+                                    <summary className="cursor-pointer font-medium">{item.q}</summary>
+                                    <p className="mt-3 text-slate-600 dark:text-slate-400">{item.a}</p>
+                                </details>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+
+                <section className="bg-orange-50 py-16 dark:bg-[#0b1715]">
+                    <div className="container mx-auto px-4">
                         <FlashHandler />
-
-                        {/* Action Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-                            <Link
-                                href={route('submit-ticket')}
-                                className="group relative p-10 rounded-[2.5rem] glass-card overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/20"
-                            >
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[60px] group-hover:bg-indigo-500/20 transition-colors" />
-                                <div className="relative z-10 flex flex-col items-center text-center">
-                                    <div className="w-16 h-16 mb-6 rounded-2xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/40">
-                                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" /></svg>
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Open a Ticket</h2>
-                                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                        Describe your issue and our experts will get back to you within minutes.
-                                    </p>
+                        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-4">
+                            <div>
+                                <div className="mb-4 inline-flex items-center gap-2">
+                                    <ApplicationLogo className="h-6 w-6" />
+                                    <span className="font-semibold">laradrug</span>
                                 </div>
-                            </Link>
-
-                            <Link
-                                href={auth.user ? route('dashboard') : route('check-status')}
-                                className="group relative p-10 rounded-[2.5rem] glass-card overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-slate-500/10"
-                            >
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-slate-500/5 blur-[60px] group-hover:bg-indigo-500/5 transition-colors" />
-                                <div className="relative z-10 flex flex-col items-center text-center">
-                                    <div className="w-16 h-16 mb-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 shadow-xl group-hover:border-indigo-500/50 transition-colors">
-                                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Check Status</h2>
-                                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                                        Track your existing inquiries and view historical support data instantly.
-                                    </p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">
+                                <div>
+                                    <h4 className="mb-4 font-bold">Platform</h4>
+                                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                                        <li>Solutions</li>
+                                        <li>How it works</li>
+                                        <li>Pricing</li>
+                                    </ul>
                                 </div>
-                            </Link>
+                                <div>
+                                    <h4 className="mb-4 font-bold">Resources</h4>
+                                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                                        <li>Blog</li>
+                                        <li>Help Center</li>
+                                        <li>Support</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="mb-4 font-bold">Company</h4>
+                                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                                        <li>About</li>
+                                        <li>Mission</li>
+                                        <li>Careers</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="rounded-2xl bg-teal-900 p-6 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
+                                <h4 className="mb-3 text-xl font-medium text-white">Open a new support request</h4>
+                                <p className="mb-6 text-white/80">Use the ticket system to report issues, request updates, or ask for help.</p>
+                                <Link href={route('submit-ticket')} className="fauna-btn-primary w-full">Create Ticket</Link>
+                            </div>
                         </div>
                     </div>
-                </main>
+                </section>
 
-                {/* Footer */}
-                <footer className="relative z-10 px-6 py-12 mt-auto border-t border-slate-200/60 dark:border-slate-800/60">
-                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+                <footer className="border-t border-slate-200 px-6 py-16 dark:border-slate-800">
+                    <div className="container mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
                         <div className="flex items-center gap-2 opacity-60">
                             <ApplicationLogo className="w-5 h-5" />
-                            <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
+                            <span className="text-sm font-semibold tracking-wide">laradrug</span>
                         </div>
-                        <p className="text-sm text-slate-500 dark:text-slate-500">
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
                             &copy; {new Date().getFullYear()} laradrug. All rights reserved.
                         </p>
-                        <div className="flex gap-6">
-                            <a href="#" className="text-xs font-semibold text-slate-400 hover:text-indigo-500 transition-colors tracking-widest">Privacy</a>
-                            <a href="#" className="text-xs font-semibold text-slate-400 hover:text-indigo-500 transition-colors tracking-widest">Terms</a>
-                        </div>
                     </div>
                 </footer>
             </div>

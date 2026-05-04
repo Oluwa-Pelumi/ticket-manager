@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TicketController;
@@ -11,7 +12,14 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return Inertia::render('Home/index');
+    return Inertia::render('Home/index', [
+        'stats' => [
+            'totalTickets'      => Ticket::count(),
+            'openTickets'       => Ticket::where('status', 'open')->count(),
+            'inProgressTickets' => Ticket::where('status', 'in-progress')->count(),
+            'resolvedTickets'   => Ticket::where('status', 'closed')->count(),
+        ],
+    ]);
 })->name('home');
 
 Route::get('/submit-ticket', function () {

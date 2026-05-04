@@ -14,13 +14,13 @@ export default function AuthenticatedLayout({ header, children }) {
         useState(false);
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 selection:bg-indigo-500 selection:text-white">
+        <div className="fauna-shell min-h-screen transition-colors duration-500 selection:bg-lime-500 selection:text-teal-900">
 
             {/* Background Layer */}
-            <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-40 dark:opacity-20" />
+            <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10" />
 
             {/* Navigation Bar */}
-            <nav className="glass-navbar relative z-50">
+            <nav className="relative z-50 border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur dark:border-[#1d3a34] dark:bg-[#0b1715]/90">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-20 justify-between items-center">
 
@@ -28,29 +28,29 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex items-center gap-8">
                             <Link href="/" className="flex items-center gap-3 group">
                                 <div className="w-10 h-10 p-2 rounded-xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200/50 dark:border-slate-800/50 transition-transform group-hover:scale-110">
-                                    <ApplicationLogo className="w-full h-full text-indigo-500" />
+                                    <ApplicationLogo className="w-full h-full text-teal-900 dark:text-lime-400" />
                                 </div>
                                 <span className="hidden sm:block text-xl font-black tracking-tight text-slate-900 dark:text-white">
-                                    laradrug<span className="text-indigo-500">.</span>
+                                    laradrug<span className="text-lime-500">.</span>
                                 </span>
                             </Link>
 
-                            <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                                {user.role === 'admin' && (
+                            {user?.role === 'admin' && (
+                                <div className="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#102824]/70 rounded-2xl border border-slate-200/50 dark:border-[#1d3a34] backdrop-blur-md">
+                                    <NavLink
+                                        href={route('dashboard')}
+                                        active={route().current('dashboard')}
+                                    >
+                                        Dashboard
+                                    </NavLink>
                                     <NavLink
                                         href={route('admin.users')}
                                         active={route().current('admin.users.*')}
                                     >
                                         Users Management
                                     </NavLink>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Right: Theme Toggle + User Dropdown */}
@@ -59,7 +59,7 @@ export default function AuthenticatedLayout({ header, children }) {
                              {/* Theme Toggle */}
                             <button
                                 onClick={toggleTheme}
-                                className="w-10 h-10 rounded-2xl flex items-center justify-center glass-card border-slate-200/50 dark:border-slate-800/50 text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-all"
+                                className="w-10 h-10 rounded-2xl flex items-center justify-center border border-slate-200/50 bg-white text-slate-500 transition-all hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400"
                                 title="Toggle theme"
                             >
                                 {theme === 'dark' ? (
@@ -69,40 +69,41 @@ export default function AuthenticatedLayout({ header, children }) {
                                 )}
                             </button>
 
-                            {/* User Dropdown */}
-                            <div className="relative">
-                                <Dropdown>
-                                    <Dropdown.Trigger>
-                                         <button
-                                            type="button"
-                                            className="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border-slate-200/50 dark:border-slate-800/50 hover:border-indigo-500/50 transition-all"
-                                        >
-                                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-[10px] font-black shadow-lg shadow-indigo-500/30">
-                                                {user.name.charAt(0).toUpperCase()}
-                                            </div>
-                                            <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[120px]">
-                                                {user.name}
-                                            </span>
-                                            <svg className="h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </Dropdown.Trigger>
+                            {user?.role === 'admin' && (
+                                <div className="relative">
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                             <button
+                                                type="button"
+                                                className="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border-slate-200/50 dark:border-slate-800/50 hover:border-lime-500/50 transition-all"
+                                            >
+                                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-900 to-teal-700 flex items-center justify-center text-white text-[10px] font-black shadow-lg">
+                                                    {user?.name?.charAt(0).toUpperCase()}
+                                                </div>
+                                                <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[120px]">
+                                                    {user?.name}
+                                                </span>
+                                                <svg className="h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </Dropdown.Trigger>
 
-                                    <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>
-                                            Profile Settings
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('logout')}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Sign Out
-                                        </Dropdown.Link>
-                                    </Dropdown.Content>
-                                </Dropdown>
-                            </div>
+                                        <Dropdown.Content>
+                                            <Dropdown.Link href={route('profile.edit')}>
+                                                Profile Settings
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route('logout')}
+                                                method="post"
+                                                as="button"
+                                            >
+                                                Sign Out
+                                            </Dropdown.Link>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+                                </div>
+                            )}
                         </div>
 
                         {/* Mobile Controls */}
@@ -131,45 +132,45 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
 
-                {/* Mobile Dropdown Menu */}
-                <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden glass-navbar !fixed !top-20 !inset-x-0 !border-t-0'}>
-                    <div className="p-4 space-y-4">
-                        <div className="space-y-1">
-                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                Dashboard
-                            </ResponsiveNavLink>
-                            {user.role === 'admin' && (
+                {/* Mobile Dropdown Menu - admin only */}
+                {user?.role === 'admin' && (
+                    <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden glass-navbar !fixed !top-20 !inset-x-0 !border-t-0'}>
+                        <div className="p-4 space-y-4">
+                            <div className="space-y-1">
+                                <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                    Dashboard
+                                </ResponsiveNavLink>
                                 <ResponsiveNavLink href={route('admin.users')} active={route().current('admin.users.*')}>
                                     Users Management
                                 </ResponsiveNavLink>
-                            )}
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-black">
-                                    {user.name.charAt(0).toUpperCase()}
-                                </div>
-                                <div>
-                                    <div className="text-base font-bold text-slate-900 dark:text-white">{user.name}</div>
-                                    <div className="text-sm text-slate-500 dark:text-slate-400">{user.email}</div>
-                                </div>
                             </div>
-                            <div className="space-y-1">
-                                <ResponsiveNavLink href={route('profile.edit')}>Profile Settings</ResponsiveNavLink>
-                                <ResponsiveNavLink method="post" href={route('logout')} as="button">Sign Out</ResponsiveNavLink>
+
+                            <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-900 to-teal-700 flex items-center justify-center text-white font-black">
+                                        {user?.name?.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <div className="text-base font-bold text-slate-900 dark:text-white">{user?.name}</div>
+                                        <div className="text-sm text-slate-500 dark:text-slate-400">{user?.email}</div>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <ResponsiveNavLink href={route('profile.edit')}>Profile Settings</ResponsiveNavLink>
+                                    <ResponsiveNavLink method="post" href={route('logout')} as="button">Sign Out</ResponsiveNavLink>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
             </nav>
 
             {/* Page Header */}
             {header && (
                 <header className="relative z-10 py-10">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="p-10 rounded-[2.5rem] glass-card border-white/20 dark:border-slate-800/50 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-30" />
+                        <div className="fauna-panel relative overflow-hidden p-10">
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                             {header}
                         </div>
                     </div>

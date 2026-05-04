@@ -62,7 +62,7 @@ export default function Dashboard({ auth, tickets }) {
                       textArea.style.position = "fixed";
                       textArea.style.left     = "-9999px";
                       textArea.style.top      = "0";
-                      
+
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
@@ -176,8 +176,8 @@ export default function Dashboard({ auth, tickets }) {
             );
         }
         return sortConfig.direction === 'asc'
-            ? <svg className="w-3 h-3 ml-1 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 15l7-7 7 7"/></svg>
-            : <svg className="w-3 h-3 ml-1 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>;
+            ? <svg className="w-3 h-3 ml-1 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 15l7-7 7 7"/></svg>
+            : <svg className="w-3 h-3 ml-1 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>;
     };
 
     const { patch, delete: destroy, processing } = useForm({});
@@ -250,7 +250,7 @@ export default function Dashboard({ auth, tickets }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 border border-white/20">
+                    <div className="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
                         <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
@@ -262,17 +262,17 @@ export default function Dashboard({ auth, tickets }) {
                         <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Overview & Management</span>
                     </div>
                     {selectedIds.length > 0 && (
-                        <div className="ml-auto flex items-center px-4 py-2 rounded-xl bg-indigo-500 text-white text-[10px] font-black tracking-widest shadow-lg shadow-indigo-500/30 animate-in zoom-in duration-300">
+                        <div className="ml-auto flex items-center px-4 py-2 rounded-xl bg-teal-900 text-white text-[10px] font-black tracking-widest shadow-lg animate-in zoom-in duration-300">
                             Selected: {selectedIds.length} tickets
                         </div>
                     )}
                 </div>
             }
         >
-            <Head title="Enterprise Dashboard" />
+            <Head title="Dashboard" />
 
             <div className="max-w-7xl mx-auto py-12 px-6">
-                
+
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
                     <div>
                         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Ticket Management</h1>
@@ -282,11 +282,11 @@ export default function Dashboard({ auth, tickets }) {
                     </div>
                     <div className="flex w-full md:w-auto items-center justify-between md:justify-end gap-4">
                         {selectedIds.length > 0 && auth.user.role === 'admin' && (
-                            <div className="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in duration-300">
+                            <div className="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-[#102824] rounded-2xl border border-slate-200 dark:border-[#1d3a34] animate-in fade-in zoom-in duration-300">
                                 <span className="hidden sm:inline text-xs font-bold text-slate-600 dark:text-slate-400 px-2">{selectedIds.length} Selected</span>
                                 <select
                                     onChange={(e) => handleBulkStatusChange(e.target.value)}
-                                    className="text-[10px] md:text-xs font-black bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10"
+                                    className="text-[10px] md:text-xs font-black bg-white dark:bg-[#18342f] text-slate-600 dark:text-slate-300 border-none rounded-xl focus:ring-2 focus:ring-lime-500 py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10"
                                     defaultValue=""
                                 >
                                     <option value="" disabled>Status</option>
@@ -304,7 +304,7 @@ export default function Dashboard({ auth, tickets }) {
                             </div>
                         )}
                         {auth.user.role !== 'admin' && (
-                            <Link href={route('submit-ticket')} className="w-full md:w-auto text-center px-6 py-3 bg-indigo-500 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all">
+                            <Link href={route('submit-ticket')} className="w-full md:w-auto text-center px-6 py-3 bg-teal-900 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-105 active:scale-95 transition-all">
                                 Submit Ticket
                             </Link>
                         )}
@@ -314,7 +314,7 @@ export default function Dashboard({ auth, tickets }) {
                 <FlashHandler />
 
                 {/* Filter Bar */}
-                <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50">
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-slate-200/50 dark:border-[#1d3a34]">
                     <div className="flex items-center space-x-2 w-full sm:w-auto">
                         <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                         <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Filters:</span>
@@ -324,7 +324,7 @@ export default function Dashboard({ auth, tickets }) {
                         <select
                             value={filters.status}
                             onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer"
+                            className="bg-white dark:bg-[#18342f] border border-slate-200 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
                         >
                             <option value="">All Statuses</option>
                             <option value="open">Open</option>
@@ -335,7 +335,7 @@ export default function Dashboard({ auth, tickets }) {
                         <select
                             value={filters.priority}
                             onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
-                            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer"
+                            className="bg-white dark:bg-[#18342f] border border-slate-200 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
                         >
                             <option value="">All Priorities</option>
                             <option value="low">Low</option>
@@ -346,7 +346,7 @@ export default function Dashboard({ auth, tickets }) {
                         <select
                             value={filters.subject}
                             onChange={(e) => setFilters(prev => ({ ...prev, subject: e.target.value }))}
-                            className="col-span-2 sm:col-span-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer"
+                            className="col-span-2 sm:col-span-1 bg-white dark:bg-[#18342f] border border-slate-200 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
                         >
                             <option value="">All Subjects</option>
                             {subjects.map((sub, idx) => <option key={idx} value={sub.value}>{sub.name}</option>)}
@@ -368,15 +368,15 @@ export default function Dashboard({ auth, tickets }) {
                     </div>
                 </div>
 
-                <div className="relative group overflow-hidden rounded-[2.5rem] glass-card border-white/20 dark:border-slate-800/50 shadow-2xl transition-all duration-500 hover:shadow-indigo-500/10">
+                <div className="relative group overflow-hidden rounded-[2.5rem] fauna-panel transition-all duration-500 hover:shadow-lime-500/10">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left table-fixed">
                             <thead>
-                                <tr className="border-b border-slate-200 dark:border-slate-800">
+                                <tr className="border-b border-slate-200 dark:border-[#1d3a34]">
                                     <th className="w-12 md:w-16 px-4 md:px-6 py-4">
                                         <input
                                             type="checkbox"
-                                            className="rounded-lg border-slate-300 dark:border-slate-700 text-indigo-500 focus:ring-indigo-500 dark:bg-slate-800 transition-colors cursor-pointer"
+                                            className="rounded-lg border-slate-300 dark:border-slate-700 text-teal-900 focus:ring-lime-500 dark:bg-slate-800 transition-colors cursor-pointer"
                                             checked={tickets.length > 0 && selectedIds.length === tickets.length}
                                             onChange={toggleSelectAll}
                                         />
@@ -439,20 +439,20 @@ export default function Dashboard({ auth, tickets }) {
                                 {sortedTickets.length > 0 ? sortedTickets.map((ticket, idx) => (
                                     <Fragment key={idx}>
                                         <tr
-                                            className={`group hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-all duration-300 cursor-pointer ${expandedId === ticket.id ? 'bg-slate-50/80 dark:bg-slate-800/80' : ''}`}
+                                            className={`group hover:bg-slate-50/50 dark:hover:bg-[#18342f]/70 transition-all duration-300 cursor-pointer ${expandedId === ticket.id ? 'bg-slate-50/80 dark:bg-[#18342f]/80' : ''}`}
                                             onClick={() => toggleExpand(ticket.id)}
                                         >
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <input
                                                     type="checkbox"
-                                                    className="rounded-lg border-slate-300 dark:border-slate-700 text-indigo-500 focus:ring-indigo-500 dark:bg-slate-800 transition-colors cursor-pointer"
+                                                    className="rounded-lg border-slate-300 dark:border-slate-700 text-teal-900 focus:ring-lime-500 dark:bg-slate-800 transition-colors cursor-pointer"
                                                     checked={selectedIds.includes(ticket.id)}
                                                     onChange={() => toggleSelect(ticket.id)}
                                                 />
                                             </td>
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex items-center gap-2 group/id-cell">
-                                                    <span className="text-[10px] md:text-sm font-bold text-slate-500 group-hover:text-indigo-500 transition-colors tracking-tight">#{ticket.id.substring(0, 4)}...</span>
+                                                    <span className="text-[10px] md:text-sm font-bold text-slate-500 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight">#{ticket.id.substring(0, 4)}...</span>
                                                 </div>
                                             </td>
                                             <td className="px-4 md:px-6 py-4">
@@ -488,8 +488,8 @@ export default function Dashboard({ auth, tickets }) {
                                                     <select
                                                         value={ticket.status}
                                                         onChange={(e) => handleStatusUpdate(ticket.id, e.target.value)}
-                                                        className={`text-[10px] md:text-xs font-black tracking-widest rounded-xl border-none focus:ring-2 focus:ring-indigo-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all ${
-                                                            ticket.status === 'open' ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20' :
+                                                        className={`text-[10px] md:text-xs font-black tracking-widest rounded-xl border-none focus:ring-2 focus:ring-lime-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all ${
+                                                            ticket.status === 'open' ? 'bg-teal-900 text-white shadow-lg' :
                                                             ticket.status === 'in-progress' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' :
                                                             'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                                                         }`}
@@ -533,7 +533,7 @@ export default function Dashboard({ auth, tickets }) {
                                                     )}
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); toggleExpand(ticket.id); }}
-                                                        className={`p-1.5 md:p-2 rounded-lg transition-all ${expandedId === ticket.id ? 'bg-indigo-500 text-white rotate-180' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-500'}`}
+                                                    className={`p-1.5 md:p-2 rounded-lg transition-all ${expandedId === ticket.id ? 'bg-teal-900 text-white rotate-180' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-teal-900 dark:hover:text-lime-400'}`}
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>
                                                     </button>
@@ -551,23 +551,23 @@ export default function Dashboard({ auth, tickets }) {
                                         </tr>
                                         {expandedId === ticket.id && (
                                             <tr className="bg-slate-50/50 dark:bg-slate-800/30 animate-in slide-in-from-top-2 duration-300">
-                                                <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-indigo-500">
+                                                <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-lime-500">
                                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                                         <div className="space-y-8">
                                                             <div>
                                                                 <h4 className="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
-                                                                    <svg className="w-5 h-5 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                                    <svg className="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                                                     Specifications
                                                                 </h4>
 
-                                                                <div className="p-8 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                                                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-20" />
-                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.3em]">Control Reference</div>
+                                                                <div className="p-8 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-slate-200 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
+                                                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30" />
+                                                                    <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em]">Control Reference</div>
                                                                     <div className="flex items-center gap-3 mb-8 group/id">
                                                                         <div className="text-2xl text-slate-900 dark:text-white font-black tracking-tight">{ticket.id}</div>
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); handleCopy(ticket.id); }}
-                                                    className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-500 transition-all border border-transparent hover:border-indigo-500/20"
+                                                    className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
                                                     title="Copy ID"
                                                 >
                                                                             {copiedId === ticket.id ? (
@@ -581,10 +581,10 @@ export default function Dashboard({ auth, tickets }) {
                                                                         </button>
                                                                     </div>
 
-                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Subject</div>
+                                                                    <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Subject</div>
                                                                     <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{subjects.find(s => s.value == ticket.subject)?.name}</div>
 
-                                                                    <div className="text-[10px] font-black text-indigo-500 mb-2 tracking-[0.2em]">Description</div>
+                                                                    <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Description</div>
                                                                     <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm">{ticket.content}</div>
                                                                 </div>
                                                             </div>
@@ -627,7 +627,7 @@ export default function Dashboard({ auth, tickets }) {
                                                                 <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar mb-6">
                                                                     {ticket.comments?.length > 0 ? ticket.comments.map((comment, ci) => (
                                                                         <div key={ci} className={`flex flex-col ${comment.user_id === auth.user.id ? 'items-end' : 'items-start'}`}>
-                                                                            <div className={`max-w-[85%] p-5 rounded-[2rem] ${comment.user_id === auth.user.id ? 'bg-indigo-500 text-white shadow-xl shadow-indigo-500/10' : 'glass-card text-slate-900 dark:text-white'}`}>
+                                                                            <div className={`max-w-[85%] p-5 rounded-[2rem] ${comment.user_id === auth.user.id ? 'bg-teal-900 text-white shadow-xl' : 'fauna-panel text-slate-900 dark:text-white'}`}>
                                                                                 <div className="flex items-center space-x-3 mb-2">
                                                                                     <span className="text-[9px] font-black tracking-widest opacity-80">{comment.user?.name}</span>
                                                                                     <span className="text-[9px] opacity-40">{new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
@@ -651,15 +651,13 @@ export default function Dashboard({ auth, tickets }) {
 
                                                                 {(auth.user.role === 'admin' || auth.user.id === ticket.user_id) && (
                                                                     <form onSubmit={(e) => handleCommentSubmit(e, ticket.id)} className="space-y-4">
-                                                                        {console.log(auth.user.id, ticket.user_id)}
-
                                                                             <div className="relative group/comment">
                                                                                 <textarea
                                                                                     value={commentForm.data.content}
                                                                                     onChange={e => commentForm.setData('content', e.target.value)}
                                                                                     placeholder="Secure communication channel..."
                                                                                     rows="4"
-                                                                                    className="w-full px-6 py-5 rounded-[2rem] bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all resize-none shadow-inner font-medium"
+                                                                                    className="w-full px-6 py-5 rounded-[2rem] bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-inner font-medium"
                                                                                 ></textarea>
 
                                                                                 <div className="absolute bottom-5 right-5 flex items-center space-x-3">
@@ -675,13 +673,13 @@ export default function Dashboard({ auth, tickets }) {
                                                                                             setCommentPreviewUrls(files.map(f => URL.createObjectURL(f)));
                                                                                         }}
                                                                                     />
-                                                                                    <label htmlFor={`comment-images-${ticket.id}`} className="p-3 text-slate-400 hover:text-indigo-500 hover:bg-indigo-500/10 rounded-2xl cursor-pointer transition-all">
+                                                                                    <label htmlFor={`comment-images-${ticket.id}`} className="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl cursor-pointer transition-all">
                                                                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                                                                     </label>
                                                                                     <button
                                                                                         type="submit"
                                                                                         disabled={commentForm.processing || !commentForm.data.content.trim()}
-                                                                                        className="px-6 py-3 bg-indigo-500 text-white rounded-2xl shadow-xl shadow-indigo-500/20 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 font-black text-xs tracking-widest"
+                                                                                        className="px-6 py-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 font-black text-xs tracking-widest"
                                                                                     >
                                                                                         {commentForm.processing ? 'Sending...' : 'Send'}
                                                                                     </button>
@@ -756,7 +754,7 @@ export default function Dashboard({ auth, tickets }) {
                                         type="text"
                                         value={editForm.data.subject}
                                         onChange={e => editForm.setData('subject', e.target.value)}
-                                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all"
                                     />
                                     {editForm.errors.subject && <p className="text-rose-500 text-xs">{editForm.errors.subject}</p>}
                                 </div>
@@ -765,7 +763,7 @@ export default function Dashboard({ auth, tickets }) {
                                     <select
                                         value={editForm.data.priority}
                                         onChange={e => editForm.setData('priority', e.target.value)}
-                                        className="w-full pl-4 pr-10 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                                        className="w-full pl-4 pr-10 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all"
                                     >
                                         <option value="low">⬇️ Low</option>
                                         <option value="medium">⚡ Medium</option>
@@ -781,7 +779,7 @@ export default function Dashboard({ auth, tickets }) {
                                     value={editForm.data.content}
                                     onChange={e => editForm.setData('content', e.target.value)}
                                     rows="4"
-                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all resize-none"
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none"
                                 ></textarea>
                                 {editForm.errors.content && <p className="text-rose-500 text-xs">{editForm.errors.content}</p>}
                             </div>
@@ -799,7 +797,7 @@ export default function Dashboard({ auth, tickets }) {
                                     />
                                     <label
                                         htmlFor="edit-images"
-                                        className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-indigo-500 cursor-pointer transition-all border border-slate-200 dark:border-slate-700"
+                                        className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all border border-slate-200 dark:border-slate-700"
                                     >
                                         Add Images
                                     </label>
@@ -837,7 +835,7 @@ export default function Dashboard({ auth, tickets }) {
                                 <button
                                     type="submit"
                                     disabled={editForm.processing}
-                                    className="flex-[2] py-4 px-6 rounded-2xl bg-indigo-500 text-white font-black text-xs tracking-widest shadow-xl shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                                    className="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
                                 >
                                     {editForm.processing ? 'Synchronizing Ticket...' : 'Synchronize Ticket'}
                                 </button>
