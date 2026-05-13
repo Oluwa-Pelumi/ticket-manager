@@ -20,6 +20,8 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         priority: '',
     });
     const [copiedId, setCopiedId]                    = useState(null);
+    const [rowsPerPage, setRowsPerPage]              = useState(10);
+    const [currentPage, setCurrentPage]              = useState(1);
     // Editing State
     const [editingTicket, setEditingTicket]          = useState(null);
     const [previewUrls, setPreviewUrls]              = useState([]);
@@ -116,8 +118,8 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         return tickets.filter(ticket => {
             const matchesStatus   = !filters.status   || ticket.status   === filters.status;
             const matchesPriority = !filters.priority || ticket.priority === filters.priority;
-            const matchesSubject  = !filters.subject  || 
-                                   (ticket.category?.slug === filters.subject) || 
+            const matchesSubject  = !filters.subject  ||
+                                   (ticket.category?.slug === filters.subject) ||
                                    (ticket.subject === filters.subject);
             return matchesStatus && matchesPriority && matchesSubject;
         });
@@ -148,6 +150,19 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
 
     const clearFilters = () => {
         setFilters({ status: '', priority: '', subject: '' });
+        setCurrentPage(1);
+    };
+
+    // Pagination Logic
+    const totalPages = Math.ceil(sortedTickets.length / rowsPerPage);
+    const paginatedTickets = sortedTickets.slice(
+        (currentPage - 1) * rowsPerPage,
+        currentPage * rowsPerPage
+    );
+
+    const handleRowsPerPageChange = (e) => {
+        setRowsPerPage(parseInt(e.target.value));
+        setCurrentPage(1);
     };
 
     const requestSort = (key) => {
@@ -169,7 +184,42 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
             : <svg className="w-3 h-3 ml-1 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>;
     };
 
-    const { patch, delete: destroy, processing } = useForm({});
+    const { patch, post, delete: destroy, processing } = useForm({});
+
+    const handleActivateOrder = async (ticketId) => {
+        const ticket = tickets.find(t => t.id === ticketId);
+        if (ticket && ticket.order_activations?.length > 0) {
+            const lastActivation = new Date(ticket.order_activations[ticket.order_activations.length - 1]);
+            const now = new Date();
+            const diffDays = (now - lastActivation) / (1000 * 60 * 60 * 24);
+            
+            let requiredDays = 0;
+            const period = ticket.recurrence_period?.toLowerCase();
+            switch (period) {
+                case 'daily':     requiredDays = 1; break;
+                case 'weekly':    requiredDays = 7; break;
+                case 'monthly':   requiredDays = 30; break;
+                case 'quarterly': requiredDays = 90; break;
+                case 'yearly':    requiredDays = 365; break;
+                default:          requiredDays = 0;
+            }
+
+            if (requiredDays > 0 && diffDays < requiredDays) {
+                const confirmed = await showConfirm({
+                    type: 'warning',
+                    title: 'Early Processing Warning',
+                    message: `Security Check: This ${period} order was last processed on ${lastActivation.toLocaleString()}. Only ${diffDays.toFixed(1)} days have passed, but the schedule requires ${requiredDays} days. Proceed anyway?`,
+                    confirmText: 'Confirm & Process',
+                });
+                if (!confirmed) return;
+            }
+        }
+
+        post(route('tickets.activate-order', { ticket: ticketId }), {
+            preserveScroll: true,
+            onSuccess: () => showAlert('Order processed and recorded successfully.', 'success'),
+        });
+    };
 
     const handleStatusUpdate = (id, newStatus) => {
         patch(route('update-ticket-status', { id, status: newStatus }), {
@@ -260,7 +310,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         >
             <Head title="Dashboard" />
 
-            <div className="max-w-7xl mx-auto py-12 px-6">
+            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-12 px-2 sm:px-4 lg:px-6">
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
                     <div>
@@ -352,14 +402,29 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                         )}
                     </div>
 
-                    <div className="w-full sm:w-auto sm:ml-auto text-right text-[10px] font-black tracking-[0.2em] text-slate-400">
-                        Showing {filteredTickets.length} of {tickets.length}
+                    <div className="flex items-center gap-4 w-full sm:w-auto sm:ml-auto">
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Rows:</span>
+                            <select
+                                value={rowsPerPage}
+                                onChange={handleRowsPerPageChange}
+                                className="text-[10px] font-black bg-slate-100 dark:bg-[#18342f] text-slate-600 dark:text-slate-300 border-none rounded-lg focus:ring-2 focus:ring-lime-500 py-1 pl-2 pr-8 transition-all cursor-pointer"
+                            >
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={50}>50</option>
+                                <option value={100}>100</option>
+                            </select>
+                        </div>
+                        <div className="text-[10px] font-black tracking-[0.2em] text-slate-400">
+                            Showing {(currentPage - 1) * rowsPerPage + 1} - {Math.min(currentPage * rowsPerPage, sortedTickets.length)} of {sortedTickets.length}
+                        </div>
                     </div>
                 </div>
 
                 <div className="relative group overflow-hidden rounded-[2.5rem] fauna-panel transition-all duration-500 hover:shadow-lime-500/10">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left table-fixed">
+                    <div className="overflow-x-auto custom-scrollbar">
+                        <table className="w-full text-left min-w-[800px] lg:min-w-full border-collapse">
                             <thead>
                                 <tr className="border-b border-emerald-900/10 dark:border-[#1d3a34]">
                                     <th className="w-12 md:w-16 px-4 md:px-6 py-4">
@@ -378,7 +443,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             ID {getSortIcon('id')}
                                         </button>
                                     </th>
-                                    <th className="px-4 md:px-6 py-4">
+                                    <th className="w-28 md:w-36 px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('subject')}
                                             className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
@@ -387,13 +452,20 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                         </button>
                                     </th>
                                     {auth.user.role === 'admin' && (
-                                        <th className="hidden lg:table-cell px-6 py-4">
+                                        <th className="hidden lg:table-cell w-32 md:w-44 px-4 md:px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('user')}
                                                 className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                             >
                                                 User {getSortIcon('user')}
                                             </button>
+                                        </th>
+                                    )}
+                                    {auth.user.role === 'admin' && (
+                                        <th className="hidden lg:table-cell w-36 md:w-48 px-4 md:px-6 py-4">
+                                            <div className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
+                                                Order Details
+                                            </div>
                                         </th>
                                     )}
                                     <th className="hidden sm:table-cell w-32 px-6 py-4">
@@ -425,7 +497,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                             </thead>
 
                             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                                {sortedTickets.length > 0 ? sortedTickets.map((ticket, idx) => (
+                                {paginatedTickets.length > 0 ? paginatedTickets.map((ticket, idx) => (
                                     <Fragment key={idx}>
                                         <tr
                                             className={`group hover:bg-emerald-50/50 dark:hover:bg-[#18342f]/70 transition-all duration-300 cursor-pointer ${expandedId === ticket.id ? 'bg-emerald-50/50/80 dark:bg-[#18342f]/80' : ''}`}
@@ -448,12 +520,42 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                 <div className="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1">
                                                     {ticket.category?.name || ticket.subject.replace(/_/g, ' ')}
                                                 </div>
-                                                <div className="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[80px] md:max-w-xs">{ticket.content}</div>
+                                                <div className="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[60px] md:max-w-[120px]">{ticket.content}</div>
                                             </td>
                                             {auth.user.role === 'admin' && (
-                                                <td className="hidden lg:table-cell px-6 py-4">
-                                                    <div className="text-sm font-medium text-slate-900 dark:text-white">{ticket.name || ticket.user?.name}</div>
-                                                    <div className="text-xs text-slate-600 dark:text-slate-400">{ticket.email || ticket.user?.email}</div>
+                                                <td className="hidden lg:table-cell px-4 md:px-6 py-4">
+                                                    <div className="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[120px]">{ticket.name || ticket.user?.name}</div>
+                                                    <div className="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px]">{ticket.email || ticket.user?.email}</div>
+                                                </td>
+                                            )}
+                                            {auth.user.role === 'admin' && (
+                                                <td className="hidden lg:table-cell px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                                                    {ticket.order_type ? (
+                                                        <div className="flex flex-col gap-2">
+                                                            <div className="flex items-center gap-1.5 flex-wrap">
+                                                                <span className={`px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider ${ticket.order_type === 'recurrent' ? 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' : 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>
+                                                                    {ticket.order_type}
+                                                                </span>
+                                                                {ticket.order_type === 'recurrent' && (
+                                                                    <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#18342f] px-1.5 py-0.5 rounded border border-emerald-900/10 dark:border-[#28524a]">
+                                                                        {ticket.recurrence_period === 'custom' ? ticket.custom_recurrence_date : ticket.recurrence_period}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            {ticket.order_activations?.length > 0 && (
+                                                                <div className="flex flex-col">
+                                                                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
+                                                                        Last Order Processing:
+                                                                    </span>
+                                                                    <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400">
+                                                                        {new Date(ticket.order_activations[ticket.order_activations.length - 1]).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-[10px] italic text-slate-400 tracking-widest">General Ticket</span>
+                                                    )}
                                                 </td>
                                             )}
                                             <td className="hidden sm:table-cell px-6 py-4">
@@ -528,6 +630,16 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>
                                                     </button>
+                                                    {auth.user.role === 'admin' && ticket.order_type && (
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleActivateOrder(ticket.id); }}
+                                                            className="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] hover:scale-110 transition-all shadow-md"
+                                                            title="Process Order"
+                                                            disabled={processing}
+                                                        >
+                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                                        </button>
+                                                    )}
                                                     {auth.user.role === 'admin' && (
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); handleDelete(ticket.id); }}
@@ -542,7 +654,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                         </tr>
                                         {expandedId === ticket.id && (
                                             <tr className="bg-emerald-50/50 dark:bg-[#18342f]/30 animate-in slide-in-from-top-2 duration-300">
-                                                <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-lime-500">
+                                                <td colSpan={auth.user.role === 'admin' ? 9 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-lime-500">
                                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                                         <div className="space-y-8">
                                                             <div>
@@ -580,7 +692,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
 
                                                                     {ticket.order_type && (
                                                                         <div className="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                                                                            <h4 className="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">Order Configuration</h4>
+                                                                            <h4 className="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">Order Information</h4>
                                                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                                                 <div>
                                                                                     <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
@@ -590,13 +702,27 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                                                     <div>
                                                                                         <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Interval / Period</div>
                                                                                         <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">
-                                                                                            {ticket.recurrence_period === 'custom' 
-                                                                                                ? `Custom: ${ticket.custom_recurrence_date}` 
+                                                                                            {ticket.recurrence_period === 'custom'
+                                                                                                ? `Custom: ${ticket.custom_recurrence_date}`
                                                                                                 : ticket.recurrence_period.replace('-', ' ')}
                                                                                         </div>
                                                                                     </div>
                                                                                 )}
                                                                             </div>
+
+                                                                            {ticket.order_activations?.length > 0 && (
+                                                                                <div className="mt-6">
+                                                                                    <div className="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">Order Process History</div>
+                                                                                    <div className="space-y-1">
+                                                                                        {ticket.order_activations.map((date, i) => (
+                                                                                            <div key={i} className="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                                <div className="w-1 h-1 rounded-full bg-lime-500" />
+                                                                                                {new Date(date).toLocaleString()}
+                                                                                            </div>
+                                                                                        ))}
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
                                                                         </div>
                                                                     )}
                                                                 </div>
@@ -729,7 +855,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                     </Fragment>
                                 )) : (
                                     <tr>
-                                        <td colSpan={auth.user.role === 'admin' ? 8 : 7} className="px-6 py-20 text-center">
+                                        <td colSpan={auth.user.role === 'admin' ? 9 : 7} className="px-6 py-20 text-center">
                                             <div className="flex flex-col items-center">
                                                 <div className="p-4 bg-slate-100 dark:bg-[#18342f] rounded-3xl mb-4">
                                                     <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -743,6 +869,51 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Pagination Controls */}
+                    {totalPages > 1 && (
+                        <div className="px-6 py-4 border-t border-emerald-900/10 dark:border-[#1d3a34] flex items-center justify-between bg-slate-50/50 dark:bg-[#102824]/50">
+                            <div className="text-[10px] font-black text-slate-400 tracking-widest uppercase">
+                                Page {currentPage} of {totalPages}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={currentPage === 1}
+                                    className="p-2 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 disabled:opacity-50 transition-all"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"/></svg>
+                                </button>
+                                <div className="flex items-center gap-1">
+                                    {[...Array(totalPages)].map((_, i) => {
+                                        const page = i + 1;
+                                        // Show first, last, and pages around current
+                                        if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+                                            return (
+                                                <button
+                                                    key={page}
+                                                    onClick={() => setCurrentPage(page)}
+                                                    className={`w-8 h-8 rounded-xl text-[10px] font-black transition-all ${currentPage === page ? 'bg-teal-900 text-white shadow-lg shadow-teal-900/20' : 'text-slate-400 hover:text-teal-900 dark:hover:text-lime-400'}`}
+                                                >
+                                                    {page}
+                                                </button>
+                                            );
+                                        } else if (page === currentPage - 2 || page === currentPage + 2) {
+                                            return <span key={page} className="text-slate-300 dark:text-slate-700 text-[10px]">...</span>;
+                                        }
+                                        return null;
+                                    })}
+                                </div>
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                    disabled={currentPage === totalPages}
+                                    className="p-2 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 disabled:opacity-50 transition-all"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 

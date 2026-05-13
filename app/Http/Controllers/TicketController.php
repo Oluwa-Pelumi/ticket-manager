@@ -408,4 +408,20 @@ class TicketController extends Controller
             'categories' => Category::all(),
         ]);
     }
+
+    public function activateOrder(Request $request, Ticket $ticket)
+    {
+        if (!Auth::user()->isAdmin()) {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
+        $activations = $ticket->order_activations ?? [];
+        $activations[] = now()->toDateTimeString();
+
+        $ticket->update([
+            'order_activations' => $activations
+        ]);
+
+        return back()->with('success', 'Order activated successfully.');
+    }
 }

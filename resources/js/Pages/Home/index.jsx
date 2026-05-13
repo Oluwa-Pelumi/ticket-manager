@@ -30,7 +30,7 @@ const ticketingSteps = [
     },
 ];
 
-export default function Home({ auth, stats }) {
+export default function Home({ auth, stats, faqs = [] }) {
     const { theme, toggleTheme } = useTheme();
 
     return (
@@ -74,10 +74,10 @@ export default function Home({ auth, stats }) {
 
                         <div className="pb-20 pt-16 text-center">
                             <h1 className="mx-auto mb-8 max-w-3xl text-5xl font-medium tracking-tight text-white md:text-7xl">
-                                Energizing a Green Future
+                                Your Dedicated Support System
                             </h1>
                             <p className="mx-auto mb-10 max-w-2xl text-lg text-white/80">
-                                Our commitment to green energy is paving the way for a cleaner, healthier planet.
+                                Providing seamless assistance for prescriptions, refills, and all your medication concerns with professional care.
                             </p>
                             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                                 <Link href={route('submit-ticket')} className="fauna-btn-primary">
@@ -163,11 +163,6 @@ export default function Home({ auth, stats }) {
                             Need help with a prescription, refill, or medication concern?
                         </h2>
                         <Link href={route('submit-ticket')} className="fauna-btn-primary">Create Ticket</Link>
-                        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-                            {[1, 2, 3, 4].map((n) => (
-                                <div key={n} className="h-40 rounded-2xl bg-slate-200 dark:bg-[#18342f] dark:border dark:border-[#28524a]" />
-                            ))}
-                        </div>
                     </div>
                 </section>
 
@@ -178,31 +173,10 @@ export default function Home({ auth, stats }) {
                             <p className="mt-3 text-slate-600 dark:text-slate-400">Here you will find answers to frequently asked questions.</p>
                         </div>
                         <div className="mx-auto max-w-4xl space-y-4">
-                            {[
-                                {
-                                    q: 'How do I create a support ticket?',
-                                    a: 'Click "Create Ticket", fill in your contact details, select the support category, describe your issue clearly, and submit.',
-                                },
-                                {
-                                    q: 'Can I check ticket status without logging in?',
-                                    a: 'Yes. Use the "View Ticket" option and search with the same email address used when the ticket was submitted.',
-                                },
-                                {
-                                    q: 'What should I include in my ticket description?',
-                                    a: 'Include medication name, dosage, when the issue happened, what you expected, and what happened instead. Add images when relevant.',
-                                },
-                                {
-                                    q: 'How do updates and replies work?',
-                                    a: 'Our support/admin team responds in the ticket conversation thread. You can return to the ticket page and continue the discussion.',
-                                },
-                                {
-                                    q: 'Can I edit or add more information after submission?',
-                                    a: 'Yes. Open your ticket to add comments and attachments. If the ticket is still open, you can provide additional context for faster resolution.',
-                                },
-                            ].map((item) => (
-                                <details key={item.q} className="fauna-panel p-6 dark:bg-[#102824] dark:border-[#1d3a34]">
-                                    <summary className="cursor-pointer font-medium">{item.q}</summary>
-                                    <p className="mt-3 text-slate-600 dark:text-slate-400">{item.a}</p>
+                            {faqs.map((item) => (
+                                <details key={item.id} className="fauna-panel p-6 dark:bg-[#102824] dark:border-[#1d3a34]">
+                                    <summary className="cursor-pointer font-medium">{item.question}</summary>
+                                    <p className="mt-3 text-slate-600 dark:text-slate-400">{item.answer}</p>
                                 </details>
                             ))}
                         </div>

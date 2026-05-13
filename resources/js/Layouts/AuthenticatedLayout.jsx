@@ -21,7 +21,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
             {/* Navigation Bar */}
             <nav className="relative z-50 border-b border-emerald-900/10 bg-white/90 shadow-sm backdrop-blur dark:border-[#1d3a34] dark:bg-[#102824]/90">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                     <div className="flex h-20 justify-between items-center">
 
                         {/* Left: Logo + Nav Links */}
@@ -172,7 +172,7 @@ export default function AuthenticatedLayout({ header, children }) {
             {/* Page Header */}
             {header && (
                 <header className="relative z-10 py-10">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                         <div className="fauna-panel relative overflow-hidden p-10">
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                             {header}
@@ -183,7 +183,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
             {/* Main Content */}
             <main className="relative z-10 py-6">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                     {children}
                 </div>
             </main>

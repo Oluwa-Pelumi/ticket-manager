@@ -30,6 +30,7 @@ class Ticket extends Model
         'order_type',
         'recurrence_period',
         'custom_recurrence_date',
+        'order_activations',
     ];
 
     /**
@@ -39,6 +40,7 @@ class Ticket extends Model
      */
     protected $casts = [
         'images' => 'array',
+        'order_activations' => 'array',
     ];
 
     public function comments() {

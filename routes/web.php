@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\Faq;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -20,6 +21,7 @@ Route::get('/home', function () {
             'inProgressTickets' => Ticket::where('status', 'in-progress')->count(),
             'resolvedTickets'   => Ticket::where('status', 'closed')->count(),
         ],
+        'faqs' => Faq::orderBy('order')->get(),
     ]);
 })->name('home');
 
@@ -65,6 +67,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::patch('bulk-update-ticket-status', [TicketController::class, 'bulkUpdateStatus'])
         ->name('bulk-update-ticket-status');
+
+    Route::post('/tickets/{ticket}/activate-order', [TicketController::class, 'activateOrder'])
+        ->name('tickets.activate-order');
 
     // User Management
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');

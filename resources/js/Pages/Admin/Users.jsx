@@ -61,7 +61,7 @@ export default function Users({ auth, users }) {
         >
             <Head title="User Management" />
 
-            <div className="max-w-7xl mx-auto py-12 px-6">
+            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-12 px-2 sm:px-4 lg:px-6">
 
                 <div className="mb-8">
                     <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Staff Management</h1>

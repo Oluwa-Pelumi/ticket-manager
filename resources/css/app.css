@@ -17,11 +17,21 @@
 
 @layer utilities {
     .custom-scrollbar::-webkit-scrollbar {
-        display: none;
+        width: 6px;
+        height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        @apply bg-slate-100/50 dark:bg-[#18342f]/30 rounded-full;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-lime-500 transition-all duration-300;
     }
     .custom-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+        scrollbar-width: thin;
+        scrollbar-color: theme('colors.slate.300') transparent;
+    }
+    .dark .custom-scrollbar {
+        scrollbar-color: theme('colors.slate.700') transparent;
     }
 
     .glass-card {
