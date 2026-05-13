@@ -35,6 +35,40 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'role' => $request->user()?->role,
             ],
+            'due_tickets' => $request->user()?->isAdmin()
+                ? \App\Models\Ticket::whereNotNull('order_type')
+                    ->get()
+                    ->filter(function($ticket) {
+                        $activations = $ticket->order_activations;
+                        if (empty($activations)) return false;
+                        $last = \Illuminate\Support\Carbon::parse(end($activations));
+                        $days = match(strtolower(trim($ticket->recurrence_period))) {
+                            'daily' => 1,
+                            'one-week', 'weekly' => 7,
+                            'two-weeks' => 14,
+                            'three-weeks' => 21,
+                            'monthly' => 30,
+                            'quarterly' => 90,
+                            'yearly' => 365,
+                            default => 0
+                        };
+                        if ($days === 0) return false;
+                        $due = $last->addDays($days);
+                        return \Illuminate\Support\Carbon::now()->diffInHours($due, false) <= 24;
+                    })
+                    ->map(function($ticket) {
+                        $activations = $ticket->order_activations;
+                        return [
+                            'id' => $ticket->id,
+                            'subject' => $ticket->subject,
+                            'content' => $ticket->content,
+                            'period' => $ticket->recurrence_period,
+                            'last_activation' => end($activations),
+                        ];
+                    })
+                    ->values()
+                    ->all()
+                : [],
             'flash' => [
                 'error'   => fn () => $request->session()->get('error'),
                 'success' => fn () => $request->session()->get('success'),

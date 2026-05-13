@@ -49,15 +49,23 @@ const AlertSystem = () => {
                     <div 
                         className={`w-full max-w-md p-8 rounded-[3rem] border shadow-2xl animate-in zoom-in-95 duration-300
                             ${theme === 'dark' 
-                                ? 'bg-slate-900/90 border-slate-800 text-white' 
-                                : 'bg-white/90 border-emerald-900/10 text-slate-900'
+                                ? (confirm.type === 'warning' ? 'bg-[#142d28] border-lime-500/20 text-white' : 
+                                   confirm.type === 'danger' ? 'bg-[#2a1215] border-rose-500/20 text-white' :
+                                   'bg-slate-900/90 border-slate-800 text-white')
+                                : (confirm.type === 'warning' ? 'bg-lime-50/95 border-lime-200 text-slate-900' : 
+                                   confirm.type === 'danger' ? 'bg-rose-50/95 border-rose-200 text-slate-900' :
+                                   'bg-white/90 border-emerald-900/10 text-slate-900')
                             }`}
                     >
                         <div className={`inline-flex p-4 rounded-[1.5rem] mb-6 ${
-                            confirm.type === 'danger' ? 'bg-rose-500/20 text-rose-500' : 'bg-blue-500/20 text-blue-500'
+                            confirm.type === 'danger' ? 'bg-rose-500/20 text-rose-500' : 
+                            confirm.type === 'warning' ? 'bg-lime-500/20 text-lime-500' :
+                            'bg-blue-500/20 text-blue-500'
                         }`}>
                             {confirm.type === 'danger' ? (
                                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            ) : confirm.type === 'warning' ? (
+                                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                             ) : (
                                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             )}
@@ -67,14 +75,18 @@ const AlertSystem = () => {
                         <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">
                             {confirm.message || 'This action cannot be undone. Please confirm to proceed.'}
                         </p>
-
+ 
                         <div className="flex gap-4">
                             <button
                                 onClick={confirm.cancel}
                                 className={`flex-1 py-4 px-6 rounded-2xl font-bold transition-all
-                                    ${theme === 'dark' 
-                                        ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' 
-                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                    ${confirm.type === 'warning' 
+                                        ? 'bg-lime-500/10 text-lime-600 dark:text-lime-400 hover:bg-lime-500/20' 
+                                        : confirm.type === 'danger'
+                                        ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20'
+                                        : (theme === 'dark' 
+                                            ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' 
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200')
                                     }`}
                             >
                                 Cancel
@@ -84,6 +96,8 @@ const AlertSystem = () => {
                                 className={`flex-[2] py-4 px-6 rounded-2xl text-white font-bold shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]
                                     ${confirm.type === 'danger' 
                                         ? 'bg-rose-500 shadow-rose-500/20' 
+                                        : confirm.type === 'warning'
+                                        ? 'bg-lime-500 text-teal-900 shadow-lime-500/20'
                                         : 'bg-teal-900'
                                     }`}
                             >

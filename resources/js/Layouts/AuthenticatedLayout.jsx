@@ -3,12 +3,14 @@ import NavLink from '@/Components/NavLink';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
 import { useTheme } from '@/Contexts/ThemeContext';
+import { useAlert } from '@/Contexts/AlertContext';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user                   = usePage().props.auth.user;
     const { theme, toggleTheme } = useTheme();
+    const { showAlert }          = useAlert();
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -56,6 +58,112 @@ export default function AuthenticatedLayout({ header, children }) {
                         {/* Right: Theme Toggle + User Dropdown */}
                         <div className="hidden sm:flex sm:items-center gap-4">
 
+                            {user?.role === 'admin' && (
+                                <div className="relative">
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <button
+                                                className="relative w-10 h-10 rounded-2xl flex items-center justify-center border border-emerald-900/10/50 bg-white text-slate-600 transition-all hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400 group"
+                                                title={`${usePage().props.due_tickets.length} orders due for processing`}
+                                            >
+                                                <svg className={`w-5 h-5 ${usePage().props.due_tickets.length > 0 ? 'animate-bounce text-lime-500' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                                </svg>
+                                                {usePage().props.due_tickets.length > 0 && (
+                                                    <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-black text-white shadow-lg ring-2 ring-white dark:ring-[#102824]">
+                                                        {usePage().props.due_tickets.length}
+                                                    </span>
+                                                )}
+                                            </button>
+                                        </Dropdown.Trigger>
+
+                                        <Dropdown.Content width="120" align="right">
+                                            <div className="p-4 border-b border-slate-100 dark:border-[#1d3a34]">
+                                                <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">Due for Processing</h3>
+                                            </div>
+                                            <div className="max-h-96 overflow-y-auto custom-scrollbar">
+                                                {usePage().props.due_tickets.length > 0 ? (
+                                                    usePage().props.due_tickets.map((ticket) => (
+                                                        <div
+                                                            key={ticket.id}
+                                                            className="block p-4 hover:bg-emerald-50/50 dark:hover:bg-[#18342f] transition-colors border-b border-slate-100 dark:border-[#1d3a34] last:border-0"
+                                                        >
+                                                            <div className="flex justify-between items-start mb-1">
+                                                                <Link href={route('dashboard')} className="text-xs font-bold text-slate-900 dark:text-white truncate pr-2 hover:text-teal-900 dark:hover:text-lime-400">
+                                                                    {ticket.subject.replace(/^./, (match) => match.toUpperCase())}
+                                                                </Link>
+                                                                <span className="text-[10px] font-black text-lime-600 dark:text-lime-400 px-1.5 py-0.5 rounded shrink-0">
+                                                                    {ticket.content.substring(0, 32)}...
+                                                                </span>
+                                                                <span className="text-[9px] font-black uppercase bg-lime-500/10 text-lime-600 dark:text-lime-400 px-1.5 py-0.5 rounded shrink-0">
+                                                                    {ticket.period}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex items-center justify-between gap-4">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="text-[9px] font-black text-slate-400 font-mono">{ticket.id.substring(0, 8)}...</span>
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            const textToCopy = ticket.id;
+
+                                                                            // Robust Copy Logic
+                                                                            if (navigator.clipboard && window.isSecureContext) {
+                                                                                navigator.clipboard.writeText(textToCopy);
+                                                                            } else {
+                                                                                // Fallback to textarea
+                                                                                const textArea = document.createElement("textarea");
+                                                                                textArea.value = textToCopy;
+                                                                                textArea.style.position = "fixed";
+                                                                                textArea.style.left = "-999999px";
+                                                                                textArea.style.top = "-999999px";
+                                                                                document.body.appendChild(textArea);
+                                                                                textArea.focus();
+                                                                                textArea.select();
+                                                                                try {
+                                                                                    document.execCommand('copy');
+                                                                                } catch (err) {
+                                                                                    console.error('Fallback copy failed', err);
+                                                                                }
+                                                                                document.body.removeChild(textArea);
+                                                                            }
+
+                                                                            showAlert('Ticket ID copied to clipboard.', 'success');
+                                                                            const btn = e.currentTarget;
+                                                                            const originalInner = btn.innerHTML;
+                                                                            btn.innerHTML = '<svg class="w-3 h-3 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
+                                                                            setTimeout(() => { btn.innerHTML = originalInner; }, 2000);
+                                                                        }}
+                                                                        className="p-1 rounded bg-slate-100 dark:bg-[#18342f] text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 transition-all"
+                                                                        title="Copy full ID"
+                                                                    >
+                                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                                                                    Last Processed Order: {new Date(ticket.last_activation).toLocaleDateString()}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="p-8 text-center">
+                                                        <p className="text-xs text-slate-500 dark:text-slate-400">No orders due for processing.</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            {usePage().props.due_tickets.length > 0 && (
+                                                <div className="p-3 bg-slate-50 dark:bg-[#0b1715]/50 text-center">
+                                                    <Link href={route('dashboard')} className="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-widest hover:underline">
+                                                        View all in Dashboard
+                                                    </Link>
+                                                </div>
+                                            )}
+                                        </Dropdown.Content>
+                                    </Dropdown>
+                                </div>
+                            )}
+
                              {/* Theme Toggle */}
                             <button
                                 onClick={toggleTheme}
@@ -95,6 +203,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                             </Dropdown.Link>
                                             <Dropdown.Link href={route('admin.categories.index')}>
                                                 Manage Categories
+                                            </Dropdown.Link>
+                                            <Dropdown.Link href={route('admin.faqs.index')}>
+                                                Manage FAQs
                                             </Dropdown.Link>
                                             <Dropdown.Link
                                                 href={route('logout')}

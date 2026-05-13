@@ -16,8 +16,8 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
     const [expandedId, setExpandedId]                = useState(null);
     const [filters, setFilters]                      = useState({
         status  : '',
-        subject : '',
         priority: '',
+        search  : '',
     });
     const [copiedId, setCopiedId]                    = useState(null);
     const [rowsPerPage, setRowsPerPage]              = useState(10);
@@ -118,10 +118,12 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         return tickets.filter(ticket => {
             const matchesStatus   = !filters.status   || ticket.status   === filters.status;
             const matchesPriority = !filters.priority || ticket.priority === filters.priority;
-            const matchesSubject  = !filters.subject  ||
-                                   (ticket.category?.slug === filters.subject) ||
-                                   (ticket.subject === filters.subject);
-            return matchesStatus && matchesPriority && matchesSubject;
+            const matchesSearch   = !filters.search   || 
+                ticket.id.toLowerCase().includes(filters.search.toLowerCase()) ||
+                ticket.subject.toLowerCase().includes(filters.search.toLowerCase()) ||
+                (ticket.user?.name || '').toLowerCase().includes(filters.search.toLowerCase());
+            
+            return matchesStatus && matchesPriority && matchesSearch;
         });
     }, [tickets, filters]);
 
@@ -149,7 +151,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
     }, [filteredTickets, sortConfig]);
 
     const clearFilters = () => {
-        setFilters({ status: '', priority: '', subject: '' });
+        setFilters({ status: '', priority: '', search: '' });
         setCurrentPage(1);
     };
 
@@ -188,19 +190,33 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
 
     const handleActivateOrder = async (ticketId) => {
         const ticket = tickets.find(t => t.id === ticketId);
-        if (ticket && ticket.order_activations?.length > 0) {
-            const lastActivation = new Date(ticket.order_activations[ticket.order_activations.length - 1]);
+        if (!ticket) return;
+
+        const activations = Array.isArray(ticket.order_activations) 
+            ? ticket.order_activations 
+            : (typeof ticket.order_activations === 'string' ? JSON.parse(ticket.order_activations) : []);
+
+        if (activations.length > 0) {
+            const lastActivation = new Date(activations[activations.length - 1]);
             const now = new Date();
             const diffDays = (now - lastActivation) / (1000 * 60 * 60 * 24);
             
             let requiredDays = 0;
-            const period = ticket.recurrence_period?.toLowerCase();
+            const period = ticket.recurrence_period?.toLowerCase().trim();
             switch (period) {
-                case 'daily':     requiredDays = 1; break;
-                case 'weekly':    requiredDays = 7; break;
-                case 'monthly':   requiredDays = 30; break;
-                case 'quarterly': requiredDays = 90; break;
-                case 'yearly':    requiredDays = 365; break;
+                case 'daily':
+                    requiredDays = 1; break;
+                case 'one-week':
+                case 'weekly':
+                    requiredDays = 7; break;
+                case 'two-weeks':
+                    requiredDays = 14; break;
+                case 'monthly':
+                    requiredDays = 30; break;
+                case 'quarterly':
+                    requiredDays = 90; break;
+                case 'yearly':
+                    requiredDays = 365; break;
                 default:          requiredDays = 0;
             }
 
@@ -382,16 +398,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                             <option value="high">High</option>
                         </select>
 
-                        <select
-                            value={filters.subject}
-                            onChange={(e) => setFilters(prev => ({ ...prev, subject: e.target.value }))}
-                            className="col-span-2 sm:col-span-1 bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer"
-                        >
-                            <option value="">All Subjects</option>
-                            {categories.map((sub, idx) => <option key={idx} value={sub.slug}>{sub.name}</option>)}
-                        </select>
-
-                        {(filters.status || filters.priority || filters.subject) && (
+                        {(filters.status || filters.priority || filters.search) && (
                             <button
                                 onClick={clearFilters}
                                 className="col-span-2 sm:col-span-1 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center"
@@ -400,6 +407,25 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                 Clear All
                             </button>
                         )}
+                    </div>
+
+                    {/* Search Field */}
+                    <div className="relative group w-full lg:w-96">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg className="h-5 w-5 text-slate-400 group-focus-within:text-teal-900 dark:group-focus-within:text-lime-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search by ID, subject, or user..."
+                            value={filters.search}
+                            onChange={(e) => {
+                                setFilters(prev => ({ ...prev, search: e.target.value }));
+                                setCurrentPage(1);
+                            }}
+                            className="block w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all shadow-sm"
+                        />
                     </div>
 
                     <div className="flex items-center gap-4 w-full sm:w-auto sm:ml-auto">

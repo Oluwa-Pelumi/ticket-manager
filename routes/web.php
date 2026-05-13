@@ -1,7 +1,7 @@
 <?php
 
-use Inertia\Inertia;
 use App\Models\Faq;
+use Inertia\Inertia;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -81,6 +81,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
     Route::patch('/admin/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
+    // FAQ Management
+    Route::get('/admin/faqs', [\App\Http\Controllers\FaqController::class, 'index'])->name('admin.faqs.index');
+    Route::post('/admin/faqs', [\App\Http\Controllers\FaqController::class, 'store'])->name('admin.faqs.store');
+    Route::patch('/admin/faqs/{faq}', [\App\Http\Controllers\FaqController::class, 'update'])->name('admin.faqs.update');
+    Route::delete('/admin/faqs/{faq}', [\App\Http\Controllers\FaqController::class, 'destroy'])->name('admin.faqs.destroy');
 });
 
 Route::middleware('auth')->group(function () {
