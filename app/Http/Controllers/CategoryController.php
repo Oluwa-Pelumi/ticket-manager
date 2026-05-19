@@ -2,11 +2,11 @@
  
  namespace App\Http\Controllers;
  
- use App\Http\Controllers\Controller;
- use App\Models\Category;
- use Illuminate\Http\Request;
  use Inertia\Inertia;
+ use App\Models\Category;
  use Illuminate\Support\Str;
+ use Illuminate\Http\Request;
+ use App\Http\Controllers\Controller;
  
  class CategoryController extends Controller
  {

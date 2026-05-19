@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Ticket;
-use Illuminate\Http\Request;
+use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\TicketNotification;
-use App\Models\Category;
 
 class TicketController extends Controller
 {
@@ -26,7 +26,7 @@ class TicketController extends Controller
             : Ticket::where('user_id', $user->id)->with(['attendant', 'comments', 'category'])->latest()->get();
 
         return Inertia::render('Dashboard/index', [
-            'tickets' => $tickets,
+            'tickets'    => $tickets,
             'categories' => Category::all(),
         ]);
     }
@@ -40,20 +40,20 @@ class TicketController extends Controller
     public function save(Request $request)
     {
         $validated = $request->validate([
-            'images'          => 'nullable|array',
-            'images.*'        => 'image|max:5120',
-            'content'         => 'required|string',
-            'email'           => 'required|email|max:255',
-            'name'            => 'required|string|max:255',
-            'subject'         => 'required|string|max:255',
-            'priority'        => 'required|string|in:low,medium,high',
-            'whatsapp_number' => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
-            'category_id'     => 'nullable|exists:categories,id',
-            'order_type'      => 'nullable|string|in:one-time,recurrent',
-            'recurrence_period' => 'nullable|string',
             'custom_recurrence_date' => 'nullable|date',
+            'images'                 => 'nullable|array',
+            'images.*'               => 'image|max:5120',
+            'content'                => 'required|string',
+            'recurrence_period'      => 'nullable|string',
+            'email'                  => 'required|email|max:255',
+            'name'                   => 'required|string|max:255',
+            'subject'                => 'required|string|max:255',
+            'category_id'            => 'nullable|exists:categories,id',
+            'priority'               => 'required|string|in:low,medium,high',
+            'order_type'             => 'nullable|string|in:one-time,recurrent',
+            'whatsapp_number'        => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
         ], [
-            'whatsapp_number.regex' => 'The WhatsApp number must be a valid international phone number (e.g., +2348000000000).'
+            'whatsapp_number.regex'  => 'The WhatsApp number must be a valid international phone number (e.g., +2348000000000).'
         ]);
 
         $user = Auth::user();
@@ -75,19 +75,19 @@ class TicketController extends Controller
         }
 
         $ticket = Ticket::create([
-            'status'          => 'open',
-            'user_id'         => Auth::id(),
-            'name'            => $validated['name'],
-            'email'           => $validated['email'],
-            'whatsapp_number' => $validated['whatsapp_number'],
-            'content'         => $validated['content'],
-            'subject'         => $validated['subject'],
-            'priority'        => $validated['priority'],
-            'attended_to_by'  => $assignedAdminId,
-            'category_id'     => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
-            'order_type'      => $validated['order_type'] ?? null,
-            'recurrence_period' => $validated['recurrence_period'] ?? null,
+            'status'                 => 'open',
+            'user_id'                => Auth::id(),
+            'attended_to_by'         => $assignedAdminId,
+            'name'                   => $validated['name'],
+            'email'                  => $validated['email'],
+            'content'                => $validated['content'],
+            'subject'                => $validated['subject'],
+            'priority'               => $validated['priority'],
+            'whatsapp_number'        => $validated['whatsapp_number'],
+            'order_type'             => $validated['order_type'] ?? null,
+            'recurrence_period'      => $validated['recurrence_period'] ?? null,
             'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
+            'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ]);
 
         $imagePaths = [];
@@ -96,9 +96,9 @@ class TicketController extends Controller
             $folder    = $username . '-' . ($user ? $user->id : 'guest');
 
             foreach ($request->file('images') as $index => $file) {
-                $extension = $file->getClientOriginalExtension();
-                $filename  = $ticket->id . '_' . $index . '_' . time() . '.' . $extension;
-                $filepath  = $file->storeAs('tickets/' . $folder, $filename, 'public');
+                $extension    = $file->getClientOriginalExtension();
+                $filename     = $ticket->id . '_' . $index . '_' . time() . '.' . $extension;
+                $filepath     = $file->storeAs('tickets/' . $folder, $filename, 'public');
                 $imagePaths[] = $filepath;
             }
         }
@@ -140,37 +140,37 @@ class TicketController extends Controller
         }
 
         $validated = $request->validate([
-            'subject'  => 'required|string|max:255',
-            'content'  => 'required|string',
-            'priority' => 'required|string|in:low,medium,high',
-            'images'   => 'nullable|array',
-            'images.*' => 'image|max:5120',
-            'category_id' => 'nullable|exists:categories,id',
-            'order_type'      => 'nullable|string|in:one-time,recurrent',
-            'recurrence_period' => 'nullable|string',
             'custom_recurrence_date' => 'nullable|date',
+            'images'                 => 'nullable|array',
+            'images.*'               => 'image|max:5120',
+            'content'                => 'required|string',
+            'recurrence_period'      => 'nullable|string',
+            'subject'                => 'required|string|max:255',
+            'category_id'            => 'nullable|exists:categories,id',
+            'priority'               => 'required|string|in:low,medium,high',
+            'order_type'             => 'nullable|string|in:one-time,recurrent',
         ]);
 
         $updateData = [
-            'subject'     => $validated['subject'],
-            'content'     => $validated['content'],
-            'priority'    => $validated['priority'],
-            'category_id' => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
-            'order_type'      => $validated['order_type'] ?? null,
-            'recurrence_period' => $validated['recurrence_period'] ?? null,
+            'subject'                => $validated['subject'],
+            'content'                => $validated['content'],
+            'priority'               => $validated['priority'],
+            'order_type'             => $validated['order_type'] ?? null,
+            'recurrence_period'      => $validated['recurrence_period'] ?? null,
             'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
+            'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ];
 
         if ($request->hasFile('images')) {
-            $user      = Auth::user();
-            $username  = Str::slug($user->name, '_');
-            $folder    = $username . '-' . $user->id;
+            $user       = Auth::user();
+            $username   = Str::slug($user->name, '_');
+            $folder     = $username . '-' . $user->id;
             $imagePaths = $ticket->images ?? [];
 
             foreach ($request->file('images') as $index => $file) {
-                $extension = $file->getClientOriginalExtension();
-                $filename  = $username . '_' . time() . '_' . $index . '.' . $extension;
-                $filepath  = $file->storeAs('tickets/'. $folder, $filename, 'public');
+                $extension    = $file->getClientOriginalExtension();
+                $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
+                $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
                 $imagePaths[] = $filepath;
             }
             $updateData['images'] = $imagePaths;

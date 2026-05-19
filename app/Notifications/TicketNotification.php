@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class TicketNotification extends Notification
 {
@@ -17,9 +17,9 @@ class TicketNotification extends Notification
     public function __construct(
         public string $subject,
         public string|object $message,
-        public ?string $ticketUrl = null,
+        public ?string $ticketUrl     = null,
         public ?string $recipientName = null,
-        public string $templateName = 'ticket_submitted',
+        public string $templateName   = 'ticket_submitted',
     ) {
         //
     }

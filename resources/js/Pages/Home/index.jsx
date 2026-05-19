@@ -195,30 +195,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">
-                                <div>
-                                    <h4 className="mb-4 font-bold">Platform</h4>
-                                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                                        <li>Solutions</li>
-                                        <li>How it works</li>
-                                        <li>Pricing</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4 className="mb-4 font-bold">Resources</h4>
-                                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                                        <li>Blog</li>
-                                        <li>Help Center</li>
-                                        <li>Support</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4 className="mb-4 font-bold">Company</h4>
-                                    <ul className="space-y-2 text-slate-600 dark:text-slate-400">
-                                        <li>About</li>
-                                        <li>Mission</li>
-                                        <li>Careers</li>
-                                    </ul>
-                                </div>
+                                
                             </div>
                             <div className="rounded-2xl bg-teal-900 p-6 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
                                 <h4 className="mb-3 text-xl font-medium text-white">Open a new support request</h4>

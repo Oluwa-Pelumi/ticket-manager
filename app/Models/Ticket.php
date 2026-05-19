@@ -24,13 +24,13 @@ class Ticket extends Model
         'content',
         'filename',
         'priority',
+        'order_type',
+        'category_id',
         'attended_to_by',
         'whatsapp_number',
-        'category_id',
-        'order_type',
         'recurrence_period',
-        'custom_recurrence_date',
         'order_activations',
+        'custom_recurrence_date',
     ];
 
     /**
@@ -39,7 +39,7 @@ class Ticket extends Model
      * @var array
      */
     protected $casts = [
-        'images' => 'array',
+        'images'            => 'array',
         'order_activations' => 'array',
     ];
 

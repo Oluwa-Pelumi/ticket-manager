@@ -297,6 +297,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                                 { id: 'three-weeks', label: 'Three Weeks' },
                                                 { id: 'monthly', label: 'Monthly' },
                                                 { id: 'yearly', label: 'Yearly' },
+                                                { id: 'custom', label: 'Pick Date' }
                                             ].map((period) => (
                                                 <label
                                                     key={period.id}
@@ -317,6 +318,18 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                                 </label>
                                             ))}
                                         </div>
+
+                                        {data.recurrence_period === 'custom' && (
+                                            <div className="pt-2 animate-in fade-in slide-in-from-top-2">
+                                                <input
+                                                    type="date"
+                                                    value={data.custom_recurrence_date}
+                                                    onChange={(e) => setData('custom_recurrence_date', e.target.value)}
+                                                    className="w-full px-5 py-3 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-bold"
+                                                    min={new Date().toISOString().split('T')[0]}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>

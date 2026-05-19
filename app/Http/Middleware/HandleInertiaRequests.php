@@ -43,14 +43,15 @@ class HandleInertiaRequests extends Middleware
                         if (empty($activations)) return false;
                         $last = \Illuminate\Support\Carbon::parse(end($activations));
                         $days = match(strtolower(trim($ticket->recurrence_period))) {
-                            'daily' => 1,
-                            'one-week', 'weekly' => 7,
-                            'two-weeks' => 14,
-                            'three-weeks' => 21,
-                            'monthly' => 30,
-                            'quarterly' => 90,
-                            'yearly' => 365,
-                            default => 0
+                                       'daily'       => 1,
+                            'one-week', 'weekly'     => 7,
+                                       'monthly'     => 30,
+                                       'two-weeks'   => 14,
+                                       'quarterly'   => 90,
+                                       'three-weeks' => 21,
+                                       'yearly'      => 365,
+                                       default       => 0,
+
                         };
                         if ($days === 0) return false;
                         $due = $last->addDays($days);
@@ -59,11 +60,11 @@ class HandleInertiaRequests extends Middleware
                     ->map(function($ticket) {
                         $activations = $ticket->order_activations;
                         return [
-                            'id' => $ticket->id,
-                            'subject' => $ticket->subject,
-                            'content' => $ticket->content,
-                            'period' => $ticket->recurrence_period,
+                            'id'              => $ticket->id,
+                            'subject'         => $ticket->subject,
+                            'content'         => $ticket->content,
                             'last_activation' => end($activations),
+                            'period'          => $ticket->recurrence_period,
                         ];
                     })
                     ->values()
