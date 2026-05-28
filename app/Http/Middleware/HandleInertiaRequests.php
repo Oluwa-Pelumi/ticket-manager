@@ -36,7 +36,7 @@ class HandleInertiaRequests extends Middleware
                 'role' => $request->user()?->role,
             ],
             'due_tickets' => $request->user()?->isAdmin()
-                ? \App\Models\Ticket::whereNotNull('order_type')
+                ? rescue(fn() => \App\Models\Ticket::whereNotNull('order_type')
                     ->get()
                     ->filter(function($ticket) {
                         $activations = $ticket->order_activations;
@@ -66,9 +66,7 @@ class HandleInertiaRequests extends Middleware
                             'last_activation' => end($activations),
                             'period'          => $ticket->recurrence_period,
                         ];
-                    })
-                    ->values()
-                    ->all()
+                    })->values()->all(), [])
                 : [],
             'flash' => [
                 'error'   => fn () => $request->session()->get('error'),

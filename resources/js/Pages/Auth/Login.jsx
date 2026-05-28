@@ -101,8 +101,20 @@ export default function Login({ status, canResetPassword }) {
                         disabled={processing}
                         className="fauna-btn-primary w-full !py-3.5 text-lg disabled:opacity-50"
                     >
-                        {processing ? 'Signing In...' : 'Login'}
+                        {processing ? 'Signing In...' : 'Sign In'}
                     </button>
+                </div>
+
+                <div className="text-center pt-4">
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Don't have an account?{' '}
+                        <Link
+                            href={route('register')}
+                            className="font-bold text-teal-900 dark:text-lime-400 hover:underline"
+                        >
+                            Register
+                        </Link>
+                    </p>
                 </div>
             </form>
         </GuestLayout>

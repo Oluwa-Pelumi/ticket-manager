@@ -7,8 +7,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 // Categories will be passed from the backend
 
-
-
 export default function Dashboard({ auth, tickets, categories = [] }) {
     const { theme, toggleTheme }                     = useTheme();
     const { showAlert, showConfirm }                 = useAlert();
@@ -39,14 +37,14 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
     const [commentPreviewUrls, setCommentPreviewUrls] = useState([]);
     const [sortConfig, setSortConfig]                 = useState({ key: 'id', direction: 'desc' });
 
-    const handleCopy = async (id) => {
+    const handleCopy = async (hashid) => {
         try {
             if (navigator.clipboard && window.isSecureContext) {
-                await navigator.clipboard.writeText(id);
+                await navigator.clipboard.writeText(hashid);
             } else {
                 // Fallback for non-secure contexts
                 const textArea                = document.createElement("textarea");
-                      textArea.value          = id;
+                      textArea.value          = hashid;
                       textArea.style.position = "fixed";
                       textArea.style.left     = "-9999px";
                       textArea.style.top      = "0";
@@ -58,8 +56,8 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                 document.body.removeChild(textArea);
             }
 
-            setCopiedId(id);
-            showAlert(`Ticket ID #${id.substring(0, 8)} copied to clipboard!`, 'success');
+            setCopiedId(hashid);
+            showAlert(`Ticket Reference #${hashid} copied to clipboard!`, 'success');
             setTimeout(() => setCopiedId(null), 2000);
         } catch (err) {
             console.error('Failed to copy: ', err);
@@ -87,7 +85,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
 
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        editForm.post(route('update-ticket', { ticket: editingTicket.id }), {
+        editForm.patch(route('update-ticket', { ticket: editingTicket.id }), {
             _method       : 'patch',                  // multipart/form-data doesn't support PATCH natively in some setups, we can spoof it
             forceFormData : true,
             preserveScroll: true,
@@ -118,11 +116,11 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         return tickets.filter(ticket => {
             const matchesStatus   = !filters.status   || ticket.status   === filters.status;
             const matchesPriority = !filters.priority || ticket.priority === filters.priority;
-            const matchesSearch   = !filters.search   || 
-                ticket.id.toLowerCase().includes(filters.search.toLowerCase()) ||
+            const matchesSearch   = !filters.search   ||
+                ticket.hashid.toLowerCase().includes(filters.search.toLowerCase()) ||
                 ticket.subject.toLowerCase().includes(filters.search.toLowerCase()) ||
                 (ticket.user?.name || '').toLowerCase().includes(filters.search.toLowerCase());
-            
+
             return matchesStatus && matchesPriority && matchesSearch;
         });
     }, [tickets, filters]);
@@ -192,15 +190,15 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         const ticket = tickets.find(t => t.id === ticketId);
         if (!ticket) return;
 
-        const activations = Array.isArray(ticket.order_activations) 
-            ? ticket.order_activations 
+        const activations = Array.isArray(ticket.order_activations)
+            ? ticket.order_activations
             : (typeof ticket.order_activations === 'string' ? JSON.parse(ticket.order_activations) : []);
 
         if (activations.length > 0) {
             const lastActivation = new Date(activations[activations.length - 1]);
             const now = new Date();
             const diffDays = (now - lastActivation) / (1000 * 60 * 60 * 24);
-            
+
             let requiredDays = 0;
             const period = ticket.recurrence_period?.toLowerCase().trim();
             switch (period) {
@@ -326,17 +324,19 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         >
             <Head title="Dashboard" />
 
-            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-12 px-2 sm:px-4 lg:px-6">
+            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6">
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
                     <div>
                         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Ticket Management</h1>
                         <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mt-1">
-                            {auth.user.role === 'admin' ? 'Manage and resolve tickets from all users.' : 'Track and manage your submitted tickets.'}
+                            {auth.user.role === 'support' &&  'Manage and resolve tickets.'}
+                            {auth.user.role === 'user' && 'Track and manage your submitted tickets.'}
+                            {auth.user.role === 'admin' && 'Manage System.'}
                         </p>
                     </div>
                     <div className="flex w-full md:w-auto items-center justify-between md:justify-end gap-4">
-                        {selectedIds.length > 0 && auth.user.role === 'admin' && (
+                        {selectedIds.length > 0 && (auth.user.role === 'admin' || auth.user.role === 'support') && (
                             <div className="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-[#102824] rounded-2xl border border-emerald-900/10 dark:border-[#1d3a34] animate-in fade-in zoom-in duration-300">
                                 <span className="hidden sm:inline text-xs font-bold text-slate-600 dark:text-slate-400 px-2">{selectedIds.length} Selected</span>
                                 <select
@@ -454,19 +454,19 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                             <thead>
                                 <tr className="border-b border-emerald-900/10 dark:border-[#1d3a34]">
                                     <th className="w-12 md:w-16 px-4 md:px-6 py-4">
-                                        <input
+                                        {auth?.user === 'admin' || auth?.user === 'support' && <input
                                             type="checkbox"
                                             className="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
                                             checked={tickets.length > 0 && selectedIds.length === tickets.length}
                                             onChange={toggleSelectAll}
-                                        />
+                                        />}
                                     </th>
                                     <th className="w-20 md:w-24 px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('id')}
                                             className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
                                         >
-                                            ID {getSortIcon('id')}
+                                            Reference {getSortIcon('id')}
                                         </button>
                                     </th>
                                     <th className="w-28 md:w-36 px-4 md:px-6 py-4">
@@ -477,7 +477,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             Info {getSortIcon('subject')}
                                         </button>
                                     </th>
-                                    {auth.user.role === 'admin' && (
+                                    {(auth.user.role === 'admin' || auth.user.role === 'support') && (
                                         <th className="hidden lg:table-cell w-32 md:w-44 px-4 md:px-6 py-4">
                                             <button
                                                 onClick={() => requestSort('user')}
@@ -487,7 +487,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             </button>
                                         </th>
                                     )}
-                                    {auth.user.role === 'admin' && (
+                                    {(auth.user.role === 'admin' || auth.user.role === 'support') && (
                                         <th className="hidden lg:table-cell w-36 md:w-48 px-4 md:px-6 py-4">
                                             <div className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                                 Order Details
@@ -530,16 +530,16 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             onClick={() => toggleExpand(ticket.id)}
                                         >
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                                                <input
+                                                 {auth?.user === 'admin' || auth?.user === 'support' &&<input
                                                     type="checkbox"
                                                     className="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
                                                     checked={selectedIds.includes(ticket.id)}
                                                     onChange={() => toggleSelect(ticket.id)}
-                                                />
+                                                />}
                                             </td>
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex items-center gap-2 group/id-cell">
-                                                    <span className="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight">#{ticket.id.substring(0, 4)}...</span>
+                                                    <span className="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight uppercase">#{ticket.hashid}</span>
                                                 </div>
                                             </td>
                                             <td className="px-4 md:px-6 py-4">
@@ -548,13 +548,13 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                 </div>
                                                 <div className="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[60px] md:max-w-[120px]">{ticket.content}</div>
                                             </td>
-                                            {auth.user.role === 'admin' && (
+                                            {(auth.user.role === 'admin' || auth.user.role === 'support') && (
                                                 <td className="hidden lg:table-cell px-4 md:px-6 py-4">
                                                     <div className="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[120px]">{ticket.name || ticket.user?.name}</div>
                                                     <div className="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px]">{ticket.email || ticket.user?.email}</div>
                                                 </td>
                                             )}
-                                            {auth.user.role === 'admin' && (
+                                            {(auth.user.role === 'admin' || auth.user.role === 'support') && (
                                                 <td className="hidden lg:table-cell px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                     {ticket.order_type ? (
                                                         <div className="flex flex-col gap-2">
@@ -603,7 +603,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                 </span>
                                             </td>
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                                                {auth.user.role === 'admin' ? (
+                                                {(auth.user.role === 'admin' || auth.user.role === 'support') ? (
                                                     <select
                                                         value={ticket.status}
                                                         onChange={(e) => handleStatusUpdate(ticket.id, e.target.value)}
@@ -656,7 +656,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>
                                                     </button>
-                                                    {auth.user.role === 'admin' && ticket.order_type && (
+                                                    {(auth.user.role === 'admin' || auth.user.role === 'support') && ticket.order_type && (
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); handleActivateOrder(ticket.id); }}
                                                             className="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] hover:scale-110 transition-all shadow-md"
@@ -666,7 +666,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                                         </button>
                                                     )}
-                                                    {auth.user.role === 'admin' && (
+                                                    {(auth.user.role === 'admin' || auth.user.role === 'support') && (
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); handleDelete(ticket.id); }}
                                                             className="p-1.5 md:p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm"
@@ -680,7 +680,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                         </tr>
                                         {expandedId === ticket.id && (
                                             <tr className="bg-emerald-50/50 dark:bg-[#18342f]/30 animate-in slide-in-from-top-2 duration-300">
-                                                <td colSpan={auth.user.role === 'admin' ? 9 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-lime-500">
+                                                <td colSpan={(auth.user.role === 'admin' || auth.user.role === 'support') ? 9 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-lime-500">
                                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                                                         <div className="space-y-8">
                                                             <div>
@@ -693,13 +693,13 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30" />
                                                                     <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em]">Control Reference</div>
                                                                     <div className="flex items-center gap-3 mb-8 group/id">
-                                                                        <div className="text-2xl text-slate-900 dark:text-white font-black tracking-tight">{ticket.id}</div>
+                                                                        <div className="text-2xl text-slate-900 dark:text-white font-black tracking-tight uppercase">{ticket.hashid}</div>
                                                 <button
-                                                    onClick={(e) => { e.stopPropagation(); handleCopy(ticket.id); }}
+                                                    onClick={(e) => { e.stopPropagation(); handleCopy(ticket.hashid); }}
                                                     className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
-                                                    title="Copy ID"
+                                                    title="Copy Reference"
                                                 >
-                                                                            {copiedId === ticket.id ? (
+                                                                            {copiedId === ticket.hashid ? (
                                                                                 <>
                                                                                     <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
                                                                                     <span className="text-[10px] font-bold text-emerald-500 tracking-wider">Copied!</span>
@@ -814,13 +814,13 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                                     )}
                                                                 </div>
 
-                                                                {(auth.user.role === 'admin' || auth.user.id === ticket.user_id) && (
+                                                                {((auth.user.role === 'admin' || auth.user.role === 'support') || auth.user.id === ticket.user_id) && (
                                                                     <form onSubmit={(e) => handleCommentSubmit(e, ticket.id)} className="space-y-4">
                                                                             <div className="relative group/comment">
                                                                                 <textarea
                                                                                     value={commentForm.data.content}
                                                                                     onChange={e => commentForm.setData('content', e.target.value)}
-                                                                                    placeholder="Secure communication channel..."
+                                                                                    placeholder="Content..."
                                                                                     rows="4"
                                                                                     className="w-full px-6 py-5 rounded-[2rem] bg-slate-100 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-inner font-medium"
                                                                                 ></textarea>
@@ -881,7 +881,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                     </Fragment>
                                 )) : (
                                     <tr>
-                                        <td colSpan={auth.user.role === 'admin' ? 9 : 7} className="px-6 py-20 text-center">
+                                        <td colSpan={(auth.user.role === 'admin' || auth.user.role === 'support') ? 9 : 7} className="px-6 py-20 text-center">
                                             <div className="flex flex-col items-center">
                                                 <div className="p-4 bg-slate-100 dark:bg-[#18342f] rounded-3xl mb-4">
                                                     <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -954,7 +954,8 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
 
-                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Edit Ticket #{editingTicket.id.substring(0, 8)}</h2>
+                        {console.log(editingTicket)}
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Edit Ticket #{editingTicket.hashid.substring(0, 8)}</h2>
 
                         <form onSubmit={handleEditSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1062,7 +1063,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                     disabled={editForm.processing}
                                     className="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
                                 >
-                                    {editForm.processing ? 'Synchronizing Ticket...' : 'Synchronize Ticket'}
+                                    {editForm.processing ? 'Editting Ticket...' : 'Edit Ticket'}
                                 </button>
                             </div>
                         </form>

@@ -39,7 +39,7 @@ class AdminController extends Controller
         }
 
         $validated = $request->validate([
-            'role' => 'required|string|in:admin,user',
+            'role' => 'required|string|in:admin,user,support',
         ]);
 
         $user->update([

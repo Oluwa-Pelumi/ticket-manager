@@ -13,7 +13,7 @@
      public function index()
      {
          return Inertia::render('Admin/Categories/Index', [
-             'categories' => Category::all(),
+             'categories' => rescue(fn() => Category::all(), []),
          ]);
      }
  

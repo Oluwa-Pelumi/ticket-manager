@@ -27,7 +27,7 @@ class TicketController extends Controller
 
         return Inertia::render('Dashboard/index', [
             'tickets'    => $tickets,
-            'categories' => Category::all(),
+            'categories' => rescue(fn() => Category::all(), []),
         ]);
     }
 
@@ -107,7 +107,7 @@ class TicketController extends Controller
             'images' => $imagePaths
         ]);
 
-        $notificationMessage = "Your ticket (ID: {$ticket->id}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->id);
+        $notificationMessage = "Your ticket (Reference: {$ticket->hashid}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->hashid);
 
         $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
 
@@ -116,10 +116,10 @@ class TicketController extends Controller
         } else {
             \Illuminate\Support\Facades\Notification::route('mail', $validated['email'])
                 ->route('whatsapp', $validated['whatsapp_number'])
-                ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->id), $validated['name']));
+                ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $validated['name']));
         }
 
-        return redirect()->route('ticket.show', $ticket->id)->with('success', 'Ticket submitted successfully. You can bookmark this page to track your ticket.');
+        return redirect()->route('ticket.show', $ticket->hashid)->with('success', "Ticket submitted successfully. Your reference code is {$ticket->hashid}. You can bookmark this page to track your ticket.");
     }
 
     /**
@@ -213,15 +213,15 @@ class TicketController extends Controller
         $ticket->update($updateData);
 
         if ($oldStatus !== 'closed' && $validated['status'] === 'closed' && $ticket->user_id !== Auth::id()) {
-            $notificationMsg = "Your ticket (ID: {$ticket->id}) has been closed.\nView here: " . route('ticket.show', $ticket->id);
+            $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
             $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
             if ($ticket->user) {
-                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
             } else if ($ticket->email) {
                 \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
                     ->route('whatsapp', $ticket->whatsapp_number)
-                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_closed'));
+                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
             }
         }
 
@@ -378,23 +378,25 @@ class TicketController extends Controller
         return back()->with('success', 'Comment added successfully.');
     }
 
-    public function searchTicketsByEmail(Request $request)
+    public function searchTicketsByReference(Request $request)
     {
         $request->validate([
-            'email' => 'required|email'
+            'reference' => 'required|string|min:8'
         ]);
 
-        $tickets = Ticket::where('email', $request->email)
-            ->orWhereHas('user', function($q) use ($request) {
-                $q->where('email', $request->email);
-            })
-            ->with(['attendant', 'category'])
-            ->latest()
-            ->get();
+        $id = \Vinkla\Hashids\Facades\Hashids::decode($request->reference);
+
+        if (empty($id)) {
+            $tickets = collect();
+        } else {
+            $tickets = Ticket::where('id', $id[0])
+                ->with(['attendant', 'category'])
+                ->get();
+        }
 
         return Inertia::render('CheckStatus/index', [
             'tickets' => $tickets,
-            'searchedEmail' => $request->email,
+            'searchedReference' => $request->reference,
             'categories' => Category::all(),
         ]);
     }

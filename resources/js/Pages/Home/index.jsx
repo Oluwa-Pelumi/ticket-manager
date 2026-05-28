@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { useTheme } from '@/Contexts/ThemeContext';
 import FlashHandler from '@/Components/FlashHandler';
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import Footer from '@/Components/Footer';
 
 const ticketingSteps = [
     {
@@ -49,9 +50,14 @@ export default function Home({ auth, stats, faqs = [] }) {
 
                                 <div className="flex items-center gap-3">
                                     {!auth.user ? (
-                                        <Link href={route('login')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
-                                            Login
-                                        </Link>
+                                        <>
+                                            <Link href={route('login')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
+                                                Login
+                                            </Link>
+                                            <Link href={route('register')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
+                                                Register
+                                            </Link>
+                                        </>
                                     ) : (
                                         <Link href={route('dashboard')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
                                             Dashboard
@@ -115,7 +121,6 @@ export default function Home({ auth, stats, faqs = [] }) {
                 <section className="p-4 bg-white dark:bg-[#0b1715]">
                     <div className="rounded-3xl bg-lime-500 px-6 py-16 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
                         <div className="container mx-auto px-4">
-                            <p className="mb-4 text-sm font-medium text-teal-900 dark:text-lime-400">How it works</p>
                             <h2 className="mb-4 text-4xl font-semibold text-teal-900 dark:text-white">How ticketing works</h2>
                             <p className="mb-12 max-w-2xl text-teal-900/90 dark:text-slate-300">
                                 From your first message to a closed ticket—here is what happens in laradrug.
@@ -173,12 +178,18 @@ export default function Home({ auth, stats, faqs = [] }) {
                             <p className="mt-3 text-slate-600 dark:text-slate-400">Here you will find answers to frequently asked questions.</p>
                         </div>
                         <div className="mx-auto max-w-4xl space-y-4">
-                            {faqs.map((item) => (
-                                <details key={item.id} className="fauna-panel p-6 dark:bg-[#102824] dark:border-[#1d3a34]">
-                                    <summary className="cursor-pointer font-medium">{item.question}</summary>
-                                    <p className="mt-3 text-slate-600 dark:text-slate-400">{item.answer}</p>
-                                </details>
-                            ))}
+                            {Array.isArray(faqs) && faqs.length > 0 ? (
+                                faqs.map((item) => (
+                                    <details key={item.id} className="fauna-panel p-6 dark:bg-[#102824] dark:border-[#1d3a34]">
+                                        <summary className="cursor-pointer font-medium">{item.question}</summary>
+                                        <p className="mt-3 text-slate-600 dark:text-slate-400">{item.answer}</p>
+                                    </details>
+                                ))
+                            ) : (
+                                <div className="text-center p-8 fauna-panel dark:bg-[#102824] dark:border-[#1d3a34]">
+                                    <p className="text-slate-600 dark:text-slate-400">No frequently asked questions are available at this time.</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>
@@ -195,7 +206,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">
-                                
+
                             </div>
                             <div className="rounded-2xl bg-teal-900 p-6 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
                                 <h4 className="mb-3 text-xl font-medium text-white">Open a new support request</h4>
@@ -206,17 +217,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                     </div>
                 </section>
 
-                <footer className="border-t border-emerald-900/10 px-6 py-16 dark:border-[#1d3a34] bg-white dark:bg-[#0b1715]">
-                    <div className="container mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
-                        <div className="flex items-center gap-2 opacity-60">
-                            <ApplicationLogo className="w-5 h-5" />
-                            <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
-                        </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
-                            &copy; {new Date().getFullYear()} laradrug. All rights reserved.
-                        </p>
-                    </div>
-                </footer>
+                <Footer />
             </div>
         </>
     );

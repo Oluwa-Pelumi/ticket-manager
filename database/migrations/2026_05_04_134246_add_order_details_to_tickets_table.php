@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->string('order_type')->nullable()->after('category_id');
+            $table->string('order_type')->nullable()->after('user_id');
             $table->string('recurrence_period')->nullable()->after('order_type');
             $table->date('custom_recurrence_date')->nullable()->after('recurrence_period');
         });

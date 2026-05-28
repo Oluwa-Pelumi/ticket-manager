@@ -21,13 +21,13 @@ Route::get('/home', function () {
             'inProgressTickets' => Ticket::where('status', 'in-progress')->count(),
             'resolvedTickets'   => Ticket::where('status', 'closed')->count(),
         ],
-        'faqs' => Faq::orderBy('order')->get(),
+        'faqs' => rescue(fn () => Faq::orderBy('order')->get(), []),
     ]);
 })->name('home');
 
 Route::get('/submit-ticket', function () {
     return Inertia::render('SubmitTicket/index', [
-        'categories' => \App\Models\Category::all(),
+        'categories' => rescue(fn () => \App\Models\Category::all(), []),
     ]);
 })->name('submit-ticket');
 
@@ -38,7 +38,7 @@ Route::get('/check-status', function () {
     return Inertia::render('CheckStatus/index');
 })->name('check-status');
 
-Route::post('/search-tickets', [TicketController::class, 'searchTicketsByEmail'])
+Route::post('/search-tickets', [TicketController::class, 'searchTicketsByReference'])
     ->name('search-tickets');
 
 Route::get('/ticket/{ticket}', [TicketController::class, 'show'])

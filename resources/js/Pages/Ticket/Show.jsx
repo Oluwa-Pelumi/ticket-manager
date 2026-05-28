@@ -3,7 +3,7 @@ import { useAlert } from '@/Contexts/AlertContext';
 import FlashHandler from '@/Components/FlashHandler';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import ApplicationLogo from '@/Components/ApplicationLogo';
+import Footer from '@/Components/Footer';
 
 // Categories will be passed from the backend
 
@@ -37,7 +37,7 @@ export default function ShowTicket({ auth, ticket }) {
             }
 
             setCopiedId(id);
-            showAlert(`Ticket ID copied to clipboard!`, 'success');
+            showAlert(`Ticket Reference copied to clipboard!`, 'success');
             setTimeout(() => setCopiedId(null), 2000);
         } catch (err) {
             console.error('Failed to copy: ', err);
@@ -85,14 +85,13 @@ export default function ShowTicket({ auth, ticket }) {
                 </div>
             }
         >
-            <Head title={`Ticket #${ticket.id.substring(0,8)}`} />
+            <Head title={`Ticket #${ticket.hashid}`} />
 
-            <div className="max-w-7xl mx-auto py-12 px-6 space-y-8">
-
+            <div className="max-w-7xl mx-auto py-2 px-6 space-y-8">
                 <div className="flex items-center justify-between">
-                    <Link href={route('check-status')} className="inline-flex items-center text-sm font-bold text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
+                    <Link href={!auth?.user ? route('check-status') :  route('dashboard')} className="inline-flex items-center text-sm font-bold text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                        Back to Status Search
+                        {!auth?.user ? "Back to Status Search" : "Back to Dashboard"}
                     </Link>
                 </div>
 
@@ -111,13 +110,13 @@ export default function ShowTicket({ auth, ticket }) {
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                                 <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Control Reference</div>
                                 <div className="flex items-center gap-3 mb-8 group/id">
-                                    <div className="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{ticket.id}</div>
+                                    <div className="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all uppercase">{ticket.hashid}</div>
                                     <button
-                                        onClick={(e) => { e.stopPropagation(); handleCopy(ticket.id); }}
+                                        onClick={(e) => { e.stopPropagation(); handleCopy(ticket.hashid); }}
                                         className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
-                                        title="Copy ID"
+                                        title="Copy Reference"
                                     >
-                                        {copiedId === ticket.id ? (
+                                        {copiedId === ticket.hashid ? (
                                             <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
                                         ) : (
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
@@ -154,8 +153,8 @@ export default function ShowTicket({ auth, ticket }) {
                                                 <div>
                                                     <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Interval / Period</div>
                                                     <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">
-                                                        {ticket.recurrence_period === 'custom' 
-                                                            ? `Custom: ${ticket.custom_recurrence_date}` 
+                                                        {ticket.recurrence_period === 'custom'
+                                                            ? `Custom: ${ticket.custom_recurrence_date}`
                                                             : ticket.recurrence_period.replace('-', ' ')}
                                                     </div>
                                                 </div>
@@ -224,7 +223,7 @@ export default function ShowTicket({ auth, ticket }) {
                                         </div>
                                     </div>
                                 )) : (
-                                    <div className="text-center py-12 opacity-40">
+                                    <div className="text-center py-2 opacity-40">
                                         <svg className="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                                         <div className="italic text-sm">No comments yet. Start the conversation.</div>
                                     </div>
@@ -301,18 +300,7 @@ export default function ShowTicket({ auth, ticket }) {
             </div>
 
             {/* Footer */}
-            <footer className="relative z-10 px-6 py-10 mt-12 border-t border-emerald-900/10 dark:border-[#1d3a34]/60">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 opacity-60">
-                        <ApplicationLogo className="w-5 h-5" />
-                        <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">laradrug</span>
-                    </div>
-                    <p className="text-sm text-slate-600 dark:text-slate-600">
-                        &copy; {new Date().getFullYear()} laradrug. All rights reserved.
-                    </p>
-
-                </div>
-            </footer>
+             <Footer />
         </AuthenticatedLayout>
     );
 }

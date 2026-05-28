@@ -7,7 +7,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 export default function Categories({ auth, categories }) {
     const { showAlert, showConfirm } = useAlert();
     const [editingCategory, setEditingCategory] = useState(null);
-    
+
     const { data, setData, post, patch, processing, errors, reset, clearErrors } = useForm({
         name: '',
         group: '',
@@ -20,14 +20,14 @@ export default function Categories({ auth, categories }) {
                 onSuccess: () => {
                     setEditingCategory(null);
                     reset();
-                    showAlert({ type: 'success', title: 'Success', message: 'Category updated successfully!' });
+                    showAlert('Category updated successfully!', 'success');
                 },
             });
         } else {
             post(route('admin.categories.store'), {
                 onSuccess: () => {
                     reset();
-                    showAlert({ type: 'success', title: 'Success', message: 'Category created successfully!' });
+                    showAlert('Category created successfully!', 'success');
                 },
             });
         }
@@ -58,7 +58,7 @@ export default function Categories({ auth, categories }) {
 
         if (confirmed) {
             router.delete(route('admin.categories.destroy', category.id), {
-                onSuccess: () => showAlert({ type: 'success', title: 'Deleted', message: 'Category removed.' }),
+                onSuccess: () => showAlert('Category removed.', 'success'),
             });
         }
     };
@@ -83,8 +83,8 @@ export default function Categories({ auth, categories }) {
         >
             <Head title="Manage Categories" />
 
-            <div className="max-w-7xl mx-auto py-12 px-6">
-                
+            <div className="max-w-7xl mx-auto py-2 px-6">
+
                 <FlashHandler />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -94,7 +94,7 @@ export default function Categories({ auth, categories }) {
                             <h3 className="text-xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
                                 {editingCategory ? 'Edit Category' : 'Create New Category'}
                             </h3>
-                            
+
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="space-y-2">
                                     <label className="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400 uppercase">Category Name</label>
@@ -129,7 +129,7 @@ export default function Categories({ auth, categories }) {
                                     >
                                         {editingCategory ? 'UPDATE CATEGORY' : 'CREATE CATEGORY'}
                                     </button>
-                                    
+
                                     {editingCategory && (
                                         <button
                                             type="button"

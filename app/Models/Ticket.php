@@ -3,11 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Ticket extends Model
 {
-    use HasUuids;
+    protected $appends = ['hashid'];
+
+    public function getHashidAttribute()
+    {
+        return \Vinkla\Hashids\Facades\Hashids::encode($this->id);
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        // Try decoding as a hashid
+        $decoded = \Vinkla\Hashids\Facades\Hashids::decode($value);
+        if (!empty($decoded)) {
+            return $this->where('id', $decoded[0])->firstOrFail();
+        }
+
+        // Fallback in case the raw integer ID was passed
+        return $this->where($field ?? 'id', $value)->firstOrFail();
+    }
 
     /**
      * Undocumented variable

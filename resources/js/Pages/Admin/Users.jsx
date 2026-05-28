@@ -61,7 +61,7 @@ export default function Users({ auth, users }) {
         >
             <Head title="User Management" />
 
-            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-12 px-2 sm:px-4 lg:px-6">
+            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6">
 
                 <div className="mb-8">
                     <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Staff Management</h1>
@@ -99,7 +99,9 @@ export default function Users({ auth, users }) {
                                         </td>
                                         <td className="px-4 md:px-6 py-4">
                                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest ${
-                                                user.role === 'admin' ? 'bg-lime-500/10 text-teal-900 dark:text-lime-400 ring-4 ring-lime-500/10' : 'bg-slate-100 text-slate-600 dark:bg-[#18342f]/60 dark:text-slate-400'
+                                                user.role === 'admin' && 'bg-lime-500/10 text-teal-900 dark:text-lime-400 ring-4 ring-lime-500/10',
+                                                user.role === 'support' && 'bg-yellow-500/10 text-teal-900 dark:text-lime-400 ring-4 ring-yellow-500/10',
+                                                user.role === 'user' && 'bg-slate-100 text-slate-600 dark:bg-[#18342f]/60 dark:text-slate-400'
                                             }`}>
                                                 {user.role}
                                             </span>
@@ -117,6 +119,7 @@ export default function Users({ auth, users }) {
                                                         className="text-[10px] md:text-xs font-black bg-white dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] rounded-xl focus:ring-2 focus:ring-lime-500 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
                                                     >
                                                         <option value="user">User</option>
+                                                        <option value="support">Support</option>
                                                         <option value="admin">Admin</option>
                                                     </select>
                                                     <button
