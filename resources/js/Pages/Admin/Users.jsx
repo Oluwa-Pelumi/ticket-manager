@@ -1,7 +1,7 @@
 import {useState} from 'react'
+import { Head, router } from '@inertiajs/react';
 import { useAlert } from '@/Contexts/AlertContext';
 import FlashHandler from '@/Components/FlashHandler';
-import { Head, router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Users({ auth, users }) {

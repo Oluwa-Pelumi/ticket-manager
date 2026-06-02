@@ -7,20 +7,20 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function UpdatePasswordForm({ className = '' }) {
-    const passwordInput = useRef();
+    const passwordInput        = useRef();
     const currentPasswordInput = useRef();
 
     const {
-        data,
-        setData,
-        errors,
         put,
+        data,
         reset,
+        errors,
+        setData,
         processing,
         recentlySuccessful,
     } = useForm({
-        current_password: '',
-        password: '',
+        current_password     : '',
+        password             : '',
         password_confirmation: '',
     });
 

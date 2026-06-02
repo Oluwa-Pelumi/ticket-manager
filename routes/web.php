@@ -18,8 +18,8 @@ Route::get('/home', function () {
         'stats' => [
             'totalTickets'      => Ticket::count(),
             'openTickets'       => Ticket::where('status', 'open')->count(),
-            'inProgressTickets' => Ticket::where('status', 'in-progress')->count(),
             'resolvedTickets'   => Ticket::where('status', 'closed')->count(),
+            'inProgressTickets' => Ticket::where('status', 'in-progress')->count(),
         ],
         'faqs' => rescue(fn () => Faq::orderBy('order')->get(), []),
     ]);
@@ -58,18 +58,20 @@ Route::patch('/update-ticket/{ticket}', [TicketController::class, 'update'])
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])
     ->name('add-comment');
 
+Route::middleware(['auth', 'admin', 'support'])->group(function () {
+    Route::patch('bulk-update-ticket-status', [TicketController::class, 'bulkUpdateStatus'])
+        ->name('bulk-update-ticket-status');
+
+    Route::post('/tickets/{ticket}/activate-order', [TicketController::class, 'activateOrder'])
+    ->name('tickets.activate-order');
+});
+
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('delete-ticket', [TicketController::class, 'deleteTicket'])
         ->name('delete-ticket');
 
     Route::delete('bulk-delete-tickets', [TicketController::class, 'bulkDelete'])
         ->name('bulk-delete-tickets');
-
-    Route::patch('bulk-update-ticket-status', [TicketController::class, 'bulkUpdateStatus'])
-        ->name('bulk-update-ticket-status');
-
-    Route::post('/tickets/{ticket}/activate-order', [TicketController::class, 'activateOrder'])
-        ->name('tickets.activate-order');
 
     // User Management
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');

@@ -6,15 +6,15 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { Link, useForm, usePage } from '@inertiajs/react';
 
 export default function UpdateProfileInformation({
-    mustVerifyEmail,
     status,
     className = '',
+    mustVerifyEmail,
 }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
+            name : user.name,
             email: user.email,
         });
 

@@ -36,7 +36,7 @@ export default function Home({ auth, stats, faqs = [] }) {
 
     return (
         <>
-            <Head title="laradrug | Support System" />
+            <Head title={config('app.name') + " | Support System"} />
 
             <div className="fauna-shell min-h-screen">
                 <section className="relative overflow-hidden bg-teal-900 dark:bg-[#102824]">
@@ -45,7 +45,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                             <div className="flex items-center justify-between">
                                 <div className="inline-flex items-center gap-3 text-white">
                                     <ApplicationLogo className="h-8 w-8" />
-                                    <span className="text-xl font-semibold tracking-tight">laradrug</span>
+                                    <span className="text-xl font-semibold tracking-tight">{config('app.name')}</span>
                                 </div>
 
                                 <div className="flex items-center gap-3">
@@ -100,7 +100,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                     </div>
                 </section>
 
-                <section className="py-14">
+                {auth.user?.role === 'admin' || auth.user?.role === 'support' && <section className="py-14">
                     <div className="container mx-auto px-4">
                         <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
                             {[
@@ -116,14 +116,14 @@ export default function Home({ auth, stats, faqs = [] }) {
                             ))}
                         </div>
                     </div>
-                </section>
+                </section>}
 
                 <section className="p-4 bg-white dark:bg-[#0b1715]">
                     <div className="rounded-3xl bg-lime-500 px-6 py-16 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
                         <div className="container mx-auto px-4">
                             <h2 className="mb-4 text-4xl font-semibold text-teal-900 dark:text-white">How ticketing works</h2>
                             <p className="mb-12 max-w-2xl text-teal-900/90 dark:text-slate-300">
-                                From your first message to a closed ticket—here is what happens in laradrug.
+                                From your first message to a closed ticket—here is what happens in {config('app.name')}.
                             </p>
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                                 {ticketingSteps.map((item) => (
@@ -202,7 +202,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                             <div>
                                 <div className="mb-4 inline-flex items-center gap-2">
                                     <ApplicationLogo className="h-6 w-6" />
-                                    <span className="font-semibold">laradrug</span>
+                                    <span className="font-semibold">{config('app.name')}</span>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">

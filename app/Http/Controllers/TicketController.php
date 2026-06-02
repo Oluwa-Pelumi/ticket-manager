@@ -21,9 +21,10 @@ class TicketController extends Controller
     public function index()
     {
         $user    = Auth::user();
-        $tickets = $user->role === 'admin'
-            ? Ticket::with(['user', 'attendant', 'comments', 'category'])->latest()->get()
-            : Ticket::where('user_id', $user->id)->with(['attendant', 'comments', 'category'])->latest()->get();
+        $tickets = $user->role === 'admin' ? Ticket::with(['user', 'attendant', 'comments', 'category'])->latest()->get() //admin gets to see all tickets in the dashboard
+            : ($user->role === 'support'
+                ? Ticket::with(['user', 'attendant', 'comments', 'category'])->where('attended_to_by', $user->id)->latest()->get() //each particular support only sees the ticket theyve been assigned to
+                : Ticket::where('user_id', $user->id)->with(['attendant', 'comments', 'category'])->latest()->get()); //authenticated users see only their own tickets
 
         return Inertia::render('Dashboard/index', [
             'tickets'    => $tickets,
@@ -62,22 +63,22 @@ class TicketController extends Controller
             $user->update(['whatsapp_number' => $validated['whatsapp_number']]);
         }
 
-        $admins = \App\Models\User::where('role', 'admin')
+        $supports = \App\Models\User::where('role', 'support')
             ->withCount(['assignedTickets' => function ($query) {
                 $query->whereIn('status', ['open', 'in-progress'], 'and', false);
             }])
             ->get();
 
-        $assignedAdminId = null;
-        if ($admins->isNotEmpty()) {
-            $minCount = $admins->min('assigned_tickets_count');
-            $assignedAdminId = $admins->where('assigned_tickets_count', $minCount)->random()->id;
+        $assignedSupportId = null;
+        if ($supports->isNotEmpty()) {
+            $minCount = $supports->min('assigned_tickets_count');
+            $assignedSupportId = $supports->where('assigned_tickets_count', $minCount)->random()->id;
         }
 
         $ticket = Ticket::create([
             'status'                 => 'open',
             'user_id'                => Auth::id(),
-            'attended_to_by'         => $assignedAdminId,
+            'attended_to_by'         => $assignedSupportId,
             'name'                   => $validated['name'],
             'email'                  => $validated['email'],
             'content'                => $validated['content'],
@@ -189,7 +190,7 @@ class TicketController extends Controller
      */
     public function updateStatus(Request $request)
     {
-        if (!Auth::user()->isAdmin()) {
+        if (!Auth::user()->isSupport() && !Auth::user()->isSupport()) {
             return back()->with('error', 'Unauthorized action.');
         }
 
@@ -204,7 +205,7 @@ class TicketController extends Controller
         $updateData = ['status' => $validated['status']];
         if ($request->has('attended_to_by')) {
             $updateData['attended_to_by'] = $validated['attended_to_by'];
-        } else if (Auth::user()->isAdmin() && !$ticket->attended_to_by) {
+        } else if ((Auth::user()->isAdmin() || Auth::user()->isSupport()) && !$ticket->attended_to_by) {
             // Automatically assign to current admin if not already assigned
             $updateData['attended_to_by'] = Auth::id();
         }
@@ -265,7 +266,7 @@ class TicketController extends Controller
      */
     public function bulkUpdateStatus(Request $request)
     {
-        if (!Auth::user()->isAdmin()) {
+        if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
             return back()->with('error', 'Unauthorized action.');
         }
 
@@ -276,7 +277,7 @@ class TicketController extends Controller
         ]);
 
         $tickets = Ticket::whereIn('id', $validated['ids'])->get();
-        
+
         \Illuminate\Support\Facades\DB::table('tickets')->whereIn('id', $validated['ids'])->update([
             'status'         => $validated['status'],
             'attended_to_by' => Auth::id(),             // Assign to current admin
@@ -330,9 +331,9 @@ class TicketController extends Controller
     public function addComment(Request $request, Ticket $ticket)
     {
         $validated = $request->validate([
-            'content'  => 'required|string',
             'images'   => 'nullable|array',
             'images.*' => 'image|max:5120',
+            'content'  => 'required|string',
         ]);
 
         $imagePaths = [];
@@ -342,21 +343,21 @@ class TicketController extends Controller
             $folder    = 'comments/' . $username . '-' . ($user ? $user->id : 'guest');
 
             foreach ($request->file('images') as $index => $file) {
-                $extension = $file->getClientOriginalExtension();
-                $filename  = time() . '_' . $index . '.' . $extension;
-                $filepath  = $file->storeAs($folder, $filename, 'public');
-                $imagePaths[] = $filepath;
+                            $extension = $file->getClientOriginalExtension();
+                            $filename  = time() . '_' . $index . '.' . $extension;
+                            $filepath  = $file->storeAs($folder, $filename, 'public');
+                $imagePaths[]          = $filepath;
             }
         }
 
         $comment = $ticket->comments()->create([
             'user_id' => Auth::id(),
-            'content' => $validated['content'],
             'images'  => $imagePaths,
+            'content' => $validated['content'],
         ]);
 
         // If an admin replies, notify the ticket owner
-        if (Auth::user() && Auth::user()->isAdmin() && $ticket->user_id !== Auth::id()) {
+        if (Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport()) && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Subject: {$ticket->subject}\nView here: " . route('ticket.show', $ticket->id);
 
             $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
@@ -371,7 +372,7 @@ class TicketController extends Controller
         }
 
         // If ticket is closed, don't change status, otherwise maybe mark as in-progress if admin comments
-        if ($ticket->status === 'open' && Auth::user() && Auth::user()->isAdmin()) {
+        if ($ticket->status === 'open' && Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport())) {
             $ticket->update(['status' => 'in-progress', 'attended_to_by' => Auth::id()]);
         }
 
@@ -395,9 +396,9 @@ class TicketController extends Controller
         }
 
         return Inertia::render('CheckStatus/index', [
-            'tickets' => $tickets,
+            'tickets'           => $tickets,
+            'categories'        => Category::all(),
             'searchedReference' => $request->reference,
-            'categories' => Category::all(),
         ]);
     }
 
@@ -406,14 +407,14 @@ class TicketController extends Controller
         $ticket->load(['user', 'attendant', 'comments.user', 'category']);
 
         return Inertia::render('Ticket/Show', [
-            'ticket' => $ticket,
+            'ticket'     => $ticket,
             'categories' => Category::all(),
         ]);
     }
 
     public function activateOrder(Request $request, Ticket $ticket)
     {
-        if (!Auth::user()->isAdmin()) {
+        if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
             return back()->with('error', 'Unauthorized action.');
         }
 

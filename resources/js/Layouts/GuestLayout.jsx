@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import Footer from '@/Components/Footer';
 import { useTheme } from '@/Contexts/ThemeContext';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
@@ -11,7 +12,7 @@ export default function GuestLayout({ children }) {
                 <nav className="mb-12 flex items-center justify-between border-b border-emerald-900/10 py-6 dark:border-[#1d3a34]">
                     <Link href="/" className="inline-flex items-center gap-3">
                         <ApplicationLogo className="h-8 w-8 text-teal-900 dark:text-lime-400" />
-                        <span className="text-xl font-semibold tracking-tight">laradrug</span>
+                        <span className="text-xl font-semibold tracking-tight">{config('app.name')}</span>
                     </Link>
 
                     <div className="flex items-center gap-3">
@@ -36,9 +37,8 @@ export default function GuestLayout({ children }) {
                     <div className="fauna-panel px-8 py-10 md:px-10 md:py-12">
                         {children}
                     </div>
-                    <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
-                        &copy; {new Date().getFullYear()} {import.meta.env.VITE_APP_NAME}. All rights reserved.
-                    </p>
+
+                    <Footer />
                 </div>
             </div>
         </div>

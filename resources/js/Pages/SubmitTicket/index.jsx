@@ -7,6 +7,43 @@ import Footer from '@/Components/Footer';
 
 
 // Categories will be passed from the backend
+export const orderType = [
+    {
+        id: "one-time",
+        label: "One Time",
+    },
+    {
+        id: "recurrent",
+        label: "Recurrent Order",
+    },
+]
+
+export const recurrencePeriod = [
+    {
+        id: "one-week",
+        label: "Weekly",
+    },
+    {
+        id: "two-weeks",
+        label: "Once every 2 weeks",
+    },
+    {
+        id: "three-weeks",
+        label: "Once every 3 weeks",
+    },
+    {
+        id: "monthly",
+        label: "Monthly",
+    },
+    {
+        id: "yearly",
+        label: "Yearly",
+    },
+    {
+        id: "custom",
+        label: "Pick Date",
+    },
+]
 
 export default function SubmitTicket({ auth, categories = [] }) {
     // Group categories by their group field
@@ -16,20 +53,20 @@ export default function SubmitTicket({ auth, categories = [] }) {
         acc[group].push(category);
         return acc;
     }, {});
-    const { theme, toggleTheme } = useTheme();
-    const [previewUrls, setPreviewUrls] = useState([]);
+    const { theme, toggleTheme }                             = useTheme();
+    const [previewUrls, setPreviewUrls]                      = useState([]);
     const { data, setData, post, processing, errors, reset } = useForm({
-        images: [],
-        subject: "",
-        content: "",
-        priority: "low",
-        name: auth.user?.name || "",
-        email: auth.user?.email || "",
-        whatsapp_number: auth.user?.whatsapp_number || "",
-        category_id: "",
-        order_type: "",
-        recurrence_period: "",
+        images                : [],
+        subject               : "",
+        content               : "",
+        order_type            : "",
+        priority              : "low",
+        category_id           : "",
+        recurrence_period     : "",
         custom_recurrence_date: "",
+        name                  : auth.user?.name || "",
+        email                 : auth.user?.email || "",
+        whatsapp_number       : auth.user?.whatsapp_number || "",
     });
 
     const submit = (e) => {
@@ -58,7 +95,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                 <ApplicationLogo className="w-full h-full text-teal-900 dark:text-lime-400" />
                             </div>
                             <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                                laradrug<span className="text-lime-500">.</span>
+                                 {config('app.name')}<span className="text-lime-500">.</span>
                             </span>
                         </Link>
                         <div className="flex items-center gap-3">
@@ -241,11 +278,11 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                     onChange={(e) =>
                                         setData(
                                             "whatsapp_number",
-                                            e.target.value,
+                                            "+234" + e.target.value,
                                         )
                                     }
                                     className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium shadow-sm"
-                                    placeholder="+234..."
+                                    placeholder="08012345678"
                                 />
                                 {errors.whatsapp_number && (
                                     <div className="text-red-500 text-xs mt-1 font-semibold">
@@ -435,16 +472,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                         Order Type
                                     </label>
                                     <div className="grid grid-cols-2 gap-4">
-                                        {[
-                                            {
-                                                id: "one-time",
-                                                label: "One Time",
-                                            },
-                                            {
-                                                id: "recurrent",
-                                                label: "Recurrent Order",
-                                            },
-                                        ].map((type) => (
+                                        {orderType.map((type) => (
                                             <label
                                                 key={type.id}
                                                 className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
@@ -484,32 +512,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                             Recurrence Period
                                         </label>
                                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                            {[
-                                                {
-                                                    id: "one-week",
-                                                    label: "Weekly",
-                                                },
-                                                {
-                                                    id: "two-weeks",
-                                                    label: "Once every 2 weeks",
-                                                },
-                                                {
-                                                    id: "three-weeks",
-                                                    label: "Once every 3 weeks",
-                                                },
-                                                {
-                                                    id: "monthly",
-                                                    label: "Monthly",
-                                                },
-                                                {
-                                                    id: "yearly",
-                                                    label: "Yearly",
-                                                },
-                                                {
-                                                    id: "custom",
-                                                    label: "Pick Date",
-                                                },
-                                            ].map((period) => (
+                                            {recurrencePeriod.map((period) => (
                                                 <label
                                                     key={period.id}
                                                     className={`flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all ${

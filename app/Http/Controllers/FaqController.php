@@ -18,9 +18,9 @@ class FaqController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'answer'   => 'required|string',
+            'order'    => 'nullable|integer',
             'question' => 'required|string',
-            'answer' => 'required|string',
-            'order' => 'nullable|integer',
         ]);
 
         Faq::create($validated);
@@ -31,9 +31,9 @@ class FaqController extends Controller
     public function update(Request $request, Faq $faq)
     {
         $validated = $request->validate([
+            'answer'   => 'required|string',
+            'order'    => 'nullable|integer',
             'question' => 'required|string',
-            'answer' => 'required|string',
-            'order' => 'nullable|integer',
         ]);
 
         $faq->update($validated);

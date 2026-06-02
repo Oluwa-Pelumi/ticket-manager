@@ -58,6 +58,7 @@ export default function ShowTicket({ auth, ticket }) {
 
     const isTicketOwner = auth.user?.id === ticket.user_id || !ticket.user_id;
     const isAdmin       = auth.user?.role === 'admin';
+    const isSupport       = auth.user?.role === 'support';
 
     return (
         <AuthenticatedLayout
@@ -230,7 +231,7 @@ export default function ShowTicket({ auth, ticket }) {
                                 )}
                             </div>
 
-                            {(isTicketOwner || isAdmin) && ticket.status !== 'closed' && (
+                            {(isTicketOwner || isAdmin || isSupport) && ticket.status !== 'closed' && (
                                 <form onSubmit={handleCommentSubmit} className="space-y-4">
                                     <div className="relative group/comment">
                                         <textarea

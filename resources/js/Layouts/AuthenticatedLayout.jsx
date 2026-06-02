@@ -8,9 +8,10 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const { showAlert }          = useAlert();
     const { theme, toggleTheme } = useTheme();
-    const { showAlert } = useAlert();
+    const user                   = usePage().props.auth.user;
+    const due_tickets            = usePage().props.due_tickets
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -34,7 +35,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <ApplicationLogo className="w-full h-full text-teal-900 dark:text-lime-400" />
                                 </div>
                                 <span className="hidden sm:block text-xl font-black tracking-tight text-slate-900 dark:text-white">
-                                    laradrug
+                                     {config('app.name')}
                                     <span className="text-lime-500">.</span>
                                 </span>
                             </Link>
@@ -46,12 +47,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Home
                                 </NavLink>
-                                <NavLink
-                                    href={route("dashboard")}
-                                    active={route().current("dashboard")}
-                                >
-                                    Dashboard
-                                </NavLink>
+                                {(user?.role === 'admin' || user?.role === 'support' || user?.role === 'user') && (
+                                    <NavLink
+                                        href={route("dashboard")}
+                                        active={route().current("dashboard")}
+                                    >
+                                        Dashboard
+                                    </NavLink>
+                                )}
                                 {user?.role === "admin" && (
                                     <NavLink
                                         href={route("admin.users")}
@@ -63,18 +66,18 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        {/* Right: Theme Toggle + User Dropdown */}
+                        {/* Right: Notification + Theme Toggle + User Dropdown */}
                         <div className="hidden sm:flex sm:items-center gap-4">
-                            {user?.role === "admin" && (
+                            {(user?.role === "admin" || user?.role === "support") && (
                                 <div className="relative">
                                     <Dropdown>
                                         <Dropdown.Trigger>
                                             <button
                                                 className="relative w-10 h-10 rounded-2xl flex items-center justify-center border border-emerald-900/10/50 bg-white text-slate-600 transition-all hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400 group"
-                                                title={`${usePage().props.due_tickets.length} orders due for processing`}
+                                                title={`${due_tickets.length} orders due for processing`}
                                             >
                                                 <svg
-                                                    className={`w-5 h-5 ${usePage().props.due_tickets.length > 0 ? "animate-bounce text-lime-500" : ""}`}
+                                                    className={`w-5 h-5 ${due_tickets.length > 0 ? "animate-bounce text-lime-500" : ""}`}
                                                     fill="none"
                                                     stroke="currentColor"
                                                     viewBox="0 0 24 24"
@@ -86,7 +89,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                                                     />
                                                 </svg>
-                                                {usePage().props.due_tickets
+                                                {due_tickets
                                                     .length > 0 && (
                                                     <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-black text-white shadow-lg ring-2 ring-white dark:ring-[#102824]">
                                                         {
@@ -109,9 +112,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 </h3>
                                             </div>
                                             <div className="max-h-96 overflow-y-auto custom-scrollbar">
-                                                {usePage().props.due_tickets
+                                                {due_tickets
                                                     .length > 0 ? (
-                                                    usePage().props.due_tickets.map(
+                                                    due_tickets.map(
                                                         (ticket) => (
                                                             <div
                                                                 key={ticket.id}
@@ -148,11 +151,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                                 <div className="flex items-center justify-between gap-4">
                                                                     <div className="flex items-center gap-2">
                                                                         <span className="text-[9px] font-black text-slate-400 font-mono">
-                                                                            {ticket.id.substring(
-                                                                                0,
-                                                                                8,
-                                                                            )}
-                                                                            ...
+                                                                            {ticket.hashid}
                                                                         </span>
                                                                         <button
                                                                             onClick={(
@@ -261,7 +260,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                     </div>
                                                 )}
                                             </div>
-                                            {usePage().props.due_tickets
+                                            {due_tickets
                                                 .length > 0 && (
                                                 <div className="p-3 bg-slate-50 dark:bg-[#0b1715]/50 text-center">
                                                     <Link
@@ -484,7 +483,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 </div>
 
                 {/* Mobile Dropdown Menu - admin only */}
-                {user?.role === "admin" && (
+                {(user?.role === "admin" || user?.role === "support") && (
                     <div
                         className={
                             (showingNavigationDropdown ? "block" : "hidden") +

@@ -5,9 +5,8 @@ import { Head, router, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Categories({ auth, categories }) {
-    const { showAlert, showConfirm } = useAlert();
-    const [editingCategory, setEditingCategory] = useState(null);
-
+    const { showAlert, showConfirm }                                             = useAlert();
+    const [editingCategory, setEditingCategory]                                  = useState(null);
     const { data, setData, post, patch, processing, errors, reset, clearErrors } = useForm({
         name: '',
         group: '',
@@ -50,10 +49,10 @@ export default function Categories({ auth, categories }) {
 
     const handleDelete = async (category) => {
         const confirmed = await showConfirm({
-            type: 'danger',
-            title: 'Delete Category',
+            type       : 'danger',
+            title      : 'Delete Category',
             confirmText: 'Delete Category',
-            message: `Are you sure you want to delete "${category.name}"? This will affect tickets linked to this category.`,
+            message    : `Are you sure you want to delete "${category.name}"? This will affect tickets linked to this category.`,
         });
 
         if (confirmed) {

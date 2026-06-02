@@ -8,8 +8,8 @@ import DangerButton from '@/Components/DangerButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 
 export default function DeleteUserForm({ className = '' }) {
+    const passwordInput                                       = useRef();
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const passwordInput = useRef();
 
     const {
         data,
@@ -32,9 +32,9 @@ export default function DeleteUserForm({ className = '' }) {
 
         destroy(route('profile.destroy'), {
             preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => passwordInput.current.focus(),
-            onFinish: () => reset(),
+            onFinish      : () => reset(),
+            onSuccess     : () => closeModal(),
+            onError       : () => passwordInput.current.focus(),
         });
     };
 

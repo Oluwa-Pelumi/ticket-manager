@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('content');
             $table->json('images')->nullable();
             $table->timestamps();
+
+            $table->foreignId('user_id')->nullable()->change();
         });
     }
 
@@ -27,5 +29,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('comments');
+        
+         Schema::table('comments', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable(false)->change();
+        });
     }
 };

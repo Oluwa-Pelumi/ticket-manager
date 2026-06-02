@@ -8,8 +8,8 @@ import Dropdown from "@/Components/Dropdown";
 import { useState } from "react";
 
 export default function CheckStatus({ auth, tickets, searchedReference }) {
-    const {user} = auth
-    const { theme, toggleTheme } = useTheme();
+    const {user}                                      = auth
+    const { theme, toggleTheme }                      = useTheme();
     const { data, setData, post, processing, errors } = useForm({
         reference: searchedReference || "",
     });
@@ -163,11 +163,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                                                 <div className="flex items-center justify-between gap-4">
                                                                     <div className="flex items-center gap-2">
                                                                         <span className="text-[9px] font-black text-slate-400 font-mono">
-                                                                            {ticket.id.substring(
-                                                                                0,
-                                                                                8,
-                                                                            )}
-                                                                            ...
+                                                                            {ticket.hashid}
                                                                         </span>
                                                                         <button
                                                                             onClick={(

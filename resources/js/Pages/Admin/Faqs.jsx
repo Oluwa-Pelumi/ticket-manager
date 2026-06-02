@@ -4,14 +4,13 @@ import { Head, useForm } from '@inertiajs/react';
 import { useAlert } from '@/Contexts/AlertContext';
 
 export default function Faqs({ auth, faqs }) {
-    const { showAlert, showConfirm } = useAlert();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingFaq, setEditingFaq] = useState(null);
-
+    const { showAlert, showConfirm }                                                 = useAlert();
+    const [editingFaq, setEditingFaq]                                                = useState(null);
+    const [isModalOpen, setIsModalOpen]                                              = useState(false);
     const { data, setData, post, patch, delete: destroy, processing, errors, reset } = useForm({
         question: '',
-        answer: '',
-        order: 0,
+        answer  : '',
+        order   : 0,
     });
 
     const openCreateModal = () => {
@@ -24,8 +23,8 @@ export default function Faqs({ auth, faqs }) {
         setEditingFaq(faq);
         setData({
             question: faq.question,
-            answer: faq.answer,
-            order: faq.order || 0,
+            answer  : faq.answer,
+            order   : faq.order || 0,
         });
         setIsModalOpen(true);
     };
@@ -57,9 +56,9 @@ export default function Faqs({ auth, faqs }) {
 
     const handleDelete = async (faq) => {
         const confirmed = await showConfirm({
-            type: 'danger',
-            title: 'Delete FAQ',
-            message: `Are you sure you want to delete this FAQ? This action cannot be undone.`,
+            type       : 'danger',
+            title      : 'Delete FAQ',
+            message    : `Are you sure you want to delete this FAQ? This action cannot be undone.`,
             confirmText: 'Delete FAQ',
         });
 
@@ -98,7 +97,7 @@ export default function Faqs({ auth, faqs }) {
             <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-6">
                     {faqs.length > 0 ? faqs.map((faq) => (
-                        <div 
+                        <div
                             key={faq.id}
                             className="fauna-panel p-8 group hover:border-lime-500/30 transition-all duration-500"
                         >

@@ -4,9 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -54,18 +54,23 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function isSupport(): bool
+    {
+        return $this->role === 'support';
+    }
+
     public function tickets() {
         return $this->hasMany(
-            Ticket::class, 
-            'user_id', 
+            Ticket::class,
+            'user_id',
             'id'
         );
     }
 
     public function assignedTickets() {
         return $this->hasMany(
-            Ticket::class, 
-            'attended_to_by', 
+            Ticket::class,
+            'attended_to_by',
             'id'
         );
     }

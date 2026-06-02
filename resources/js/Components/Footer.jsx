@@ -1,4 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import { config } from '@inertiajs/react';
 
 export default function Footer() {
   return (
@@ -7,11 +8,11 @@ export default function Footer() {
         <div className="flex items-center gap-2 opacity-60">
           <ApplicationLogo className="w-5 h-5" />
           <span className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">
-            laradrug
+            {config('app.name')}
           </span>
         </div>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          &copy; {new Date().getFullYear()} laradrug. All rights reserved.
+          &copy; {new Date().getFullYear()} {config('app.name')}. All rights reserved.
         </p>
       </div>
     </footer>

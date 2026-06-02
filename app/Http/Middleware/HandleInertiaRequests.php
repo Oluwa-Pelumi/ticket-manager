@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'role' => $request->user()?->role,
             ],
-            'due_tickets' => $request->user()?->isAdmin()
+            'due_tickets' => ($request->user()?->isAdmin() || $request->user()?->isSupport())
                 ? rescue(fn() => \App\Models\Ticket::whereNotNull('order_type')
                     ->get()
                     ->filter(function($ticket) {
@@ -56,11 +56,15 @@ class HandleInertiaRequests extends Middleware
                         if ($days === 0) return false;
                         $due = $last->addDays($days);
                         return \Illuminate\Support\Carbon::now()->diffInHours($due, false) <= 24;
+                        // a notification shows when its less than 24hours to when next and order for that ticket should be reactivated
+                        //e.g. if a ticket has weekly order, by the time its the sixth day the last order was processed, a notfication
+                        // will appear to remind the support to precess a new order
                     })
                     ->map(function($ticket) {
                         $activations = $ticket->order_activations;
                         return [
                             'id'              => $ticket->id,
+                            'hashid'          => $ticket->hashid,
                             'subject'         => $ticket->subject,
                             'content'         => $ticket->content,
                             'last_activation' => end($activations),

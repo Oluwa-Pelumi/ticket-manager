@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useAlert } from '@/Contexts/AlertContext';
 import { useTheme } from '@/Contexts/ThemeContext';
 
@@ -14,8 +14,8 @@ const AlertSystem = () => {
                     <div
                         key={alert.id}
                         className={`pointer-events-auto flex items-center gap-4 p-5 rounded-[2rem] border backdrop-blur-2xl shadow-2xl animate-in slide-in-from-right-10 fade-in duration-500 min-w-[320px] max-w-md
-                            ${theme === 'dark' 
-                                ? 'bg-slate-900/80 border-slate-800 text-white' 
+                            ${theme === 'dark'
+                                ? 'bg-slate-900/80 border-slate-800 text-white'
                                 : 'bg-white/80 border-emerald-900/10 text-slate-900'
                             }`}
                     >
@@ -46,19 +46,19 @@ const AlertSystem = () => {
             {/* Confirmation Modal */}
             {confirm && (
                 <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-slate-950/40 backdrop-blur-md animate-in fade-in duration-300">
-                    <div 
+                    <div
                         className={`w-full max-w-md p-8 rounded-[3rem] border shadow-2xl animate-in zoom-in-95 duration-300
-                            ${theme === 'dark' 
-                                ? (confirm.type === 'warning' ? 'bg-[#142d28] border-lime-500/20 text-white' : 
+                            ${theme === 'dark'
+                                ? (confirm.type === 'warning' ? 'bg-[#142d28] border-lime-500/20 text-white' :
                                    confirm.type === 'danger' ? 'bg-[#2a1215] border-rose-500/20 text-white' :
                                    'bg-slate-900/90 border-slate-800 text-white')
-                                : (confirm.type === 'warning' ? 'bg-lime-50/95 border-lime-200 text-slate-900' : 
+                                : (confirm.type === 'warning' ? 'bg-lime-50/95 border-lime-200 text-slate-900' :
                                    confirm.type === 'danger' ? 'bg-rose-50/95 border-rose-200 text-slate-900' :
                                    'bg-white/90 border-emerald-900/10 text-slate-900')
                             }`}
                     >
                         <div className={`inline-flex p-4 rounded-[1.5rem] mb-6 ${
-                            confirm.type === 'danger' ? 'bg-rose-500/20 text-rose-500' : 
+                            confirm.type === 'danger' ? 'bg-rose-500/20 text-rose-500' :
                             confirm.type === 'warning' ? 'bg-lime-500/20 text-lime-500' :
                             'bg-blue-500/20 text-blue-500'
                         }`}>
@@ -70,22 +70,22 @@ const AlertSystem = () => {
                                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             )}
                         </div>
-                        
+
                         <h3 className="text-2xl font-black tracking-tight mb-2 italic">{confirm.title || 'Are you sure?'}</h3>
                         <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-medium">
                             {confirm.message || 'This action cannot be undone. Please confirm to proceed.'}
                         </p>
- 
+
                         <div className="flex gap-4">
                             <button
                                 onClick={confirm.cancel}
                                 className={`flex-1 py-4 px-6 rounded-2xl font-bold transition-all
-                                    ${confirm.type === 'warning' 
-                                        ? 'bg-lime-500/10 text-lime-600 dark:text-lime-400 hover:bg-lime-500/20' 
+                                    ${confirm.type === 'warning'
+                                        ? 'bg-lime-500/10 text-lime-600 dark:text-lime-400 hover:bg-lime-500/20'
                                         : confirm.type === 'danger'
                                         ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20'
-                                        : (theme === 'dark' 
-                                            ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' 
+                                        : (theme === 'dark'
+                                            ? 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                                             : 'bg-slate-100 text-slate-600 hover:bg-slate-200')
                                     }`}
                             >
@@ -94,8 +94,8 @@ const AlertSystem = () => {
                             <button
                                 onClick={() => confirm.resolve(true)}
                                 className={`flex-[2] py-4 px-6 rounded-2xl text-white font-bold shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]
-                                    ${confirm.type === 'danger' 
-                                        ? 'bg-rose-500 shadow-rose-500/20' 
+                                    ${confirm.type === 'danger'
+                                        ? 'bg-rose-500 shadow-rose-500/20'
                                         : confirm.type === 'warning'
                                         ? 'bg-lime-500 text-teal-900 shadow-lime-500/20'
                                         : 'bg-teal-900'

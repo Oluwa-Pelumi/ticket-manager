@@ -4,7 +4,7 @@ import { useState, useMemo, Fragment } from 'react';
 import FlashHandler from '@/Components/FlashHandler';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-
+import {orderType, recurrencePeriod} from '@/Pages/SubmitTicket'
 // Categories will be passed from the backend
 
 export default function Dashboard({ auth, tickets, categories = [] }) {
@@ -222,7 +222,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                 const confirmed = await showConfirm({
                     type: 'warning',
                     title: 'Early Processing Warning',
-                    message: `Security Check: This ${period} order was last processed on ${lastActivation.toLocaleString()}. Only ${diffDays.toFixed(1)} days have passed, but the schedule requires ${requiredDays} days. Proceed anyway?`,
+                    message: `Security Check: This ${period} order was last processed on ${lastActivation.toLocaleString('en-GB')}. Only ${diffDays.toFixed(1)} days have passed, but the schedule requires ${requiredDays} days. Proceed anyway?`,
                     confirmText: 'Confirm & Process',
                 });
                 if (!confirmed) return;
@@ -358,7 +358,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                 </button>
                             </div>
                         )}
-                        {auth.user.role !== 'admin' && (
+                        {auth.user.role === 'user' && (
                             <Link href={route('submit-ticket')} className="w-full md:w-auto text-center px-6 py-3 bg-teal-900 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-105 active:scale-95 transition-all">
                                 Submit Ticket
                             </Link>
@@ -454,7 +454,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                             <thead>
                                 <tr className="border-b border-emerald-900/10 dark:border-[#1d3a34]">
                                     <th className="w-12 md:w-16 px-4 md:px-6 py-4">
-                                        {auth?.user === 'admin' || auth?.user === 'support' && <input
+                                        {(auth?.user.role === 'admin' || auth?.user.role === 'support') && <input
                                             type="checkbox"
                                             className="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
                                             checked={tickets.length > 0 && selectedIds.length === tickets.length}
@@ -487,7 +487,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             </button>
                                         </th>
                                     )}
-                                    {(auth.user.role === 'admin' || auth.user.role === 'support') && (
+                                    {(
                                         <th className="hidden lg:table-cell w-36 md:w-48 px-4 md:px-6 py-4">
                                             <div className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                                 Order Details
@@ -530,7 +530,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             onClick={() => toggleExpand(ticket.id)}
                                         >
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                                                 {auth?.user === 'admin' || auth?.user === 'support' &&<input
+                                                 {(auth?.user.role === 'admin' || auth?.user.role === 'support') &&<input
                                                     type="checkbox"
                                                     className="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
                                                     checked={selectedIds.includes(ticket.id)}
@@ -554,17 +554,17 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                     <div className="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px]">{ticket.email || ticket.user?.email}</div>
                                                 </td>
                                             )}
-                                            {(auth.user.role === 'admin' || auth.user.role === 'support') && (
+                                            {
                                                 <td className="hidden lg:table-cell px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                     {ticket.order_type ? (
                                                         <div className="flex flex-col gap-2">
                                                             <div className="flex items-center gap-1.5 flex-wrap">
                                                                 <span className={`px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider ${ticket.order_type === 'recurrent' ? 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' : 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>
-                                                                    {ticket.order_type}
+                                                                    {orderType.find((el) => (el.id === ticket.order_type)).label}
                                                                 </span>
                                                                 {ticket.order_type === 'recurrent' && (
                                                                     <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#18342f] px-1.5 py-0.5 rounded border border-emerald-900/10 dark:border-[#28524a]">
-                                                                        {ticket.recurrence_period === 'custom' ? ticket.custom_recurrence_date : ticket.recurrence_period}
+                                                                        {ticket.recurrence_period === 'custom' ? ticket.custom_recurrence_date : recurrencePeriod.find((el) => (el.id === ticket.recurrence_period)).label}
                                                                     </span>
                                                                 )}
                                                             </div>
@@ -574,7 +574,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                                         Last Order Processing:
                                                                     </span>
                                                                     <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                                                                        {new Date(ticket.order_activations[ticket.order_activations.length - 1]).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+                                                                        {new Date(ticket.order_activations[ticket.order_activations.length - 1]).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' })}
                                                                     </span>
                                                                 </div>
                                                             )}
@@ -583,7 +583,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                         <span className="text-[10px] italic text-slate-400 tracking-widest">General Ticket</span>
                                                     )}
                                                 </td>
-                                            )}
+                                            }
                                             <td className="hidden sm:table-cell px-6 py-4">
                                                 <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider ${
                                                     ticket.priority === 'high' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
@@ -722,7 +722,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                                                 <div>
                                                                                     <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
-                                                                                    <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">{ticket.order_type.replace('-', ' ')}</div>
+                                                                                    <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">{orderType.find((el) => (el.id === ticket.order_type)).label}</div>
                                                                                 </div>
                                                                                 {ticket.order_type === 'recurrent' && (
                                                                                     <div>
@@ -730,7 +730,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                                                         <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">
                                                                                             {ticket.recurrence_period === 'custom'
                                                                                                 ? `Custom: ${ticket.custom_recurrence_date}`
-                                                                                                : ticket.recurrence_period.replace('-', ' ')}
+                                                                                                : recurrencePeriod.find((el) => (el.id === ticket.recurrence_period)).label}
                                                                                         </div>
                                                                                     </div>
                                                                                 )}
@@ -743,7 +743,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                                                         {ticket.order_activations.map((date, i) => (
                                                                                             <div key={i} className="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                                                                                 <div className="w-1 h-1 rounded-full bg-lime-500" />
-                                                                                                {new Date(date).toLocaleString()}
+                                                                                                {new Date(date).toLocaleString('en-GB')}
                                                                                             </div>
                                                                                         ))}
                                                                                     </div>

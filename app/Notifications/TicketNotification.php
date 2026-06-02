@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TicketNotification extends Notification
+class TicketNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -32,11 +32,11 @@ class TicketNotification extends Notification
     public function via(object $notifiable): array
     {
         $channels = ['mail'];
-        
-        $whatsappNumber = method_exists($notifiable, 'routeNotificationFor') 
-            ? $notifiable->routeNotificationFor('whatsapp') 
+
+        $whatsappNumber = method_exists($notifiable, 'routeNotificationFor')
+            ? $notifiable->routeNotificationFor('whatsapp')
             : ($notifiable->whatsapp_number ?? null);
-            
+
         if (!empty($whatsappNumber)) {
             $channels[] = 'whatsapp';
         }
@@ -50,7 +50,7 @@ class TicketNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $content = is_string($this->message) ? $this->message : $this->message->content;
-        $name = $this->recipientName ?? $notifiable->name ?? 'there';
+        $name    = $this->recipientName ?? $notifiable->name ?? 'there';
 
         return (new MailMessage)
             ->subject($this->subject)
@@ -62,8 +62,8 @@ class TicketNotification extends Notification
     public function toWhatsapp(object $notifiable): string
     {
         $content = is_string($this->message) ? $this->message : $this->message->content;
-        $name = $this->recipientName ?? $notifiable->name ?? 'there';
-        
+        $name    = $this->recipientName ?? $notifiable->name ?? 'there';
+
         return "Hello {$name}!\n\n{$content}";
     }
 }
