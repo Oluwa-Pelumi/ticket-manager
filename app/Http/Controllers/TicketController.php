@@ -190,7 +190,8 @@ class TicketController extends Controller
      */
     public function updateStatus(Request $request)
     {
-        if (!Auth::user()->isSupport() && !Auth::user()->isSupport()) {
+        if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
+            \Illuminate\Support\Facades\Log::info('Unauthorized action by user: ' . Auth::id() . ' trying to update ticket: ' . $request->id);
             return back()->with('error', 'Unauthorized action.');
         }
 
@@ -425,6 +426,6 @@ class TicketController extends Controller
             'order_activations' => $activations
         ]);
 
-        return back()->with('success', 'Order activated successfully.');
+        return back()->with('success', 'Order processed and recorded successfully.');
     }
 }

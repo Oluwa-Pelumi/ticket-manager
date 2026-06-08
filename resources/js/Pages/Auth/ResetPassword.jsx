@@ -34,6 +34,7 @@ export default function ResetPassword({ token, email }) {
                     <InputLabel htmlFor="email" value="Email Address" className="text-slate-700 dark:text-slate-300 font-semibold" />
 
                     <TextInput
+                    disabled={processing}
                         id="email"
                         type="email"
                         name="email"
@@ -50,6 +51,7 @@ export default function ResetPassword({ token, email }) {
                     <InputLabel htmlFor="password" value="New Password" className="text-slate-700 dark:text-slate-300 font-semibold" />
 
                     <TextInput
+                    disabled={processing}
                         id="password"
                         type="password"
                         name="password"
@@ -72,6 +74,7 @@ export default function ResetPassword({ token, email }) {
                     />
 
                     <TextInput
+                    disabled={processing}
                         type="password"
                         id="password_confirmation"
                         name="password_confirmation"

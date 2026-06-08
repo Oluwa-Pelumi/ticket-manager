@@ -16,7 +16,7 @@ export default function Edit({ mustVerifyEmail, status }) {
                     </div>
                     <div className="flex flex-col">
                         <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                            Identity Portal
+                            Profile
                         </h2>
                         <span className="text-[9px] font-black tracking-[0.3em] text-slate-400">Personal Management</span>
                     </div>

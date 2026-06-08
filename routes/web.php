@@ -58,11 +58,11 @@ Route::patch('/update-ticket/{ticket}', [TicketController::class, 'update'])
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])
     ->name('add-comment');
 
-Route::middleware(['auth', 'admin', 'support'])->group(function () {
+Route::middleware(['auth', 'staff'])->group(function () {
     Route::patch('bulk-update-ticket-status', [TicketController::class, 'bulkUpdateStatus'])
         ->name('bulk-update-ticket-status');
 
-    Route::post('/tickets/{ticket}/activate-order', [TicketController::class, 'activateOrder'])
+    Route::patch('/tickets/{ticket}/activate-order', [TicketController::class, 'activateOrder'])
     ->name('tickets.activate-order');
 });
 

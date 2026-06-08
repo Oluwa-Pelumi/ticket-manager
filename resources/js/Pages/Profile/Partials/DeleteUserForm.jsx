@@ -80,6 +80,7 @@ export default function DeleteUserForm({ className = '' }) {
                     <div>
                         <InputLabel htmlFor="password" value="Your Password" className="sr-only" />
                         <TextInput
+                        disabled={processing}
                             id="password"
                             type="password"
                             name="password"

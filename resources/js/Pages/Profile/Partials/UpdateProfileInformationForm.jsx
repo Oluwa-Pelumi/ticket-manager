@@ -38,6 +38,7 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
                     <TextInput
+                    disabled={processing}
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
@@ -52,6 +53,7 @@ export default function UpdateProfileInformation({
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
                     <TextInput
+                    disabled={processing}
                         id="email"
                         type="email"
                         className="mt-1 block w-full"

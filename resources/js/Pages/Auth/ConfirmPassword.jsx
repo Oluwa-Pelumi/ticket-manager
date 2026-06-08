@@ -36,6 +36,7 @@ export default function ConfirmPassword() {
                     <InputLabel htmlFor="password" value="Password" className="text-slate-700 dark:text-slate-300 font-semibold" />
 
                     <TextInput
+                    disabled={processing}
                         id="password"
                         type="password"
                         name="password"

@@ -1,10 +1,12 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from "@inertiajs/react";
 import Footer from '@/Components/Footer';
 import { useTheme } from '@/Contexts/ThemeContext';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function GuestLayout({ children }) {
     const { theme, toggleTheme } = useTheme();
+        const { config }             = usePage().props;
+
 
     return (
         <div className="fauna-shell relative min-h-screen overflow-x-hidden py-10">
@@ -12,7 +14,7 @@ export default function GuestLayout({ children }) {
                 <nav className="mb-12 flex items-center justify-between border-b border-emerald-900/10 py-6 dark:border-[#1d3a34]">
                     <Link href="/" className="inline-flex items-center gap-3">
                         <ApplicationLogo className="h-8 w-8 text-teal-900 dark:text-lime-400" />
-                        <span className="text-xl font-semibold tracking-tight">{config('app.name')}</span>
+                        <span className="text-xl font-semibold tracking-tight">{config.appName}</span>
                     </Link>
 
                     <div className="flex items-center gap-3">

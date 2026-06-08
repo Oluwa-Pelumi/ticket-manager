@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { useAlert } from '@/Contexts/AlertContext';
+import Footer from '@/Components/Footer';
 
 export default function Faqs({ auth, faqs }) {
-    const { showAlert, showConfirm }                                                 = useAlert();
+    const { showConfirm }                                                 = useAlert();
     const [editingFaq, setEditingFaq]                                                = useState(null);
     const [isModalOpen, setIsModalOpen]                                              = useState(false);
     const { data, setData, post, patch, delete: destroy, processing, errors, reset } = useForm({
@@ -41,14 +42,12 @@ export default function Faqs({ auth, faqs }) {
             patch(route('admin.faqs.update', editingFaq.id), {
                 onSuccess: () => {
                     closeModal();
-                    showAlert('FAQ updated successfully.', 'success');
                 },
             });
         } else {
             post(route('admin.faqs.store'), {
                 onSuccess: () => {
                     closeModal();
-                    showAlert('FAQ created successfully.', 'success');
                 },
             });
         }
@@ -64,7 +63,7 @@ export default function Faqs({ auth, faqs }) {
 
         if (confirmed) {
             destroy(route('admin.faqs.destroy', faq.id), {
-                onSuccess: () => showAlert('FAQ deleted successfully.', 'success'),
+                onSuccess: () => {},
             });
         }
     };
@@ -82,6 +81,13 @@ export default function Faqs({ auth, faqs }) {
                             Configure and maintain frequently asked questions for the platform.
                         </p>
                     </div>
+                </div>
+            }
+        >
+            <Head title="FAQ Management" />
+
+            <div className="space-y-6">
+                <div className="flex justify-start">
                     <button
                         onClick={openCreateModal}
                         className="inline-flex items-center gap-3 px-8 py-4 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-[2rem] font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10"
@@ -90,11 +96,7 @@ export default function Faqs({ auth, faqs }) {
                         Add New FAQ
                     </button>
                 </div>
-            }
-        >
-            <Head title="FAQ Management" />
 
-            <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-6">
                     {faqs.length > 0 ? faqs.map((faq) => (
                         <div
@@ -147,10 +149,12 @@ export default function Faqs({ auth, faqs }) {
                 </div>
             </div>
 
+            <Footer />
+
             {/* Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/40 backdrop-blur-md animate-in fade-in duration-300">
-                    <div className="w-full max-w-2xl fauna-panel p-10 bg-white/95 dark:bg-[#102824]/95 animate-in zoom-in-95 duration-300 border-lime-500/20">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/40 backdrop-blur-md animate-in fade-in duration-300">
+                    <div className="w-full max-w-2xl fauna-panel p-6 sm:p-10 bg-white/95 dark:bg-[#102824]/95 animate-in zoom-in-95 duration-300 border-lime-500/20 overflow-y-auto max-h-[90vh]">
                         <div className="flex justify-between items-center mb-10">
                             <h3 className="text-3xl font-black text-slate-900 dark:text-white italic uppercase tracking-tighter">
                                 {editingFaq ? 'Edit' : 'Create'} <span className="text-teal-900 dark:text-lime-400">FAQ</span>
@@ -165,6 +169,7 @@ export default function Faqs({ auth, faqs }) {
                                 <label className="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Question</label>
                                 <input
                                     type="text"
+                                    disabled={processing}
                                     value={data.question}
                                     onChange={e => setData('question', e.target.value)}
                                     className="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-bold dark:text-white"
@@ -176,6 +181,7 @@ export default function Faqs({ auth, faqs }) {
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Answer</label>
                                 <textarea
+                                 disabled={processing}
                                     value={data.answer}
                                     onChange={e => setData('answer', e.target.value)}
                                     className="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-medium dark:text-white min-h-[150px]"
@@ -187,6 +193,7 @@ export default function Faqs({ auth, faqs }) {
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Display Order</label>
                                 <input
+                                 disabled={processing}
                                     type="number"
                                     value={data.order}
                                     onChange={e => setData('order', e.target.value)}

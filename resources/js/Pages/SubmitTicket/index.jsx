@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "@/Contexts/ThemeContext";
 import FlashHandler from "@/Components/FlashHandler";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Footer from '@/Components/Footer';
 
@@ -53,6 +53,8 @@ export default function SubmitTicket({ auth, categories = [] }) {
         acc[group].push(category);
         return acc;
     }, {});
+        const { config }             = usePage().props;
+
     const { theme, toggleTheme }                             = useTheme();
     const [previewUrls, setPreviewUrls]                      = useState([]);
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -85,7 +87,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                 <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10" />
 
                 {/* Navbar */}
-                <nav className="relative z-50 w-full px-6 py-4 border-b border-emerald-900/10 bg-white/90 dark:border-[#1d3a34] dark:bg-[#102824]/90 backdrop-blur">
+                <nav className="relative z-50 w-full px-6 py-4 border-b border-emerald-900/10 bg-white shadow-md dark:border-[#1d3a34] dark:bg-[#102824]">
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <Link
                             href={route("home")}
@@ -95,7 +97,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                 <ApplicationLogo className="w-full h-full text-teal-900 dark:text-lime-400" />
                             </div>
                             <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                                 {config('app.name')}<span className="text-lime-500">.</span>
+                                 {config.appName}<span className="text-lime-500">.</span>
                             </span>
                         </Link>
                         <div className="flex items-center gap-3">
@@ -149,9 +151,9 @@ export default function SubmitTicket({ auth, categories = [] }) {
                     </div>
                 </nav>
 
-                <div className="relative z-10 w-full max-w-3xl mx-auto px-6 pt-20 pb-16">
+                <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20 pb-12 sm:pb-16">
                     {/* Standardized Header */}
-                    <div className="fauna-panel mb-10 p-10 relative overflow-hidden">
+                    <div className="fauna-panel mb-6 sm:mb-10 p-4 sm:p-6 md:p-10 relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
@@ -171,10 +173,10 @@ export default function SubmitTicket({ auth, categories = [] }) {
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-                                    Support Portal
+                                    Support
                                 </h1>
                                 <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">
-                                    Submit Request
+                                    Submit Ticket
                                 </span>
                             </div>
                         </div>
@@ -206,7 +208,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
 
                     <form
                         onSubmit={submit}
-                        className="fauna-panel relative block p-8 md:p-12 space-y-8 overflow-hidden"
+                        className="fauna-panel relative block p-5 sm:p-8 md:p-12 space-y-8 overflow-hidden"
                     >
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
 
@@ -220,6 +222,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                     Name *
                                 </label>
                                 <input
+                                disabled={processing}
                                     id="name"
                                     type="text"
                                     value={data.name}
@@ -246,6 +249,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                     Email Address *
                                 </label>
                                 <input
+                                disabled={processing}
                                     id="email"
                                     type="email"
                                     value={data.email}
@@ -271,19 +275,25 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                 >
                                     WhatsApp Contact
                                 </label>
-                                <input
-                                    id="whatsapp"
-                                    type="tel"
-                                    value={data.whatsapp_number}
-                                    onChange={(e) =>
-                                        setData(
-                                            "whatsapp_number",
-                                            "+234" + e.target.value,
-                                        )
-                                    }
-                                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium shadow-sm"
-                                    placeholder="08012345678"
-                                />
+                                <div className="flex rounded-2xl overflow-hidden border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm focus-within:ring-2 focus-within:ring-lime-500 transition-all">
+                                    <span className="flex items-center px-4 bg-slate-100 dark:bg-[#0f2420] text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-emerald-900/10 dark:border-[#1d3a34] select-none shrink-0">
+                                        +234
+                                    </span>
+                                    <input
+                                        disabled={processing}
+                                        id="whatsapp"
+                                        type="tel"
+                                        value={data.whatsapp_number.replace(/^\+234/, "")}
+                                        onChange={(e) =>
+                                            setData(
+                                                "whatsapp_number",
+                                                "+234" + e.target.value.replace(/^\+234/, ""),
+                                            )
+                                        }
+                                        className="flex-1 px-5 py-4 bg-white dark:bg-[#18342f] text-slate-900 dark:text-white outline-none font-medium"
+                                        placeholder="8012345678"
+                                    />
+                                </div>
                                 {errors.whatsapp_number && (
                                     <div className="text-red-500 text-xs mt-1 font-semibold">
                                         {errors.whatsapp_number}
@@ -296,7 +306,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                 <label className="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1">
                                     Priority *
                                 </label>
-                                <div className="grid grid-cols-3 gap-3">
+                                <div className="grid grid-cols-3 gap-3" disabled={processing}>
                                     {[
                                         {
                                             value: "low",
@@ -316,7 +326,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                                     />
                                                 </svg>
                                             ),
-                                            active: "bg-blue-50 dark:bg-blue-900/20 border-blue-400 text-blue-600 dark:text-blue-400",
+                                            active: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-400 text-emerald-600 dark:text-emerald-400",
                                             inactive:
                                                 "bg-white dark:bg-[#18342f] border-emerald-900/10 dark:border-[#1d3a34] text-slate-400",
                                         },
@@ -399,6 +409,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                             </label>
                             <select
                                 id="subject"
+                                disabled={processing}
                                 value={data.subject}
                                 onChange={(e) => {
                                     const selectedCat = categories.find(
@@ -471,7 +482,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                     <label className="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400 uppercase">
                                         Order Type
                                     </label>
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-2 gap-4" disabled={processing}>
                                         {orderType.map((type) => (
                                             <label
                                                 key={type.id}
@@ -511,7 +522,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                         <label className="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400 uppercase">
                                             Recurrence Period
                                         </label>
-                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3" disabled={processing}>
                                             {recurrencePeriod.map((period) => (
                                                 <label
                                                     key={period.id}
@@ -578,6 +589,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                                 Support Specification *
                             </label>
                             <textarea
+                            disabled={processing}
                                 id="content"
                                 value={data.content}
                                 onChange={(e) =>
@@ -602,6 +614,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
                             </label>
                             <div className="relative group/upload">
                                 <input
+                                disabled={processing}
                                     type="file"
                                     onChange={(e) => {
                                         const files = Array.from(

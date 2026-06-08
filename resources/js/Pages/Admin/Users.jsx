@@ -5,7 +5,7 @@ import FlashHandler from '@/Components/FlashHandler';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Users({ auth, users }) {
-    const { showAlert, showConfirm }  = useAlert();
+    const { showConfirm }  = useAlert();
     const [processing, setProcessing] = useState(false);
 
     const handleRoleUpdate = async (user, newRole) => {
@@ -52,7 +52,7 @@ export default function Users({ auth, users }) {
                     </div>
                     <div className="flex flex-col">
                         <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                            Identity Portal
+                            Users
                         </h2>
                         <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">User Management</span>
                     </div>
@@ -61,7 +61,7 @@ export default function Users({ auth, users }) {
         >
             <Head title="User Management" />
 
-            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6">
+            <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6 overflow-x-hidden">
 
                 <div className="mb-8">
                     <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Staff Management</h1>

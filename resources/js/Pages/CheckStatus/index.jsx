@@ -1,18 +1,20 @@
 import { useTheme } from "@/Contexts/ThemeContext";
 import FlashHandler from "@/Components/FlashHandler";
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import Footer from "@/Components/Footer";
 import NavLink from "@/Components/NavLink";
 import Dropdown from "@/Components/Dropdown";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { useState } from "react";
 
 export default function CheckStatus({ auth, tickets, searchedReference }) {
-    const {user}                                      = auth
-    const { theme, toggleTheme }                      = useTheme();
+    const { user } = auth;
+    const { theme, toggleTheme } = useTheme();
     const { data, setData, post, processing, errors } = useForm({
         reference: searchedReference || "",
     });
+    const { due_tickets } = usePage().props;
 
     const submit = (e) => {
         e.preventDefault();
@@ -20,7 +22,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
     };
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
-            useState(false);
+        useState(false);
 
     return (
         <div className="fauna-shell relative min-h-screen flex flex-col selection:bg-lime-500 selection:text-teal-900 transition-colors duration-500 overflow-x-hidden">
@@ -28,7 +30,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
 
             {/* Background Layer */}
             <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10" />
-            <nav className="relative z-50 border-b border-emerald-900/10 bg-white/90 shadow-sm backdrop-blur dark:border-[#1d3a34] dark:bg-[#102824]/90">
+            <nav className="relative z-50 border-b border-emerald-900/10 bg-white shadow-md dark:border-[#1d3a34] dark:bg-[#102824]">
                 <div className="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                     <div className="flex h-20 justify-between items-center">
                         {/* Left: Logo + Nav Links */}
@@ -86,10 +88,10 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                         <Dropdown.Trigger>
                                             <button
                                                 className="relative w-10 h-10 rounded-2xl flex items-center justify-center border border-emerald-900/10/50 bg-white text-slate-600 transition-all hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400 group"
-                                                title={`${usePage().props.due_tickets.length} orders due for processing`}
+                                                title={`${due_tickets.length} orders due for processing`}
                                             >
                                                 <svg
-                                                    className={`w-5 h-5 ${usePage().props.due_tickets.length > 0 ? "animate-bounce text-lime-500" : ""}`}
+                                                    className={`w-5 h-5 ${due_tickets.length > 0 ? "animate-bounce text-lime-500" : ""}`}
                                                     fill="none"
                                                     stroke="currentColor"
                                                     viewBox="0 0 24 24"
@@ -101,14 +103,9 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                                                     />
                                                 </svg>
-                                                {usePage().props.due_tickets
-                                                    .length > 0 && (
+                                                {due_tickets.length > 0 && (
                                                     <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-black text-white shadow-lg ring-2 ring-white dark:ring-[#102824]">
-                                                        {
-                                                            usePage().props
-                                                                .due_tickets
-                                                                .length
-                                                        }
+                                                        {due_tickets.length}
                                                     </span>
                                                 )}
                                             </button>
@@ -124,9 +121,8 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                                 </h3>
                                             </div>
                                             <div className="max-h-96 overflow-y-auto custom-scrollbar">
-                                                {usePage().props.due_tickets
-                                                    .length > 0 ? (
-                                                    usePage().props.due_tickets.map(
+                                                {due_tickets.length > 0 ? (
+                                                    due_tickets.map(
                                                         (ticket) => (
                                                             <div
                                                                 key={ticket.id}
@@ -163,7 +159,9 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                                                 <div className="flex items-center justify-between gap-4">
                                                                     <div className="flex items-center gap-2">
                                                                         <span className="text-[9px] font-black text-slate-400 font-mono">
-                                                                            {ticket.hashid}
+                                                                            {
+                                                                                ticket.hashid
+                                                                            }
                                                                         </span>
                                                                         <button
                                                                             onClick={(
@@ -272,8 +270,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                                     </div>
                                                 )}
                                             </div>
-                                            {usePage().props.due_tickets
-                                                .length > 0 && (
+                                            {due_tickets.length > 0 && (
                                                 <div className="p-3 bg-slate-50 dark:bg-[#0b1715]/50 text-center">
                                                     <Link
                                                         href={route(
@@ -494,28 +491,44 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                     </div>
                 </div>
 
-                {/* Mobile Dropdown Menu - admin only */}
-                {user?.role === "admin" && (
+                {/* Mobile Dropdown Menu - all logged-in roles */}
+                {user && (
                     <div
                         className={
                             (showingNavigationDropdown ? "block" : "hidden") +
-                            " sm:hidden glass-navbar !fixed !top-20 !inset-x-0 !border-t-0"
+                            " sm:hidden glass-navbar !fixed !top-20 !inset-x-0 !border-t-0 z-50 overflow-y-auto max-h-[calc(100vh-5rem)]"
                         }
                     >
                         <div className="p-4 space-y-4">
                             <div className="space-y-1">
+                                <ResponsiveNavLink
+                                    href={route("home")}
+                                    active={route().current("home")}
+                                >
+                                    Home
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route("check-status")}
+                                    active={route().current("check-status")}
+                                >
+                                    Check Status
+                                </ResponsiveNavLink>
                                 <ResponsiveNavLink
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
                                 >
                                     Dashboard
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route("admin.users")}
-                                    active={route().current("admin.users.*")}
-                                >
-                                    Users Management
-                                </ResponsiveNavLink>
+                                {user?.role === "admin" && (
+                                    <ResponsiveNavLink
+                                        href={route("admin.users")}
+                                        active={route().current(
+                                            "admin.users.*",
+                                        )}
+                                    >
+                                        Users Management
+                                    </ResponsiveNavLink>
+                                )}
                             </div>
 
                             <div className="pt-4 border-t border-emerald-900/10 dark:border-[#1d3a34]">
@@ -538,11 +551,22 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                     >
                                         Profile Settings
                                     </ResponsiveNavLink>
-                                    <ResponsiveNavLink
-                                        href={route("admin.categories.index")}
-                                    >
-                                        Manage Categories
-                                    </ResponsiveNavLink>
+                                    {user?.role === "admin" && (
+                                        <>
+                                            <ResponsiveNavLink
+                                                href={route(
+                                                    "admin.categories.index",
+                                                )}
+                                            >
+                                                Manage Categories
+                                            </ResponsiveNavLink>
+                                            <ResponsiveNavLink
+                                                href={route("admin.faqs.index")}
+                                            >
+                                                Manage FAQs
+                                            </ResponsiveNavLink>
+                                        </>
+                                    )}
                                     <ResponsiveNavLink
                                         method="post"
                                         href={route("logout")}
@@ -557,10 +581,10 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                 )}
             </nav>
 
-            <main className="relative z-10 flex-grow py-2 px-6">
+            <main className="relative z-10 flex-grow py-2 px-4 sm:px-6">
                 <div className="max-w-3xl mx-auto">
                     {/* Standardized Header */}
-                    <div className="fauna-panel mb-10 p-10 relative overflow-hidden text-left">
+                    <div className="fauna-panel mb-6 sm:mb-10 p-4 sm:p-6 md:p-10 relative overflow-hidden text-left">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
@@ -608,6 +632,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                     Ticket Reference
                                 </label>
                                 <input
+                                disabled={processing}
                                     id="reference"
                                     type="text"
                                     value={data.reference}

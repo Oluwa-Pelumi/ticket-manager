@@ -38,6 +38,7 @@ export default function ForgotPassword({ status }) {
             <form onSubmit={submit} className="space-y-6">
                 <div>
                     <TextInput
+                    disabled={processing}
                         id="email"
                         type="email"
                         name="email"

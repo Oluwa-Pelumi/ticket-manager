@@ -40,6 +40,7 @@ export default function Login({ status, canResetPassword }) {
                     <InputLabel htmlFor="email" value="Email" className="pl-4 text-sm font-medium text-slate-700 dark:text-slate-300" />
 
                     <TextInput
+                    disabled={processing}
                         id="email"
                         type="email"
                         name="email"
@@ -68,6 +69,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
 
                     <TextInput
+                    disabled={processing}
                         id="password"
                         type="password"
                         name="password"

@@ -58,7 +58,7 @@ export default function ShowTicket({ auth, ticket }) {
 
     const isTicketOwner = auth.user?.id === ticket.user_id || !ticket.user_id;
     const isAdmin       = auth.user?.role === 'admin';
-    const isSupport       = auth.user?.role === 'support';
+    const isSupport     = auth.user?.role === 'support';
 
     return (
         <AuthenticatedLayout
@@ -88,7 +88,7 @@ export default function ShowTicket({ auth, ticket }) {
         >
             <Head title={`Ticket #${ticket.hashid}`} />
 
-            <div className="max-w-7xl mx-auto py-2 px-6 space-y-8">
+            <div className="max-w-7xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8">
                 <div className="flex items-center justify-between">
                     <Link href={!auth?.user ? route('check-status') :  route('dashboard')} className="inline-flex items-center text-sm font-bold text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -109,9 +109,9 @@ export default function ShowTicket({ auth, ticket }) {
 
                             <div className="fauna-panel p-6 md:p-8 relative overflow-hidden">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40" />
-                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Control Reference</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Ticket Reference</div>
                                 <div className="flex items-center gap-3 mb-8 group/id">
-                                    <div className="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all uppercase">{ticket.hashid}</div>
+                                    <div className="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{ticket.hashid}</div>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); handleCopy(ticket.hashid); }}
                                         className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
@@ -125,21 +125,30 @@ export default function ShowTicket({ auth, ticket }) {
                                     </button>
                                 </div>
 
-                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Subject</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Subject</div>
                                 <div className="text-lg md:text-xl text-slate-900 dark:text-white font-bold mb-6">{ticket.category?.name || ticket.subject.replace(/_/g, ' ')}</div>
 
-                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Priority</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Priority</div>
                                 <div className="mb-6">
-                                    <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-[10px] md:text-xs font-black tracking-wider ${
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-xs font-black tracking-wider ${
                                         ticket.priority === 'high' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
                                         ticket.priority === 'medium' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
                                         'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
                                     }`}>
+                                        {ticket.priority === 'high' && (
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                                        )}
+                                        {ticket.priority === 'medium' && (
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 12h14"/></svg>
+                                        )}
+                                        {ticket.priority === 'low' && (
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                        )}
                                         {ticket.priority}
                                     </span>
                                 </div>
 
-                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Issue Specification</div>
+                                <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Description</div>
                                 <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm mb-8">{ticket.content}</div>
 
                                 {ticket.order_type && (

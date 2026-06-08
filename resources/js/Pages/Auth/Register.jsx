@@ -34,6 +34,7 @@ export default function Register() {
                     <InputLabel htmlFor="name" value="Full Name" className="text-slate-700 dark:text-slate-300 font-semibold" />
 
                     <TextInput
+                    disabled={processing}
                         id="name"
                         name="name"
                         value={data.name}
@@ -52,6 +53,7 @@ export default function Register() {
                     <InputLabel htmlFor="email" value="Email Address" className="text-slate-700 dark:text-slate-300 font-semibold" />
 
                     <TextInput
+                    disabled={processing}
                         id="email"
                         type="email"
                         name="email"
@@ -70,6 +72,7 @@ export default function Register() {
                     <InputLabel htmlFor="password" value="Password" className="text-slate-700 dark:text-slate-300 font-semibold" />
 
                     <TextInput
+                    disabled={processing}
                         id="password"
                         type="password"
                         name="password"
@@ -92,6 +95,7 @@ export default function Register() {
                     />
 
                     <TextInput
+                    disabled={processing}
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"

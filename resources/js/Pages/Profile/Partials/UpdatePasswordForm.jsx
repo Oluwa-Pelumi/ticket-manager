@@ -59,6 +59,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                 <div>
                     <InputLabel htmlFor="current_password" value="Current Password" />
                     <TextInput
+                    disabled={processing}
                         id="current_password"
                         ref={currentPasswordInput}
                         value={data.current_password}
@@ -73,6 +74,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                 <div>
                     <InputLabel htmlFor="password" value="New Password" />
                     <TextInput
+                    disabled={processing}
                         id="password"
                         ref={passwordInput}
                         value={data.password}
@@ -87,6 +89,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                 <div>
                     <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
                     <TextInput
+                    disabled={processing}
                         id="password_confirmation"
                         value={data.password_confirmation}
                         onChange={(e) => setData('password_confirmation', e.target.value)}

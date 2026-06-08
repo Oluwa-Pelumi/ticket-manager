@@ -12,6 +12,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
     const { showAlert, showConfirm }                 = useAlert();
     const [selectedIds, setSelectedIds]              = useState([]);
     const [expandedId, setExpandedId]                = useState(null);
+    const [showMobileNotice, setShowMobileNotice]    = useState(true);
     const [filters, setFilters]                      = useState({
         status  : '',
         priority: '',
@@ -184,7 +185,8 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
             : <svg className="w-3 h-3 ml-1 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>;
     };
 
-    const { patch, post, delete: destroy, processing } = useForm({});
+    const { patch, delete: destroy, processing } = useForm({});
+    const [activatingId, setActivatingId] = useState(null);
 
     const handleActivateOrder = async (ticketId) => {
         const ticket = tickets.find(t => t.id === ticketId);
@@ -229,9 +231,10 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
             }
         }
 
-        post(route('tickets.activate-order', { ticket: ticketId }), {
+        setActivatingId(ticketId);
+        patch(route('tickets.activate-order', { ticket: ticketId }), {
             preserveScroll: true,
-            onSuccess: () => showAlert('Order processed and recorded successfully.', 'success'),
+            onFinish: () => setActivatingId(null),
         });
     };
 
@@ -310,7 +313,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                     </div>
                     <div className="flex flex-col">
                         <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                            Command Center
+                            Dashboard
                         </h2>
                         <span className="text-[10px] font-black tracking-[0.3em] text-slate-400">Overview & Management</span>
                     </div>
@@ -344,11 +347,12 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                     className="text-[10px] md:text-xs font-black bg-white dark:bg-[#18342f] text-slate-600 dark:text-slate-300 border-none rounded-xl focus:ring-2 focus:ring-lime-500 py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10"
                                     defaultValue=""
                                 >
-                                    <option value="" disabled>Status</option>
+                                    <option value="" disabled>Change Status of all selected</option>
                                     <option value="open">Open</option>
                                     <option value="in-progress">In Progress</option>
                                     <option value="closed">Closed</option>
                                 </select>
+
                                 <button
                                     onClick={handleBulkDelete}
                                     className="p-1.5 md:p-2 text-rose-500 hover:bg-rose-500 hover:text-white rounded-xl transition-all"
@@ -448,6 +452,33 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                     </div>
                 </div>
 
+                {showMobileNotice && (
+                    <div className="lg:hidden mb-6 p-4 rounded-2xl bg-amber-500/10 dark:bg-amber-500/5 border border-amber-500/20 dark:border-amber-500/10 text-amber-800 dark:text-amber-300 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="flex items-start gap-3">
+                                <svg className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div className="flex flex-col gap-0.5">
+                                    <span className="text-xs font-black tracking-wider uppercase">Notice</span>
+                                    <span className="text-[11px] font-medium leading-relaxed">
+                                        Some columns are hidden on mobile devices. Switch to desktop mode or view on a wider screen to see the full table content.
+                                    </span>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setShowMobileNotice(false)}
+                                className="p-1 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 rounded-lg transition-all"
+                                title="Dismiss"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 <div className="relative group overflow-hidden rounded-[2.5rem] fauna-panel transition-all duration-500 hover:shadow-lime-500/10">
                     <div className="overflow-x-auto custom-scrollbar">
                         <table className="w-full text-left min-w-[800px] lg:min-w-full border-collapse">
@@ -494,7 +525,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             </div>
                                         </th>
                                     )}
-                                    <th className="hidden sm:table-cell w-32 px-6 py-4">
+                                    <th className="w-24 md:w-32 px-4 md:px-6 py-4">
                                         <button
                                             onClick={() => requestSort('priority')}
                                             className="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group"
@@ -539,7 +570,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             </td>
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex items-center gap-2 group/id-cell">
-                                                    <span className="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight uppercase">#{ticket.hashid}</span>
+                                                    <span className="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight">#{ticket.hashid}</span>
                                                 </div>
                                             </td>
                                             <td className="px-4 md:px-6 py-4">
@@ -584,17 +615,17 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                     )}
                                                 </td>
                                             }
-                                            <td className="hidden sm:table-cell px-6 py-4">
-                                                <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider ${
+                                            <td className="px-4 md:px-6 py-4">
+                                                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider ${
                                                     ticket.priority === 'high' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
                                                     ticket.priority === 'medium' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
-                                                    'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                                                    'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
                                                 }`}>
                                                     {ticket.priority === 'high' && (
-                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
                                                     )}
                                                     {ticket.priority === 'medium' && (
-                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 12h14"/></svg>
                                                     )}
                                                     {ticket.priority === 'low' && (
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
@@ -604,24 +635,24 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             </td>
                                             <td className="px-4 md:px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                 {(auth.user.role === 'admin' || auth.user.role === 'support') ? (
-                                                    <select
-                                                        value={ticket.status}
-                                                        onChange={(e) => handleStatusUpdate(ticket.id, e.target.value)}
-                                                        className={`text-[10px] md:text-xs font-black tracking-widest rounded-xl border-none focus:ring-2 focus:ring-lime-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all ${
-                                                            ticket.status === 'open' ? 'bg-teal-900 text-white shadow-lg' :
-                                                            ticket.status === 'in-progress' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' :
-                                                            'bg-slate-200 dark:bg-[#18342f] text-slate-600 dark:text-slate-400'
-                                                        }`}
-                                                    >
+                                                     <select
+                                                         value={ticket.status}
+                                                         onChange={(e) => handleStatusUpdate(ticket.id, e.target.value)}
+                                                         className={`text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-lime-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all ${
+                                                             ticket.status === 'open' ? 'border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400' :
+                                                             ticket.status === 'in-progress' ? 'border-emerald-500 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400' :
+                                                             'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400'
+                                                         }`}
+                                                     >
                                                         <option value="open">Open</option>
                                                         <option value="in-progress">Processing</option>
                                                         <option value="closed">Resolved</option>
                                                     </select>
                                                 ) : (
                                                     <span className={`inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold ${
-                                                        ticket.status === 'open' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10' :
-                                                        ticket.status === 'in-progress' ? 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 ring-4 ring-orange-500/10' :
-                                                        'bg-slate-100 text-slate-600 dark:bg-[#18342f] dark:text-slate-400'
+                                                        ticket.status === 'open' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 ring-4 ring-blue-500/10' :
+                                                        ticket.status === 'in-progress' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10' :
+                                                        'bg-slate-100 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400'
                                                     }`}>
                                                         {ticket.status.replace('-', ' ')}
                                                     </span>
@@ -641,6 +672,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                             </td>
                                             <td className="px-4 md:px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end space-x-1 md:space-x-2">
+                                                    {/* ticket updating */}
                                                     {auth.user.id === ticket.user_id && ticket.status !== 'closed' && (
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); openEditModal(ticket); }}
@@ -650,22 +682,32 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                                         </button>
                                                     )}
+                                                    {/* ticket details */}
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); toggleExpand(ticket.id); }}
                                                     className={`p-1.5 md:p-2 rounded-lg transition-all ${expandedId === ticket.id ? 'bg-teal-900 text-white rotate-180' : 'bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400'}`}
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>
                                                     </button>
+                                                    {/* order activation */}
                                                     {(auth.user.role === 'admin' || auth.user.role === 'support') && ticket.order_type && (
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); handleActivateOrder(ticket.id); }}
-                                                            className="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] hover:scale-110 transition-all shadow-md"
-                                                            title="Process Order"
-                                                            disabled={processing}
+                                                            className="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                                                            title={activatingId === ticket.id ? 'Processing...' : 'Process Order'}
+                                                            disabled={activatingId === ticket.id}
                                                         >
-                                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                                            {activatingId === ticket.id ? (
+                                                                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                                                </svg>
+                                                            ) : (
+                                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                                            )}
                                                         </button>
                                                     )}
+                                                    {/* ticket deletion */}
                                                     {(auth.user.role === 'admin' || auth.user.role === 'support') && (
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); handleDelete(ticket.id); }}
@@ -680,198 +722,208 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                         </tr>
                                         {expandedId === ticket.id && (
                                             <tr className="bg-emerald-50/50 dark:bg-[#18342f]/30 animate-in slide-in-from-top-2 duration-300">
-                                                <td colSpan={(auth.user.role === 'admin' || auth.user.role === 'support') ? 9 : 7} className="px-4 md:px-12 py-6 md:py-8 border-l-4 border-lime-500">
-                                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                                                        <div className="space-y-8">
-                                                            <div>
-                                                                <h4 className="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
-                                                                    <svg className="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                                                    Specifications
-                                                                </h4>
+                                                <td colSpan={(auth.user.role === 'admin' || auth.user.role === 'support') ? 9 : 7} className="px-4 md:px-10 py-4 md:py-8 border-l-4 border-lime-500">
+                                                    <div className="sticky left-0 w-[calc(100vw-2.5rem)] sm:w-auto max-w-[calc(100vw-2.5rem)] sm:max-w-none">
+                                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+                                                            <div className="space-y-8">
+                                                                <div>
+                                                                    <h4 className="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
+                                                                        <svg className="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                                        Specifications
+                                                                    </h4>
 
-                                                                <div className="p-8 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
-                                                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30" />
-                                                                    <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em]">Control Reference</div>
-                                                                    <div className="flex items-center gap-3 mb-8 group/id">
-                                                                        <div className="text-2xl text-slate-900 dark:text-white font-black tracking-tight uppercase">{ticket.hashid}</div>
-                                                <button
-                                                    onClick={(e) => { e.stopPropagation(); handleCopy(ticket.hashid); }}
-                                                    className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
-                                                    title="Copy Reference"
-                                                >
-                                                                            {copiedId === ticket.hashid ? (
-                                                                                <>
-                                                                                    <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
-                                                                                    <span className="text-[10px] font-bold text-emerald-500 tracking-wider">Copied!</span>
-                                                                                </>
-                                                                            ) : (
-                                                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-                                                                            )}
-                                                                        </button>
-                                                                    </div>
+                                                                    <div className="p-5 sm:p-8 rounded-2xl sm:rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
+                                                                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30" />
+                                                                        <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">Ticket Reference</div>
+                                                                        <div className="flex items-center gap-3 mb-8 group/id">
+                                                                            <div className="text-2xl text-slate-900 dark:text-white font-black tracking-tight">{ticket.hashid}</div>
+                                                                            <button
+                                                                                onClick={(e) => { e.stopPropagation(); handleCopy(ticket.hashid); }}
+                                                                                className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
+                                                                                title="Copy Reference"
+                                                                            >
+                                                                                {copiedId === ticket.hashid ? (
+                                                                                    <>
+                                                                                        <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
+                                                                                        <span className="text-[10px] font-bold text-emerald-500 tracking-wider">Copied!</span>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                                                                                )}
+                                                                            </button>
+                                                                        </div>
 
-                                                                    <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Subject</div>
-                                                                    <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{ticket.category?.name || ticket.subject.replace(/_/g, ' ')}</div>
+                                                                        <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Subject</div>
+                                                                        <div className="text-xl text-slate-900 dark:text-white font-bold mb-6">{ticket.category?.name || ticket.subject.replace(/_/g, ' ')}</div>
 
-                                                                    <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em]">Description</div>
-                                                                    <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm">{ticket.content}</div>
+                                                                        <div className="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Description</div>
+                                                                        <div className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm">{ticket.content}</div>
 
-                                                                    {ticket.order_type && (
-                                                                        <div className="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                                                                            <h4 className="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">Order Information</h4>
-                                                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                                                                <div>
-                                                                                    <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
-                                                                                    <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">{orderType.find((el) => (el.id === ticket.order_type)).label}</div>
-                                                                                </div>
-                                                                                {ticket.order_type === 'recurrent' && (
+                                                                        {ticket.order_type && (
+                                                                            <div className="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                                                                                <h4 className="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">Order Information</h4>
+                                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                                                     <div>
-                                                                                        <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Interval / Period</div>
-                                                                                        <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">
-                                                                                            {ticket.recurrence_period === 'custom'
-                                                                                                ? `Custom: ${ticket.custom_recurrence_date}`
-                                                                                                : recurrencePeriod.find((el) => (el.id === ticket.recurrence_period)).label}
+                                                                                        <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
+                                                                                        <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">{orderType.find((el) => (el.id === ticket.order_type)).label}</div>
+                                                                                    </div>
+                                                                                    {ticket.order_type === 'recurrent' && (
+                                                                                        <div>
+                                                                                            <div className="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Interval / Period</div>
+                                                                                            <div className="text-sm font-bold text-slate-900 dark:text-white capitalize">
+                                                                                                {ticket.recurrence_period === 'custom'
+                                                                                                    ? `Custom: ${ticket.custom_recurrence_date}`
+                                                                                                    : recurrencePeriod.find((el) => (el.id === ticket.recurrence_period)).label}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+
+                                                                                {ticket.order_activations?.length > 0 && (
+                                                                                    <div className="mt-6">
+                                                                                        <div className="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">Order Process History</div>
+                                                                                        <div className="space-y-1.5">
+                                                                                            {ticket.order_activations.map((date, i) => {
+                                                                                                const d = new Date(date);
+                                                                                                return (
+                                                                                                    <div key={i} className="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                                        <div className="w-1 h-1 rounded-full bg-lime-500 shrink-0" />
+                                                                                                        <svg className="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                                                                                        <span>{d.toLocaleDateString('en-GB')}</span>
+                                                                                                        <svg className="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                                                                        <span>{d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</span>
+                                                                                                    </div>
+                                                                                                );
+                                                                                            })}
                                                                                         </div>
                                                                                     </div>
                                                                                 )}
                                                                             </div>
-
-                                                                            {ticket.order_activations?.length > 0 && (
-                                                                                <div className="mt-6">
-                                                                                    <div className="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">Order Process History</div>
-                                                                                    <div className="space-y-1">
-                                                                                        {ticket.order_activations.map((date, i) => (
-                                                                                            <div key={i} className="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                                <div className="w-1 h-1 rounded-full bg-lime-500" />
-                                                                                                {new Date(date).toLocaleString('en-GB')}
-                                                                                            </div>
-                                                                                        ))}
-                                                                                    </div>
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-
-                                                            {(ticket.images?.length > 0 || ticket.filename) && (
-                                                                <div>
-                                                                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
-                                                                        <svg className="w-4 h-4 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                                                        Attachments
-                                                                    </h4>
-                                                                    <div className="flex flex-wrap gap-4">
-                                                                        {ticket.filename && (
-                                                                            <a href={`/storage/${ticket.filename}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
-                                                                                <img src={`/storage/${ticket.filename}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                                                                </div>
-                                                                            </a>
                                                                         )}
-                                                                        {ticket.images?.map((img, i) => (
-                                                                            <a key={i} href={`/storage/${img}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
-                                                                                <img src={`/storage/${img}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                                                                </div>
-                                                                            </a>
-                                                                        ))}
                                                                     </div>
                                                                 </div>
-                                                            )}
-                                                        </div>
 
-                                                        <div className="space-y-8">
-                                                            <div>
-                                                                <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
-                                                                    <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                                                                    Conversation
-                                                                </h4>
-
-                                                                <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar mb-6">
-                                                                    {ticket.comments?.length > 0 ? ticket.comments.map((comment, ci) => (
-                                                                        <div key={ci} className={`flex flex-col ${comment.user_id === auth.user.id ? 'items-end' : 'items-start'}`}>
-                                                                            <div className={`max-w-[85%] p-5 rounded-[2rem] ${comment.user_id === auth.user.id ? 'bg-teal-900 text-white shadow-xl' : 'fauna-panel text-slate-900 dark:text-white'}`}>
-                                                                                <div className="flex items-center space-x-3 mb-2">
-                                                                                    <span className="text-[9px] font-black tracking-widest opacity-80">{comment.user?.name}</span>
-                                                                                    <span className="text-[9px] opacity-40">{new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                                                </div>
-                                                                                <div className="text-sm font-medium leading-relaxed">{comment.content}</div>
-                                                                                {comment.images?.length > 0 && (
-                                                                                    <div className="flex flex-wrap gap-2 mt-3">
-                                                                                        {comment.images.map((cimg, cii) => (
-                                                                                            <a key={cii} href={`/storage/${cimg}`} target="_blank" className="w-16 h-16 rounded-lg overflow-hidden border border-white/20">
-                                                                                                <img src={`/storage/${cimg}`} className="w-full h-full object-cover" />
-                                                                                            </a>
-                                                                                        ))}
+                                                                {(ticket.images?.length > 0 || ticket.filename) && (
+                                                                    <div>
+                                                                        <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
+                                                                            <svg className="w-4 h-4 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                                                            Attachments
+                                                                        </h4>
+                                                                        <div className="flex flex-wrap gap-4">
+                                                                            {ticket.filename && (
+                                                                                <a href={`/storage/${ticket.filename}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                                                                                    <img src={`/storage/${ticket.filename}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                                                                     </div>
-                                                                                )}
-                                                                            </div>
+                                                                                </a>
+                                                                            )}
+                                                                            {ticket.images?.map((img, i) => (
+                                                                                <a key={i} href={`/storage/${img}`} target="_blank" className="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                                                                                    <img src={`/storage/${img}`} className="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                                                                    </div>
+                                                                                </a>
+                                                                            ))}
                                                                         </div>
-                                                                    )) : (
-                                                                        <div className="text-center py-8 opacity-40 italic text-sm">No comments yet. Start the conversation.</div>
-                                                                    )}
-                                                                </div>
+                                                                    </div>
+                                                                )}
+                                                            </div>
 
-                                                                {((auth.user.role === 'admin' || auth.user.role === 'support') || auth.user.id === ticket.user_id) && (
-                                                                    <form onSubmit={(e) => handleCommentSubmit(e, ticket.id)} className="space-y-4">
-                                                                            <div className="relative group/comment">
+                                                            <div className="space-y-8">
+                                                                <div>
+                                                                    <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+                                                                        <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                                                        Conversation
+                                                                    </h4>
+
+                                                                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar mb-6">
+                                                                        {ticket.comments?.length > 0 ? ticket.comments.map((comment, ci) => (
+                                                                            <div key={ci} className={`flex flex-col ${comment.user_id === auth.user.id ? 'items-end' : 'items-start'}`}>
+                                                                                <div className={`max-w-[95%] sm:max-w-[85%] p-4 sm:p-5 rounded-2xl sm:rounded-[2rem] ${comment.user_id === auth.user.id ? 'bg-teal-900 text-white shadow-xl' : 'fauna-panel text-slate-900 dark:text-white'}`}>
+                                                                                    <div className="flex items-center space-x-3 mb-2">
+                                                                                        <span className="text-[9px] font-black tracking-widest opacity-80">{comment.user?.name}</span>
+                                                                                        <span className="text-[9px] opacity-40">{new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                                                    </div>
+                                                                                    <div className="text-sm font-medium leading-relaxed">{comment.content}</div>
+                                                                                    {comment.images?.length > 0 && (
+                                                                                        <div className="flex flex-wrap gap-2 mt-3">
+                                                                                            {comment.images.map((cimg, cii) => (
+                                                                                                <a key={cii} href={`/storage/${cimg}`} target="_blank" className="w-16 h-16 rounded-lg overflow-hidden border border-white/20">
+                                                                                                    <img src={`/storage/${cimg}`} className="w-full h-full object-cover" />
+                                                                                                </a>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        )) : (
+                                                                            <div className="text-center py-8 opacity-40 italic text-sm">No comments yet. Start the conversation.</div>
+                                                                        )}
+                                                                    </div>
+
+                                                                    {((auth.user.role === 'admin' || auth.user.role === 'support') || auth.user.id === ticket.user_id) && (
+                                                                        <form onSubmit={(e) => handleCommentSubmit(e, ticket.id)} className="space-y-4">
+                                                                            <div className="relative flex flex-col rounded-2xl sm:rounded-[2rem] bg-slate-100 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] focus-within:ring-2 focus-within:ring-lime-500 transition-all shadow-inner overflow-hidden">
                                                                                 <textarea
                                                                                     value={commentForm.data.content}
                                                                                     onChange={e => commentForm.setData('content', e.target.value)}
-                                                                                    placeholder="Content..."
-                                                                                    rows="4"
-                                                                                    className="w-full px-6 py-5 rounded-[2rem] bg-slate-100 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-inner font-medium"
+                                                                                    placeholder="Type your message..."
+                                                                                    rows="3"
+                                                                                    className="w-full px-4 pt-4 pb-14 sm:pb-16 bg-transparent border-none text-slate-900 dark:text-white outline-none resize-none font-medium focus:ring-0"
                                                                                 ></textarea>
 
-                                                                                <div className="absolute bottom-5 right-5 flex items-center space-x-3">
-                                                                                    <input
-                                                                                        type="file"
-                                                                                        id={`comment-images-${ticket.id}`}
-                                                                                        className="hidden"
-                                                                                        multiple
-                                                                                        accept="image/*"
-                                                                                        onChange={(e) => {
-                                                                                            const files = Array.from(e.target.files);
-                                                                                            commentForm.setData('images', files);
-                                                                                            setCommentPreviewUrls(files.map(f => URL.createObjectURL(f)));
-                                                                                        }}
-                                                                                    />
-                                                                                    <label htmlFor={`comment-images-${ticket.id}`} className="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl cursor-pointer transition-all">
-                                                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                                                                    </label>
+                                                                                <div className="absolute bottom-3 right-3 left-3 sm:bottom-4 sm:right-4 sm:left-4 flex items-center justify-between border-t border-slate-200/50 dark:border-[#1d3a34]/50 pt-2">
+                                                                                    <div className="flex items-center">
+                                                                                        <input
+                                                                                            type="file"
+                                                                                            id={`comment-images-${ticket.id}`}
+                                                                                            className="hidden"
+                                                                                            multiple
+                                                                                            accept="image/*"
+                                                                                            onChange={(e) => {
+                                                                                                const files = Array.from(e.target.files);
+                                                                                                commentForm.setData('images', files);
+                                                                                                setCommentPreviewUrls(files.map(f => URL.createObjectURL(f)));
+                                                                                            }}
+                                                                                        />
+                                                                                        <label htmlFor={`comment-images-${ticket.id}`} className="p-2 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-xl cursor-pointer transition-all">
+                                                                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                                                                        </label>
+                                                                                    </div>
                                                                                     <button
                                                                                         type="submit"
                                                                                         disabled={commentForm.processing || !commentForm.data.content.trim()}
-                                                                                        className="px-6 py-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 font-black text-xs tracking-widest"
+                                                                                        className="px-5 py-2 sm:px-6 sm:py-3 bg-teal-900 text-white rounded-xl shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100 font-black text-[10px] sm:text-xs tracking-widest uppercase"
                                                                                     >
                                                                                         {commentForm.processing ? 'Sending...' : 'Send'}
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
 
-                                                                        {commentPreviewUrls.length > 0 && (
-                                                                            <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                                                                                {commentPreviewUrls.map((url, i) => (
-                                                                                    <div key={i} className="relative group/cp">
-                                                                                        <img src={url} className="w-12 h-12 rounded-lg object-cover border-2 border-white dark:border-[#1d3a34] shadow-md" />
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            onClick={() => {
-                                                                                                const nf = [...commentForm.data.images]; nf.splice(i, 1); commentForm.setData('images', nf);
-                                                                                                const nu = [...commentPreviewUrls]; nu.splice(i, 1); setCommentPreviewUrls(nu);
-                                                                                            }}
-                                                                                            className="absolute -top-1 -right-1 bg-red-500 text-white p-0.5 rounded-full opacity-0 group-hover/cp:opacity-100 transition-opacity"
-                                                                                        >
-                                                                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                ))}
-                                                                            </div>
-                                                                        )}
-                                                                    </form>
-                                                                )}
+                                                                            {commentPreviewUrls.length > 0 && (
+                                                                                <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                                                                    {commentPreviewUrls.map((url, i) => (
+                                                                                        <div key={i} className="relative group/cp">
+                                                                                            <img src={url} className="w-12 h-12 rounded-lg object-cover border-2 border-white dark:border-[#1d3a34] shadow-md" />
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                onClick={() => {
+                                                                                                    const nf = [...commentForm.data.images]; nf.splice(i, 1); commentForm.setData('images', nf);
+                                                                                                    const nu = [...commentPreviewUrls]; nu.splice(i, 1); setCommentPreviewUrls(nu);
+                                                                                                }}
+                                                                                                className="absolute -top-1 -right-1 bg-red-500 text-white p-0.5 rounded-full opacity-0 group-hover/cp:opacity-100 transition-opacity"
+                                                                                            >
+                                                                                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    ))}
+                                                                                </div>
+                                                                            )}
+                                                                        </form>
+                                                                    )}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -954,7 +1006,6 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
 
-                        {console.log(editingTicket)}
                         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Edit Ticket #{editingTicket.hashid.substring(0, 8)}</h2>
 
                         <form onSubmit={handleEditSubmit} className="space-y-6">

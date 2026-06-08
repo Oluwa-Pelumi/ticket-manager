@@ -35,6 +35,9 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'role' => $request->user()?->role,
             ],
+            'config' => [
+                'appName' => config('app.name'),
+            ],
             'due_tickets' => ($request->user()?->isAdmin() || $request->user()?->isSupport())
                 ? rescue(fn() => \App\Models\Ticket::whereNotNull('order_type')
                     ->get()

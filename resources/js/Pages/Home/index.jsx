@@ -3,6 +3,7 @@ import { useTheme } from '@/Contexts/ThemeContext';
 import FlashHandler from '@/Components/FlashHandler';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/Footer';
+import { usePage } from "@inertiajs/react";
 
 const ticketingSteps = [
     {
@@ -33,10 +34,12 @@ const ticketingSteps = [
 
 export default function Home({ auth, stats, faqs = [] }) {
     const { theme, toggleTheme } = useTheme();
+        const { config }             = usePage().props;
+
 
     return (
         <>
-            <Head title={config('app.name') + " | Support System"} />
+            <Head title={config.appName + " | Support System"} />
 
             <div className="fauna-shell min-h-screen">
                 <section className="relative overflow-hidden bg-teal-900 dark:bg-[#102824]">
@@ -45,21 +48,21 @@ export default function Home({ auth, stats, faqs = [] }) {
                             <div className="flex items-center justify-between">
                                 <div className="inline-flex items-center gap-3 text-white">
                                     <ApplicationLogo className="h-8 w-8" />
-                                    <span className="text-xl font-semibold tracking-tight">{config('app.name')}</span>
+                                    <span className="text-xl font-semibold tracking-tight">{config.appName}</span>
                                 </div>
 
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 sm:gap-3">
                                     {!auth.user ? (
                                         <>
-                                            <Link href={route('login')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
+                                            <Link href={route('login')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                                 Login
                                             </Link>
-                                            <Link href={route('register')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
+                                            <Link href={route('register')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                                 Register
                                             </Link>
                                         </>
                                     ) : (
-                                        <Link href={route('dashboard')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824]">
+                                        <Link href={route('dashboard')} className="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                             Dashboard
                                         </Link>
                                     )}
@@ -78,11 +81,11 @@ export default function Home({ auth, stats, faqs = [] }) {
                             </div>
                         </nav>
 
-                        <div className="pb-20 pt-16 text-center">
-                            <h1 className="mx-auto mb-8 max-w-3xl text-5xl font-medium tracking-tight text-white md:text-7xl">
+                        <div className="pb-16 sm:pb-20 pt-12 sm:pt-16 text-center">
+                            <h1 className="mx-auto mb-6 sm:mb-8 max-w-3xl text-4xl sm:text-5xl md:text-7xl font-medium tracking-tight text-white">
                                 Your Dedicated Support System
                             </h1>
-                            <p className="mx-auto mb-10 max-w-2xl text-lg text-white/80">
+                            <p className="mx-auto mb-8 sm:mb-10 max-w-2xl text-base sm:text-lg text-white/80 px-2">
                                 Providing seamless assistance for prescriptions, refills, and all your medication concerns with professional care.
                             </p>
                             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -123,7 +126,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                         <div className="container mx-auto px-4">
                             <h2 className="mb-4 text-4xl font-semibold text-teal-900 dark:text-white">How ticketing works</h2>
                             <p className="mb-12 max-w-2xl text-teal-900/90 dark:text-slate-300">
-                                From your first message to a closed ticket—here is what happens in {config('app.name')}.
+                                From your first message to a closed ticket—here is what happens in {config.appName}.
                             </p>
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                                 {ticketingSteps.map((item) => (
@@ -202,7 +205,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                             <div>
                                 <div className="mb-4 inline-flex items-center gap-2">
                                     <ApplicationLogo className="h-6 w-6" />
-                                    <span className="font-semibold">{config('app.name')}</span>
+                                    <span className="font-semibold">{config.appName}</span>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">

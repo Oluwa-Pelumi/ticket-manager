@@ -39,6 +39,7 @@ const Content = ({
     align          = 'right',
     width          = '48',
     contentClasses = '',
+    positionClasses = 'absolute',
     children,
 }) => {
     const { open, setOpen } = useContext(DropDownContext);
@@ -71,7 +72,7 @@ const Content = ({
                 leaveTo="opacity-0 scale-95 translate-y-1"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-2xl shadow-xl shadow-slate-900/10 dark:shadow-black/30 ${alignmentClasses} ${widthClasses}`}
+                    className={`${positionClasses} z-50 mt-2 rounded-2xl shadow-xl shadow-slate-900/10 dark:shadow-black/30 ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div
