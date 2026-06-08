@@ -1,7 +1,9 @@
+// Site footer with logo and copyright from app config.
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { usePage } from "@inertiajs/react";
 
 export default function Footer() {
+        // Data: app name from Inertia shared props
         const { config }             = usePage().props;
 
   return (

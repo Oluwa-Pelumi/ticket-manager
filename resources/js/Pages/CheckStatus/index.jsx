@@ -1,3 +1,6 @@
+/**
+ * Check Status — search tickets by 8-character reference code without logging in.
+ */
 import { useTheme } from "@/Contexts/ThemeContext";
 import FlashHandler from "@/Components/FlashHandler";
 import ApplicationLogo from "@/Components/ApplicationLogo";
@@ -9,6 +12,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { useState } from "react";
 
 export default function CheckStatus({ auth, tickets, searchedReference }) {
+    // State — search form and mobile nav toggle
     const { user } = auth;
     const { theme, toggleTheme } = useTheme();
     const { data, setData, post, processing, errors } = useForm({
@@ -16,6 +20,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
     });
     const { due_tickets } = usePage().props;
 
+    // Form submission — POST reference to search-tickets route
     const submit = (e) => {
         e.preventDefault();
         post(route("search-tickets"));
@@ -30,6 +35,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
 
             {/* Background Layer */}
             <div className="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10" />
+            {/* Navigation bar */}
             <nav className="relative z-50 border-b border-emerald-900/10 bg-white shadow-md dark:border-[#1d3a34] dark:bg-[#102824]">
                 <div className="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                     <div className="flex h-20 justify-between items-center">
@@ -622,6 +628,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
 
                     <FlashHandler />
 
+                    {/* Search form */}
                     <form
                         onSubmit={submit}
                         className="fauna-panel group relative block p-8 rounded-3xl mb-12"
@@ -662,6 +669,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                         </div>
                     </form>
 
+                    {/* Search results */}
                     {tickets && (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">

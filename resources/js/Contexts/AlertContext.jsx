@@ -1,7 +1,9 @@
+// Global toast notifications and promise-based confirmation dialogs.
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const AlertContext = createContext();
 
+// Hook: access alert helpers from any child component
 export const useAlert = () => {
     const context = useContext(AlertContext);
     if (!context) {
@@ -39,10 +41,12 @@ export const AlertProvider = ({ children }) => {
         });
     }, []);
 
+    // Handler: dismiss a toast by id
     const removeAlert = (id) => {
         setAlerts((prev) => prev.filter((alert) => alert.id !== id));
     };
 
+    // Provider
     return (
         <AlertContext.Provider value={{ showAlert, showConfirm, alerts, confirm, removeAlert }}>
             {children}

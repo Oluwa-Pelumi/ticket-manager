@@ -1,3 +1,4 @@
+// Styled checkbox input for forms.
 export default function Checkbox({ className = '', ...props }) {
     return (
         <input

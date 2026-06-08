@@ -4,15 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Support ticket with hashid-based public references and optional recurring orders.
+ */
 class Ticket extends Model
 {
     protected $appends = ['hashid'];
 
+    /** Encode the ticket ID as a public-facing hashid. */
     public function getHashidAttribute()
     {
         return \Vinkla\Hashids\Facades\Hashids::encode($this->id);
     }
 
+    /** Resolve route model binding from hashid or raw ID. */
     public function resolveRouteBinding($value, $field = null)
     {
         // Try decoding as a hashid
@@ -26,9 +31,9 @@ class Ticket extends Model
     }
 
     /**
-     * Undocumented variable
+     * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -50,15 +55,16 @@ class Ticket extends Model
     ];
 
     /**
-     * Undocumented variable
+     * Attribute type casting.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'images'            => 'array',
         'order_activations' => 'array',
     ];
 
+    /** Comments on this ticket, newest first, with author loaded. */
     public function comments() {
         return $this->hasMany(
             Comment::class,
@@ -67,11 +73,7 @@ class Ticket extends Model
         )->with('user')->latest();
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
+    /** The user who submitted this ticket. */
     public function user() {
         return $this->belongsTo(
             User::class,
@@ -80,11 +82,7 @@ class Ticket extends Model
         );
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
+    /** The support staff member assigned to this ticket. */
     public function attendant() {
         return $this->belongsTo(
             User::class,
@@ -93,6 +91,7 @@ class Ticket extends Model
         );
     }
 
+    /** The category this ticket belongs to. */
     public function category() {
         return $this->belongsTo(Category::class);
     }

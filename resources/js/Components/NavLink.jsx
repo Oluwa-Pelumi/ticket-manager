@@ -1,3 +1,4 @@
+// Desktop navigation link with active-state styling.
 import { Link } from '@inertiajs/react';
 
 export default function NavLink({

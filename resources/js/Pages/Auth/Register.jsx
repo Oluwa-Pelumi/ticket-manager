@@ -1,3 +1,6 @@
+/**
+ * Register — creates a new user account with name, email, and password confirmation.
+ */
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
@@ -5,6 +8,7 @@ import InputLabel from '@/Components/InputLabel';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
+    // Form state
     const { data, setData, post, processing, errors, reset } = useForm({
         name                 : '',
         email                : '',
@@ -12,6 +16,7 @@ export default function Register() {
         password_confirmation: '',
     });
 
+    // Form submission — POST to register route, clear passwords on finish
     const submit = (e) => {
         e.preventDefault();
 
@@ -24,11 +29,13 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
+            {/* Page header */}
             <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Create Account</h1>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">Join us to start managing your tickets</p>
             </div>
 
+            {/* Registration form */}
             <form onSubmit={submit} className="space-y-5">
                 <div className="space-y-2">
                     <InputLabel htmlFor="name" value="Full Name" className="text-slate-700 dark:text-slate-300 font-semibold" />

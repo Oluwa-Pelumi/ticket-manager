@@ -1,3 +1,6 @@
+/**
+ * User Management — admin page to view users, change roles, and delete accounts.
+ */
 import {useState} from 'react'
 import { Head, router } from '@inertiajs/react';
 import { useAlert } from '@/Contexts/AlertContext';
@@ -5,9 +8,11 @@ import FlashHandler from '@/Components/FlashHandler';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Users({ auth, users }) {
+    // State — tracks in-flight role/delete requests
     const { showConfirm }  = useAlert();
     const [processing, setProcessing] = useState(false);
 
+    // Handlers — role updates and user deletion with confirmation
     const handleRoleUpdate = async (user, newRole) => {
         const confirmed = await showConfirm({
             title      : 'Update Role',
@@ -70,6 +75,7 @@ export default function Users({ auth, users }) {
 
                 <FlashHandler />
 
+                {/* Users table */}
                 <div className="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10/50 dark:border-[#1d3a34] shadow-2xl">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">

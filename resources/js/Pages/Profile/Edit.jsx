@@ -1,3 +1,6 @@
+/**
+ * Profile Edit — hub page for updating account info, password, and account deletion.
+ */
 import { Head } from '@inertiajs/react';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';

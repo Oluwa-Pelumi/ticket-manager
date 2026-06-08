@@ -14,6 +14,9 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Handles new user registration; the first user becomes admin.
+ */
 class RegisteredUserController extends Controller
 {
     /**

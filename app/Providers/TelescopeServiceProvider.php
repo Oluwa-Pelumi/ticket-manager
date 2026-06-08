@@ -8,6 +8,9 @@ use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
+/**
+ * Configures Laravel Telescope filtering, privacy, and access control.
+ */
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
     /**

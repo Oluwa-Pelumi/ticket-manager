@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
+/**
+ * Inertia middleware that shares auth, config, flash messages, and due-ticket alerts.
+ */
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -31,6 +34,8 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+
+            // --- Auth and app config ---
             'auth' => [
                 'user' => $request->user(),
                 'role' => $request->user()?->role,
@@ -38,6 +43,8 @@ class HandleInertiaRequests extends Middleware
             'config' => [
                 'appName' => config('app.name'),
             ],
+
+            // --- Recurring orders due within 24 hours (staff only) ---
             'due_tickets' => ($request->user()?->isAdmin() || $request->user()?->isSupport())
                 ? rescue(fn() => \App\Models\Ticket::whereNotNull('order_type')
                     ->get()
@@ -75,6 +82,8 @@ class HandleInertiaRequests extends Middleware
                         ];
                     })->values()->all(), [])
                 : [],
+
+            // --- Session flash messages ---
             'flash' => [
                 'error'   => fn () => $request->session()->get('error'),
                 'success' => fn () => $request->session()->get('success'),

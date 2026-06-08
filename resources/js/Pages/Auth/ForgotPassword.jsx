@@ -1,13 +1,18 @@
+/**
+ * Forgot Password — requests a password reset link via email.
+ */
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
+    // Form state
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
 
+    // Form submission — POST email to password reset route
     const submit = (e) => {
         e.preventDefault();
 
@@ -35,6 +40,7 @@ export default function ForgotPassword({ status }) {
                 </div>
             )}
 
+            {/* Password recovery form */}
             <form onSubmit={submit} className="space-y-6">
                 <div>
                     <TextInput

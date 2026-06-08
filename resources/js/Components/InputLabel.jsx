@@ -1,3 +1,4 @@
+// Form field label with consistent typography styling.
 export default function InputLabel({
     value,
     className = '',

@@ -1,3 +1,6 @@
+/**
+ * Login — authenticates users via email/password with optional "remember me".
+ */
 import Checkbox from '@/Components/Checkbox';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
@@ -6,12 +9,14 @@ import InputLabel from '@/Components/InputLabel';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
+    // Form state
     const { data, setData, post, processing, errors, reset } = useForm({
         email   : '',
         password: '',
         remember: false,
     });
 
+    // Form submission — POST to login route, clear password on finish
     const submit = (e) => {
         e.preventDefault();
 
@@ -24,6 +29,7 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
+            {/* Page header */}
             <div className="mb-10 text-center">
                 <h1 className="text-4xl font-medium text-slate-900 dark:text-white">Login</h1>
                 <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">Use your support account credentials to continue.</p>
@@ -35,6 +41,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
+            {/* Login form */}
             <form onSubmit={submit} className="space-y-6">
                 <div className="space-y-2">
                     <InputLabel htmlFor="email" value="Email" className="pl-4 text-sm font-medium text-slate-700 dark:text-slate-300" />

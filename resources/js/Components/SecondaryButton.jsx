@@ -1,3 +1,4 @@
+// Secondary action button with muted glass styling.
 export default function SecondaryButton({
     disabled,
     children,

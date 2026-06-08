@@ -1,3 +1,6 @@
+/**
+ * FAQ Management — admin CRUD for frequently asked questions displayed on the home page.
+ */
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
@@ -5,6 +8,7 @@ import { useAlert } from '@/Contexts/AlertContext';
 import Footer from '@/Components/Footer';
 
 export default function Faqs({ auth, faqs }) {
+    // State — modal visibility, editing target, and FAQ form
     const { showConfirm }                                                 = useAlert();
     const [editingFaq, setEditingFaq]                                                = useState(null);
     const [isModalOpen, setIsModalOpen]                                              = useState(false);
@@ -14,6 +18,7 @@ export default function Faqs({ auth, faqs }) {
         order   : 0,
     });
 
+    // Handlers — modal open/close, create/update/delete
     const openCreateModal = () => {
         setEditingFaq(null);
         reset();
@@ -36,6 +41,7 @@ export default function Faqs({ auth, faqs }) {
         reset();
     };
 
+    // Form submission — PATCH when editing, POST when creating
     const handleSubmit = (e) => {
         e.preventDefault();
         if (editingFaq) {
@@ -97,6 +103,7 @@ export default function Faqs({ auth, faqs }) {
                     </button>
                 </div>
 
+                {/* FAQ list */}
                 <div className="grid grid-cols-1 gap-6">
                     {faqs.length > 0 ? faqs.map((faq) => (
                         <div

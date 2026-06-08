@@ -1,9 +1,14 @@
+/**
+ * Verify Email — prompts unverified users and allows resending the verification link.
+ */
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function VerifyEmail({ status }) {
+    // Form state
     const { post, processing } = useForm({});
 
+    // Form submission — POST to resend verification email
     const submit = (e) => {
         e.preventDefault();
 
@@ -33,6 +38,7 @@ export default function VerifyEmail({ status }) {
                 </div>
             )}
 
+            {/* Resend verification form */}
             <form onSubmit={submit} className="space-y-6">
                 <div className="pt-2">
                     <button

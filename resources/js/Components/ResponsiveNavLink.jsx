@@ -1,3 +1,4 @@
+// Mobile navigation link with full-width active-state styling.
 import { Link } from '@inertiajs/react';
 
 export default function ResponsiveNavLink({

@@ -10,6 +10,9 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Sends password reset links to users who forgot their password.
+ */
 class PasswordResetLinkController extends Controller
 {
     /**

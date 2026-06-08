@@ -1,3 +1,6 @@
+/**
+ * Reset Password — sets a new password using the token from the reset email.
+ */
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
@@ -5,6 +8,7 @@ import InputLabel from '@/Components/InputLabel';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {
+    // Form state — token and email pre-filled from reset link
     const { data, setData, post, processing, errors, reset } = useForm({
         password             : '',
         password_confirmation: '',
@@ -12,6 +16,7 @@ export default function ResetPassword({ token, email }) {
         email                : email,
     });
 
+    // Form submission — POST new password to password.store route
     const submit = (e) => {
         e.preventDefault();
 
@@ -29,6 +34,7 @@ export default function ResetPassword({ token, email }) {
                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">Almost there! Set your new password</p>
             </div>
 
+            {/* Password reset form */}
             <form onSubmit={submit} className="space-y-5">
                 <div className="space-y-2">
                     <InputLabel htmlFor="email" value="Email Address" className="text-slate-700 dark:text-slate-300 font-semibold" />

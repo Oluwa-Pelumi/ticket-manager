@@ -7,6 +7,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Validates profile update fields with unique email constraint.
+ */
 class ProfileUpdateRequest extends FormRequest
 {
     /**

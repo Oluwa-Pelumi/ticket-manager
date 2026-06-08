@@ -14,6 +14,9 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Handles password reset form display and password update after reset.
+ */
 class NewPasswordController extends Controller
 {
     /**

@@ -8,6 +8,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Authenticated user with role-based access (admin, support, user).
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -49,16 +52,19 @@ class User extends Authenticatable
         ];
     }
 
+    /** Check whether the user has the admin role. */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
 
+    /** Check whether the user has the support role. */
     public function isSupport(): bool
     {
         return $this->role === 'support';
     }
 
+    /** Tickets submitted by this user. */
     public function tickets() {
         return $this->hasMany(
             Ticket::class,
@@ -67,6 +73,7 @@ class User extends Authenticatable
         );
     }
 
+    /** Tickets assigned to this user for support handling. */
     public function assignedTickets() {
         return $this->hasMany(
             Ticket::class,

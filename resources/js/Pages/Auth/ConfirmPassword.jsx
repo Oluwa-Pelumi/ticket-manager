@@ -1,3 +1,6 @@
+/**
+ * Confirm Password — re-authenticates the user before accessing protected areas.
+ */
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
@@ -5,10 +8,12 @@ import InputLabel from '@/Components/InputLabel';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ConfirmPassword() {
+    // Form state
     const { data, setData, post, processing, errors, reset } = useForm({
         password: '',
     });
 
+    // Form submission — POST password to confirm identity, clear on finish
     const submit = (e) => {
         e.preventDefault();
 
@@ -31,6 +36,7 @@ export default function ConfirmPassword() {
                 password before continuing.
             </div>
 
+            {/* Password confirmation form */}
             <form onSubmit={submit} className="space-y-6">
                 <div className="space-y-2">
                     <InputLabel htmlFor="password" value="Password" className="text-slate-700 dark:text-slate-300 font-semibold" />

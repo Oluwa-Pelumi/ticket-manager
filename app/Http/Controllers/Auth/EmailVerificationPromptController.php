@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Displays the email verification prompt or redirects verified users.
+ */
 class EmailVerificationPromptController extends Controller
 {
     /**

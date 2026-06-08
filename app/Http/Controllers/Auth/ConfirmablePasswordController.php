@@ -10,6 +10,9 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Confirms the user's password before sensitive actions.
+ */
 class ConfirmablePasswordController extends Controller
 {
     /**

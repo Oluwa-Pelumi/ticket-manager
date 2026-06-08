@@ -1,3 +1,4 @@
+// Destructive action button with rose accent styling.
 export default function DangerButton({
     className = '',
     disabled,

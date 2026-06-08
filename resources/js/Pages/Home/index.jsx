@@ -1,3 +1,6 @@
+/**
+ * Home — public landing page with hero, ticketing overview, stats, FAQs, and CTAs.
+ */
 import { Head, Link } from '@inertiajs/react';
 import { useTheme } from '@/Contexts/ThemeContext';
 import FlashHandler from '@/Components/FlashHandler';
@@ -5,6 +8,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/Footer';
 import { usePage } from "@inertiajs/react";
 
+// Static data — steps explaining the ticket lifecycle
 const ticketingSteps = [
     {
         step: 1,
@@ -42,6 +46,7 @@ export default function Home({ auth, stats, faqs = [] }) {
             <Head title={config.appName + " | Support System"} />
 
             <div className="fauna-shell min-h-screen">
+                {/* Hero section — navigation and primary CTAs */}
                 <section className="relative overflow-hidden bg-teal-900 dark:bg-[#102824]">
                     <div className="container mx-auto px-4">
                         <nav className="py-6">
@@ -103,6 +108,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                     </div>
                 </section>
 
+                {/* Admin/support ticket stats */}
                 {auth.user?.role === 'admin' || auth.user?.role === 'support' && <section className="py-14">
                     <div className="container mx-auto px-4">
                         <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
@@ -121,6 +127,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                     </div>
                 </section>}
 
+                {/* How ticketing works — step-by-step guide */}
                 <section className="p-4 bg-white dark:bg-[#0b1715]">
                     <div className="rounded-3xl bg-lime-500 px-6 py-16 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
                         <div className="container mx-auto px-4">
@@ -174,6 +181,7 @@ export default function Home({ auth, stats, faqs = [] }) {
                     </div>
                 </section>
 
+                {/* FAQ section */}
                 <section className="py-12">
                     <div className="container mx-auto px-4">
                         <div className="mb-12 text-center">

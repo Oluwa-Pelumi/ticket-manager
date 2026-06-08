@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Reply or note attached to a support ticket.
+ */
 class Comment extends Model
 {
     protected $fillable = [
@@ -14,15 +17,15 @@ class Comment extends Model
     ];
 
     /**
-     * 
+     * Attribute type casting.
+     *
+     * @var array<string, string>
      */
     protected $casts = [
         'images' => 'array',
     ];
 
-    /**
-     * 
-     */
+    /** The ticket this comment belongs to. */
     public function ticket()
     {
         return $this->belongsTo(
@@ -32,9 +35,7 @@ class Comment extends Model
         );
     }
 
-    /**
-     * 
-     */
+    /** The user who wrote this comment. */
     public function user()
     {
         return $this->belongsTo(

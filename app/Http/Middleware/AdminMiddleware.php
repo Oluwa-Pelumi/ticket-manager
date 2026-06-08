@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Restricts access to routes that require the admin role.
+ */
 class AdminMiddleware
 {
     /**

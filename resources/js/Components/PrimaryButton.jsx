@@ -1,3 +1,4 @@
+// Primary call-to-action button with teal/lime accent styling.
 export default function PrimaryButton({
     disabled,
     children,

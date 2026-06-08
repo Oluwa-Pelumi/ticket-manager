@@ -1,3 +1,6 @@
+/**
+ * Delete User Form — permanently deletes the account after password confirmation.
+ */
 import Modal from '@/Components/Modal';
 import { useRef, useState } from 'react';
 import { useForm } from '@inertiajs/react';
@@ -8,9 +11,11 @@ import DangerButton from '@/Components/DangerButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 
 export default function DeleteUserForm({ className = '' }) {
+    // State — modal visibility and password confirmation
     const passwordInput                                       = useRef();
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
 
+    // Form state
     const {
         data,
         setData,
@@ -23,10 +28,12 @@ export default function DeleteUserForm({ className = '' }) {
         password: '',
     });
 
+    // Handlers — open/close confirmation modal
     const confirmUserDeletion = () => {
         setConfirmingUserDeletion(true);
     };
 
+    // Form submission — DELETE to profile.destroy with password verification
     const deleteUser = (e) => {
         e.preventDefault();
 
@@ -59,6 +66,7 @@ export default function DeleteUserForm({ className = '' }) {
                 Delete Account
             </DangerButton>
 
+            {/* Deletion confirmation modal */}
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-8">
                     <div className="flex items-center gap-4 mb-6">

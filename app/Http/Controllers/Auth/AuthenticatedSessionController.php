@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Handles user login, session creation, and logout.
+ */
 class AuthenticatedSessionController extends Controller
 {
     /**

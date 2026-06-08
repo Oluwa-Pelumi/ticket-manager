@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Broadcasting\WhatsappChannel;
 use Illuminate\Notifications\ChannelManager;
 
+/**
+ * Core application service provider for gates, Vite, and custom notification channels.
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**

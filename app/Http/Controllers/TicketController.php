@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\TicketNotification;
 
+/**
+ * Core ticket lifecycle: submission, updates, comments, status changes, and search.
+ */
 class TicketController extends Controller
 {
     /**
-     * Undocumented function
-     *
-     * @return void
+     * Display tickets scoped by the authenticated user's role.
      */
     public function index()
     {
@@ -33,13 +34,11 @@ class TicketController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @return void
+     * Create a new ticket, assign support, upload images, and notify the submitter.
      */
     public function save(Request $request)
     {
+        // --- Validate submission ---
         $validated = $request->validate([
             'custom_recurrence_date' => 'nullable|date',
             'images'                 => 'nullable|array',
@@ -59,10 +58,12 @@ class TicketController extends Controller
 
         $user = Auth::user();
 
+        // --- Sync WhatsApp number to user profile ---
         if ($user && $user->whatsapp_number !== $validated['whatsapp_number']) {
             $user->update(['whatsapp_number' => $validated['whatsapp_number']]);
         }
 
+        // --- Assign to support staff with fewest open tickets ---
         $supports = \App\Models\User::where('role', 'support')
             ->withCount(['assignedTickets' => function ($query) {
                 $query->whereIn('status', ['open', 'in-progress'], 'and', false);
@@ -75,6 +76,7 @@ class TicketController extends Controller
             $assignedSupportId = $supports->where('assigned_tickets_count', $minCount)->random()->id;
         }
 
+        // --- Persist ticket record ---
         $ticket = Ticket::create([
             'status'                 => 'open',
             'user_id'                => Auth::id(),
@@ -91,6 +93,7 @@ class TicketController extends Controller
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ]);
 
+        // --- Upload attached images ---
         $imagePaths = [];
         if ($request->hasFile('images')) {
             $username  = Str::slug($validated['name'], '_');
@@ -108,6 +111,7 @@ class TicketController extends Controller
             'images' => $imagePaths
         ]);
 
+        // --- Notify submitter via mail and WhatsApp ---
         $notificationMessage = "Your ticket (Reference: {$ticket->hashid}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->hashid);
 
         $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
@@ -124,14 +128,11 @@ class TicketController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @param Ticket $ticket
-     * @return void
+     * Update ticket details and optionally append new images.
      */
     public function update(Request $request, Ticket $ticket)
     {
+        // --- Authorization and status checks ---
         if ($ticket->user_id !== Auth::id()) {
             return back()->with('error', 'Unauthorized action.');
         }
@@ -162,6 +163,7 @@ class TicketController extends Controller
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ];
 
+        // --- Merge new image uploads with existing paths ---
         if ($request->hasFile('images')) {
             $user       = Auth::user();
             $username   = Str::slug($user->name, '_');
@@ -183,13 +185,11 @@ class TicketController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @return void
+     * Update a single ticket's status and optionally reassign support staff.
      */
     public function updateStatus(Request $request)
     {
+        // --- Authorization ---
         if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
             \Illuminate\Support\Facades\Log::info('Unauthorized action by user: ' . Auth::id() . ' trying to update ticket: ' . $request->id);
             return back()->with('error', 'Unauthorized action.');
@@ -203,6 +203,7 @@ class TicketController extends Controller
 
         $ticket = Ticket::findOrFail($validated['id']);
 
+        // --- Build update payload with auto-assignment ---
         $updateData = ['status' => $validated['status']];
         if ($request->has('attended_to_by')) {
             $updateData['attended_to_by'] = $validated['attended_to_by'];
@@ -214,6 +215,7 @@ class TicketController extends Controller
         $oldStatus = $ticket->status;
         $ticket->update($updateData);
 
+        // --- Notify ticket owner when closed ---
         if ($oldStatus !== 'closed' && $validated['status'] === 'closed' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
             $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
@@ -231,10 +233,7 @@ class TicketController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @return void
+     * Delete multiple tickets and their associated files (admin only).
      */
     public function bulkDelete(Request $request)
     {
@@ -260,10 +259,7 @@ class TicketController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @return void
+     * Update status for multiple tickets and notify owners when closed.
      */
     public function bulkUpdateStatus(Request $request)
     {
@@ -279,11 +275,13 @@ class TicketController extends Controller
 
         $tickets = Ticket::whereIn('id', $validated['ids'])->get();
 
+        // --- Bulk status update with assignment ---
         \Illuminate\Support\Facades\DB::table('tickets')->whereIn('id', $validated['ids'])->update([
             'status'         => $validated['status'],
             'attended_to_by' => Auth::id(),             // Assign to current admin
         ]);
 
+        // --- Notify owners of newly closed tickets ---
         if ($validated['status'] === 'closed') {
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
@@ -305,10 +303,7 @@ class TicketController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @return void
+     * Delete a single ticket and its file attachment (admin only).
      */
     public function deleteTicket(Request $request)
     {
@@ -326,6 +321,7 @@ class TicketController extends Controller
 
         return back()->with('success', 'Ticket deleted successfully.');
     }
+
     /**
      * Add a comment to a ticket.
      */
@@ -337,6 +333,7 @@ class TicketController extends Controller
             'content'  => 'required|string',
         ]);
 
+        // --- Upload comment images ---
         $imagePaths = [];
         if ($request->hasFile('images')) {
             $user      = Auth::user();
@@ -357,7 +354,7 @@ class TicketController extends Controller
             'content' => $validated['content'],
         ]);
 
-        // If an admin replies, notify the ticket owner
+        // --- Notify ticket owner when staff replies ---
         if (Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport()) && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Subject: {$ticket->subject}\nView here: " . route('ticket.show', $ticket->id);
 
@@ -372,7 +369,7 @@ class TicketController extends Controller
             }
         }
 
-        // If ticket is closed, don't change status, otherwise maybe mark as in-progress if admin comments
+        // --- Auto-transition open tickets to in-progress on staff reply ---
         if ($ticket->status === 'open' && Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport())) {
             $ticket->update(['status' => 'in-progress', 'attended_to_by' => Auth::id()]);
         }
@@ -380,6 +377,7 @@ class TicketController extends Controller
         return back()->with('success', 'Comment added successfully.');
     }
 
+    /** Search for a ticket by its public hashid reference. */
     public function searchTicketsByReference(Request $request)
     {
         $request->validate([
@@ -403,6 +401,7 @@ class TicketController extends Controller
         ]);
     }
 
+    /** Display a single ticket with its relationships loaded. */
     public function show(Ticket $ticket)
     {
         $ticket->load(['user', 'attendant', 'comments.user', 'category']);
@@ -413,6 +412,7 @@ class TicketController extends Controller
         ]);
     }
 
+    /** Record a recurring order activation timestamp (staff only). */
     public function activateOrder(Request $request, Ticket $ticket)
     {
         if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {

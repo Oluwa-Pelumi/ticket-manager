@@ -1,3 +1,6 @@
+/**
+ * Update Password Form — changes the authenticated user's password.
+ */
 import { useRef } from 'react';
 import { useForm } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
@@ -7,9 +10,11 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function UpdatePasswordForm({ className = '' }) {
+    // Refs for focusing fields after validation errors
     const passwordInput        = useRef();
     const currentPasswordInput = useRef();
 
+    // Form state
     const {
         put,
         data,
@@ -24,6 +29,7 @@ export default function UpdatePasswordForm({ className = '' }) {
         password_confirmation: '',
     });
 
+    // Form submission — PUT to password.update, reset fields and refocus on error
     const updatePassword = (e) => {
         e.preventDefault();
 
@@ -55,6 +61,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                 </p>
             </header>
 
+            {/* Password update form */}
             <form onSubmit={updatePassword} className="space-y-5">
                 <div>
                     <InputLabel htmlFor="current_password" value="Current Password" />

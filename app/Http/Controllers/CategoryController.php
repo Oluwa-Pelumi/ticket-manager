@@ -8,8 +8,12 @@
  use Illuminate\Http\Request;
  use App\Http\Controllers\Controller;
 
+ /**
+  * CRUD operations for ticket categories in the admin panel.
+  */
  class CategoryController extends Controller
  {
+     /** Display all categories. */
      public function index()
      {
          return Inertia::render('Admin/Categories/Index', [
@@ -17,6 +21,7 @@
          ]);
      }
 
+     /** Create a new category from validated input. */
      public function store(Request $request)
      {
          $validated = $request->validate([
@@ -31,6 +36,7 @@
          return back()->with('success', 'Category created successfully.');
      }
 
+     /** Update an existing category. */
      public function update(Request $request, Category $category)
      {
          $validated = $request->validate([
@@ -45,6 +51,7 @@
          return back()->with('success', 'Category updated successfully.');
      }
 
+     /** Delete a category. */
      public function destroy(Category $category)
      {
          $category->delete();

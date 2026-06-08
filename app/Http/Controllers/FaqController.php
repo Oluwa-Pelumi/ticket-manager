@@ -6,8 +6,12 @@ use App\Models\Faq;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+/**
+ * CRUD operations for frequently asked questions in the admin panel.
+ */
 class FaqController extends Controller
 {
+    /** Display all FAQs ordered by sort position. */
     public function index()
     {
         return Inertia::render('Admin/Faqs', [
@@ -15,6 +19,7 @@ class FaqController extends Controller
         ]);
     }
 
+    /** Create a new FAQ entry. */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -28,6 +33,7 @@ class FaqController extends Controller
         return back()->with('success', 'FAQ created successfully.');
     }
 
+    /** Update an existing FAQ entry. */
     public function update(Request $request, Faq $faq)
     {
         $validated = $request->validate([
@@ -41,6 +47,7 @@ class FaqController extends Controller
         return back()->with('success', 'FAQ updated successfully.');
     }
 
+    /** Delete an FAQ entry. */
     public function destroy(Faq $faq)
     {
         $faq->delete();

@@ -1,3 +1,4 @@
+// Animated dialog overlay built on Headless UI Transition and Dialog.
 import {
     Dialog,
     DialogPanel,
@@ -12,12 +13,14 @@ export default function Modal({
     maxWidth  = '2xl',
     onClose   = () => {},
 }) {
+    // Handler: close only when closeable is enabled
     const close = () => {
         if (closeable) {
             onClose();
         }
     };
 
+    // Config: map maxWidth prop to Tailwind class
     const maxWidthClass = {
         sm   : 'sm:max-w-sm',
         md   : 'sm:max-w-md',
@@ -26,6 +29,7 @@ export default function Modal({
         '2xl': 'sm:max-w-2xl',
     }[maxWidth];
 
+    // JSX: backdrop + animated dialog panel
     return (
         <Transition show={show} leave="duration-200">
             <Dialog

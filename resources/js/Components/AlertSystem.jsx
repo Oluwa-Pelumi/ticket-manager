@@ -1,8 +1,10 @@
+// Renders toast notifications and confirmation modals from AlertContext.
 import React from 'react';
 import { useAlert } from '@/Contexts/AlertContext';
 import { useTheme } from '@/Contexts/ThemeContext';
 
 const AlertSystem = () => {
+    // Hooks: theme for styling, alerts and confirm state from context
     const { theme }                        = useTheme();
     const { alerts, confirm, removeAlert } = useAlert();
 

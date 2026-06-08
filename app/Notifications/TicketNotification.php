@@ -7,6 +7,9 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+ * Queued notification for ticket lifecycle events via email and WhatsApp.
+ */
 class TicketNotification extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -59,6 +62,7 @@ class TicketNotification extends Notification implements ShouldQueue
             ->line('Thank you for using our platform!');
     }
 
+    /** Build the plain-text body for the WhatsApp channel. */
     public function toWhatsapp(object $notifiable): string
     {
         $content = is_string($this->message) ? $this->message : $this->message->content;

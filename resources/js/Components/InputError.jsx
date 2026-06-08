@@ -1,3 +1,4 @@
+// Inline validation error message; renders nothing when empty.
 export default function InputError({ message, className = '', ...props }) {
     return message ? (
         <p

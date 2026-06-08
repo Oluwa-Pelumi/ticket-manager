@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+/**
+ * Handles user profile viewing, updating, and account deletion.
+ */
 class ProfileController extends Controller
 {
     /**

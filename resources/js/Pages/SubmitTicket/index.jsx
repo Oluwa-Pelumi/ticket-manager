@@ -1,3 +1,6 @@
+/**
+ * Submit Ticket — public form to create support tickets with optional order scheduling.
+ */
 import { useState } from "react";
 import { useTheme } from "@/Contexts/ThemeContext";
 import FlashHandler from "@/Components/FlashHandler";
@@ -6,7 +9,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Footer from '@/Components/Footer';
 
 
-// Categories will be passed from the backend
+// Constants — order type and recurrence period options
 export const orderType = [
     {
         id: "one-time",
@@ -46,7 +49,7 @@ export const recurrencePeriod = [
 ]
 
 export default function SubmitTicket({ auth, categories = [] }) {
-    // Group categories by their group field
+    // Derived data — group categories by their group field
     const groupedCategories = categories.reduce((acc, category) => {
         const group = category.group || "General";
         if (!acc[group]) acc[group] = [];
@@ -55,6 +58,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
     }, {});
         const { config }             = usePage().props;
 
+    // State — theme, image previews, and ticket form
     const { theme, toggleTheme }                             = useTheme();
     const [previewUrls, setPreviewUrls]                      = useState([]);
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -71,6 +75,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
         whatsapp_number       : auth.user?.whatsapp_number || "",
     });
 
+    // Form submission — POST ticket data with images to submit-ticket route
     const submit = (e) => {
         e.preventDefault();
         post(route("submit-ticket"), {
@@ -206,6 +211,7 @@ export default function SubmitTicket({ auth, categories = [] }) {
 
                     <FlashHandler />
 
+                    {/* Ticket submission form */}
                     <form
                         onSubmit={submit}
                         className="fauna-panel relative block p-5 sm:p-8 md:p-12 space-y-8 overflow-hidden"

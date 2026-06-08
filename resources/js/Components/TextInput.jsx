@@ -1,15 +1,18 @@
+// Styled text input with optional auto-focus and imperative focus support.
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 export default forwardRef(function TextInput(
     { type = 'text', className = '', isFocused = false, ...props },
     ref,
 ) {
+    // Refs: expose focus() to parent via forwarded ref
     const localRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
         focus: () => localRef.current?.focus(),
     }));
 
+    // Effect: focus input when isFocused prop is true
     useEffect(() => {
         if (isFocused) {
             localRef.current?.focus();

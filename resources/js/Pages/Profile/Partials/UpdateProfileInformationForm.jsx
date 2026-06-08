@@ -1,3 +1,6 @@
+/**
+ * Update Profile Information Form — edits name and email for the authenticated user.
+ */
 import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
 import InputError from '@/Components/InputError';
@@ -12,12 +15,14 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage().props.auth.user;
 
+    // Form state — pre-filled from authenticated user
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             name : user.name,
             email: user.email,
         });
 
+    // Form submission — PATCH to profile.update route
     const submit = (e) => {
         e.preventDefault();
         patch(route('profile.update'));
@@ -34,6 +39,7 @@ export default function UpdateProfileInformation({
                 </p>
             </header>
 
+            {/* Profile information form */}
             <form onSubmit={submit} className="space-y-5">
                 <div>
                     <InputLabel htmlFor="name" value="Name" />

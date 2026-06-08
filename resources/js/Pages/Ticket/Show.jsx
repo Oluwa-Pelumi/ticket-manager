@@ -1,3 +1,6 @@
+/**
+ * Ticket Show — detailed view of a single ticket with specs, attachments, and comments.
+ */
 import { useState } from 'react';
 import { useAlert } from '@/Contexts/AlertContext';
 import FlashHandler from '@/Components/FlashHandler';
@@ -9,6 +12,7 @@ import Footer from '@/Components/Footer';
 
 
 export default function ShowTicket({ auth, ticket }) {
+    // State — clipboard feedback, comment previews, and comment form
     const { showAlert }                               = useAlert();
     const [copiedId, setCopiedId]                     = useState(null);
     const [commentPreviewUrls, setCommentPreviewUrls] = useState([]);
@@ -18,6 +22,7 @@ export default function ShowTicket({ auth, ticket }) {
         images : [],
     });
 
+    // Handlers — copy reference and submit comments
     const handleCopy = async (id) => {
         try {
             if (navigator.clipboard && window.isSecureContext) {
@@ -56,6 +61,7 @@ export default function ShowTicket({ auth, ticket }) {
         });
     };
 
+    // Permission flags — who can post comments
     const isTicketOwner = auth.user?.id === ticket.user_id || !ticket.user_id;
     const isAdmin       = auth.user?.role === 'admin';
     const isSupport     = auth.user?.role === 'support';
@@ -98,8 +104,9 @@ export default function ShowTicket({ auth, ticket }) {
 
                 <FlashHandler />
 
+                {/* Ticket content — specs/attachments and conversation */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    {/* Left Column: Details */}
+                    {/* Left column: ticket details and attachments */}
                     <div className="space-y-8">
                         <div>
                             <h4 className="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
@@ -203,7 +210,7 @@ export default function ShowTicket({ auth, ticket }) {
                         )}
                     </div>
 
-                    {/* Right Column: Conversation */}
+                    {/* Right column: comment thread and reply form */}
                     <div className="space-y-8">
                         <div>
                             <h4 className="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">

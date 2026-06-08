@@ -1,3 +1,4 @@
+// Main app shell for logged-in users with nav, notifications, and role-based menus.
 import { useState } from "react";
 import NavLink from "@/Components/NavLink";
 import Dropdown from "@/Components/Dropdown";
@@ -8,13 +9,14 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 
 export default function AuthenticatedLayout({ header, children }) {
+    // Hooks: alerts, theme, shared page props, and auth user
     const { showAlert }          = useAlert();
     const { theme, toggleTheme } = useTheme();
     const { config }             = usePage().props;
     const user                   = usePage().props.auth.user;
     const due_tickets            = usePage().props.due_tickets;
 
-
+    // State: mobile nav menu visibility
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 

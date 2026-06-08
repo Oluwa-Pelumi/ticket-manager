@@ -1,3 +1,6 @@
+/**
+ * Category Management — admin CRUD for support ticket categories and groups.
+ */
 import { useState } from "react";
 import { useAlert } from "@/Contexts/AlertContext";
 import FlashHandler from "@/Components/FlashHandler";
@@ -6,6 +9,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "@/Components/Footer";
 
 export default function Categories({ auth, categories }) {
+    // State — editing target and category form
     const { showConfirm } = useAlert();
     const [editingCategory, setEditingCategory] = useState(null);
     const {
@@ -22,6 +26,7 @@ export default function Categories({ auth, categories }) {
         group: "",
     });
 
+    // Handlers — create/update form submission and delete with confirmation
     const handleSubmit = (e) => {
         e.preventDefault();
         if (editingCategory) {
@@ -106,7 +111,7 @@ export default function Categories({ auth, categories }) {
                 <FlashHandler />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                    {/* Category Form */}
+                    {/* Create/edit category form */}
                     <div className="lg:col-span-1">
                         <div className="fauna-panel p-6 sm:p-8 lg:sticky lg:top-24">
                             <h3 className="text-xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
@@ -188,7 +193,7 @@ export default function Categories({ auth, categories }) {
                         </div>
                     </div>
 
-                    {/* Categories List */}
+                    {/* Categories list table */}
                     <div className="lg:col-span-2">
                         <div className="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10/50 dark:border-[#1d3a34] shadow-2xl">
                             <table className="w-full text-left border-collapse">

@@ -1,9 +1,11 @@
+// Layout for unauthenticated pages (login, register) with minimal nav and theme toggle.
 import { Link, usePage } from "@inertiajs/react";
 import Footer from '@/Components/Footer';
 import { useTheme } from '@/Contexts/ThemeContext';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function GuestLayout({ children }) {
+    // Hooks: theme toggle and app config from shared props
     const { theme, toggleTheme } = useTheme();
         const { config }             = usePage().props;
 
@@ -11,6 +13,7 @@ export default function GuestLayout({ children }) {
     return (
         <div className="fauna-shell relative min-h-screen overflow-x-hidden py-10">
             <div className="container mx-auto px-4">
+                {/* Top navigation: logo, home link, theme toggle */}
                 <nav className="mb-12 flex items-center justify-between border-b border-emerald-900/10 py-6 dark:border-[#1d3a34]">
                     <Link href="/" className="inline-flex items-center gap-3">
                         <ApplicationLogo className="h-8 w-8 text-teal-900 dark:text-lime-400" />
@@ -35,6 +38,7 @@ export default function GuestLayout({ children }) {
                     </div>
                 </nav>
 
+                {/* Centered content card and footer */}
                 <div className="mx-auto w-full max-w-md">
                     <div className="fauna-panel px-8 py-10 md:px-10 md:py-12">
                         {children}

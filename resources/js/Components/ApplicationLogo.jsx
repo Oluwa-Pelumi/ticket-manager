@@ -1,3 +1,4 @@
+// Branded SVG logo mark used in navigation and footer.
 export default function ApplicationLogo(props) {
     return (
         <svg

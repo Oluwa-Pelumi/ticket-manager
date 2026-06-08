@@ -7,12 +7,13 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Admin panel for managing users and their roles.
+ */
 class AdminController extends Controller
 {
     /**
-     * Undocumented function
-     *
-     * @return void
+     * List all users with their ticket counts.
      */
     public function index()
     {
@@ -25,11 +26,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
-     * @param Request $request
-     * @param User $user
-     * @return void
+     * Update a user's role (admin, support, or user).
      */
     public function updateRole(Request $request, User $user)
     {
@@ -51,9 +48,6 @@ class AdminController extends Controller
 
     /**
      * Delete a user.
-     *
-     * @param User $user
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $user)
     {

@@ -1,9 +1,11 @@
+// Compound dropdown menu with trigger, animated panel, and link items.
 import { Link } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 import { createContext, useContext, useState } from 'react';
 
 const DropDownContext = createContext();
 
+// Root: manages open state and provides context to sub-components
 const Dropdown = ({ children }) => {
     const [open, setOpen] = useState(false);
 
@@ -18,6 +20,7 @@ const Dropdown = ({ children }) => {
     );
 };
 
+// Sub-component: clickable trigger with backdrop to close on outside click
 const Trigger = ({ children }) => {
     const { open, setOpen, toggleOpen } = useContext(DropDownContext);
 
@@ -35,6 +38,7 @@ const Trigger = ({ children }) => {
     );
 };
 
+// Sub-component: positioned, animated dropdown panel
 const Content = ({
     align          = 'right',
     width          = '48',
@@ -89,6 +93,7 @@ const Content = ({
     );
 };
 
+// Sub-component: styled Inertia link for menu items
 const DropdownLink = ({ className = '', children, ...props }) => {
     return (
         <Link
@@ -103,6 +108,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
     );
 };
 
+// Compound API: Dropdown.Trigger, Dropdown.Content, Dropdown.Link
 Dropdown.Trigger = Trigger;
 Dropdown.Content = Content;
 Dropdown.Link    = DropdownLink;

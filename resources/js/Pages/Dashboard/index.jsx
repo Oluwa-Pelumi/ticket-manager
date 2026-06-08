@@ -1,3 +1,8 @@
+/**
+ * Dashboard — main ticket management page for users, support, and admins.
+ * Provides filtering, sorting, pagination, bulk actions, inline status updates,
+ * expandable row details, and an edit modal for ticket owners.
+ */
 import { useTheme } from '@/Contexts/ThemeContext';
 import { useAlert } from '@/Contexts/AlertContext';
 import { useState, useMemo, Fragment } from 'react';
@@ -8,6 +13,7 @@ import {orderType, recurrencePeriod} from '@/Pages/SubmitTicket'
 // Categories will be passed from the backend
 
 export default function Dashboard({ auth, tickets, categories = [] }) {
+    // State setup — selection, expansion, filters, pagination, sorting, and edit/comment forms
     const { theme, toggleTheme }                     = useTheme();
     const { showAlert, showConfirm }                 = useAlert();
     const [selectedIds, setSelectedIds]              = useState([]);
@@ -38,6 +44,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
     const [commentPreviewUrls, setCommentPreviewUrls] = useState([]);
     const [sortConfig, setSortConfig]                 = useState({ key: 'id', direction: 'desc' });
 
+    // Handlers — clipboard, edit modal, comments, and image previews
     const handleCopy = async (hashid) => {
         try {
             if (navigator.clipboard && window.isSecureContext) {
@@ -185,6 +192,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
             : <svg className="w-3 h-3 ml-1 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg>;
     };
 
+    // Bulk actions — status updates, deletes, order activation, and row selection
     const { patch, delete: destroy, processing } = useForm({});
     const [activatingId, setActivatingId] = useState(null);
 
@@ -329,6 +337,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
 
             <div className="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6">
 
+                {/* Page header and bulk action toolbar */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
                     <div>
                         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Ticket Management</h1>
@@ -479,6 +488,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                     </div>
                 )}
 
+                {/* Tickets table — sortable columns, row actions, and selection */}
                 <div className="relative group overflow-hidden rounded-[2.5rem] fauna-panel transition-all duration-500 hover:shadow-lime-500/10">
                     <div className="overflow-x-auto custom-scrollbar">
                         <table className="w-full text-left min-w-[800px] lg:min-w-full border-collapse">
@@ -720,6 +730,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                                                 </div>
                                             </td>
                                         </tr>
+                                        {/* Expanded row — ticket details, attachments, and comment thread */}
                                         {expandedId === ticket.id && (
                                             <tr className="bg-emerald-50/50 dark:bg-[#18342f]/30 animate-in slide-in-from-top-2 duration-300">
                                                 <td colSpan={(auth.user.role === 'admin' || auth.user.role === 'support') ? 9 : 7} className="px-4 md:px-10 py-4 md:py-8 border-l-4 border-lime-500">
@@ -995,7 +1006,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                 </div>
             </div>
 
-            {/* Edit Ticket Modal */}
+            {/* Edit modal — ticket owners can update subject, priority, content, and images */}
             {editingTicket && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
                     <div className="relative w-full max-w-2xl bg-white dark:bg-[#102824] rounded-3xl shadow-2xl border border-emerald-900/10 dark:border-[#1d3a34] p-8 transform animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
