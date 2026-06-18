@@ -1,12 +1,12 @@
 /**
  * Ticket Show — detailed view of a single ticket with specs, attachments, and comments.
  */
-import { useState } from 'react';
-import { useAlert } from '@/Contexts/AlertContext';
-import FlashHandler from '@/Components/FlashHandler';
+import { useState }            from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Footer from '@/Components/Footer';
+import Footer                  from '@/Components/Footer';
+import { useAlert }            from '@/Contexts/AlertContext';
+import FlashHandler            from '@/Components/FlashHandler';
+import AuthenticatedLayout     from '@/Layouts/AuthenticatedLayout';
 
 // Categories will be passed from the backend
 

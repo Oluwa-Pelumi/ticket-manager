@@ -1,5 +1,5 @@
 // Renders toast notifications and confirmation modals from AlertContext.
-import React from 'react';
+import React        from 'react';
 import { useAlert } from '@/Contexts/AlertContext';
 import { useTheme } from '@/Contexts/ThemeContext';
 
@@ -114,7 +114,3 @@ const AlertSystem = () => {
 };
 
 export default AlertSystem;
-
-
-
-

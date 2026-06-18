@@ -18,16 +18,26 @@ class WhatsappChannel
         // --- Resolve recipient ---
         $whatsappNumber = method_exists($notifiable, 'routeNotificationFor')
             ? $notifiable->routeNotificationFor('whatsapp')
-            : $notifiable->whatsapp_number;
+            : null;
+
+        if (empty($whatsappNumber)) {
+            $whatsappNumber = $notifiable->whatsapp_number ?? null;
+        }
+
+        if (empty($whatsappNumber)) {
+            \Log::warning('WhatsApp notification skipped: no recipient number', [
+                'notifiable' => get_class($notifiable),
+            ]);
+            return;
+        }
 
         $to   = preg_replace('/\D/', '', $whatsappNumber);              // Ensure digits only
         $name = $notification->recipientName ?? $notifiable->name ?? 'there';
 
         // --- Load Meta API credentials ---
-        $phoneId      = config('services.meta_whatsapp.phone_id');
         $token        = config('services.meta_whatsapp.token');
         $rawVersion   = config('services.meta_whatsapp.version');
-
+        $phoneId      = config('services.meta_whatsapp.phone_id');
         $version      = str_starts_with($rawVersion, 'v') ? $rawVersion : "v{$rawVersion}";
 
         // --- Build template body parameters ---
@@ -41,7 +51,7 @@ class WhatsappChannel
                     ],
                     [
                         'type' => 'text',
-                        'text' => preg_replace('/\s+/', ' ', trim($notification->subject)), // {{2}} subject
+                        'text' => preg_replace('/\s+/', ' ', trim($notification->subject)), // {{2}} message subject
                     ],
                 ],
             ],

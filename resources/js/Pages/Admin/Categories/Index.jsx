@@ -1,16 +1,16 @@
 /**
  * Category Management — admin CRUD for support ticket categories and groups.
  */
-import { useState } from "react";
-import { useAlert } from "@/Contexts/AlertContext";
-import FlashHandler from "@/Components/FlashHandler";
+import { useState }              from "react";
 import { Head, router, useForm } from "@inertiajs/react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import Footer from "@/Components/Footer";
+import Footer                    from "@/Components/Footer";
+import { useAlert }              from "@/Contexts/AlertContext";
+import FlashHandler              from "@/Components/FlashHandler";
+import AuthenticatedLayout       from "@/Layouts/AuthenticatedLayout";
 
 export default function Categories({ auth, categories }) {
     // State — editing target and category form
-    const { showConfirm } = useAlert();
+    const { showConfirm }                       = useAlert();
     const [editingCategory, setEditingCategory] = useState(null);
     const {
         data,

@@ -1,7 +1,7 @@
 // Compound dropdown menu with trigger, animated panel, and link items.
-import { Link } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
 import { createContext, useContext, useState } from 'react';
+import { Link }                                from '@inertiajs/react';
+import { Transition }                          from '@headlessui/react';
 
 const DropDownContext = createContext();
 

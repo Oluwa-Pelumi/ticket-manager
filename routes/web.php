@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Faq;
-use Inertia\Inertia;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -14,7 +13,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return Inertia::render('Home/index', [
+    return view('home', [
         'stats' => [
             'totalTickets'      => Ticket::count(),
             'openTickets'       => Ticket::where('status', 'open')->count(),
@@ -26,7 +25,7 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::get('/submit-ticket', function () {
-    return Inertia::render('SubmitTicket/index', [
+    return view('submit-ticket', [
         'categories' => rescue(fn () => \App\Models\Category::all(), []),
     ]);
 })->name('submit-ticket');
@@ -35,7 +34,7 @@ Route::post('submit-ticket', [TicketController::class, 'save'])
     ->name('save-ticket');
 
 Route::get('/check-status', function () {
-    return Inertia::render('CheckStatus/index');
+    return view('check-status');
 })->name('check-status');
 
 Route::post('/search-tickets', [TicketController::class, 'searchTicketsByReference'])
@@ -54,6 +53,26 @@ Route::get('/dashboard', [TicketController::class, 'index'])
 Route::patch('/update-ticket/{ticket}', [TicketController::class, 'update'])
     ->middleware(['auth', 'verified'])
     ->name('update-ticket');
+
+// RESTful routes used by the dashboard Alpine.js component
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Static routes MUST be listed before wildcard {ticket} routes to avoid conflicts
+    Route::delete('/tickets/bulk-delete', [TicketController::class, 'bulkDestroyTickets'])
+        ->middleware('admin')
+        ->name('tickets.bulk-destroy');
+    Route::patch('/tickets/bulk-status', [TicketController::class, 'bulkUpdateTicketStatus'])
+        ->middleware('staff')
+        ->name('tickets.bulk-status');
+
+    // Wildcard routes — registered after static ones
+    Route::patch('/tickets/{ticket}/status/{status}', [TicketController::class, 'updateTicketStatus'])
+        ->name('tickets.update-status');
+    Route::delete('/tickets/{ticket}', [TicketController::class, 'destroyTicket'])
+        ->middleware('admin')
+        ->name('tickets.destroy');
+    Route::post('/tickets/{ticket}/comments', [TicketController::class, 'addComment'])
+        ->name('tickets.add-comment');
+});
 
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])
     ->name('add-comment');

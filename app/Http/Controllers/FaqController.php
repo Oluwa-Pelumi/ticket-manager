@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 /**
  * CRUD operations for frequently asked questions in the admin panel.
@@ -14,7 +13,7 @@ class FaqController extends Controller
     /** Display all FAQs ordered by sort position. */
     public function index()
     {
-        return Inertia::render('Admin/Faqs', [
+        return view('admin.faqs', [
             'faqs' => Faq::orderBy('order')->get()
         ]);
     }
@@ -24,8 +23,8 @@ class FaqController extends Controller
     {
         $validated = $request->validate([
             'answer'   => 'required|string',
-            'order'    => 'nullable|integer',
             'question' => 'required|string',
+            'order'    => 'nullable|integer',
         ]);
 
         Faq::create($validated);
@@ -38,8 +37,8 @@ class FaqController extends Controller
     {
         $validated = $request->validate([
             'answer'   => 'required|string',
-            'order'    => 'nullable|integer',
             'question' => 'required|string',
+            'order'    => 'nullable|integer',
         ]);
 
         $faq->update($validated);

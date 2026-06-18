@@ -1,10 +1,5 @@
 // Animated dialog overlay built on Headless UI Transition and Dialog.
-import {
-    Dialog,
-    DialogPanel,
-    Transition,
-    TransitionChild,
-} from '@headlessui/react';
+import { Dialog, DialogPanel, Transition, TransitionChild, } from '@headlessui/react';
 
 export default function Modal({
     children,

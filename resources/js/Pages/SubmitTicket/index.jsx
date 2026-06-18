@@ -1,12 +1,12 @@
 /**
  * Submit Ticket — public form to create support tickets with optional order scheduling.
  */
-import { useState } from "react";
-import { useTheme } from "@/Contexts/ThemeContext";
-import FlashHandler from "@/Components/FlashHandler";
+import { useState }                     from "react";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
-import Footer from '@/Components/Footer';
+import Footer                           from '@/Components/Footer';
+import { useTheme }                     from "@/Contexts/ThemeContext";
+import FlashHandler                     from "@/Components/FlashHandler";
+import ApplicationLogo                  from "@/Components/ApplicationLogo";
 
 
 // Constants — order type and recurrence period options
@@ -56,8 +56,8 @@ export default function SubmitTicket({ auth, categories = [] }) {
         acc[group].push(category);
         return acc;
     }, {});
-        const { config }             = usePage().props;
 
+    const { config }                                         = usePage().props;
     // State — theme, image previews, and ticket form
     const { theme, toggleTheme }                             = useTheme();
     const [previewUrls, setPreviewUrls]                      = useState([]);

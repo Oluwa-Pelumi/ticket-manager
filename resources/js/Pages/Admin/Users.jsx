@@ -1,15 +1,16 @@
 /**
  * User Management — admin page to view users, change roles, and delete accounts.
  */
-import {useState} from 'react'
-import { Head, router } from '@inertiajs/react';
-import { useAlert } from '@/Contexts/AlertContext';
-import FlashHandler from '@/Components/FlashHandler';
+import {useState}          from 'react'
+import { Head, router }    from '@inertiajs/react';
+import Footer              from "@/Components/Footer";
+import { useAlert }        from '@/Contexts/AlertContext';
+import FlashHandler        from '@/Components/FlashHandler';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Users({ auth, users }) {
     // State — tracks in-flight role/delete requests
-    const { showConfirm }  = useAlert();
+    const { showConfirm }             = useAlert();
     const [processing, setProcessing] = useState(false);
 
     // Handlers — role updates and user deletion with confirmation
@@ -149,6 +150,8 @@ export default function Users({ auth, users }) {
                     </div>
                 </div>
             </div>
+
+            <Footer />
         </AuthenticatedLayout>
     );
 }

@@ -3,13 +3,15 @@
  * Provides filtering, sorting, pagination, bulk actions, inline status updates,
  * expandable row details, and an edit modal for ticket owners.
  */
-import { useTheme } from '@/Contexts/ThemeContext';
-import { useAlert } from '@/Contexts/AlertContext';
 import { useState, useMemo, Fragment } from 'react';
-import FlashHandler from '@/Components/FlashHandler';
-import { Head, Link, useForm } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {orderType, recurrencePeriod} from '@/Pages/SubmitTicket'
+import { Head, Link, useForm }         from '@inertiajs/react';
+import Footer                          from "@/Components/Footer";
+import {orderType, recurrencePeriod}   from '@/Pages/SubmitTicket'
+import { useTheme }                    from '@/Contexts/ThemeContext';
+import { useAlert }                    from '@/Contexts/AlertContext';
+import FlashHandler                    from '@/Components/FlashHandler';
+import AuthenticatedLayout             from '@/Layouts/AuthenticatedLayout';
+
 // Categories will be passed from the backend
 
 export default function Dashboard({ auth, tickets, categories = [] }) {
@@ -78,9 +80,9 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         editForm.setData({
             images  : [],
             subject : ticket.subject,
-            category_id: ticket.category_id || '',
             content : ticket.content,
             priority: ticket.priority,
+            category_id: ticket.category_id || '',
         });
         setPreviewUrls(ticket.images ? ticket.images.map(img => `/storage/${img}`) : []);
     };
@@ -94,10 +96,10 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
     const handleEditSubmit = (e) => {
         e.preventDefault();
         editForm.patch(route('update-ticket', { ticket: editingTicket.id }), {
-            _method       : 'patch',                  // multipart/form-data doesn't support PATCH natively in some setups, we can spoof it
             forceFormData : true,
             preserveScroll: true,
             onSuccess     : () => closeEditModal(),
+            _method       : 'patch',                  // multipart/form-data doesn't support PATCH natively in some setups, we can spoof it
         });
     };
 
@@ -206,11 +208,11 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
 
         if (activations.length > 0) {
             const lastActivation = new Date(activations[activations.length - 1]);
-            const now = new Date();
-            const diffDays = (now - lastActivation) / (1000 * 60 * 60 * 24);
+            const now            = new Date();
+            const diffDays       = (now - lastActivation) / (1000 * 60 * 60 * 24);
+            let   requiredDays   = 0;
+            const period         = ticket.recurrence_period?.toLowerCase().trim();
 
-            let requiredDays = 0;
-            const period = ticket.recurrence_period?.toLowerCase().trim();
             switch (period) {
                 case 'daily':
                     requiredDays = 1; break;
@@ -230,10 +232,10 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
 
             if (requiredDays > 0 && diffDays < requiredDays) {
                 const confirmed = await showConfirm({
-                    type: 'warning',
-                    title: 'Early Processing Warning',
-                    message: `Security Check: This ${period} order was last processed on ${lastActivation.toLocaleString('en-GB')}. Only ${diffDays.toFixed(1)} days have passed, but the schedule requires ${requiredDays} days. Proceed anyway?`,
+                    type       : 'warning',
                     confirmText: 'Confirm & Process',
+                    title      : 'Early Processing Warning',
+                    message    : `Security Check: This ${period} order was last processed on ${lastActivation.toLocaleString('en-GB')}. Only ${diffDays.toFixed(1)} days have passed, but the schedule requires ${requiredDays} days. Proceed anyway?`,
                 });
                 if (!confirmed) return;
             }
@@ -242,7 +244,7 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
         setActivatingId(ticketId);
         patch(route('tickets.activate-order', { ticket: ticketId }), {
             preserveScroll: true,
-            onFinish: () => setActivatingId(null),
+            onFinish      : () => setActivatingId(null),
         });
     };
 
@@ -1132,6 +1134,9 @@ export default function Dashboard({ auth, tickets, categories = [] }) {
                     </div>
                 </div>
             )}
+
+            {/* Footer */}
+            <Footer />
         </AuthenticatedLayout>
     );
 }

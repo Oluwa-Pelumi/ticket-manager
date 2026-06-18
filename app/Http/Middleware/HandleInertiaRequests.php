@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Http\Request;
 
 /**
  * Inertia middleware that shares auth, config, flash messages, and due-ticket alerts.

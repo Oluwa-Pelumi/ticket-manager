@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +19,7 @@ class AdminController extends Controller
         // Fetch all users with their ticket count
         $users = User::withCount('tickets')->latest()->get();
 
-        return Inertia::render('Admin/Users', [
+        return view('admin.users', [
             'users' => $users,
         ]);
     }

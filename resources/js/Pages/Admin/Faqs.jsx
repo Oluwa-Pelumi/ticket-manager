@@ -2,14 +2,14 @@
  * FAQ Management — admin CRUD for frequently asked questions displayed on the home page.
  */
 import React, { useState } from 'react';
+import { Head, useForm }   from '@inertiajs/react';
+import Footer              from '@/Components/Footer';
+import { useAlert }        from '@/Contexts/AlertContext';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
-import { useAlert } from '@/Contexts/AlertContext';
-import Footer from '@/Components/Footer';
 
 export default function Faqs({ auth, faqs }) {
     // State — modal visibility, editing target, and FAQ form
-    const { showConfirm }                                                 = useAlert();
+    const { showConfirm }                                                            = useAlert();
     const [editingFaq, setEditingFaq]                                                = useState(null);
     const [isModalOpen, setIsModalOpen]                                              = useState(false);
     const { data, setData, post, patch, delete: destroy, processing, errors, reset } = useForm({
@@ -28,8 +28,8 @@ export default function Faqs({ auth, faqs }) {
     const openEditModal = (faq) => {
         setEditingFaq(faq);
         setData({
-            question: faq.question,
             answer  : faq.answer,
+            question: faq.question,
             order   : faq.order || 0,
         });
         setIsModalOpen(true);

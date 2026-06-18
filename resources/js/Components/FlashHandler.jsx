@@ -1,7 +1,7 @@
 // Bridges Inertia flash messages to the global alert toast system.
 import { useEffect } from 'react';
-import { usePage } from '@inertiajs/react';
-import { useAlert } from '@/Contexts/AlertContext';
+import { usePage }   from '@inertiajs/react';
+import { useAlert }  from '@/Contexts/AlertContext';
 
 const FlashHandler = () => {
     // Hooks: alert API and current page flash props

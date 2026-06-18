@@ -81,4 +81,10 @@ class User extends Authenticatable
             'id'
         );
     }
+
+    /** Route WhatsApp notifications to the user's stored number. */
+    public function routeNotificationForWhatsapp(): ?string
+    {
+        return $this->whatsapp_number;
+    }
 }

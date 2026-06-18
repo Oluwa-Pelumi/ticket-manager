@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Ticket;
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -22,12 +21,13 @@ class TicketController extends Controller
     public function index()
     {
         $user    = Auth::user();
-        $tickets = $user->role === 'admin' ? Ticket::with(['user', 'attendant', 'comments', 'category'])->latest()->get() //admin gets to see all tickets in the dashboard
+        $tickets = $user->role === 'admin'
+            ? Ticket::with(['user', 'attendant', 'comments', 'category'])->latest()->get()
             : ($user->role === 'support'
-                ? Ticket::with(['user', 'attendant', 'comments', 'category'])->where('attended_to_by', $user->id)->latest()->get() //each particular support only sees the ticket theyve been assigned to
-                : Ticket::where('user_id', $user->id)->with(['attendant', 'comments', 'category'])->latest()->get()); //authenticated users see only their own tickets
+                ? Ticket::with(['user', 'attendant', 'comments', 'category'])->where('attended_to_by', $user->id)->latest()->get()
+                : Ticket::where('user_id', $user->id)->with(['attendant', 'comments', 'category'])->latest()->get());
 
-        return Inertia::render('Dashboard/index', [
+        return view('dashboard', [
             'tickets'    => $tickets,
             'categories' => rescue(fn() => Category::all(), []),
         ]);
@@ -58,6 +58,10 @@ class TicketController extends Controller
 
         $user = Auth::user();
 
+        if ($validated['subject'] === 'order' && !$user) {
+            return back()->withErrors(['subject' => 'The order category is only available for registered users.'])->withInput();
+        }
+
         // --- Sync WhatsApp number to user profile ---
         if ($user && $user->whatsapp_number !== $validated['whatsapp_number']) {
             $user->update(['whatsapp_number' => $validated['whatsapp_number']]);
@@ -72,7 +76,7 @@ class TicketController extends Controller
 
         $assignedSupportId = null;
         if ($supports->isNotEmpty()) {
-            $minCount = $supports->min('assigned_tickets_count');
+            $minCount          = $supports->min('assigned_tickets_count');
             $assignedSupportId = $supports->where('assigned_tickets_count', $minCount)->random()->id;
         }
 
@@ -117,7 +121,7 @@ class TicketController extends Controller
         $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
 
         if ($user) {
-            $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->id), $user->name));
+            $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
         } else {
             \Illuminate\Support\Facades\Notification::route('mail', $validated['email'])
                 ->route('whatsapp', $validated['whatsapp_number'])
@@ -394,7 +398,7 @@ class TicketController extends Controller
                 ->get();
         }
 
-        return Inertia::render('CheckStatus/index', [
+        return view('check-status', [
             'tickets'           => $tickets,
             'categories'        => Category::all(),
             'searchedReference' => $request->reference,
@@ -406,7 +410,7 @@ class TicketController extends Controller
     {
         $ticket->load(['user', 'attendant', 'comments.user', 'category']);
 
-        return Inertia::render('Ticket/Show', [
+        return view('ticket.show', [
             'ticket'     => $ticket,
             'categories' => Category::all(),
         ]);
@@ -427,5 +431,146 @@ class TicketController extends Controller
         ]);
 
         return back()->with('success', 'Order processed and recorded successfully.');
+    }
+
+    /**
+     * RESTful status update — PATCH /tickets/{ticket}/status/{status}
+     * Used by the dashboard Alpine.js component.
+     */
+    public function updateTicketStatus(Request $request, Ticket $ticket, string $status)
+    {
+        if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        if (!in_array($status, ['open', 'in-progress', 'closed'])) {
+            return response()->json(['error' => 'Invalid status'], 422);
+        }
+
+        $updateData = ['status' => $status];
+
+        // Auto-assign if not already assigned
+        if (!$ticket->attended_to_by) {
+            $updateData['attended_to_by'] = Auth::id();
+        }
+
+        $oldStatus = $ticket->status;
+        $ticket->update($updateData);
+
+        // Notify owner when closed
+        if ($oldStatus !== 'closed' && $status === 'closed' && $ticket->user_id !== Auth::id()) {
+            $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
+            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+            } elseif ($ticket->email) {
+                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                    ->route('whatsapp', $ticket->whatsapp_number)
+                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
+            }
+        }
+
+        return response()->json(['success' => true, 'status' => $status]);
+    }
+
+    /**
+     * RESTful single ticket delete — DELETE /tickets/{ticket}
+     * Used by the dashboard Alpine.js component.
+     */
+    public function destroyTicket(Ticket $ticket)
+    {
+        if (!Auth::user()->isAdmin()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        if ($ticket->filename) {
+            Storage::disk('public')->delete($ticket->filename);
+        }
+        if (!empty($ticket->images)) {
+            foreach ($ticket->images as $img) {
+                Storage::disk('public')->delete($img);
+            }
+        }
+
+        $ticket->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * RESTful bulk delete — DELETE /tickets/bulk-delete
+     * Used by the dashboard Alpine.js component.
+     */
+    public function bulkDestroyTickets(Request $request)
+    {
+        if (!Auth::user()->isAdmin()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:tickets,id',
+        ]);
+
+        $tickets = Ticket::whereIn('id', $validated['ids'])->get();
+
+        foreach ($tickets as $ticket) {
+            if ($ticket->filename) {
+                Storage::disk('public')->delete($ticket->filename);
+            }
+            if (!empty($ticket->images)) {
+                foreach ($ticket->images as $img) {
+                    Storage::disk('public')->delete($img);
+                }
+            }
+            $ticket->delete();
+        }
+
+        return response()->json(['success' => true, 'deleted' => count($validated['ids'])]);
+    }
+
+    /**
+     * RESTful bulk status update — PATCH /tickets/bulk-status
+     * Used by the dashboard Alpine.js component.
+     */
+    public function bulkUpdateTicketStatus(Request $request)
+    {
+        if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $validated = $request->validate([
+            'ids'    => 'required|array',
+            'ids.*'  => 'exists:tickets,id',
+            'status' => 'required|string|in:open,in-progress,closed',
+        ]);
+
+        $tickets = Ticket::whereIn('id', $validated['ids'])->get();
+
+        \Illuminate\Support\Facades\DB::table('tickets')->whereIn('id', $validated['ids'])->update([
+            'status'         => $validated['status'],
+            'attended_to_by' => Auth::id(),
+        ]);
+
+        // Notify owners of newly closed tickets
+        if ($validated['status'] === 'closed') {
+            foreach ($tickets as $ticket) {
+                if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
+                    $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
+                    $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+                    } elseif ($ticket->email) {
+                        \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                            ->route('whatsapp', $ticket->whatsapp_number)
+                            ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
+                    }
+                }
+            }
+        }
+
+        return response()->json(['success' => true, 'status' => $validated['status']]);
     }
 }

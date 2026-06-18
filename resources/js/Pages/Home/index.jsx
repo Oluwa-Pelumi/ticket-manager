@@ -1,12 +1,12 @@
 /**
  * Home — public landing page with hero, ticketing overview, stats, FAQs, and CTAs.
  */
-import { Head, Link } from '@inertiajs/react';
-import { useTheme } from '@/Contexts/ThemeContext';
-import FlashHandler from '@/Components/FlashHandler';
+import { usePage }     from "@inertiajs/react";
+import { Head, Link }  from '@inertiajs/react';
+import Footer          from '@/Components/Footer';
+import { useTheme }    from '@/Contexts/ThemeContext';
+import FlashHandler    from '@/Components/FlashHandler';
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import Footer from '@/Components/Footer';
-import { usePage } from "@inertiajs/react";
 
 // Static data — steps explaining the ticket lifecycle
 const ticketingSteps = [
@@ -38,7 +38,7 @@ const ticketingSteps = [
 
 export default function Home({ auth, stats, faqs = [] }) {
     const { theme, toggleTheme } = useTheme();
-        const { config }             = usePage().props;
+    const { config }             = usePage().props;
 
 
     return (

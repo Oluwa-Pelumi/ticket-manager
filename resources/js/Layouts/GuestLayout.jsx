@@ -1,13 +1,13 @@
 // Layout for unauthenticated pages (login, register) with minimal nav and theme toggle.
 import { Link, usePage } from "@inertiajs/react";
-import Footer from '@/Components/Footer';
-import { useTheme } from '@/Contexts/ThemeContext';
-import ApplicationLogo from '@/Components/ApplicationLogo';
+import Footer            from '@/Components/Footer';
+import { useTheme }      from '@/Contexts/ThemeContext';
+import ApplicationLogo   from '@/Components/ApplicationLogo';
 
 export default function GuestLayout({ children }) {
     // Hooks: theme toggle and app config from shared props
     const { theme, toggleTheme } = useTheme();
-        const { config }             = usePage().props;
+    const { config }             = usePage().props;
 
 
     return (

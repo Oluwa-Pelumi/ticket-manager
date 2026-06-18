@@ -38,7 +38,11 @@ class TicketNotification extends Notification implements ShouldQueue
 
         $whatsappNumber = method_exists($notifiable, 'routeNotificationFor')
             ? $notifiable->routeNotificationFor('whatsapp')
-            : ($notifiable->whatsapp_number ?? null);
+            : null;
+
+        if (empty($whatsappNumber)) {
+            $whatsappNumber = $notifiable->whatsapp_number ?? null;
+        }
 
         if (!empty($whatsappNumber)) {
             $channels[] = 'whatsapp';

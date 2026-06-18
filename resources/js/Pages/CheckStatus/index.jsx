@@ -1,33 +1,29 @@
 /**
  * Check Status — search tickets by 8-character reference code without logging in.
  */
-import { useTheme } from "@/Contexts/ThemeContext";
-import FlashHandler from "@/Components/FlashHandler";
-import ApplicationLogo from "@/Components/ApplicationLogo";
+import { useState }                     from "react";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import Footer from "@/Components/Footer";
-import NavLink from "@/Components/NavLink";
-import Dropdown from "@/Components/Dropdown";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { useState } from "react";
+import Footer                           from "@/Components/Footer";
+import NavLink                          from "@/Components/NavLink";
+import Dropdown                         from "@/Components/Dropdown";
+import { useTheme }                     from "@/Contexts/ThemeContext";
+import FlashHandler                     from "@/Components/FlashHandler";
+import ApplicationLogo                  from "@/Components/ApplicationLogo";
+import ResponsiveNavLink                from "@/Components/ResponsiveNavLink";
 
 export default function CheckStatus({ auth, tickets, searchedReference }) {
     // State — search form and mobile nav toggle
-    const { user } = auth;
-    const { theme, toggleTheme } = useTheme();
-    const { data, setData, post, processing, errors } = useForm({
-        reference: searchedReference || "",
-    });
-    const { due_tickets } = usePage().props;
+    const { user }                                                  = auth;
+    const { theme, toggleTheme }                                    = useTheme();
+    const { due_tickets }                                           = usePage().props;
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const { data, setData, post, processing, errors }               = useForm({reference: searchedReference || "",});
 
     // Form submission — POST reference to search-tickets route
     const submit = (e) => {
         e.preventDefault();
         post(route("search-tickets"));
     };
-
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
 
     return (
         <div className="fauna-shell relative min-h-screen flex flex-col selection:bg-lime-500 selection:text-teal-900 transition-colors duration-500 overflow-x-hidden">
@@ -639,7 +635,7 @@ export default function CheckStatus({ auth, tickets, searchedReference }) {
                                     Ticket Reference
                                 </label>
                                 <input
-                                disabled={processing}
+                                    disabled={processing}
                                     id="reference"
                                     type="text"
                                     value={data.reference}

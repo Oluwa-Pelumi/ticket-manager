@@ -1,24 +1,22 @@
 // Main app shell for logged-in users with nav, notifications, and role-based menus.
-import { useState } from "react";
-import NavLink from "@/Components/NavLink";
-import Dropdown from "@/Components/Dropdown";
+import { useState }      from "react";
 import { Link, usePage } from "@inertiajs/react";
-import { useTheme } from "@/Contexts/ThemeContext";
-import { useAlert } from "@/Contexts/AlertContext";
-import ApplicationLogo from "@/Components/ApplicationLogo";
+import NavLink           from "@/Components/NavLink";
+import Dropdown          from "@/Components/Dropdown";
+import { useTheme }      from "@/Contexts/ThemeContext";
+import { useAlert }      from "@/Contexts/AlertContext";
+import ApplicationLogo   from "@/Components/ApplicationLogo";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 
 export default function AuthenticatedLayout({ header, children }) {
     // Hooks: alerts, theme, shared page props, and auth user
-    const { showAlert }          = useAlert();
-    const { theme, toggleTheme } = useTheme();
-    const { config }             = usePage().props;
-    const user                   = usePage().props.auth.user;
-    const due_tickets            = usePage().props.due_tickets;
-
+    const { showAlert }                                             = useAlert();
+    const { theme, toggleTheme }                                    = useTheme();
+    const { config }                                                = usePage().props;
     // State: mobile nav menu visibility
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const user                                                      = usePage().props.auth.user;
+    const due_tickets                                               = usePage().props.due_tickets;
 
     return (
         <div className="fauna-shell min-h-screen transition-colors duration-500 selection:bg-lime-500 selection:text-teal-900">

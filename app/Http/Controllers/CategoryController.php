@@ -2,7 +2,6 @@
 
  namespace App\Http\Controllers;
 
- use Inertia\Inertia;
  use App\Models\Category;
  use Illuminate\Support\Str;
  use Illuminate\Http\Request;
@@ -16,8 +15,14 @@
      /** Display all categories. */
      public function index()
      {
-         return Inertia::render('Admin/Categories/Index', [
+         $editingCategory = null;
+         if (request()->has('edit')) {
+             $editingCategory = Category::find(request('edit'));
+         }
+
+         return view('admin.categories', [
              'categories' => rescue(fn() => Category::all(), []),
+             'editingCategory' => $editingCategory,
          ]);
      }
 
@@ -48,13 +53,13 @@
 
          $category->update($validated);
 
-         return back()->with('success', 'Category updated successfully.');
+         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
      }
 
      /** Delete a category. */
      public function destroy(Category $category)
      {
          $category->delete();
-         return back()->with('success', 'Category deleted successfully.');
+         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
      }
  }
