@@ -54,7 +54,13 @@
                         <span class="hidden sm:inline text-xs font-bold text-slate-600 dark:text-slate-400 px-2"
                             x-text="selectedIds.length + ' Selected'"></span>
 
-                        <select @change="bulkStatusChange($event.target.value); $event.target.value = ''"
+                        <select
+                            @change="
+                                selectedIds.length
+                                    ? (bulkStatusChange($event.target.value), $event.target.value = '')
+                                    : ($event.target.value = '')
+                            "
+                            :class="{ 'opacity-40 cursor-not-allowed': !selectedIds.length }"
                             class="text-[10px] md:text-xs font-black bg-white dark:bg-[#18342f] text-slate-600 dark:text-slate-300 border-none rounded-xl focus:ring-2 focus:ring-lime-500 py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10">
                             <option value="" disabled selected>Change Status of all selected</option>
                             <option value="open">Open</option>

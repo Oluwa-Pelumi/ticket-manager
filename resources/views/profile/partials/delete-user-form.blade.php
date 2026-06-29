@@ -28,9 +28,25 @@
             x-data="{
                 open: false,
                 processing: false,
+
                 init() {
-                    window.addEventListener('open-delete-modal', () => this.open = true);
-                    window.addEventListener('close', () => { this.open = false; this.processing = false; });
+                    this._openHandler  = () => {
+                        this.open = true;
+                        this.$nextTick(() => this.$refs.password.focus());
+                    };
+
+                    this._closeHandler = () => {
+                        this.open       = false;
+                        this.processing = false;
+                    };
+
+                    window.addEventListener('open-delete-modal', this._openHandler);
+                    window.addEventListener('close',             this._closeHandler);
+                },
+                
+                destroy() {
+                    window.removeEventListener('open-delete-modal', this._openHandler);
+                    window.removeEventListener('close',             this._closeHandler);
                 }
             }"
             x-show="open"
