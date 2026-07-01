@@ -18,7 +18,7 @@
         </div>
     </x-slot>
 
-@section('title', 'Manage Categories')
+    @section('title', 'Manage Categories')
 
     <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6">
 

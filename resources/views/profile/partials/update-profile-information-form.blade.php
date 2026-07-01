@@ -19,7 +19,7 @@
         <div>
             <x-input-label for="name" value="Name" />
             <x-text-input
-                x-bind:disabled="processing"
+                :disabled="processing"
                 id="name"
                 name="name"
                 class="mt-1 block w-full"
@@ -34,7 +34,7 @@
         <div>
             <x-input-label for="email" value="Email" />
             <x-text-input
-                x-bind:disabled="processing"
+                :disabled="processing"
                 id="email"
                 name="email"
                 type="email"
@@ -67,7 +67,7 @@
         @endif
 
         <div class="flex items-center gap-4 pt-2">
-            <x-primary-button x-bind:disabled="processing">
+            <x-primary-button :disabled="processing">
                 <span x-text="processing ? 'Saving...' : 'Save'"></span>
             </x-primary-button>
 
