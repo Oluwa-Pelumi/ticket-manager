@@ -26,7 +26,7 @@
     <template x-teleport="body">
         <div
             x-data="{
-                open: false,
+                open: {{ $errors->userDeletion->isNotEmpty() ? 'true' : 'false' }},
                 processing: false,
 
                 init() {
@@ -102,7 +102,6 @@
                                 class="mt-1 block w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-500 transition-all outline-none"
                                 placeholder="Enter your password to confirm"
                                 x-ref="password"
-                                :disabled="processing"
                             />
                             @error('password', 'userDeletion')
                                 <p class="mt-2 text-sm text-rose-600 dark:text-rose-400">{{ $message }}</p>
@@ -119,7 +118,7 @@
                             </button>
                             <button
                                 type="submit"
-                                :disabled="processing"
+                                x-bind:disabled="processing"
                                 class="inline-flex items-center justify-center rounded-2xl bg-rose-600 px-5 py-2.5 text-xs font-black tracking-widest text-white shadow-lg transition-all hover:bg-rose-700 disabled:opacity-60 hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 <span x-text="processing ? 'Deleting...' : 'Delete Account'">Delete Account</span>

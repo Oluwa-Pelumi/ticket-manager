@@ -1,5 +1,6 @@
 <x-app-layout>
-    <x-slot name="title">Check Ticket Status — {{ config('app.name') }}</x-slot>
+    <x-slot name="title">Check Ticket Status</x-slot>
+
 
 
 
@@ -36,6 +37,7 @@
                 method="POST"
                 action="{{ route('search-tickets') }}"
                 class="fauna-panel group relative block p-8 rounded-3xl mb-12"
+                x-data="{ processing: false }" @submit="processing = true"
             >
                 @csrf
                 <div class="flex flex-col md:flex-row gap-4">
@@ -57,9 +59,10 @@
                     </div>
                     <button
                         type="submit"
+                        x-bind:disabled="processing"
                         class="px-8 py-4 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 transition-all whitespace-nowrap"
                     >
-                        Search Tickets
+                        <span x-text="processing ? 'Searching...' : 'Search Tickets'">Search Tickets</span>
                     </button>
                 </div>
             </form>

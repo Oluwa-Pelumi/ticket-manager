@@ -20,7 +20,8 @@
         </div>
     </x-slot>
 
-    @section('title', 'Dashboard')
+    <x-slot name="title">Dashboard</x-slot>
+
 
     {{--
     =====================================================================
@@ -462,7 +463,7 @@
                                             @if (in_array(auth()->user()->role, ['admin', 'support']))
                                                 <template x-if="ticket.order_type">
                                                     <button @click.stop="activateOrder(ticket.id)"
-                                                        :disabled="activatingId === ticket.id"
+                                                        x-bind:disabled="activatingId === ticket.id"
                                                         class="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
                                                         title="Process Order">
                                                         <svg x-show="activatingId !== ticket.id" class="w-4 h-4"
@@ -747,6 +748,9 @@
                                                                             <span
                                                                                 class="text-[9px] font-black tracking-widest opacity-80"
                                                                                 x-text="comment.user?.name"></span>
+                                                                            <template x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">
+                                                                                <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400">Support</span>
+                                                                            </template>
                                                                             <span class="text-[9px] opacity-40"
                                                                                 x-text="new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
                                                                         </div>
@@ -801,7 +805,7 @@
                     <div class="text-[10px] font-black text-slate-400 tracking-widest uppercase"
                         x-text="'Page ' + currentPage + ' of ' + totalPages"></div>
                     <div class="flex items-center gap-2">
-                        <button @click="currentPage = Math.max(currentPage - 1, 1)" :disabled="currentPage === 1"
+                        <button @click="currentPage = Math.max(currentPage - 1, 1)" x-bind:disabled="currentPage === 1"
                             class="p-2 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 disabled:opacity-50 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -823,7 +827,7 @@
                             </template>
                         </div>
                         <button @click="currentPage = Math.min(currentPage + 1, totalPages)"
-                            :disabled="currentPage === totalPages"
+                            x-bind:disabled="currentPage === totalPages"
                             class="p-2 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 disabled:opacity-50 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -919,7 +923,7 @@
                             class="flex-1 py-4 px-6 rounded-2xl bg-slate-100 dark:bg-[#18342f] text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
                             Cancel
                         </button>
-                        <button type="submit" :disabled="editSubmitting"
+                        <button type="submit" x-bind:disabled="editSubmitting"
                             class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
                             x-text="editSubmitting ? 'Saving...' : 'Edit Ticket'"></button>
                     </div>
@@ -1159,6 +1163,9 @@
                         const r = await this.deleteFetch(ROUTES.delete(id));
                         if (r.ok) {
                             this.allTickets = this.allTickets.filter(t => t.id !== id);
+                            window.showToast('Ticket deleted successfully.');
+                        } else {
+                            window.showToast('Failed to delete ticket.', 'error');
                         }
                     },
 
@@ -1172,8 +1179,12 @@
                         if (!confirmed) return;
                         const r = await this.deleteFetch(ROUTES.bulkDelete(), { ids: this.selectedIds });
                         if (r.ok) {
+                            const count = this.selectedIds.length;
                             this.allTickets = this.allTickets.filter(t => !this.selectedIds.includes(t.id));
                             this.selectedIds = [];
+                            window.showToast(`${count} tickets deleted successfully.`);
+                        } else {
+                            window.showToast('Failed to delete tickets.', 'error');
                         }
                     },
 

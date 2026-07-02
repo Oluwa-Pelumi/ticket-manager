@@ -16,7 +16,7 @@
 </div>
 @endif
 
-<form method="POST" action="{{ route('password.email') }}" class="space-y-6">
+<form method="POST" action="{{ route('password.email') }}" class="space-y-6" x-data="{ processing: false }" @submit="processing = true">
     @csrf
     <div>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
@@ -26,8 +26,8 @@
     </div>
 
     <div class="pt-2">
-        <button type="submit" class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-lime-500 hover:text-teal-900 transition-all tracking-widest">
-            Request Recovery
+        <button type="submit" x-bind:disabled="processing" class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-lime-500 hover:text-teal-900 transition-all tracking-widest disabled:opacity-50">
+            <span x-text="processing ? 'Requesting Recovery...' : 'Request Recovery'">Request Recovery</span>
         </button>
     </div>
 

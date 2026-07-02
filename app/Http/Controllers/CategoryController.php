@@ -31,7 +31,6 @@
      {
          $validated = $request->validate([
              'name'  => 'required|string|max:255',
-             'group' => 'nullable|string|max:255',
          ]);
 
          $validated['slug'] = Str::slug($validated['name']);
@@ -46,7 +45,6 @@
      {
          $validated = $request->validate([
              'name'  => 'required|string|max:255',
-             'group' => 'nullable|string|max:255',
          ]);
 
          $validated['slug'] = Str::slug($validated['name']);

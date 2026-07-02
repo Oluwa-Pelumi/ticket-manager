@@ -19,7 +19,6 @@
         <div>
             <x-input-label for="current_password" value="Current Password" />
             <x-text-input
-                :disabled="processing"
                 id="current_password"
                 name="current_password"
                 type="password"
@@ -32,7 +31,6 @@
         <div>
             <x-input-label for="password" value="New Password" />
             <x-text-input
-                :disabled="processing"
                 id="password"
                 name="password"
                 type="password"
@@ -45,7 +43,6 @@
         <div>
             <x-input-label for="password_confirmation" value="Confirm Password" />
             <x-text-input
-                :disabled="processing"
                 id="password_confirmation"
                 name="password_confirmation"
                 type="password"
@@ -56,7 +53,7 @@
         </div>
 
         <div class="flex items-center gap-4 pt-2">
-            <x-primary-button :disabled="processing">
+            <x-primary-button x-bind:disabled="processing">
                 <span x-text="processing ? 'Saving...' : 'Save'"></span>
             </x-primary-button>
 

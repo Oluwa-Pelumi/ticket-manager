@@ -12,9 +12,9 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Order', 'group' => 'Order'],
-            ['name' => 'Enquiry', 'group' => 'Enquiry'],
-            ['name' => 'Consultation', 'group' => 'Consultation'],
+            ['name' => 'Order'],
+            ['name' => 'Enquiry'],
+            ['name' => 'Consultation'],
         ];
 
         foreach ($categories as $cat) {
@@ -22,7 +22,7 @@ class CategorySeeder extends Seeder
             
             $category = Category::updateOrCreate(
                 ['slug' => $slug],
-                ['name' => $cat['name'], 'group' => $cat['group']]
+                ['name' => $cat['name']]
             );
 
             Ticket::where('subject', $slug)->update(['category_id' => $category->id]);

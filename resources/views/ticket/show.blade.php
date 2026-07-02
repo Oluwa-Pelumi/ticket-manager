@@ -1,5 +1,7 @@
 @extends('layouts.authenticated')
 
+@section('title', 'Ticket #' . $ticket->reference_number)
+
 @section('header')
 <div class="flex items-center justify-between w-full">
     <div class="flex items-center gap-4">
@@ -48,7 +50,7 @@
                     <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Ticket Reference</div>
                     <div class="flex items-center gap-3 mb-8 group/id">
                         <div class="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{{ $ticket->hashid }}</div>
-                        <button type="button" onclick="copyReference('{{ $ticket->hashid }}', this)"
+                        <button type="button" onclick="copyToClipboard('{{ $ticket->hashid }}', this)"
                             class="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
                             title="Copy Reference">
                             <svg class="w-4 h-4 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
@@ -145,7 +147,7 @@
                     Conversation
                 </h4>
 
-                <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden">
+                <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
 
                     @if($ticket->comments && $ticket->comments->count() > 0)
@@ -157,6 +159,9 @@
                             <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isOwnerSide ? 'bg-teal-900 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#18342f] text-slate-900 dark:text-white rounded-bl-sm border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm' }}">
                                 <div class="flex items-center space-x-2 mb-2">
                                     <span class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
+                                    @if($comment->user && ($comment->user->role === 'support' || $comment->user->role === 'admin'))
+                                        <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400">Support</span>
+                                    @endif
                                     <span class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->format('H:i') }}</span>
                                 </div>
                                 <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ $comment->content }}</div>
@@ -187,7 +192,7 @@
                 @endphp
 
                 @if(($isTicketOwner || $isAdmin || $isSupport) && $ticket->status !== 'closed')
-                <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}" enctype="multipart/form-data" class="space-y-4">
+                <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}" enctype="multipart/form-data" class="space-y-4" x-data="{ processing: false }" @submit="processing = true">
                     @csrf
                     <div class="relative group/comment">
                         <textarea name="content" placeholder="Type your message..." rows="4" required
@@ -198,8 +203,16 @@
                             <label for="comment-images" class="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl cursor-pointer transition-all bg-emerald-50/50 dark:bg-[#18342f]">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </label>
-                            <button type="submit" class="p-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-110 active:scale-95 transition-all">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            <button type="submit" x-bind:disabled="processing" class="p-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-110 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all">
+                                <template x-if="!processing">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                </template>
+                                <template x-if="processing">
+                                    <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                    </svg>
+                                </template>
                             </button>
                         </div>
                     </div>
@@ -219,14 +232,6 @@
 </div>
 
 <script>
-function copyReference(text, btn) {
-    navigator.clipboard.writeText(text).then(() => {
-        btn.querySelector('.copy-icon').outerHTML = '<svg class="w-4 h-4 text-emerald-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
-        setTimeout(() => {
-            btn.querySelector('.copy-icon').outerHTML = '<svg class="w-4 h-4 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>';
-        }, 2000);
-    });
-}
 
 function previewCommentImages(e) {
     const container = document.getElementById('comment-preview');

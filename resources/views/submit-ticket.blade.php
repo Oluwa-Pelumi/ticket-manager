@@ -13,7 +13,6 @@
         ['id' => 'custom', 'label' => 'Pick Date'],
     ];
 
-    $groupedCategories = collect($categories ?? [])->groupBy(fn($c) => $c['group'] ?? $c->group ?? 'General');
     $user = auth()->user();
 @endphp
 
@@ -187,7 +186,7 @@
                             @foreach($priorityOptions as $opt)
                                 <button
                                     type="button"
-                                    :disabled="processing"
+                                    x-bind:disabled="processing"
                                     @click="priority = '{{ $opt['value'] }}'"
                                     :class="priority === '{{ $opt['value'] }}' ? '{{ $opt['active'] }}' : '{{ $inactiveClasses }}'"
                                     class="flex flex-col items-center justify-center gap-2 py-4 rounded-2xl border-2 font-bold text-xs tracking-widest transition-all shadow-sm"
@@ -227,27 +226,23 @@
                         <option value="" disabled>
                             {{ empty($categories) ? 'No categories available at the moment' : 'Select Department / Topic' }}
                         </option>
-                        @foreach($groupedCategories as $groupLabel => $items)
-                            <optgroup label="{{ $groupLabel }}" class="font-bold text-teal-900 dark:text-lime-400">
-                                @foreach($items as $sub)
-                                    @php
-                                        $subSlug = $sub['slug'] ?? $sub->slug;
-                                        $subName = $sub['name'] ?? $sub->name;
-                                        $subId   = $sub['id'] ?? $sub->id;
-                                        $isDisabled = !$user && $subSlug === 'order';
-                                        $label = $isDisabled ? "{$subName} (requires account)" : $subName;
-                                    @endphp
-                                    <option
-                                        value="{{ $subSlug }}"
-                                        data-category-id="{{ $subId }}"
-                                        @selected(old('subject') === $subSlug)
-                                        @disabled($isDisabled)
-                                        class="text-slate-900 dark:text-white font-medium"
-                                    >
-                                        {{ $label }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
+                        @foreach($categories as $cat)
+                            @php
+                                $catSlug = $cat['slug'] ?? $cat->slug;
+                                $catName = $cat['name'] ?? $cat->name;
+                                $catId   = $cat['id'] ?? $cat->id;
+                                $isDisabled = !$user && $catSlug === 'order';
+                                $label = $isDisabled ? "{$catName} (requires account)" : $catName;
+                            @endphp
+                            <option
+                                value="{{ $catSlug }}"
+                                data-category-id="{{ $catId }}"
+                                @selected(old('subject') === $catSlug)
+                                @disabled($isDisabled)
+                                class="text-slate-900 dark:text-white font-medium"
+                            >
+                                {{ $label }}
+                            </option>
                         @endforeach
                     </select>
                     <input type="hidden" name="category_id" x-model="category_id">
@@ -410,7 +405,7 @@
                 <div class="pt-6">
                     <button
                         type="submit"
-                        :disabled="processing || {{ empty($categories) ? 'true' : 'false' }}"
+                        x-bind:disabled="processing || {{ empty($categories) ? 'true' : 'false' }}"
                         class="group w-full py-5 rounded-[2rem] bg-teal-900 text-white font-black text-xl shadow-2xl hover:bg-lime-500 hover:text-teal-900 hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
                     >
                         <span class="flex items-center justify-center gap-2">

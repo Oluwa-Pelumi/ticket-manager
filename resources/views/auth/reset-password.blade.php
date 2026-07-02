@@ -6,7 +6,7 @@
     <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Almost there! Set your new password</p>
 </div>
 
-<form method="POST" action="{{ route('password.store') }}" class="space-y-5">
+<form method="POST" action="{{ route('password.store') }}" class="space-y-5" x-data="{ processing: false }" @submit="processing = true">
     @csrf
     <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
@@ -34,8 +34,8 @@
     </div>
 
     <div class="pt-4">
-        <button type="submit" class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-lime-500 hover:text-teal-900 transition-all tracking-widest">
-            Update Credentials
+        <button type="submit" x-bind:disabled="processing" class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-lime-500 hover:text-teal-900 transition-all tracking-widest disabled:opacity-50">
+            <span x-text="processing ? 'Updating Credentials...' : 'Update Credentials'">Update Credentials</span>
         </button>
     </div>
 </form>

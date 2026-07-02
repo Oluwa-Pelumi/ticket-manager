@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? config('app.name') }}</title>
+    <title>{{ isset($title) && trim($title) ? trim($title) . ' — ' . config('app.name') : config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
@@ -189,7 +189,7 @@
                         @else
                             <a href="{{ route('submit-ticket') }}" class="nav-link {{ request()->routeIs('submit-ticket') ? 'nav-link-active' : '' }}">Submit Ticket</a>
                         @endauth
-                        <a href="{{ route('check-status') }}" class="nav-link {{ request()->routeIs('check-status') ? 'nav-link-active' : '' }}">Check Status</a>
+                        <a href="{{ route('check-status') }}" class="nav-link {{ request()->routeIs('check-status', 'search-tickets') ? 'nav-link-active' : '' }}">Check Status</a>
                         @auth
                             @if(auth()->user()->role === 'admin')
                                 <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users') ? 'nav-link-active' : '' }}">Users Management</a>
@@ -454,7 +454,7 @@
             @else
                 <a href="{{ route('submit-ticket') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('submit-ticket') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Submit Ticket</a>
             @endauth
-            <a href="{{ route('check-status') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Check Status</a>
+            <a href="{{ route('check-status') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status', 'search-tickets') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Check Status</a>
             @auth
                 @if(auth()->user()->role === 'admin')
                     <a href="{{ route('admin.users') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Users Management</a>
@@ -607,14 +607,85 @@
             try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
         }
 
+        window.showToast = function(message, type = 'success') {
+            let container = document.getElementById('global-toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'global-toast-container';
+                container.className = 'fixed top-8 right-8 z-[100] flex flex-col gap-3 pointer-events-none';
+                container.style.cssText = 'min-width:320px;max-width:420px';
+                document.body.appendChild(container);
+            }
+
+            const configs = {
+                success: { color: '#10b981', label: 'Success', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>' },
+                error:   { color: '#f43f5e', label: 'Error',   icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>' },
+                warning: { color: '#f59e0b', label: 'Warning', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>' },
+                info:    { color: '#3b82f6', label: 'Info',    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z"/>' },
+            };
+            const cfg = configs[type] || configs.success;
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const bg        = isDark ? 'rgba(15,23,42,0.97)'    : '#ffffff';
+            const borderMid = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
+            const textColor = isDark ? '#f1f5f9'                : '#1e293b';
+
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto flex items-start gap-3 px-4 py-3.5 rounded-2xl shadow-xl transition-all duration-300 transform -translate-y-4 opacity-0';
+            toast.style.cssText = `background:${bg};border:1px solid ${borderMid};border-left:4px solid ${cfg.color};box-shadow:0 8px 32px rgba(0,0,0,0.12)`;
+
+            toast.innerHTML = `
+                <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="${cfg.color}">${cfg.icon}</svg>
+                <div style="display:flex;flex-direction:column;gap:2px">
+                    <span style="font-size:11px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:${cfg.color}">${cfg.label}</span>
+                    <p style="font-size:14px;font-weight:500;color:${textColor};line-height:1.4">${message}</p>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('-translate-y-4', 'opacity-0'), 10);
+
+            setTimeout(() => {
+                toast.classList.add('-translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        };
+
         function copyToClipboard(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
-                setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
-            }).catch(err => {
-                console.error("Copy failed", err);
-            });
+            const onSuccess = () => {
+                const icon = btn.querySelector('.copy-icon') || btn;
+                const originalHtml = icon.outerHTML;
+                const isW3 = icon.classList.contains('w-3');
+                const sizeClass = isW3 ? 'w-3 h-3' : 'w-4 h-4';
+                icon.outerHTML = `<svg class="${sizeClass} text-emerald-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
+                setTimeout(() => {
+                    const currentIcon = btn.querySelector('.copy-icon') || btn;
+                    currentIcon.outerHTML = originalHtml;
+                }, 2000);
+            };
+
+            const fallback = () => {
+                const ta = Object.assign(document.createElement('textarea'), {
+                    value: text,
+                    style: 'position:fixed;left:-9999px'
+                });
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    onSuccess();
+                } catch (e) {
+                    console.error("Copy fallback failed", e);
+                }
+                ta.remove();
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(onSuccess).catch(fallback);
+            } else {
+                fallback();
+            }
         }
     </script>
 </body>

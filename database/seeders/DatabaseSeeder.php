@@ -2,20 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Ticket;
-use App\Models\Comment;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    // use WithoutModelEvents;
-
     /**
      * Seed the application's database.
+     * Order matters: categories → users → tickets → comments → faqs
      */
     public function run(): void
     {
-       
+        $this->call([
+            CategorySeeder::class,
+            UserSeeder::class,
+            TicketSeeder::class,
+            CommentSeeder::class,
+            FaqSeeder::class,
+        ]);
     }
 }

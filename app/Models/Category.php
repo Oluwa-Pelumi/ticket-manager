@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Ticket category grouped for organization and filtering.
+ * Ticket category.
  */
 class Category extends Model
 {
     protected $fillable = [
         'name',
         'slug',
-        'group',
     ];
 
     /**

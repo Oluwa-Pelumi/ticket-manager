@@ -28,18 +28,16 @@
     ];
 @endphp
 
-<x-app-layout :show-navbar="auth()->check()">
+<x-app-layout :show-navbar="false">
 
-    <x-slot name="title">
-        {{ config('app.name') . ' | Support System' }}
-    </x-slot>
+    <x-slot name="title">Support System</x-slot>
+
 
     <div class="fauna-shell min-h-screen">
         {{-- Hero section — navigation and primary CTAs --}}
         <section class="relative overflow-hidden bg-teal-900 dark:bg-[#102824]">
             <div class="container mx-auto px-4">
-                {{-- Show inline hero nav only for guests; authenticated users use the global navbar --}}
-                @guest
+                {{-- Nav: always visible — shows Login+Register for guests, Dashboard for auth users --}}
                 <nav class="py-6">
                     <div class="flex items-center justify-between">
                         <div class="inline-flex items-center gap-3 text-white">
@@ -62,7 +60,7 @@
                                     class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                     Dashboard
                                 </a>
-                            @endguest
+                            @endauth
                             <button onclick="toggleTheme()"
                                 class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 text-white transition hover:border-lime-500 hover:text-lime-400 dark:border-lime-500/40"
                                 aria-label="Toggle Theme">
@@ -78,7 +76,6 @@
                         </div>
                     </div>
                 </nav>
-                @endguest
 
                 <div class="pb-16 sm:pb-20 pt-12 sm:pt-16 text-center">
                     <h1
@@ -122,10 +119,10 @@
 
         {{-- How ticketing works — step-by-step guide --}}
         <section class="p-4 bg-white dark:bg-[#0b1715]">
-            <div class="rounded-3xl bg-lime-500 px-6 py-16 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
+            <div class="rounded-3xl bg-emerald-700 px-6 py-16 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
                 <div class="container mx-auto px-4">
-                    <h2 class="mb-4 text-4xl font-semibold text-teal-900 dark:text-white">How ticketing works</h2>
-                    <p class="mb-12 max-w-2xl text-teal-900/90 dark:text-slate-300">
+                    <h2 class="mb-4 text-4xl font-semibold text-white">How ticketing works</h2>
+                    <p class="mb-12 max-w-2xl text-white/80">
                         From your first message to a closed ticket—here is what happens in {{ config('app.name') }}.
                     </p>
                     <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -142,7 +139,7 @@
                         @endforeach
                     </div>
                     <div
-                        class="mt-12 flex flex-wrap items-center justify-center gap-4 border-t border-teal-900/20 pt-10 dark:border-[#28524a]">
+                        class="mt-12 flex flex-wrap items-center justify-center gap-4 border-t border-white/20 pt-10 dark:border-[#28524a]">
                         <a href="{{ route('submit-ticket') }}"
                             class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                             Create ticket

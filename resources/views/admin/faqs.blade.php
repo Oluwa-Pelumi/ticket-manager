@@ -22,7 +22,8 @@
         </div>
     </x-slot>
 
-    @section('title', 'FAQ Management')
+    <x-slot name="title">FAQ Management</x-slot>
+
 
     <div class="max-w-[98%] xl:max-w-[1700px] mx-auto py-6 px-2 sm:px-4 lg:px-6">
         <div class="space-y-6">
@@ -128,6 +129,7 @@
         question: '',
         answer: '',
         order: 0,
+        processing: false,
 
         init() {
             this._handler = (e) => {
@@ -151,6 +153,7 @@
             this.question = '';
             this.answer = '';
             this.order = 0;
+            this.processing = false;
         }
     }" x-show="open" x-cloak
         class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/40 backdrop-blur-md"
@@ -176,7 +179,7 @@
             </div>
 
             {{-- Create form (shown when faq == null) --}}
-            <form method="POST" action="{{ route('admin.faqs.store') }}" x-show="!faq" class="space-y-8">
+            <form method="POST" action="{{ route('admin.faqs.store') }}" x-show="!faq" class="space-y-8" @submit="processing = true">
                 @csrf
 
                 <div class="space-y-3">
@@ -216,16 +219,16 @@
                         class="flex-1 py-5 px-8 rounded-[2rem] bg-slate-100 dark:bg-[#18342f] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
                         Cancel
                     </button>
-                    <button type="submit"
-                        class="flex-[2] py-5 px-8 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10 text-sm">
-                        Create FAQ
+                    <button type="submit" x-bind:disabled="processing"
+                        class="flex-[2] py-5 px-8 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10 text-sm disabled:opacity-50">
+                        <span x-text="processing ? 'Creating...' : 'Create FAQ'">Create FAQ</span>
                     </button>
                 </div>
             </form>
 
             {{-- Edit form (shown when faq != null) --}}
             <form method="POST" :action="`{{ url('admin/faqs') }}/${faq ? faq.id : ''}`" x-show="faq"
-                class="space-y-8">
+                class="space-y-8" @submit="processing = true">
                 @csrf
                 @method('PATCH')
 
@@ -266,9 +269,9 @@
                         class="flex-1 py-5 px-8 rounded-[2rem] bg-slate-100 dark:bg-[#18342f] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
                         Cancel
                     </button>
-                    <button type="submit"
-                        class="flex-[2] py-5 px-8 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10 text-sm">
-                        Update FAQ
+                    <button type="submit" x-bind:disabled="processing"
+                        class="flex-[2] py-5 px-8 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10 text-sm disabled:opacity-50">
+                        <span x-text="processing ? 'Updating...' : 'Update FAQ'">Update FAQ</span>
                     </button>
                 </div>
             </form>

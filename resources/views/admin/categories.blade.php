@@ -18,7 +18,8 @@
         </div>
     </x-slot>
 
-    @section('title', 'Manage Categories')
+    <x-slot name="title">Manage Categories</x-slot>
+
 
     <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6">
 
@@ -41,6 +42,7 @@
                             ? route('admin.categories.update', $editingCategory->id)
                             : route('admin.categories.store') }}"
                         class="space-y-6"
+                        x-data="{ processing: false }" @submit="processing = true"
                     >
                         @csrf
                         @if (isset($editingCategory))
@@ -65,30 +67,16 @@
                             @enderror
                         </div>
 
-                        {{-- Group Name --}}
-                        <div class="space-y-2">
-                            <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400">
-                                Group Name (Optional)
-                            </label>
-                            <input
-                                type="text"
-                                name="group"
-                                value="{{ old('group', $editingCategory->group ?? '') }}"
-                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium"
-                                placeholder="e.g. Pharmacy Services"
-                            />
-                            @error('group')
-                                <p class="text-rose-500 text-[10px] font-bold">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         {{-- Actions --}}
                         <div class="flex flex-col gap-3">
                             <button
                                 type="submit"
+                                x-bind:disabled="processing"
                                 class="w-full py-4 rounded-xl bg-teal-900 text-white font-black text-sm tracking-widest shadow-lg hover:bg-lime-500 hover:text-teal-900 transition-all disabled:opacity-50"
                             >
-                                {{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}
+                                <span x-text="processing ? '{{ isset($editingCategory) ? 'Updating...' : 'Creating...' }}' : '{{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}'">
+                                    {{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}
+                                </span>
                             </button>
 
                             @if (isset($editingCategory))
@@ -113,9 +101,6 @@
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">
                                     Category Details
                                 </th>
-                                <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">
-                                    Group
-                                </th>
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400 text-right">
                                     Actions
                                 </th>
@@ -133,19 +118,6 @@
                                         <div class="text-[10px] font-mono text-slate-400 tracking-tighter">
                                             Slug: {{ $category->slug }}
                                         </div>
-                                    </td>
-
-                                    {{-- Group badge --}}
-                                    <td class="px-6 py-5">
-                                        @if ($category->group)
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black tracking-widest bg-lime-500/10 text-teal-900 dark:text-lime-400">
-                                                {{ $category->group }}
-                                            </span>
-                                        @else
-                                            <span class="text-[10px] font-black text-slate-300 dark:text-slate-700 italic tracking-widest">
-                                                No Group
-                                            </span>
-                                        @endif
                                     </td>
 
                                     {{-- Edit / Delete --}}
@@ -197,7 +169,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="px-6 py-12 text-center">
+                                    <td colspan="2" class="px-6 py-12 text-center">
                                         <p class="text-sm text-slate-600 italic">
                                             No categories found. Create one to get started.
                                         </p>

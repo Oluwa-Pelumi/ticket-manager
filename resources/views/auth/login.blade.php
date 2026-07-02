@@ -12,7 +12,7 @@
 </div>
 @endif
 
-<form method="POST" action="{{ route('login') }}" class="space-y-6">
+<form method="POST" action="{{ route('login') }}" class="space-y-6" x-data="{ processing: false }" @submit="processing = true">
     @csrf
 
     <div class="space-y-2">
@@ -36,13 +36,16 @@
         @error('password')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
-    <div class="flex items-center px-1">
-        <input id="remember" type="checkbox" name="remember" class="rounded-lg bg-slate-100 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#1d3a34] text-teal-900 shadow-sm focus:ring-lime-500">
-        <span class="ms-3 text-[11px] font-bold tracking-widest text-slate-600 dark:text-slate-400">Remember me</span>
-    </div>
+    <label for="remember" class="flex items-center px-1 cursor-pointer select-none group">
+        <input id="remember" type="checkbox" name="remember" 
+            class="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#1d3a34] text-teal-900 dark:text-lime-500 focus:ring-2 focus:ring-emerald-900 dark:focus:ring-lime-500 focus:ring-offset-0 transition-all cursor-pointer">
+        <span class="ms-3 text-[11px] font-bold tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Remember me</span>
+    </label>
 
     <div class="pt-2">
-        <button type="submit" class="fauna-btn-primary w-full !py-3.5 text-lg">Sign In</button>
+        <button type="submit" x-bind:disabled="processing" class="fauna-btn-primary w-full !py-3.5 text-lg disabled:opacity-50">
+            <span x-text="processing ? 'Signing In...' : 'Sign In'">Sign In</span>
+        </button>
     </div>
 
     <div class="text-center pt-4">

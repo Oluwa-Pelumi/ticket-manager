@@ -16,7 +16,8 @@
         </div>
     </x-slot>
 
-@section('title', 'User Management')
+<x-slot name="title">User Management</x-slot>
+
 
     <div class="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6 overflow-x-hidden">
 
