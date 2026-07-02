@@ -82,7 +82,7 @@
 
                 @if (auth()->user()->role === 'user')
                     <a href="{{ route('submit-ticket') }}"
-                        class="w-full md:w-auto text-center px-6 py-3 bg-teal-900 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-105 active:scale-95 transition-all">
+                        class="w-full md:w-auto text-center px-6 py-3 bg-teal-900 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-105 active:scale-95 transition-all">
                         Submit Ticket
                     </a>
                 @endif
@@ -464,7 +464,7 @@
                                                 <template x-if="ticket.order_type">
                                                     <button @click.stop="activateOrder(ticket.id)"
                                                         x-bind:disabled="activatingId === ticket.id"
-                                                        class="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                                                        class="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-[#10b981] text-white dark:text-[#064e3b] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
                                                         title="Process Order">
                                                         <svg x-show="activatingId !== ticket.id" class="w-4 h-4"
                                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -924,7 +924,7 @@
                             Cancel
                         </button>
                         <button type="submit" x-bind:disabled="editSubmitting"
-                            class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                            class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
                             x-text="editSubmitting ? 'Saving...' : 'Edit Ticket'"></button>
                     </div>
                 </form>

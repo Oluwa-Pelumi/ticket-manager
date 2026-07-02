@@ -60,7 +60,7 @@
                     <button
                         type="submit"
                         x-bind:disabled="processing"
-                        class="px-8 py-4 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-lime-500 hover:text-teal-900 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 transition-all whitespace-nowrap"
+                        class="px-8 py-4 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 transition-all whitespace-nowrap"
                     >
                         <span x-text="processing ? 'Searching...' : 'Search Tickets'">Search Tickets</span>
                     </button>

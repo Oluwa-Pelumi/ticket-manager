@@ -326,7 +326,7 @@
                     @else
                     <div class="flex items-center gap-2">
                         <a href="{{ route('login') }}" class="nav-link bg-slate-200/40 dark:bg-[#18342f] text-slate-700 dark:text-slate-200 hover:text-teal-900 border border-emerald-900/10 dark:border-[#1d3a34]">Login</a>
-                        <a href="{{ route('register') }}" class="nav-link bg-teal-900 text-white hover:bg-lime-500 hover:text-teal-900 shadow-md">Register</a>
+                        <a href="{{ route('register') }}" class="nav-link bg-teal-900 text-white hover:bg-[#10b981] hover:text-[#064e3b] shadow-md">Register</a>
                     </div>
                     @endauth
                 </div>
@@ -469,7 +469,7 @@
             @else
                 <div class="pt-4 border-t border-emerald-900/10 dark:border-[#1d3a34] flex gap-2">
                     <a href="{{ route('login') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#18342f] text-slate-700 dark:text-slate-200">Login</a>
-                    <a href="{{ route('register') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-teal-900 text-white hover:bg-lime-500 hover:text-teal-900 shadow-md">Register</a>
+                    <a href="{{ route('register') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-teal-900 text-white hover:bg-[#10b981] hover:text-[#064e3b] shadow-md">Register</a>
                 </div>
             @endauth
         </div>
@@ -636,10 +636,15 @@
 
             toast.innerHTML = `
                 <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="${cfg.color}">${cfg.icon}</svg>
-                <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="display:flex;flex-direction:column;gap:2px;flex:1">
                     <span style="font-size:11px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:${cfg.color}">${cfg.label}</span>
                     <p style="font-size:14px;font-weight:500;color:${textColor};line-height:1.4">${message}</p>
                 </div>
+                <button onclick="this.closest('.pointer-events-auto').remove()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none mt-0.5 shrink-0" style="background:none;border:none;padding:0;cursor:pointer">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             `;
 
             container.appendChild(toast);

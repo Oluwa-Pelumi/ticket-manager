@@ -48,23 +48,23 @@
                         <div class="flex items-center gap-2 sm:gap-3">
                             @guest
                                 <a href="{{ route('login') }}"
-                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                     Login
                                 </a>
                                 <a href="{{ route('register') }}"
-                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                     Register
                                 </a>
                             @else
                                 <a href="{{ route('dashboard') }}"
-                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                     Dashboard
                                 </a>
                             @endauth
                             <button onclick="toggleTheme()"
-                                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 text-white transition hover:border-lime-500 hover:text-lime-400 dark:border-lime-500/40"
+                                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 text-white transition hover:border-[#10b981] hover:text-[#10b981] dark:border-[#10b981]/40"
                                 aria-label="Toggle Theme">
-                                <svg id="theme-icon-dark" class="w-5 h-5 text-lime-400 hidden" fill="currentColor"
+                                <svg id="theme-icon-dark" class="w-5 h-5 text-[#10b981] hidden" fill="currentColor"
                                     viewBox="0 0 20 20">
                                     <path
                                         d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
@@ -88,12 +88,12 @@
                     </p>
                     <div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
                         <a href="{{ route('submit-ticket') }}"
-                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                             Create Ticket
                         </a>
 
                         <a href="{{ auth()->user() ? route('dashboard') : route('check-status') }}"
-                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                             View Ticket
                         </a>
                     </div>
@@ -141,17 +141,17 @@
                     <div
                         class="mt-12 flex flex-wrap items-center justify-center gap-4 border-t border-white/20 pt-10 dark:border-[#28524a]">
                         <a href="{{ route('submit-ticket') }}"
-                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                             Create ticket
                         </a>
 
                         <a href="{{ route('check-status') }}"
-                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                             Check status
                         </a>
                         @auth
                             <a href="{{ route('dashboard') }}"
-                                class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                                 Dashboard
                             </a>
                         @endauth
@@ -219,7 +219,7 @@
                         <p class="mb-6 text-white/80">Use the ticket system to report issues, request updates, or ask
                             for help.</p>
                         <a href="{{ route('submit-ticket') }}"
-                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-lime-500/50 dark:hover:!bg-lime-500 dark:hover:!text-[#102824] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
                             Create Ticket</a>
                     </div>
                 </div>

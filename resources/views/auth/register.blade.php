@@ -42,7 +42,7 @@
     </div>
 
     <div class="pt-4">
-        <button type="submit" x-bind:disabled="processing" class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-lime-500 hover:text-teal-900 transition-all tracking-widest disabled:opacity-50">
+        <button type="submit" x-bind:disabled="processing" class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] transition-all tracking-widest disabled:opacity-50">
             <span x-text="processing ? 'Creating Account...' : 'Create Account'">Create Account</span>
         </button>
     </div>

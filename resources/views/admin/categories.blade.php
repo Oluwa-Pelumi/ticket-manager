@@ -72,7 +72,7 @@
                             <button
                                 type="submit"
                                 x-bind:disabled="processing"
-                                class="w-full py-4 rounded-xl bg-teal-900 text-white font-black text-sm tracking-widest shadow-lg hover:bg-lime-500 hover:text-teal-900 transition-all disabled:opacity-50"
+                                class="w-full py-4 rounded-xl bg-teal-900 text-white font-black text-sm tracking-widest shadow-lg hover:bg-[#10b981] hover:text-[#064e3b] transition-all disabled:opacity-50"
                             >
                                 <span x-text="processing ? '{{ isset($editingCategory) ? 'Updating...' : 'Creating...' }}' : '{{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}'">
                                     {{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}

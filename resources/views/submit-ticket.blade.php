@@ -406,7 +406,7 @@
                     <button
                         type="submit"
                         x-bind:disabled="processing || {{ empty($categories) ? 'true' : 'false' }}"
-                        class="group w-full py-5 rounded-[2rem] bg-teal-900 text-white font-black text-xl shadow-2xl hover:bg-lime-500 hover:text-teal-900 hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
+                        class="group w-full py-5 rounded-[2rem] bg-teal-900 text-white font-black text-xl shadow-2xl hover:bg-[#10b981] hover:text-[#064e3b] hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
                     >
                         <span class="flex items-center justify-center gap-2">
                             <template x-if="processing">
