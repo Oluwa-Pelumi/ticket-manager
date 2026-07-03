@@ -22,10 +22,10 @@ class TicketController extends Controller
     {
         $user    = Auth::user();
         $tickets = $user->role === 'admin'
-            ? Ticket::with(['user', 'attendant', 'comments', 'category'])->latest()->get()
+            ? Ticket::with(['user', 'comments', 'category'])->latest()->get()
             : ($user->role === 'support'
-                ? Ticket::with(['user', 'attendant', 'comments', 'category'])->where('attended_to_by', $user->id)->latest()->get()
-                : Ticket::where('user_id', $user->id)->with(['attendant', 'comments', 'category'])->latest()->get());
+                ? Ticket::with(['user', 'comments', 'category'])->whereJsonContains('attended_to_by', $user->id)->latest()->get()
+                : Ticket::where('user_id', $user->id)->with(['comments', 'category'])->latest()->get());
 
         return view('dashboard', [
             'tickets'    => $tickets,
@@ -68,14 +68,27 @@ class TicketController extends Controller
         }
 
         // --- Assign to support staff with fewest open tickets ---
-        $supports = \App\Models\User::where('role', 'support')
-            ->withCount(['assignedTickets' => function ($query) {
-                $query->whereIn('status', ['open', 'in-progress'], 'and', false);
-            }])
-            ->get();
+        $supports = \App\Models\User::where('role', 'support')->get();
 
         $assignedSupportId = null;
         if ($supports->isNotEmpty()) {
+            $activeTickets = Ticket::whereIn('status', ['open', 'in-progress'])->get();
+            $counts = [];
+            foreach ($supports as $support) {
+                $counts[$support->id] = 0;
+            }
+            foreach ($activeTickets as $ticket) {
+                $attended = $ticket->attended_to_by ?? [];
+                foreach ($attended as $suppId) {
+                    if (isset($counts[$suppId])) {
+                        $counts[$suppId]++;
+                    }
+                }
+            }
+            foreach ($supports as $support) {
+                $support->setAttribute('assigned_tickets_count', $counts[$support->id]);
+            }
+
             $minCount          = $supports->min('assigned_tickets_count');
             $assignedSupportId = $supports->where('assigned_tickets_count', $minCount)->random()->id;
         }
@@ -208,16 +221,15 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($validated['id']);
 
         // --- Build update payload with auto-assignment ---
-        $updateData = ['status' => $validated['status']];
-        if ($request->has('attended_to_by')) {
-            $updateData['attended_to_by'] = $validated['attended_to_by'];
-        } else if ((Auth::user()->isAdmin() || Auth::user()->isSupport()) && !$ticket->attended_to_by) {
+        if ($request->has('attended_to_by') && $validated['attended_to_by']) {
+            $ticket->addAttendant($validated['attended_to_by']);
+        } else if ((Auth::user()->isAdmin() || Auth::user()->isSupport()) && empty($ticket->attended_to_by)) {
             // Automatically assign to current admin if not already assigned
-            $updateData['attended_to_by'] = Auth::id();
+            $ticket->addAttendant(Auth::id());
         }
 
         $oldStatus = $ticket->status;
-        $ticket->update($updateData);
+        $ticket->update(['status' => $validated['status']]);
 
         // --- Notify ticket owner when closed ---
         if ($oldStatus !== 'closed' && $validated['status'] === 'closed' && $ticket->user_id !== Auth::id()) {
@@ -280,10 +292,10 @@ class TicketController extends Controller
         $tickets = Ticket::whereIn('id', $validated['ids'])->get();
 
         // --- Bulk status update with assignment ---
-        \Illuminate\Support\Facades\DB::table('tickets')->whereIn('id', $validated['ids'])->update([
-            'status'         => $validated['status'],
-            'attended_to_by' => Auth::id(),             // Assign to current admin
-        ]);
+        foreach ($tickets as $ticket) {
+            $ticket->addAttendant(Auth::id());
+            $ticket->update(['status' => $validated['status']]);
+        }
 
         // --- Notify owners of newly closed tickets ---
         if ($validated['status'] === 'closed') {
@@ -375,7 +387,8 @@ class TicketController extends Controller
 
         // --- Auto-transition open tickets to in-progress on staff reply ---
         if ($ticket->status === 'open' && Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport())) {
-            $ticket->update(['status' => 'in-progress', 'attended_to_by' => Auth::id()]);
+            $ticket->addAttendant(Auth::id());
+            $ticket->update(['status' => 'in-progress']);
         }
 
         return back()->with('success', 'Comment added successfully.');
@@ -394,7 +407,7 @@ class TicketController extends Controller
             $tickets = collect();
         } else {
             $tickets = Ticket::where('id', $id[0])
-                ->with(['attendant', 'category'])
+                ->with(['category'])
                 ->get();
         }
 
@@ -408,7 +421,7 @@ class TicketController extends Controller
     /** Display a single ticket with its relationships loaded. */
     public function show(Ticket $ticket)
     {
-        $ticket->load(['user', 'attendant', 'comments.user', 'category']);
+        $ticket->load(['user', 'comments.user', 'category']);
 
         return view('ticket.show', [
             'ticket'     => $ticket,
@@ -420,15 +433,31 @@ class TicketController extends Controller
     public function activateOrder(Request $request, Ticket $ticket)
     {
         if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
             return back()->with('error', 'Unauthorized action.');
         }
 
         $activations = $ticket->order_activations ?? [];
         $activations[] = now()->toDateTimeString();
 
+        // Assign current user
+        $ticket->addAttendant(Auth::id());
+
         $ticket->update([
-            'order_activations' => $activations
+            'order_activations' => $activations,
+            'status'            => 'in-progress'
         ]);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'status'  => 'in-progress',
+                'attendants' => $ticket->attendants,
+                'attendant' => $ticket->attendant
+            ]);
+        }
 
         return back()->with('success', 'Order processed and recorded successfully.');
     }
@@ -447,15 +476,13 @@ class TicketController extends Controller
             return response()->json(['error' => 'Invalid status'], 422);
         }
 
-        $updateData = ['status' => $status];
-
         // Auto-assign if not already assigned
-        if (!$ticket->attended_to_by) {
-            $updateData['attended_to_by'] = Auth::id();
+        if (empty($ticket->attended_to_by)) {
+            $ticket->addAttendant(Auth::id());
         }
 
         $oldStatus = $ticket->status;
-        $ticket->update($updateData);
+        $ticket->update(['status' => $status]);
 
         // Notify owner when closed
         if ($oldStatus !== 'closed' && $status === 'closed' && $ticket->user_id !== Auth::id()) {
@@ -548,10 +575,10 @@ class TicketController extends Controller
 
         $tickets = Ticket::whereIn('id', $validated['ids'])->get();
 
-        \Illuminate\Support\Facades\DB::table('tickets')->whereIn('id', $validated['ids'])->update([
-            'status'         => $validated['status'],
-            'attended_to_by' => Auth::id(),
-        ]);
+        foreach ($tickets as $ticket) {
+            $ticket->addAttendant(Auth::id());
+            $ticket->update(['status' => $validated['status']]);
+        }
 
         // Notify owners of newly closed tickets
         if ($validated['status'] === 'closed') {

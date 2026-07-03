@@ -643,6 +643,27 @@
                                                                     </template>
                                                                 </div>
                                                             </template>
+
+                                                            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                                                                <h4 class="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">
+                                                                    Attending Support Staff
+                                                                </h4>
+                                                                <div class="flex flex-wrap gap-3">
+                                                                    <template x-if="ticket.attendants && ticket.attendants.length > 0">
+                                                                        <template x-for="att in ticket.attendants" :key="att.id">
+                                                                            <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                                                                <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                                                    x-text="att.name.charAt(0)"></div>
+                                                                                <span class="text-xs font-bold text-slate-900 dark:text-white"
+                                                                                    x-text="att.name"></span>
+                                                                            </div>
+                                                                        </template>
+                                                                    </template>
+                                                                    <template x-if="!ticket.attendants || ticket.attendants.length === 0">
+                                                                        <span class="text-xs italic text-slate-400">No support staff assigned yet.</span>
+                                                                    </template>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -1232,9 +1253,25 @@
                             }
                         }
                         this.activatingId = id;
-                        await this.csrfPost(ROUTES.activate(id), {}, 'PATCH');
+                        const r = await this.patchFetch(ROUTES.activate(id));
                         this.activatingId = null;
-                        window.location.reload();
+                        if (r.ok) {
+                            try {
+                                const data = await r.json();
+                                ticket.status = 'in-progress';
+                                ticket.attendant = data.attendant;
+                                ticket.attendants = data.attendants;
+                                if (!Array.isArray(ticket.order_activations)) {
+                                    ticket.order_activations = [];
+                                }
+                                ticket.order_activations.push(new Date().toISOString());
+                                window.showToast('Order processed successfully.');
+                            } catch (e) {
+                                window.location.reload();
+                            }
+                        } else {
+                            window.showToast('Failed to process order.', 'error');
+                        }
                     },
 
                     // Edit modal

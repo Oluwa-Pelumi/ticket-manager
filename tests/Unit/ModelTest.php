@@ -140,6 +140,23 @@ class ModelTest extends TestCase
     }
 
     /** @test */
+    public function ticket_can_have_multiple_attendants(): void
+    {
+        $support1 = User::factory()->create(['role' => 'support']);
+        $support2 = User::factory()->create(['role' => 'support']);
+        
+        $ticket = Ticket::factory()->create(['attended_to_by' => $support1->id]);
+        $ticket->addAttendant($support2->id);
+
+        $this->assertCount(2, $ticket->attendants);
+        $this->assertEquals($support1->id, $ticket->attendants[0]->id);
+        $this->assertEquals($support2->id, $ticket->attendants[1]->id);
+        
+        // The most recent attendant is support2
+        $this->assertEquals($support2->id, $ticket->attendant->id);
+    }
+
+    /** @test */
     public function ticket_belongs_to_category(): void
     {
         $category = Category::factory()->create();

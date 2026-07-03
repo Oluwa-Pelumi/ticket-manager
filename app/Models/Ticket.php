@@ -11,12 +11,46 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Ticket extends Model
 {
     use HasFactory;
-    protected $appends = ['hashid'];
+    protected $appends = ['hashid', 'attendant', 'attendants'];
 
     /** Encode the ticket ID as a public-facing hashid. */
     public function getHashidAttribute()
     {
         return \Vinkla\Hashids\Facades\Hashids::encode($this->id);
+    }
+
+    /** Get the last (most recent) support staff member assigned to this ticket. */
+    public function getAttendantAttribute()
+    {
+        $ids = $this->attended_to_by ?? [];
+        if (empty($ids)) {
+            return null;
+        }
+        $lastId = end($ids);
+        return User::find($lastId);
+    }
+
+    /** Get all support staff members assigned to this ticket. */
+    public function getAttendantsAttribute()
+    {
+        $ids = $this->attended_to_by ?? [];
+        if (empty($ids)) {
+            return collect();
+        }
+        // Return in the order they were assigned
+        $users = User::whereIn('id', $ids)->get()->keyBy('id');
+        return collect($ids)->map(fn($id) => $users->get($id))->filter();
+    }
+
+    /** Add a support staff member to the ticket's attendants list. */
+    public function addAttendant($userId)
+    {
+        if (!$userId) return;
+        $ids = $this->attended_to_by ?? [];
+        if (!in_array((int)$userId, $ids, true)) {
+            $ids[] = (int)$userId;
+            $this->update(['attended_to_by' => $ids]);
+        }
     }
 
     /** Resolve route model binding from hashid or raw ID. */
@@ -64,7 +98,22 @@ class Ticket extends Model
     protected $casts = [
         'images'            => 'array',
         'order_activations' => 'array',
+        'attended_to_by'    => 'array',
     ];
+
+    /** Ensure attended_to_by is stored as a JSON array of integers. */
+    public function setAttendedToByAttribute($value)
+    {
+        if (is_null($value)) {
+            $this->attributes['attended_to_by'] = null;
+        } elseif (is_numeric($value)) {
+            $this->attributes['attended_to_by'] = json_encode([(int) $value]);
+        } elseif (is_array($value)) {
+            $this->attributes['attended_to_by'] = json_encode(array_values(array_unique(array_map('intval', $value))));
+        } else {
+            $this->attributes['attended_to_by'] = $value;
+        }
+    }
 
     /** Comments on this ticket, newest first, with author loaded. */
     public function comments() {
@@ -80,15 +129,6 @@ class Ticket extends Model
         return $this->belongsTo(
             User::class,
             'user_id',
-            'id'
-        );
-    }
-
-    /** The support staff member assigned to this ticket. */
-    public function attendant() {
-        return $this->belongsTo(
-            User::class,
-            'attended_to_by',
             'id'
         );
     }

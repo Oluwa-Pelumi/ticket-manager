@@ -82,6 +82,11 @@ class User extends Authenticatable
         );
     }
 
+    /** Accessor to load tickets assigned to this support user from JSON column. */
+    public function getAssignedTicketsAttribute() {
+        return Ticket::whereJsonContains('attended_to_by', $this->id)->get();
+    }
+
     /** Route WhatsApp notifications to the user's stored number. */
     public function routeNotificationForWhatsapp(): ?string
     {

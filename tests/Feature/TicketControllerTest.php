@@ -605,4 +605,25 @@ class TicketControllerTest extends TestCase
         $this->post(route('search-tickets'), ['reference' => 'abc'])
             ->assertSessionHasErrors(['reference']);
     }
+
+    /** @test */
+    public function test_activate_order_assigns_support_and_sets_status_to_in_progress(): void
+    {
+        $support = $this->support();
+        $ticket  = Ticket::factory()->create([
+            'order_type' => 'recurrent',
+            'recurrence_period' => 'monthly',
+            'status' => 'open',
+            'attended_to_by' => null,
+        ]);
+
+        $response = $this->actingAs($support)
+            ->patch(route('tickets.activate-order', $ticket->id));
+
+        $ticket->refresh();
+        
+        $this->assertEquals('in-progress', $ticket->status);
+        $this->assertIsArray($ticket->attended_to_by);
+        $this->assertTrue(in_array($support->id, $ticket->attended_to_by));
+    }
 }

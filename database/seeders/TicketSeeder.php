@@ -39,7 +39,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'I need a refill for my Metformin 500mg. My last prescription was filled three weeks ago and I am running low. Please process this as soon as possible.',
                 'priority'        => 'high',
                 'status'          => 'in-progress',
-                'attended_to_by'  => $support1?->id,
+                'attended_to_by'  => [$support1?->id, $support2?->id],
                 'order_type'      => 'refill',
                 'recurrence_period' => 'monthly',
             ],
@@ -53,7 +53,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'My doctor recently increased my Lisinopril dosage from 5mg to 10mg. I wanted to confirm whether I should take the new dose in the morning or at night.',
                 'priority'        => 'medium',
                 'status'          => 'resolved',
-                'attended_to_by'  => $support2?->id,
+                'attended_to_by'  => [$support2?->id],
             ],
             [
                 'user_id'         => $user1?->id,
