@@ -406,21 +406,20 @@
                     <button
                         type="submit"
                         x-bind:disabled="processing || {{ empty($categories) ? 'true' : 'false' }}"
-                        class="group w-full py-5 rounded-[2rem] bg-teal-900 text-white font-black text-xl shadow-2xl hover:bg-[#10b981] hover:text-[#064e3b] hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all"
+                        class="group w-full py-5 rounded-[2rem] bg-teal-900 text-white font-black text-xl shadow-2xl hover:bg-[#10b981] hover:text-[#064e3b] hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all flex items-center justify-center gap-2"
                     >
-                        <span class="flex items-center justify-center gap-2">
-                            <template x-if="processing">
-                                <span>Submitting Ticket...</span>
-                            </template>
-                            <template x-if="!processing">
-                                <span class="flex items-center gap-2">
-                                    Submit Ticket
-                                    <svg class="w-6 h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
-                                </span>
-                            </template>
-                        </span>
+                        <template x-if="processing">
+                            <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                            </svg>
+                        </template>
+                        <span x-text="processing ? 'Submitting Ticket...' : 'Submit Ticket'"></span>
+                        <template x-if="!processing">
+                            <svg class="w-6 h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </template>
                     </button>
                 </div>
             </form>

@@ -28,8 +28,14 @@
             <button
                 type="submit"
                 x-bind:disabled="processing"
-                class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest"
+                class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest flex items-center justify-center gap-2"
             >
+                <template x-if="processing">
+                    <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                    </svg>
+                </template>
                 <span x-text="processing ? 'Re-verifying Identity...' : 'Re-verify Identity'"></span>
             </button>
         </div>

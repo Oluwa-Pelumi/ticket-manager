@@ -160,7 +160,7 @@
                                 <div class="flex items-center space-x-2 mb-2">
                                     <span class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
                                     @if($comment->user && ($comment->user->role === 'support' || $comment->user->role === 'admin'))
-                                        <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400">Support</span>
+                                        <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded {{ $isOwnerSide ? 'bg-white/20 text-white' : 'bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400' }}">Support</span>
                                     @endif
                                     <span class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->format('H:i') }}</span>
                                 </div>

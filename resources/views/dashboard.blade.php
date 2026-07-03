@@ -749,7 +749,8 @@
                                                                                 class="text-[9px] font-black tracking-widest opacity-80"
                                                                                 x-text="comment.user?.name"></span>
                                                                             <template x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">
-                                                                                <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400">Support</span>
+                                                                                <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded"
+                                                                                    :class="comment.user_id === {{ auth()->id() }} ? 'bg-white/20 text-white' : 'bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400'">Support</span>
                                                                             </template>
                                                                             <span class="text-[9px] opacity-40"
                                                                                 x-text="new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
@@ -924,8 +925,16 @@
                             Cancel
                         </button>
                         <button type="submit" x-bind:disabled="editSubmitting"
-                            class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
-                            x-text="editSubmitting ? 'Saving...' : 'Edit Ticket'"></button>
+                            class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        >
+                            <template x-if="editSubmitting">
+                                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                </svg>
+                            </template>
+                            <span x-text="editSubmitting ? 'Saving...' : 'Edit Ticket'">Edit Ticket</span>
+                        </button>
                     </div>
                 </form>
             </div>
