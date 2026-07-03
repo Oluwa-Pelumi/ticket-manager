@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Inertia\Inertia;
-use Inertia\Response;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
@@ -37,8 +35,8 @@ class NewPasswordController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
+            'token'    => 'required',
+            'email'    => 'required|email',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 

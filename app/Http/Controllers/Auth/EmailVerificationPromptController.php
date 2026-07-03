@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 
 /**
  * Displays the email verification prompt or redirects verified users.
