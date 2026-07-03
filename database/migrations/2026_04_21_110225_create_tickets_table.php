@@ -22,7 +22,7 @@ return new class extends Migration
             $table->json('order_activations')->nullable();
 
 
-            $table->foreignId('attended_to_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->json('attended_to_by')->nullable();
             $table->string('subject');
             $table->text('content');
             $table->string('filename')->nullable();

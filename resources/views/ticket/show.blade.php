@@ -89,20 +89,18 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
-                                <div class="text-sm font-bold text-slate-900 dark:text-white capitalize">{{ str_replace('-', ' ', $ticket->order_type) }}</div>
-                            </div>
-                            @if($ticket->order_type === 'recurrent')
-                            <div>
-                                <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Interval / Period</div>
                                 <div class="text-sm font-bold text-slate-900 dark:text-white capitalize">
-                                    @if($ticket->recurrence_period === 'custom')
-                                        Custom: {{ $ticket->custom_recurrence_date }}
-                                    @else
-                                        {{ str_replace('-', ' ', $ticket->recurrence_period) }}
+                                    {{ str_replace('-', ' ', $ticket->order_type) }}
+                                    @if(in_array($ticket->order_type, ['recurrent', 'recurring']))
+                                        - 
+                                        @if($ticket->recurrence_period === 'custom')
+                                            Custom: {{ $ticket->custom_recurrence_date }}
+                                        @else
+                                            {{ str_replace('-', ' ', $ticket->recurrence_period) }}
+                                        @endif
                                     @endif
                                 </div>
                             </div>
-                            @endif
                         </div>
                     </div>
                     @endif
@@ -189,21 +187,29 @@
                     $isTicketOwner = (auth()->id() === $ticket->user_id) || !$ticket->user_id;
                     $isAdmin = auth()->check() && auth()->user()->role === 'admin';
                     $isSupport = auth()->check() && auth()->user()->role === 'support';
+                    $isCurrentAttendant = $isSupport && auth()->id() === $ticket->attendant?->id;
+                    $isPastAttendant = $isSupport && !$isCurrentAttendant && in_array(auth()->id(), $ticket->attended_to_by ?? []);
                 @endphp
 
                 @if(($isTicketOwner || $isAdmin || $isSupport) && $ticket->status !== 'closed')
-                <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}" enctype="multipart/form-data" class="space-y-4" x-data="{ processing: false }" @submit="processing = true">
+                    @if($isPastAttendant)
+                        <div class="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-2xl text-sm font-medium text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50 mb-4">
+                            This ticket is currently assigned to {{ $ticket->attendant->name ?? 'another support' }}. You are viewing it as a past attendant and cannot reply.
+                        </div>
+                    @endif
+
+                <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}" enctype="multipart/form-data" class="space-y-4 {{ $isPastAttendant ? 'opacity-60 pointer-events-none' : '' }}" x-data="{ processing: false }" @submit="processing = true">
                     @csrf
                     <div class="relative group/comment">
-                        <textarea name="content" placeholder="Type your message..." rows="4" required
-                            class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base"></textarea>
+                        <textarea name="content" placeholder="Type your message..." rows="4" required {{ $isPastAttendant ? 'disabled' : '' }}
+                            class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#18342f] disabled:cursor-not-allowed"></textarea>
 
                         <div class="absolute bottom-4 right-4 flex items-center space-x-2">
-                            <input type="file" id="comment-images" name="images[]" class="hidden" multiple accept="image/*" onchange="previewCommentImages(event)">
-                            <label for="comment-images" class="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl cursor-pointer transition-all bg-emerald-50/50 dark:bg-[#18342f]">
+                            <input type="file" id="comment-images" name="images[]" class="hidden" multiple accept="image/*" onchange="previewCommentImages(event)" {{ $isPastAttendant ? 'disabled' : '' }}>
+                            <label for="comment-images" class="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl {{ $isPastAttendant ? 'cursor-not-allowed' : 'cursor-pointer' }} transition-all bg-emerald-50/50 dark:bg-[#18342f]">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </label>
-                            <button type="submit" x-bind:disabled="processing" class="p-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-110 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all">
+                            <button type="submit" x-bind:disabled="processing || {{ $isPastAttendant ? 'true' : 'false' }}" class="p-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-110 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all">
                                 <template x-if="!processing">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                 </template>

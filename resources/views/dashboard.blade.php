@@ -582,20 +582,9 @@
                                                                                 class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
                                                                                 Frequency</div>
                                                                             <div class="text-sm font-bold text-slate-900 dark:text-white capitalize"
-                                                                                x-text="orderTypeLabel(ticket.order_type)">
+                                                                                x-text="['recurrent', 'recurring'].includes(ticket.order_type) ? orderTypeLabel(ticket.order_type) + ' - ' + (ticket.recurrence_period === 'custom' ? 'Custom: ' + ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)) : orderTypeLabel(ticket.order_type)">
                                                                             </div>
                                                                         </div>
-                                                                        <template
-                                                                            x-if="ticket.order_type === 'recurrent'">
-                                                                            <div>
-                                                                                <div
-                                                                                    class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                                                                    Interval / Period</div>
-                                                                                <div class="text-sm font-bold text-slate-900 dark:text-white capitalize"
-                                                                                    x-text="ticket.recurrence_period === 'custom' ? 'Custom: ' + ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)">
-                                                                                </div>
-                                                                            </div>
-                                                                        </template>
                                                                     </div>
                                                                     <template
                                                                         x-if="ticket.order_activations && ticket.order_activations.length > 0">
@@ -1158,7 +1147,14 @@
                             if (Array.isArray(v)) v.forEach(i => form.append(k + '[]', i));
                             else form.append(k, v);
                         }
-                        return fetch(url, { method: 'POST', body: form });
+                        return fetch(url, { 
+                            method: 'POST', 
+                            body: form,
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
                     },
 
                     /**
@@ -1173,7 +1169,14 @@
                             if (Array.isArray(v)) v.forEach(i => form.append(k + '[]', i));
                             else form.append(k, v);
                         }
-                        return fetch(url, { method: 'POST', body: form });
+                        return fetch(url, { 
+                            method: 'POST', 
+                            body: form,
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
                     },
 
                     async statusUpdate(id, status) {
@@ -1243,11 +1246,38 @@
                                 yearly: 365
                             } [ticket.recurrence_period?.toLowerCase().trim()] ?? 0;
                             if (required > 0 && diffDays < required) {
+                                // Build human-readable elapsed time
+                                const totalDiff = Math.floor(diffDays);
+                                const months = Math.floor(totalDiff / 30);
+                                const days = totalDiff % 30;
+                                let elapsed = '';
+                                if (months > 0 && days > 0) {
+                                    elapsed = `${months} month${months > 1 ? 's' : ''} and ${days} day${days > 1 ? 's' : ''}`;
+                                } else if (months > 0) {
+                                    elapsed = `${months} month${months > 1 ? 's' : ''}`;
+                                } else if (days > 0) {
+                                    elapsed = `${days} day${days > 1 ? 's' : ''}`;
+                                } else {
+                                    elapsed = 'less than a day';
+                                }
+
+                                // Build human-readable required period
+                                const reqMonths = Math.floor(required / 30);
+                                const reqDays = required % 30;
+                                let reqLabel = '';
+                                if (reqMonths > 0 && reqDays > 0) {
+                                    reqLabel = `${reqMonths} month${reqMonths > 1 ? 's' : ''} and ${reqDays} day${reqDays > 1 ? 's' : ''}`;
+                                } else if (reqMonths > 0) {
+                                    reqLabel = `${reqMonths} month${reqMonths > 1 ? 's' : ''}`;
+                                } else {
+                                    reqLabel = `${required} day${required > 1 ? 's' : ''}`;
+                                }
+
                                 const ok = await this.confirm({
                                     type: 'warning',
                                     confirmText: 'Confirm & Process',
                                     title: 'Early Processing Warning',
-                                    message: `This ${ticket.recurrence_period} order was last processed on ${last.toLocaleString('en-GB')}. Only ${diffDays.toFixed(1)} of ${required} days have passed. Proceed anyway?`
+                                    message: `This ${ticket.recurrence_period} order was last processed ${elapsed} ago. The required interval is ${reqLabel}. Proceed anyway?`
                                 });
                                 if (!ok) return;
                             }
@@ -1309,7 +1339,8 @@
                         this.editFiles.forEach(f => form.append('images[]', f));
                         await fetch(ROUTES.editTicket(this.editingTicket.id), {
                             method: 'POST',
-                            body: form
+                            body: form,
+                            redirect: 'manual'
                         });
                         this.editSubmitting = false;
                         this.closeEditModal();
@@ -1352,10 +1383,11 @@
                         this.files.forEach(f => form.append('images[]', f));
                         const r = await fetch(`/tickets/${ticketId}/comments`, {
                             method: 'POST',
-                            body: form
+                            body: form,
+                            redirect: 'manual'
                         });
                         this.submitting = false;
-                        if (r.ok || r.redirected) {
+                        if (r.ok || r.redirected || r.type === 'opaqueredirect') {
                             this.content = '';
                             this.files = [];
                             this.previews = [];

@@ -36,9 +36,16 @@
         @error('password')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
-    <label for="remember" class="flex items-center px-1 cursor-pointer select-none group">
-        <input id="remember" type="checkbox" name="remember" 
-            class="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#1d3a34] text-teal-900 dark:text-lime-500 focus:ring-2 focus:ring-emerald-900 dark:focus:ring-lime-500 focus:ring-offset-0 transition-all cursor-pointer">
+    <label for="remember" class="flex items-center px-1 cursor-pointer select-none group" x-data="{ checked: false }">
+        <input id="remember" type="checkbox" name="remember" class="hidden" x-model="checked">
+        <span 
+            class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+            :class="checked ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
+        >
+            <svg x-show="checked" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+        </span>
         <span class="ms-3 text-[11px] font-bold tracking-widest text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Remember me</span>
     </label>
 

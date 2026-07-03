@@ -68,30 +68,7 @@ class TicketController extends Controller
         }
 
         // --- Assign to support staff with fewest open tickets ---
-        $supports = \App\Models\User::where('role', 'support')->get();
-
-        $assignedSupportId = null;
-        if ($supports->isNotEmpty()) {
-            $activeTickets = Ticket::whereIn('status', ['open', 'in-progress'])->get();
-            $counts = [];
-            foreach ($supports as $support) {
-                $counts[$support->id] = 0;
-            }
-            foreach ($activeTickets as $ticket) {
-                $attended = $ticket->attended_to_by ?? [];
-                foreach ($attended as $suppId) {
-                    if (isset($counts[$suppId])) {
-                        $counts[$suppId]++;
-                    }
-                }
-            }
-            foreach ($supports as $support) {
-                $support->setAttribute('assigned_tickets_count', $counts[$support->id]);
-            }
-
-            $minCount          = $supports->min('assigned_tickets_count');
-            $assignedSupportId = $supports->where('assigned_tickets_count', $minCount)->random()->id;
-        }
+        $assignedSupportId = $this->assignToLeastBusySupport();
 
         // --- Persist ticket record ---
         $ticket = Ticket::create([
@@ -229,6 +206,15 @@ class TicketController extends Controller
         }
 
         $oldStatus = $ticket->status;
+        
+        // --- Re-assign if transitioning from closed to open ---
+        if ($oldStatus === 'closed' && in_array($validated['status'], ['open', 'in-progress']) && !$request->has('attended_to_by')) {
+             $newSupportId = $this->assignToLeastBusySupport();
+             if ($newSupportId) {
+                 $ticket->addAttendant($newSupportId);
+             }
+        }
+
         $ticket->update(['status' => $validated['status']]);
 
         // --- Notify ticket owner when closed ---
@@ -293,7 +279,21 @@ class TicketController extends Controller
 
         // --- Bulk status update with assignment ---
         foreach ($tickets as $ticket) {
-            $ticket->addAttendant(Auth::id());
+            $oldStatus = $ticket->status;
+            
+            // Auto-assign to current user if empty
+            if (empty($ticket->attended_to_by)) {
+                $ticket->addAttendant(Auth::id());
+            }
+
+            // Re-assign if transitioning from closed to open
+            if ($oldStatus === 'closed' && in_array($validated['status'], ['open', 'in-progress'])) {
+                $newSupportId = $this->assignToLeastBusySupport();
+                if ($newSupportId) {
+                    $ticket->addAttendant($newSupportId);
+                }
+            }
+
             $ticket->update(['status' => $validated['status']]);
         }
 
@@ -343,6 +343,13 @@ class TicketController extends Controller
      */
     public function addComment(Request $request, Ticket $ticket)
     {
+        // --- Authorization for Supports ---
+        if (Auth::user() && Auth::user()->isSupport() && !Auth::user()->isAdmin()) {
+            if (Auth::id() !== $ticket->attendant?->id) {
+                return back()->with('error', 'You are not the currently assigned support for this ticket and cannot reply.');
+            }
+        }
+
         $validated = $request->validate([
             'images'   => 'nullable|array',
             'images.*' => 'image|max:5120',
@@ -482,6 +489,15 @@ class TicketController extends Controller
         }
 
         $oldStatus = $ticket->status;
+
+        // --- Re-assign if transitioning from closed to open ---
+        if ($oldStatus === 'closed' && in_array($status, ['open', 'in-progress'])) {
+             $newSupportId = $this->assignToLeastBusySupport();
+             if ($newSupportId) {
+                 $ticket->addAttendant($newSupportId);
+             }
+        }
+
         $ticket->update(['status' => $status]);
 
         // Notify owner when closed
@@ -576,7 +592,19 @@ class TicketController extends Controller
         $tickets = Ticket::whereIn('id', $validated['ids'])->get();
 
         foreach ($tickets as $ticket) {
-            $ticket->addAttendant(Auth::id());
+            $oldStatus = $ticket->status;
+            
+            if (empty($ticket->attended_to_by)) {
+                $ticket->addAttendant(Auth::id());
+            }
+
+            if ($oldStatus === 'closed' && in_array($validated['status'], ['open', 'in-progress'])) {
+                $newSupportId = $this->assignToLeastBusySupport();
+                if ($newSupportId) {
+                    $ticket->addAttendant($newSupportId);
+                }
+            }
+
             $ticket->update(['status' => $validated['status']]);
         }
 
@@ -599,5 +627,40 @@ class TicketController extends Controller
         }
 
         return response()->json(['success' => true, 'status' => $validated['status']]);
+    }
+
+    /**
+     * Helper to find the support staff member with the fewest active tickets.
+     */
+    private function assignToLeastBusySupport()
+    {
+        $supports = \App\Models\User::where('role', 'support')->get();
+
+        if ($supports->isEmpty()) {
+            return null;
+        }
+
+        $activeTickets = Ticket::whereIn('status', ['open', 'in-progress'])->get();
+        $counts = [];
+        
+        foreach ($supports as $support) {
+            $counts[$support->id] = 0;
+        }
+        
+        foreach ($activeTickets as $ticket) {
+            $attended = $ticket->attended_to_by ?? [];
+            foreach ($attended as $suppId) {
+                if (isset($counts[$suppId])) {
+                    $counts[$suppId]++;
+                }
+            }
+        }
+        
+        foreach ($supports as $support) {
+            $support->setAttribute('assigned_tickets_count', $counts[$support->id]);
+        }
+
+        $minCount = $supports->min('assigned_tickets_count');
+        return $supports->where('assigned_tickets_count', $minCount)->random()->id;
     }
 }

@@ -625,5 +625,50 @@ class TicketControllerTest extends TestCase
         $this->assertEquals('in-progress', $ticket->status);
         $this->assertIsArray($ticket->attended_to_by);
         $this->assertTrue(in_array($support->id, $ticket->attended_to_by));
+        $this->assertContains($support->id, $ticket->attended_to_by);
+        $this->assertCount(1, $ticket->order_activations);
+    }
+
+    /** @test */
+    public function test_past_support_cannot_reply_to_ticket(): void
+    {
+        $pastSupport = $this->support();
+        $currentSupport = User::factory()->create(['role' => 'support']);
+        
+        $ticket = Ticket::factory()->create([
+            'status' => 'open',
+            'attended_to_by' => [$pastSupport->id, $currentSupport->id]
+        ]);
+
+        $response = $this->actingAs($pastSupport)
+            ->post(route('add-comment', ['ticket' => $ticket->id]), [
+                'content' => 'Trying to reply as past support'
+            ]);
+
+        $response->assertSessionHas('error', 'You are not the currently assigned support for this ticket and cannot reply.');
+        $this->assertDatabaseMissing('comments', ['content' => 'Trying to reply as past support']);
+    }
+
+    /** @test */
+    public function test_ticket_reassigns_when_reopened_from_closed(): void
+    {
+        $admin = $this->admin();
+        $pastSupport = $this->support();
+        $availableSupport = User::factory()->create(['role' => 'support']);
+        
+        $ticket = Ticket::factory()->create([
+            'status' => 'closed',
+            'attended_to_by' => [$pastSupport->id]
+        ]);
+
+        $response = $this->actingAs($admin)
+            ->patch(route('update-ticket-status', ['ticket' => $ticket->id, 'status' => 'open']));
+
+        $response->assertSuccessful();
+
+        $ticket->refresh();
+        $this->assertEquals('open', $ticket->status);
+        $this->assertContains($availableSupport->id, $ticket->attended_to_by);
+        $this->assertEquals($availableSupport->id, end($ticket->attended_to_by));
     }
 }

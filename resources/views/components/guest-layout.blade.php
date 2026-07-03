@@ -10,7 +10,7 @@
         {{-- Guest nav bar --}}
         <nav class="mb-12 flex items-center justify-between border-b border-emerald-900/10 py-6 dark:border-[#1d3a34]">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-3">
-                <x-application-logo class="h-8 w-8 text-teal-900 dark:text-lime-400" />
+                <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-8 w-8">
                 <span class="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ config('app.name') }}</span>
             </a>
 

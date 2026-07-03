@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Ticket;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class TicketSeeder extends Seeder
@@ -13,6 +13,7 @@ class TicketSeeder extends Seeder
     {
         $user1   = User::where('email', 'user1@laradrug.test')->first();
         $user2   = User::where('email', 'user2@laradrug.test')->first();
+
         $support1 = User::where('email', 'support1@laradrug.test')->first();
         $support2 = User::where('email', 'support2@laradrug.test')->first();
 
@@ -65,7 +66,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'I was recently prescribed Atorvastatin 20mg in addition to my existing medications. Can I take it safely alongside Lisinopril and Metformin?',
                 'priority'        => 'high',
                 'status'          => 'open',
-                'attended_to_by'  => null,
+                'attended_to_by'  => $support2?->id,
             ],
             [
                 'user_id'         => $user1?->id,
@@ -105,7 +106,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'I have a dental infection and my dentist recommended Amoxicillin. Do you have it in stock and can I get it without a new written prescription?',
                 'priority'        => 'high',
                 'status'          => 'open',
-                'attended_to_by'  => null,
+                'attended_to_by'  => $support2?->id,
             ],
             [
                 'user_id'         => $user2?->id,
@@ -155,7 +156,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'My doctor prescribed ferrous sulphate 200mg for anaemia. I need a steady supply. Please set up a two-week recurring order for me.',
                 'priority'        => 'medium',
                 'status'          => 'open',
-                'attended_to_by'  => null,
+                'attended_to_by'  => $support2?->id,
                 'order_type'      => 'recurring',
                 'recurrence_period' => 'two-weeks',
             ],
@@ -171,7 +172,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'Do you currently stock Ciprofibrate 100mg? I was prescribed this for elevated triglycerides and my local pharmacy does not carry it.',
                 'priority'        => 'medium',
                 'status'          => 'open',
-                'attended_to_by'  => null,
+                'attended_to_by'  => $support2?->id,
             ],
             [
                 'user_id'         => null,
@@ -233,7 +234,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'I have been taking antibiotics frequently over the past year. I am concerned I may be developing resistance. How can I manage this going forward?',
                 'priority'        => 'medium',
                 'status'          => 'open',
-                'attended_to_by'  => null,
+                'attended_to_by'  => $support2?->id,
             ],
             [
                 'user_id'         => null,
@@ -257,7 +258,7 @@ class TicketSeeder extends Seeder
                 'content'         => 'My paediatrician has prescribed Vitamin D drops for my 6-month-old. I would like a monthly standing order so I never miss a dose.',
                 'priority'        => 'medium',
                 'status'          => 'open',
-                'attended_to_by'  => null,
+                'attended_to_by'  => $support2?->id,
                 'order_type'      => 'recurring',
                 'recurrence_period' => 'monthly',
             ],

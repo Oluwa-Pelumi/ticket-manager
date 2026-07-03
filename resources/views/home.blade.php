@@ -41,7 +41,7 @@
                 <nav class="py-6">
                     <div class="flex items-center justify-between">
                         <div class="inline-flex items-center gap-3 text-white">
-                            <x-application-logo class="h-8 w-8" />
+                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-8 w-8">
                             <span class="text-xl font-semibold tracking-tight">{{ config('app.name') }}</span>
                         </div>
 
@@ -206,7 +206,7 @@
                 <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-4">
                     <div>
                         <div class="mb-4 inline-flex items-center gap-2">
-                            <x-application-logo class="h-6 w-6" />
+                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-6 w-6">
                             <span
                                 class="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">{{ config('app.name') }}</span>
                         </div>

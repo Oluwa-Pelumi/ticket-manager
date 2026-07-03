@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) && trim($title) ? trim($title) . ' — ' . config('app.name') : config('app.name') }}</title>
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
@@ -176,7 +180,7 @@
             <div class="flex h-20 justify-between items-center">
                 <div class="flex items-center gap-8">
                     <a href="/" class="flex items-center gap-3 group">
-                        <x-application-logo class="w-9 h-9 text-teal-900 dark:text-lime-400" />
+                        <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="w-9 h-9">
                         <span class="hidden sm:block text-xl font-black tracking-tight text-slate-900 dark:text-white">
                             {{ config('app.name') }}<span class="text-lime-500">.</span>
                         </span>
@@ -231,9 +235,12 @@
                             <div x-show="open" @click.outside="open = false" x-cloak
                                 class="absolute right-0 mt-2 w-80 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#102824]/95 backdrop-blur-xl border border-emerald-900/10 dark:border-[#1d3a34] py-1 z-50 shadow-xl">
                                 <div class="p-4 border-b border-slate-100 dark:border-[#1d3a34]">
-                                    <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">
+                                    <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1">
                                         Due for Processing
                                     </h3>
+                                    <p class="text-[10px] text-slate-500 dark:text-slate-400">
+                                        Copy the ticket reference and paste in the searchbox to attend to tickets order
+                                    </p>
                                 </div>
                                 <div class="max-h-96 overflow-y-auto custom-scrollbar">
                                     @if(count($due_tickets) > 0)
@@ -365,9 +372,12 @@
                             <div x-show="open" @click.outside="open = false" x-cloak
                                 class="fixed inset-x-4 top-24 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#102824]/95 backdrop-blur-xl border border-emerald-900/10 dark:border-[#1d3a34] py-1 z-50 shadow-xl max-w-sm mx-auto">
                                 <div class="p-4 border-b border-slate-100 dark:border-[#1d3a34] text-left">
-                                    <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">
+                                    <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1">
                                         Due for Processing
                                     </h3>
+                                    <p class="text-[10px] text-slate-500 dark:text-slate-400">
+                                        Copy the ticket reference and paste in the searchbox to attend to tickets order
+                                    </p>
                                 </div>
                                 <div class="max-h-80 overflow-y-auto custom-scrollbar">
                                     @if(count($due_tickets) > 0)
