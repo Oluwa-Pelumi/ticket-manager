@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Support ticket with hashid-based public references and optional recurring orders.
  */
 class Ticket extends Model
 {
+    use HasFactory;
     protected $appends = ['hashid'];
 
     /** Encode the ticket ID as a public-facing hashid. */

@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Reply or note attached to a support ticket.
  */
 class Comment extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'images',
         'user_id',

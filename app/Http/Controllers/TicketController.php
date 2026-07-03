@@ -63,8 +63,8 @@ class TicketController extends Controller
         }
 
         // --- Sync WhatsApp number to user profile ---
-        if ($user && $user->whatsapp_number !== $validated['whatsapp_number']) {
-            $user->update(['whatsapp_number' => $validated['whatsapp_number']]);
+        if ($user && $user->whatsapp_number !== ($validated['whatsapp_number'] ?? null)) {
+            $user->update(['whatsapp_number' => $validated['whatsapp_number'] ?? null]);
         }
 
         // --- Assign to support staff with fewest open tickets ---
@@ -90,7 +90,7 @@ class TicketController extends Controller
             'content'                => $validated['content'],
             'subject'                => $validated['subject'],
             'priority'               => $validated['priority'],
-            'whatsapp_number'        => $validated['whatsapp_number'],
+            'whatsapp_number'        => $validated['whatsapp_number'] ?? null,
             'order_type'             => $validated['order_type'] ?? null,
             'recurrence_period'      => $validated['recurrence_period'] ?? null,
             'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
@@ -124,7 +124,7 @@ class TicketController extends Controller
             $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
         } else {
             \Illuminate\Support\Facades\Notification::route('mail', $validated['email'])
-                ->route('whatsapp', $validated['whatsapp_number'])
+                ->route('whatsapp', $validated['whatsapp_number'] ?? null)
                 ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $validated['name']));
         }
 
