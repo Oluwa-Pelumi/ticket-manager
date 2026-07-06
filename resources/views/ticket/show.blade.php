@@ -35,6 +35,14 @@
         </a>
     </div>
 
+    @php
+        $isTicketOwner = (auth()->id() === $ticket->user_id) || !$ticket->user_id;
+        $isAdmin = auth()->check() && auth()->user()->role === 'admin';
+        $isSupport = auth()->check() && auth()->user()->role === 'support';
+        $isCurrentAttendant = $isSupport && auth()->id() === $ticket->attendant?->id;
+        $isPastAttendant = $isSupport && !$isCurrentAttendant && in_array(auth()->id(), $ticket->attended_to_by ?? []);
+    @endphp
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {{-- Left column: ticket details and attachments --}}
         <div class="space-y-8">
@@ -47,7 +55,71 @@
                 <div class="fauna-panel p-6 md:p-8 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
 
-                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Ticket Reference</div>
+                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Creator Reference</div>
+                    <div class="mt-2 mb-6">
+                        @if($ticket->name || $ticket->user?->name)
+                            <div class="space-y-1.5">
+                                <div
+                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+
+                                    <span>{{ $ticket->name ?? $ticket->user?->name }}</span>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($ticket->email || $ticket->user?->email)
+                            <div class="space-y-1.5">
+                                <div
+                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+
+                                    <span>{{ $ticket->email ?? $ticket->user?->email }}</span>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($ticket->whatsapp_number || $ticket->user?->whatsapp_number)
+                            <div class="space-y-1.5">
+                                <div
+                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                    </svg>
+
+                                    <span>{{ $ticket->whatsapp_number ?? $ticket->user?->whatsapp_number }}</span>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+
+                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Reference</div>
                     <div class="flex items-center gap-3 mb-8 group/id">
                         <div class="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{{ $ticket->hashid }}</div>
                         <button type="button" onclick="copyToClipboard('{{ $ticket->hashid }}', this)"
@@ -85,11 +157,11 @@
 
                     @if($ticket->order_type)
                     <div class="pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                        <h4 class="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">Order Configuration</h4>
+                        <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">Order Information</div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
-                                <div class="text-sm font-bold text-slate-900 dark:text-white capitalize">
+                                <div class="text-sm text-slate-900 dark:text-white capitalize">
                                     {{ str_replace('-', ' ', $ticket->order_type) }}
                                     @if(in_array($ticket->order_type, ['recurrent', 'recurring']))
                                         - 
@@ -104,6 +176,93 @@
                         </div>
                     </div>
                     @endif
+
+                    @if($ticket->order_type)
+                        <div class="mt-6">
+                            <div
+                                class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">
+                                Order Process History</div>
+                            <div class="space-y-1.5">
+                                @if($ticket->order_activations !== null)
+                                    @foreach($ticket->order_activations as $date)
+                                        <div
+                                            class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                            <div
+                                                class="w-1 h-1 rounded-full bg-lime-500 shrink-0">
+                                            </div>
+                                            <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</span>
+
+                                            <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span>{{ \Carbon\Carbon::parse($date)->format('H:i') }}</span>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                        <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                            Attending Support Staff
+                        </div>
+
+                        <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                            Past 
+                        </div>
+
+                        <div class="flex flex-wrap gap-3">
+                            @if($ticket->attendants && count($ticket->attendants) > 0)
+                                @foreach($ticket->attendants as $att)
+                                    @if($att->id !== $ticket->attendant?->id)
+                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
+                                                {{ $att->name ? Str::upper(Str::substr($att->name, 0, 1)) : '?' }}
+                                            </div>
+                                            <span class="text-xs font-bold text-slate-900 dark:text-white">{{ $att->name }}</span>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @else
+                                <span class="text-xs italic text-slate-400">No past support staff.</span>
+                            @endif
+                        </div>
+
+                        <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest mt-4">
+                            Current
+                        </div>
+
+                        <div class="flex flex-wrap gap-3">
+                            @if($ticket->attendant)
+                                <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                    <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
+                                        {{ $ticket->attendant->name ? Str::upper(Str::substr($ticket->attendant->name, 0, 1)) : '?' }}
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 dark:text-white">{{ $ticket->attendant->name }}</span>
+                                </div>
+                            @else
+                                <span class="text-xs italic text-slate-400">No current support staff assigned yet.</span>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -183,14 +342,6 @@
                     @endif
                 </div>
 
-                @php
-                    $isTicketOwner = (auth()->id() === $ticket->user_id) || !$ticket->user_id;
-                    $isAdmin = auth()->check() && auth()->user()->role === 'admin';
-                    $isSupport = auth()->check() && auth()->user()->role === 'support';
-                    $isCurrentAttendant = $isSupport && auth()->id() === $ticket->attendant?->id;
-                    $isPastAttendant = $isSupport && !$isCurrentAttendant && in_array(auth()->id(), $ticket->attended_to_by ?? []);
-                @endphp
-
                 @if(($isTicketOwner || $isAdmin || $isSupport) && $ticket->status !== 'closed')
                     @if($isPastAttendant)
                         <div class="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-2xl text-sm font-medium text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50 mb-4">
@@ -198,32 +349,77 @@
                         </div>
                     @endif
 
-                <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}" enctype="multipart/form-data" class="space-y-4 {{ $isPastAttendant ? 'opacity-60 pointer-events-none' : '' }}" x-data="{ processing: false }" @submit="processing = true">
+                <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}"
+                    enctype="multipart/form-data"
+                    class="space-y-4 {{ $isPastAttendant ? 'opacity-60 pointer-events-none' : '' }}"
+                    x-data="commentForm({{ $isPastAttendant ? 'true' : 'false' }})"
+                    @submit="processing = true">
                     @csrf
-                    <div class="relative group/comment">
-                        <textarea name="content" placeholder="Type your message..." rows="4" required {{ $isPastAttendant ? 'disabled' : '' }}
-                            class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#18342f] disabled:cursor-not-allowed"></textarea>
 
-                        <div class="absolute bottom-4 right-4 flex items-center space-x-2">
-                            <input type="file" id="comment-images" name="images[]" class="hidden" multiple accept="image/*" onchange="previewCommentImages(event)" {{ $isPastAttendant ? 'disabled' : '' }}>
-                            <label for="comment-images" class="p-3 text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 hover:bg-lime-500/10 rounded-2xl {{ $isPastAttendant ? 'cursor-not-allowed' : 'cursor-pointer' }} transition-all bg-emerald-50/50 dark:bg-[#18342f]">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <div class="space-y-3">
+                        <div class="relative group/comment">
+                            <textarea name="content" x-model="content" placeholder="Type your message..." rows="4" required {{ $isPastAttendant ? 'disabled' : '' }}
+                                class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#18342f] disabled:cursor-not-allowed"></textarea>
+                        </div>
+
+                        {{-- Image previews --}}
+                        <template x-if="previews.length > 0">
+                            <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34]">
+                                <template x-for="(url, i) in previews" :key="i">
+                                    <div class="relative group/prev">
+                                        <img :src="url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-sm" />
+                                        <button
+                                            type="button"
+                                            @click="removeImage(i)"
+                                            class="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center bg-red-500 text-white rounded-full opacity-0 group-hover/prev:opacity-100 transition-opacity shadow-md"
+                                        >
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <div class="flex items-center justify-between gap-3">
+                            {{-- Attach images --}}
+                            <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all text-xs font-bold">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span>Image</span>
+
+                                <input
+                                    type="file"
+                                    name="images[]"
+                                    id="comment-images"
+                                    x-ref="fileInput"
+                                    multiple
+                                    accept="image/*"
+                                    @change="handleFiles($event)"
+                                    class="hidden"
+                                    {{ $isPastAttendant ? 'disabled' : '' }}
+                                />
                             </label>
-                            <button type="submit" x-bind:disabled="processing || {{ $isPastAttendant ? 'true' : 'false' }}" class="p-3 bg-teal-900 text-white rounded-2xl shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-110 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all">
+
+                            {{-- Submit --}}
+                            <button type="submit" x-bind:disabled="processing || isPastAttendant || !content.trim()"
+                                class="flex items-center gap-2 px-5 py-2 rounded-xl bg-teal-900 text-white text-xs font-black tracking-widest shadow-md hover:bg-[#10b981] hover:text-[#064e3b] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-900 disabled:hover:text-white disabled:active:scale-100">
                                 <template x-if="!processing">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                 </template>
+
                                 <template x-if="processing">
                                     <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                                     </svg>
                                 </template>
+                                <span x-text="processing ? 'Sending…' : 'Send'"></span>
                             </button>
                         </div>
                     </div>
-
-                    <div id="comment-preview" class="flex flex-wrap gap-3 hidden"></div>
                 </form>
                 @endif
 
@@ -239,19 +435,34 @@
 
 <script>
 
-function previewCommentImages(e) {
-    const container = document.getElementById('comment-preview');
-    container.innerHTML = '';
-    const files = Array.from(e.target.files);
-    if (files.length === 0) { container.classList.add('hidden'); return; }
-    container.classList.remove('hidden');
-    files.forEach(file => {
-        const url = URL.createObjectURL(file);
-        const div = document.createElement('div');
-        div.className = 'relative';
-        div.innerHTML = `<img src="${url}" class="w-16 h-16 rounded-2xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-md" />`;
-        container.appendChild(div);
-    });
+function commentForm(isPastAttendant) {
+    return {
+        isPastAttendant,
+        processing: false,
+        content: '',
+        files: [],
+        previews: [],
+
+        handleFiles(e) {
+            const newFiles = Array.from(e.target.files);
+            this.files = [...this.files, ...newFiles];
+            this.previews = [...this.previews, ...newFiles.map(file => URL.createObjectURL(file))];
+            this.syncInput();
+        },
+
+        removeImage(index) {
+            URL.revokeObjectURL(this.previews[index]);
+            this.files.splice(index, 1);
+            this.previews.splice(index, 1);
+            this.syncInput();
+        },
+
+        syncInput() {
+            const dataTransfer = new DataTransfer();
+            this.files.forEach(file => dataTransfer.items.add(file));
+            this.$refs.fileInput.files = dataTransfer.files;
+        },
+    };
 }
 
 function toggleTheme() {

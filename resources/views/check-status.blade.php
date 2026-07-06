@@ -26,7 +26,7 @@
 
             <div class="text-center mb-10">
                 <p class="mt-4 text-sm md:text-lg text-slate-600 dark:text-slate-400 px-4">
-                    Enter the 8-character reference code to view the current status of your ticket.
+                    Enter the reference code to view the current status of your ticket.
                 </p>
             </div>
 
@@ -49,7 +49,7 @@
                             name="reference"
                             value="{{ old('reference', $searchedReference ?? '') }}"
                             class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-mono"
-                            placeholder="Enter your 8-character ticket reference..."
+                            placeholder="Enter your ticket reference..."
                             required
                             maxlength="8"
                         />

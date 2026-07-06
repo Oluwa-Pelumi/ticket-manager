@@ -42,7 +42,7 @@
                     @elseif (auth()->user()->role === 'user')
                         Track and manage your submitted tickets.
                     @else
-                        Manage System.
+                        Manage Tickets.
                     @endif
                 </p>
             </div>
@@ -118,15 +118,6 @@
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
                 </select>
-
-                <button x-show="filters.status || filters.priority || filters.search" @click="clearFilters()"
-                    class="col-span-2 sm:col-span-1 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center">
-                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Clear All
-                </button>
             </div>
 
             {{-- Search --}}
@@ -142,6 +133,15 @@
                     placeholder="Search by ID, subject, or user..."
                     class="block w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all shadow-sm" />
             </div>
+
+            <button x-show="filters.status || filters.priority || filters.search" @click="clearFilters()"
+                    class="col-span-2 sm:col-span-1 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center">
+                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Clear All
+                </button>
 
             <div class="flex items-center gap-4 w-full sm:w-auto sm:ml-auto">
                 <div class="flex items-center gap-2">
@@ -196,10 +196,21 @@
                             {{-- Select-all --}}
                             <th class="w-12 md:w-16 px-4 md:px-6 py-4">
                                 @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                    <input type="checkbox"
-                                        class="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
-                                        :checked="allTickets.length > 0 && selectedIds.length === allTickets.length"
-                                        @change="toggleSelectAll()" />
+                                    <label class="flex items-center px-1 cursor-pointer select-none group">
+                                        <input type="checkbox"
+                                            class="hidden"
+                                            :checked="allTickets.length > 0 && selectedIds.length === allTickets.length"
+                                            @change="toggleSelectAll()"
+                                        />
+                                        <span
+                                            class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                                            :class="(allTickets.length > 0 && selectedIds.length === allTickets.length) ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
+                                        >
+                                            <svg x-show="allTickets.length > 0 && selectedIds.length === allTickets.length" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </span>
+                                    </label>
                                 @endif
                             </th>
                             <th class="w-20 md:w-24 px-4 md:px-6 py-4">
@@ -280,10 +291,21 @@
                                     {{-- Checkbox --}}
                                     <td class="px-4 md:px-6 py-4" @click.stop>
                                         @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                            <input type="checkbox"
-                                                class="rounded-lg border-emerald-900/20 dark:border-[#1d3a34] text-teal-900 focus:ring-lime-500 dark:bg-[#18342f] transition-colors cursor-pointer"
-                                                :checked="selectedIds.includes(ticket.id)"
-                                                @change="toggleSelect(ticket.id)" />
+                                            <label class="flex items-center px-1 cursor-pointer select-none group">
+                                                <input type="checkbox"
+                                                    class="hidden"
+                                                    :checked="selectedIds.includes(ticket.id)"
+                                                    @change="toggleSelect(ticket.id)"
+                                                />
+                                                <span
+                                                    class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                                                    :class="selectedIds.includes(ticket.id) ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
+                                                >
+                                                    <svg x-show="selectedIds.includes(ticket.id)" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </span>
+                                            </label>
                                         @endif
                                     </td>
 
@@ -432,15 +454,12 @@
 
                                             {{-- Edit (ticket owner, not closed) --}}
                                             @if (auth()->user()->role === 'user')
-                                                <template
-                                                    x-if="{{ auth()->id() }} === ticket.user_id && ticket.status !== 'closed'">
+                                                <template x-if="authId === ticket.user_id && ticket.status !== 'closed'">
                                                     <button @click.stop="openEditModal(ticket)"
                                                         class="p-1.5 md:p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-sm"
                                                         title="Edit Ticket">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                         </svg>
                                                     </button>
@@ -525,7 +544,73 @@
 
                                                             <div
                                                                 class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
-                                                                Ticket Reference</div>
+                                                                Creator Information</div>
+
+                                                                <div class="mt-2 mb-6">
+                                                                    <div class="space-y-1.5">
+                                                                        <template x-if="ticket.name || ticket.user?.name">
+                                                                            <div
+                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        stroke-width="2"
+                                                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                                                </svg>
+
+                                                                                <span x-text="ticket.name || ticket.user?.name"></span>
+                                                                            </div>
+                                                                        </template>
+                                                                    </div>
+
+                                                                    <div class="space-y-1.5">
+                                                                        <template x-if="ticket.email || ticket.user?.email">
+                                                                            <div
+                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        stroke-width="2"
+                                                                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                                                </svg>
+
+                                                                                <span x-text="ticket.email || ticket.user?.email"></span>
+                                                                            </div>
+                                                                        </template>
+                                                                    </div>
+
+                                                                    <div class="space-y-1.5">
+                                                                        <template x-if="ticket.whatsapp_number || ticket.user?.whatsapp_number">
+                                                                            <div
+                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        stroke-width="2"
+                                                                                        d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                                                                </svg>
+
+                                                                                <span x-text="ticket.whatsapp_number || ticket.user?.whatsapp_number"></span>
+                                                                            </div>
+                                                                        </template>
+                                                                    </div>
+                                                                </div>
+
+                                                            <div
+                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                                Reference</div>
                                                             <div class="flex items-center gap-3 mb-8">
                                                                 <div class="text-2xl text-slate-900 dark:text-white font-black tracking-tight"
                                                                     x-text="ticket.hashid"></div>
@@ -573,19 +658,20 @@
                                                             <template x-if="ticket.order_type">
                                                                 <div
                                                                     class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                                                                    <h4
-                                                                        class="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">
-                                                                        Order Information</h4>
+                                                                    <div
+                                                                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                                        Order Information</div>
                                                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                                         <div>
                                                                             <div
                                                                                 class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
                                                                                 Frequency</div>
-                                                                            <div class="text-sm font-bold text-slate-900 dark:text-white capitalize"
+                                                                            <div class="text-sm text-slate-900 dark:text-white capitalize"
                                                                                 x-text="['recurrent', 'recurring'].includes(ticket.order_type) ? orderTypeLabel(ticket.order_type) + ' - ' + (ticket.recurrence_period === 'custom' ? 'Custom: ' + ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)) : orderTypeLabel(ticket.order_type)">
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    
                                                                     <template
                                                                         x-if="ticket.order_activations && ticket.order_activations.length > 0">
                                                                         <div class="mt-6">
@@ -634,22 +720,41 @@
                                                             </template>
 
                                                             <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                                                                <h4 class="text-xs font-black text-teal-900 dark:text-lime-400 mb-4 tracking-[0.2em] uppercase">
+                                                                <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
                                                                     Attending Support Staff
-                                                                </h4>
-                                                                <div class="flex flex-wrap gap-3">
-                                                                    <template x-if="ticket.attendants && ticket.attendants.length > 0">
-                                                                        <template x-for="att in ticket.attendants" :key="att.id">
+                                                                </div>
+
+                                                                <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                                                    Past 
+                                                                </div>
+                                                                <div class="flex flex-wrap gap-3 mb-4">
+                                                                    <template x-if="ticket.attendants && ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length > 0">
+                                                                        <template x-for="att in ticket.attendants.filter(a => a.id !== ticket.attendant?.id)" :key="att.id">
                                                                             <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
                                                                                 <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
-                                                                                    x-text="att.name.charAt(0)"></div>
-                                                                                <span class="text-xs font-bold text-slate-900 dark:text-white"
-                                                                                    x-text="att.name"></span>
+                                                                                    x-text="att.name ? att.name.charAt(0).toUpperCase() : '?'"></div>
+                                                                                <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="att.name"></span>
                                                                             </div>
                                                                         </template>
                                                                     </template>
-                                                                    <template x-if="!ticket.attendants || ticket.attendants.length === 0">
-                                                                        <span class="text-xs italic text-slate-400">No support staff assigned yet.</span>
+                                                                    <template x-if="!ticket.attendants || ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length === 0">
+                                                                        <span class="text-xs italic text-slate-400">No past support staff.</span>
+                                                                    </template>
+                                                                </div>
+
+                                                                <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                                                    Current 
+                                                                </div>
+                                                                <div class="flex flex-wrap gap-3">
+                                                                    <template x-if="ticket.attendant">
+                                                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                                                x-text="ticket.attendant.name ? ticket.attendant.name.charAt(0).toUpperCase() : '?'"></div>
+                                                                            <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="ticket.attendant.name"></span>
+                                                                        </div>
+                                                                    </template>
+                                                                    <template x-if="!ticket.attendant">
+                                                                        <span class="text-xs italic text-slate-400">No current support staff assigned yet.</span>
                                                                     </template>
                                                                 </div>
                                                             </div>
@@ -726,58 +831,41 @@
                                                 {{-- Right: comments + comment form --}}
                                                 <div class="space-y-8">
                                                     <div>
-                                                        <h4
-                                                            class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
-                                                            <svg class="w-5 h-5 mr-2 text-blue-500" fill="none"
-                                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                                                            </svg>
+                                                        <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
+                                                            <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                                                             Conversation
                                                         </h4>
 
-                                                        <div
-                                                            class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar mb-6">
+                                                        <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
+                                                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
                                                             <template
                                                                 x-if="!ticket.comments || ticket.comments.length === 0">
-                                                                <div
-                                                                    class="text-center py-8 opacity-40 italic text-sm">
-                                                                    No comments yet. Start the conversation.</div>
+                                                                <div class="text-center py-2 opacity-40">
+                                                                    <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                                                    <div class="italic text-sm">No comments yet. Start the conversation.</div>
+                                                                </div>
                                                             </template>
-                                                            <template x-for="(comment, ci) in (ticket.comments || [])"
-                                                                :key="ci">
+
+                                                            <template x-for="(comment, ci) in (ticket.comments || [])" :key="ci">
                                                                 <div class="flex flex-col"
-                                                                    :class="comment.user_id === {{ auth()->id() }} ?
-                                                                        'items-end' : 'items-start'">
-                                                                    <div class="max-w-[95%] sm:max-w-[85%] p-4 sm:p-5 rounded-2xl sm:rounded-[2rem]"
-                                                                        :class="comment.user_id === {{ auth()->id() }} ?
-                                                                            'bg-teal-900 text-white shadow-xl' :
-                                                                            'fauna-panel text-slate-900 dark:text-white'">
+                                                                    :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')) ? 'items-end' : 'items-start'">
+                                                                    <div class="max-w-[95%] sm:max-w-[85%] p-4 sm:p-5"
+                                                                        :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin'))
+                                                                            ? 'bg-teal-900 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-sm sm:rounded-br-md'
+                                                                            : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] rounded-bl-sm sm:rounded-bl-md'">
                                                                         <div class="flex items-center space-x-3 mb-2">
-                                                                            <span
-                                                                                class="text-[9px] font-black tracking-widest opacity-80"
-                                                                                x-text="comment.user?.name"></span>
+                                                                            <span class="text-[9px] font-black tracking-widest opacity-80" x-text="comment.user?.name"></span>
                                                                             <template x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">
-                                                                                <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded"
-                                                                                    :class="comment.user_id === {{ auth()->id() }} ? 'bg-white/20 text-white' : 'bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400'">Support</span>
+                                                                                <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-white/20 text-white">Support</span>
                                                                             </template>
-                                                                            <span class="text-[9px] opacity-40"
-                                                                                x-text="new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
+                                                                            <span class="text-[9px] opacity-40" x-text="new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
                                                                         </div>
-                                                                        <div class="text-sm font-medium leading-relaxed"
-                                                                            x-text="comment.content"></div>
-                                                                        <template
-                                                                            x-if="comment.images && comment.images.length > 0">
+                                                                        <div class="text-sm font-medium leading-relaxed" x-text="comment.content"></div>
+                                                                        <template x-if="comment.images && comment.images.length > 0">
                                                                             <div class="flex flex-wrap gap-2 mt-3">
-                                                                                <template
-                                                                                    x-for="(cimg, cii) in comment.images"
-                                                                                    :key="cii">
-                                                                                    <a :href="'/storage/' + cimg"
-                                                                                        target="_blank"
-                                                                                        class="w-16 h-16 rounded-lg overflow-hidden border border-white/20">
-                                                                                        <img :src="'/storage/' + cimg"
-                                                                                            class="w-full h-full object-cover" />
+                                                                                <template x-for="(cimg, cii) in comment.images" :key="cii">
+                                                                                    <a :href="'/storage/' + cimg" target="_blank" class="w-16 h-16 rounded-lg overflow-hidden border border-white/20">
+                                                                                        <img :src="'/storage/' + cimg" class="w-full h-full object-cover" />
                                                                                     </a>
                                                                                 </template>
                                                                             </div>
@@ -793,7 +881,7 @@
                                                                 @include('dashboard._comment-form')
                                                             </div>
                                                         @else
-                                                            <template x-if="{{ auth()->id() }} === ticket.user_id">
+                                                            <template x-if="authId === ticket.user_id">
                                                                 <div x-data="commentForm(ticket.id)" @click.stop>
                                                                     @include('dashboard._comment-form')
                                                                 </div>
@@ -989,6 +1077,7 @@
             function dashboard() {
                 return {
                     allTickets: @json($tickets),
+                    authId: {{ auth()->id() ?? 'null' }},
                     filters: {
                         status: '',
                         priority: '',

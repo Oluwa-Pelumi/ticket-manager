@@ -41,7 +41,7 @@ class TicketSeeder extends Seeder
                 'priority'        => 'high',
                 'status'          => 'in-progress',
                 'attended_to_by'  => [$support1?->id, $support2?->id],
-                'order_type'      => 'refill',
+                'order_type'      => 'recurring',
                 'recurrence_period' => 'monthly',
             ],
             [

@@ -366,7 +366,7 @@
                                 </svg>
                             </div>
                             <span class="text-slate-900 dark:text-white font-bold text-sm">
-                                Upload System Snapshots
+                                Upload Snapshots
                             </span>
                             <span class="text-slate-600 text-xs mt-1">
                                 PNG, JPG up to 5MB each. Drag and drop supported.
