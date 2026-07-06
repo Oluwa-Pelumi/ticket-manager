@@ -1,6 +1,6 @@
 @extends('layouts.authenticated')
 
-@section('title', 'Ticket #' . $ticket->reference_number)
+@section('title', 'Ticket #' . $ticket->hashid)
 
 @section('header')
 <div class="flex items-center justify-between w-full">
@@ -55,7 +55,7 @@
                 <div class="fauna-panel p-6 md:p-8 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
 
-                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Creator Reference</div>
+                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Creator Information</div>
                     <div class="mt-2 mb-6">
                         @if($ticket->name || $ticket->user?->name)
                             <div class="space-y-1.5">

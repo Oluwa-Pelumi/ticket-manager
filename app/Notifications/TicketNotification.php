@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 /**
  * Queued notification for ticket lifecycle events via email and WhatsApp.
  */
-class TicketNotification extends Notification implements ShouldQueue
+class TicketNotification extends Notification
 {
     use Queueable;
 
