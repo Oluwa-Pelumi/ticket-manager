@@ -655,20 +655,31 @@ class TicketControllerTest extends TestCase
         $admin = $this->admin();
         $pastSupport = $this->support();
         $availableSupport = User::factory()->create(['role' => 'support']);
-        
+
+        // Give pastSupport an existing active ticket so they're "busier"
+        // than availableSupport — removes the tie in assignToLeastBusySupport().
+        Ticket::factory()->create([
+            'status' => 'open',
+            'attended_to_by' => [$pastSupport->id],
+        ]);
+
         $ticket = Ticket::factory()->create([
             'status' => 'closed',
             'attended_to_by' => [$pastSupport->id]
         ]);
 
         $response = $this->actingAs($admin)
-            ->patch(route('update-ticket-status', ['ticket' => $ticket->id, 'status' => 'open']));
-
-        $response->assertSuccessful();
+            ->patch(route('update-ticket-status'), [
+                'id'     => $ticket->id,
+                'status' => 'open',
+            ])
+            ->assertRedirect();
 
         $ticket->refresh();
         $this->assertEquals('open', $ticket->status);
         $this->assertContains($availableSupport->id, $ticket->attended_to_by);
-        $this->assertEquals($availableSupport->id, end($ticket->attended_to_by));
+
+        $attendedTo = $ticket->attended_to_by;
+        $this->assertEquals($availableSupport->id, end($attendedTo));
     }
 }

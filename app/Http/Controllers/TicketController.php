@@ -345,7 +345,7 @@ class TicketController extends Controller
     {
         // --- Authorization for Supports ---
         if (Auth::user() && Auth::user()->isSupport() && !Auth::user()->isAdmin()) {
-            if (Auth::id() !== $ticket->attendant?->id) {
+            if ($ticket->attendant && Auth::id() !== $ticket->attendant->id) {
                 return back()->with('error', 'You are not the currently assigned support for this ticket and cannot reply.');
             }
         }
