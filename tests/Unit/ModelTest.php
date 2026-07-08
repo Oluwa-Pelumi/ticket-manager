@@ -50,20 +50,6 @@ class ModelTest extends TestCase
     }
 
     /** @test */
-    public function user_routeNotificationForWhatsapp_returns_whatsapp_number(): void
-    {
-        $user = User::factory()->make(['whatsapp_number' => '+2348012345678']);
-        $this->assertEquals('+2348012345678', $user->routeNotificationForWhatsapp());
-    }
-
-    /** @test */
-    public function user_routeNotificationForWhatsapp_returns_null_when_not_set(): void
-    {
-        $user = User::factory()->make(['whatsapp_number' => null]);
-        $this->assertNull($user->routeNotificationForWhatsapp());
-    }
-
-    /** @test */
     public function user_has_many_tickets(): void
     {
         $user    = User::factory()->create(['role' => 'user']);

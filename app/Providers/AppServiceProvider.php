@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
-use App\Broadcasting\WhatsappChannel;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Notifications\ChannelManager;
 
@@ -31,10 +30,6 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('admin-access', function (User $user) {
             return $user->role === 'admin';
-        });
-
-        app(ChannelManager::class)->extend('whatsapp', function() {
-            return new WhatsappChannel();
         });
 
         view()->composer('*', function ($view) {

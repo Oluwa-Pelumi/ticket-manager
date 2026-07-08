@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 /**
- * Queued notification for ticket lifecycle events via email and WhatsApp.
+ * Queued notification for ticket lifecycle events via email.
  */
 class TicketNotification extends Notification
 {
@@ -34,21 +34,7 @@ class TicketNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        $channels = ['mail'];
-
-        $whatsappNumber = method_exists($notifiable, 'routeNotificationFor')
-            ? $notifiable->routeNotificationFor('whatsapp')
-            : null;
-
-        if (empty($whatsappNumber)) {
-            $whatsappNumber = $notifiable->whatsapp_number ?? null;
-        }
-
-        if (!empty($whatsappNumber)) {
-            $channels[] = 'whatsapp';
-        }
-
-        return $channels;
+        return ['mail'];
     }
 
     /**
@@ -64,14 +50,5 @@ class TicketNotification extends Notification
             ->greeting('Hello ' . $name . '!')
             ->line($content)
             ->line('Thank you for using our platform!');
-    }
-
-    /** Build the plain-text body for the WhatsApp channel. */
-    public function toWhatsapp(object $notifiable): string
-    {
-        $content = is_string($this->message) ? $this->message : $this->message->content;
-        $name    = $this->recipientName ?? $notifiable->name ?? 'there';
-
-        return "Hello {$name}!\n\n{$content}";
     }
 }

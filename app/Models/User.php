@@ -87,9 +87,4 @@ class User extends Authenticatable
         return Ticket::whereJsonContains('attended_to_by', $this->id)->get();
     }
 
-    /** Route WhatsApp notifications to the user's stored number. */
-    public function routeNotificationForWhatsapp(): ?string
-    {
-        return $this->whatsapp_number;
-    }
 }

@@ -105,7 +105,7 @@ class TicketController extends Controller
             'images' => $imagePaths
         ]);
 
-        // --- Notify submitter via mail and WhatsApp ---
+        // --- Notify submitter via mail ---
         $notificationMessage = "Your ticket (Reference: {$ticket->hashid}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->hashid);
 
         $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
@@ -114,7 +114,6 @@ class TicketController extends Controller
             $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
         } else {
             \Illuminate\Support\Facades\Notification::route('mail', $validated['email'])
-                ->route('whatsapp', $validated['whatsapp_number'] ?? null)
                 ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $validated['name']));
         }
 
@@ -226,7 +225,6 @@ class TicketController extends Controller
                 $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
             } else if ($ticket->email) {
                 \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                    ->route('whatsapp', $ticket->whatsapp_number)
                     ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
             }
         }
@@ -308,7 +306,6 @@ class TicketController extends Controller
                         $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
                     } else if ($ticket->email) {
                         \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                            ->route('whatsapp', $ticket->whatsapp_number)
                             ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_closed'));
                     }
                 }
@@ -387,7 +384,6 @@ class TicketController extends Controller
                 $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
             } else if ($ticket->email) {
                 \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                    ->route('whatsapp', $ticket->whatsapp_number)
                     ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_is_replied'));
             }
         }
@@ -509,7 +505,6 @@ class TicketController extends Controller
                 $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
             } elseif ($ticket->email) {
                 \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                    ->route('whatsapp', $ticket->whatsapp_number)
                     ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
             }
         }
@@ -619,7 +614,6 @@ class TicketController extends Controller
                         $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
                     } elseif ($ticket->email) {
                         \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                            ->route('whatsapp', $ticket->whatsapp_number)
                             ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
                     }
                 }
