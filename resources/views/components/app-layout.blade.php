@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) && trim($title) ? trim($title) . ' — ' . config('app.name') : config('app.name') }}</title>
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
-    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
+    <link rel="icon" href="{{ asset('favicon.svg') }}?v=2" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=2" sizes="any">
+    <link rel="icon" href="{{ asset('favicon.png') }}?v=2" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
@@ -61,7 +61,7 @@
 
         .fauna-panel {
             border-radius: 1.5rem;
-            border: 1px solid rgba(30, 58, 138, 0.1);
+            border: 1px solid rgba(8, 47, 73, 0.1);
             background-color: #ffffff;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
@@ -96,7 +96,7 @@
         .dark .nav-link { color: rgb(148 163 184); }
         .nav-link:hover, .nav-link-active {
             background-color: #ffffff;
-            color: rgb(30 58 138);
+            color: rgb(8 47 73);
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
         }
         .dark .nav-link:hover, .dark .nav-link-active {
@@ -116,7 +116,7 @@
         .dark .dropdown-link { color: rgb(203 213 225); }
         .dropdown-link:hover {
             background-color: rgb(241 245 249);
-            color: rgb(30 58 138);
+            color: rgb(8 47 73);
             padding-left: 1.25rem;
         }
         .dark .dropdown-link:hover {
@@ -144,16 +144,16 @@
 
         .mesh-gradient {
             background-image:
-                radial-gradient(at 0% 0%,   rgba(30, 58, 138,.16)   0px, transparent 50%),
+                radial-gradient(at 0% 0%,   rgba(8, 47, 73,.16)   0px, transparent 50%),
                 radial-gradient(at 100% 0%,  rgba(56, 189, 248,.14) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(30, 58, 138,.08)   0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(8, 47, 73,.08)   0px, transparent 50%),
                 radial-gradient(at 0% 100%,  rgba(56, 189, 248,.1)  0px, transparent 50%);
         }
         .dark .mesh-gradient {
             background-image:
-                radial-gradient(at 0% 0%,   rgba(30, 58, 138,.2)   0px, transparent 50%),
+                radial-gradient(at 0% 0%,   rgba(8, 47, 73,.2)   0px, transparent 50%),
                 radial-gradient(at 100% 0%,  rgba(56, 189, 248,.1)  0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(30, 58, 138,.12)  0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(8, 47, 73,.12)  0px, transparent 50%),
                 radial-gradient(at 0% 100%,  rgba(56, 189, 248,.08) 0px, transparent 50%);
         }
 
@@ -175,18 +175,18 @@
 
     {{-- ── Global navbar ── --}}
     @if($showNavbar ?? true)
-    <nav class="relative z-50 border-b border-blue-900/10 bg-white shadow-md dark:border-[#1e3a5f] dark:bg-[#0f172a]" x-data="{ showingMobileMenu: false }">
+    <nav class="relative z-50 border-b border-sky-950/10 bg-white shadow-md dark:border-[#1e3a5f] dark:bg-[#0f172a]" x-data="{ showingMobileMenu: false }">
         <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
             <div class="flex h-20 justify-between items-center">
                 <div class="flex items-center gap-8">
                     <a href="/" class="flex items-center gap-3 group">
-                        <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="w-9 h-9">
+                        <img src="{{ asset('logo.svg') }}?v=2" alt="{{ config('app.name') }} logo" class="w-9 h-9">
                         <span class="hidden sm:block text-xl font-black tracking-tight text-slate-900 dark:text-white">
                             {{ config('app.name') }}<span class="text-sky-400">.</span>
                         </span>
                     </a>
 
-                    <div class="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#0f172a]/70 rounded-2xl border border-blue-900/10 dark:border-[#1e3a5f] backdrop-blur-md">
+                    <div class="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#0f172a]/70 rounded-2xl border border-sky-950/10 dark:border-[#1e3a5f] backdrop-blur-md">
                         <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Home</a>
                         @auth
                             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}">Dashboard</a>
@@ -203,20 +203,20 @@
                 </div>
 
                 <div class="hidden sm:flex sm:items-center gap-4">
-                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl flex items-center justify-center border border-blue-900/10 bg-white text-slate-600 hover:text-blue-900 dark:border-[#1e3a5f] dark:bg-[#0f172a] dark:text-slate-400" aria-label="Toggle theme">
+                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl flex items-center justify-center border border-sky-950/10 bg-white text-slate-600 hover:text-sky-950 dark:border-[#1e3a5f] dark:bg-[#0f172a] dark:text-slate-400" aria-label="Toggle theme">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
                     </button>
 
                     @auth
                     <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" type="button" class="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border border-blue-900/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center text-white text-[10px] font-black shadow-lg">
+                        <button @click="open = !open" type="button" class="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-sky-950 to-sky-800 flex items-center justify-center text-white text-[10px] font-black shadow-lg">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </div>
                             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[120px]">{{ auth()->user()->name }}</span>
                         </button>
                         <div x-show="open" @click.outside="open = false" x-cloak
-                            class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/80 dark:bg-[#0f172a]/90 backdrop-blur-xl border border-blue-900/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
+                            class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/80 dark:bg-[#0f172a]/90 backdrop-blur-xl border border-sky-950/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
                             <a href="{{ route('profile.edit') }}" class="dropdown-link">Profile Settings</a>
                             @if(auth()->user()->role === 'admin')
                                 <a href="{{ route('admin.categories.index') }}" class="dropdown-link">Manage Categories</a>
@@ -230,19 +230,19 @@
                     </div>
                     @else
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('login') }}" class="nav-link bg-slate-200/40 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200 hover:text-blue-900 border border-blue-900/10 dark:border-[#1e3a5f]">Login</a>
-                        <a href="{{ route('register') }}" class="nav-link bg-blue-900 text-white hover:bg-[#3b82f6] hover:text-[#1e3a8a] shadow-md">Register</a>
+                        <a href="{{ route('login') }}" class="nav-link bg-slate-200/40 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200 hover:text-sky-950 border border-sky-950/10 dark:border-[#1e3a5f]">Login</a>
+                        <a href="{{ route('register') }}" class="nav-link bg-sky-950 text-white hover:bg-sky-800 hover:text-white shadow-md">Register</a>
                     </div>
                     @endauth
                 </div>
 
                 {{-- Mobile menu button --}}
                 <div class="flex sm:hidden items-center gap-2">
-                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl flex items-center justify-center border border-blue-900/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
+                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl flex items-center justify-center border border-sky-950/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
                     </button>
 
-                    <button @click="showingMobileMenu = !showingMobileMenu" class="w-9 h-9 rounded-xl flex items-center justify-center border border-blue-900/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
+                    <button @click="showingMobileMenu = !showingMobileMenu" class="w-9 h-9 rounded-xl flex items-center justify-center border border-sky-950/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
                         <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path :class="{'hidden': showingMobileMenu, 'inline-flex': !showingMobileMenu }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             <path :class="{'hidden': !showingMobileMenu, 'inline-flex': showingMobileMenu }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -253,17 +253,17 @@
         </div>
 
         {{-- Mobile Dropdown Menu --}}
-        <div x-show="showingMobileMenu" x-cloak class="sm:hidden border-t border-blue-900/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] px-4 py-4 space-y-3">
-            <a href="{{ route('home') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('home') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Home</a>
+        <div x-show="showingMobileMenu" x-cloak class="sm:hidden border-t border-sky-950/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] px-4 py-4 space-y-3">
+            <a href="{{ route('home') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('home') ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400' : '' }}">Home</a>
             @auth
-                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('dashboard') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('dashboard') ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400' : '' }}">Dashboard</a>
             @else
-                <a href="{{ route('submit-ticket') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('submit-ticket') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Submit Ticket</a>
+                <a href="{{ route('submit-ticket') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('submit-ticket') ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400' : '' }}">Submit Ticket</a>
             @endauth
-            <a href="{{ route('check-status') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status', 'search-tickets') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Check Status</a>
+            <a href="{{ route('check-status') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status', 'search-tickets') ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400' : '' }}">Check Status</a>
             @auth
                 @if(auth()->user()->role === 'admin')
-                    <a href="{{ route('admin.users') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Users Management</a>
+                    <a href="{{ route('admin.users') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400' : '' }}">Users Management</a>
                     <a href="{{ route('admin.categories.index') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage Categories</a>
                     <a href="{{ route('admin.faqs.index') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage FAQs</a>
                 @endif
@@ -273,9 +273,9 @@
                     <button type="submit" class="w-full text-left block px-3 py-2 rounded-xl text-sm font-bold text-rose-500">Sign Out</button>
                 </form>
             @else
-                <div class="pt-4 border-t border-blue-900/10 dark:border-[#1e3a5f] flex gap-2">
+                <div class="pt-4 border-t border-sky-950/10 dark:border-[#1e3a5f] flex gap-2">
                     <a href="{{ route('login') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200">Login</a>
-                    <a href="{{ route('register') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-blue-900 text-white hover:bg-[#3b82f6] hover:text-[#1e3a8a] shadow-md">Register</a>
+                    <a href="{{ route('register') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-sky-950 text-white hover:bg-sky-800 hover:text-white shadow-md">Register</a>
                 </div>
             @endauth
         </div>
@@ -361,14 +361,14 @@
                     :class="{
                         'bg-rose-500/10 border border-rose-500/20': type === 'danger',
                         'bg-amber-500/10 border border-amber-500/20': type === 'warning',
-                        'bg-blue-500/10 border border-blue-500/20': type !== 'danger' && type !== 'warning',
+                        'bg-sky-500/10 border border-sky-500/20': type !== 'danger' && type !== 'warning',
                     }"
                 >
                     <svg class="w-6 h-6"
                         :class="{
                             'text-rose-500': type === 'danger',
                             'text-amber-500': type === 'warning',
-                            'text-blue-500': type !== 'danger' && type !== 'warning',
+                            'text-sky-500': type !== 'danger' && type !== 'warning',
                         }"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -395,7 +395,7 @@
                     :class="{
                         'bg-rose-600 hover:bg-rose-700': type === 'danger',
                         'bg-amber-500 hover:bg-amber-600': type === 'warning',
-                        'bg-blue-600 hover:bg-blue-700': type !== 'danger' && type !== 'warning',
+                        'bg-sky-600 hover:bg-sky-800': type !== 'danger' && type !== 'warning',
                     }"
                     x-text="confirmText"
                 ></button>
@@ -469,7 +469,7 @@
                 const originalHtml = icon.outerHTML;
                 const isW3 = icon.classList.contains('w-3');
                 const sizeClass = isW3 ? 'w-3 h-3' : 'w-4 h-4';
-                icon.outerHTML = `<svg class="${sizeClass} text-blue-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
+                icon.outerHTML = `<svg class="${sizeClass} text-sky-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
                 setTimeout(() => {
                     const currentIcon = btn.querySelector('.copy-icon') || btn;
                     currentIcon.outerHTML = originalHtml;

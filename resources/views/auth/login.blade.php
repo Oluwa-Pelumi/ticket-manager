@@ -7,7 +7,7 @@
 </div>
 
 @if(session('status'))
-<div class="mb-6 text-sm font-bold text-blue-500 bg-blue-500/10 p-4 rounded-2xl border border-blue-500/20 backdrop-blur-md">
+<div class="mb-6 text-sm font-bold text-sky-500 bg-sky-500/10 p-4 rounded-2xl border border-sky-500/20 backdrop-blur-md">
     {{ session('status') }}
 </div>
 @endif
@@ -18,7 +18,7 @@
     <div class="space-y-2">
         <label for="email" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300 pl-4">Email</label>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username"
-            class="w-full rounded-full border-blue-900/20 px-4 py-3 shadow focus:border-sky-400 focus:ring-sky-400 dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+            class="w-full rounded-full border-sky-950/20 px-4 py-3 shadow focus:border-sky-400 focus:ring-sky-400 dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="your@email.com">
         @error('email')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -31,7 +31,7 @@
             @endif
         </div>
         <input id="password" type="password" name="password" required autocomplete="current-password"
-            class="w-full rounded-full border-blue-900/20 px-4 py-3 shadow focus:border-sky-400 focus:ring-sky-400 dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+            class="w-full rounded-full border-sky-950/20 px-4 py-3 shadow focus:border-sky-400 focus:ring-sky-400 dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="••••••••">
         @error('password')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -64,7 +64,7 @@
     <div class="text-center pt-4">
         <p class="text-sm text-slate-600 dark:text-slate-400">
             Don't have an account?
-            <a href="{{ route('register') }}" class="font-bold text-blue-900 dark:text-sky-400 hover:underline">Register</a>
+            <a href="{{ route('register') }}" class="font-bold text-sky-950 dark:text-sky-400 hover:underline">Register</a>
         </p>
     </div>
 </form>

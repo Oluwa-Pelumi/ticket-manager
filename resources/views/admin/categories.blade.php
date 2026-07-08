@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-blue-900 flex items-center justify-center shadow-lg border border-white/20">
+            <div class="w-12 h-12 rounded-2xl bg-sky-950 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -58,7 +58,7 @@
                                 type="text"
                                 name="name"
                                 value="{{ old('name', $editingCategory->name ?? '') }}"
-                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium"
+                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium"
                                 placeholder="e.g. Prescription Issues"
                                 required
                             />
@@ -72,7 +72,7 @@
                             <button
                                 type="submit"
                                 x-bind:disabled="processing"
-                                class="w-full py-4 rounded-xl bg-blue-900 text-white font-black text-sm tracking-widest shadow-lg hover:bg-[#3b82f6] hover:text-[#1e3a8a] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                                class="w-full py-4 rounded-xl bg-sky-950 text-white font-black text-sm tracking-widest shadow-lg hover:bg-sky-800 hover:text-white transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                             >
                                 <template x-if="processing">
                                     <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -88,7 +88,7 @@
                             @if (isset($editingCategory))
                                 <a
                                     href="{{ route('admin.categories.index') }}"
-                                    class="w-full py-3 rounded-xl border border-blue-900/10 dark:border-[#1e3a5f] text-slate-600 font-black text-[10px] tracking-widest hover:bg-blue-50/50 dark:hover:bg-slate-800 transition-all text-center"
+                                    class="w-full py-3 rounded-xl border border-sky-950/10 dark:border-[#1e3a5f] text-slate-600 font-black text-[10px] tracking-widest hover:bg-sky-50/50 dark:hover:bg-slate-800 transition-all text-center"
                                 >
                                     Cancel Edit
                                 </a>
@@ -100,10 +100,10 @@
 
             {{-- ── Categories list table ── --}}
             <div class="lg:col-span-2">
-                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-blue-900/10/50 dark:border-[#1e3a5f] shadow-2xl">
+                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-sky-950/10/50 dark:border-[#1e3a5f] shadow-2xl">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-blue-900/10 dark:border-[#1e3a5f]">
+                            <tr class="border-b border-sky-950/10 dark:border-[#1e3a5f]">
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">
                                     Category Details
                                 </th>
@@ -114,7 +114,7 @@
                         </thead>
                         <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                             @forelse ($categories as $category)
-                                <tr class="hover:bg-blue-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
+                                <tr class="hover:bg-sky-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
 
                                     {{-- Name + slug --}}
                                     <td class="px-6 py-5">
@@ -133,7 +133,7 @@
                                             {{-- Edit: navigate to index with ?edit={id} --}}
                                             <a
                                                 href="{{ route('admin.categories.index', ['edit' => $category->id]) }}"
-                                                class="p-2 bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white rounded-lg transition-all"
+                                                class="p-2 bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white rounded-lg transition-all"
                                                 title="Edit"
                                             >
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

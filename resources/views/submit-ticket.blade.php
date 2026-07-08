@@ -20,7 +20,7 @@
 
     <x-slot name="title">Submit Ticket</x-slot>
 
-    <div class="fauna-shell relative min-h-screen flex flex-col items-center overflow-x-hidden transition-colors duration-500 selection:bg-sky-400 selection:text-blue-900">
+    <div class="fauna-shell relative min-h-screen flex flex-col items-center overflow-x-hidden transition-colors duration-500 selection:bg-sky-400 selection:text-sky-950">
 
         {{-- Background Layer --}}
         <div class="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10"></div>
@@ -31,7 +31,7 @@
             <div class="fauna-panel mb-6 sm:mb-10 p-4 sm:p-6 md:p-10 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-blue-900 flex items-center justify-center shadow-lg border border-white/20">
+                    <div class="w-12 h-12 rounded-2xl bg-sky-950 flex items-center justify-center shadow-lg border border-white/20">
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                         </svg>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="text-center mb-10">
-                <a href="{{ route('home') }}" class="inline-flex items-center text-xs md:text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-900 transition-colors mb-4 tracking-widest">
+                <a href="{{ route('home') }}" class="inline-flex items-center text-xs md:text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-sky-950 transition-colors mb-4 tracking-widest">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
@@ -103,7 +103,7 @@
                             name="name"
                             type="text"
                             value="{{ old('name', $user->name ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm"
+                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm"
                             placeholder="Enter your name"
                             required
                         />
@@ -122,7 +122,7 @@
                             name="email"
                             type="email"
                             value="{{ old('email', $user->email ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm"
+                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm"
                             placeholder="email@example.com"
                             required
                         />
@@ -136,8 +136,8 @@
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="phone">
                             Phone Contact
                         </label>
-                        <div class="flex rounded-2xl overflow-hidden border border-blue-900/10 dark:border-[#1e3a5f] shadow-sm focus-within:ring-2 focus-within:ring-sky-400 transition-all">
-                            <span class="flex items-center px-4 bg-slate-100 dark:bg-[#0f2420] text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-blue-900/10 dark:border-[#1e3a5f] select-none shrink-0">
+                        <div class="flex rounded-2xl overflow-hidden border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm focus-within:ring-2 focus-within:ring-sky-400 transition-all">
+                            <span class="flex items-center px-4 bg-slate-100 dark:bg-[#0f2420] text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-sky-950/10 dark:border-[#1e3a5f] select-none shrink-0">
                                 +234
                             </span>
                             <input
@@ -166,7 +166,7 @@
                                         'value' => 'low',
                                         'label' => 'Low',
                                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />',
-                                        'active' => 'bg-blue-50 dark:bg-blue-900/20 border-sky-400 text-blue-600 dark:text-sky-400',
+                                        'active' => 'bg-sky-50 dark:bg-sky-950/20 border-sky-400 text-sky-600 dark:text-sky-400',
                                     ],
                                     [
                                         'value' => 'medium',
@@ -181,7 +181,7 @@
                                         'active' => 'bg-red-50 dark:bg-red-900/20 border-red-400 text-red-600 dark:text-red-400',
                                     ],
                                 ];
-                                $inactiveClasses = 'bg-white dark:bg-[#1e293b] border-blue-900/10 dark:border-[#1e3a5f] text-slate-400';
+                                $inactiveClasses = 'bg-white dark:bg-[#1e293b] border-sky-950/10 dark:border-[#1e3a5f] text-slate-400';
                             @endphp
                             @foreach($priorityOptions as $opt)
                                 <button
@@ -220,7 +220,7 @@
                             order_type = '';
                             recurrence_period = '';
                         "
-                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-bold shadow-sm"
+                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-bold shadow-sm"
                         required
                     >
                         <option value="" disabled>
@@ -259,7 +259,7 @@
 
                 {{-- Conditional Order Fields --}}
                 @if($user)
-                    <div x-show="subject === 'order'" x-cloak class="space-y-6 p-6 rounded-2xl bg-blue-50/50 dark:bg-[#1e293b]/50 border border-blue-900/10 dark:border-[#1e3a5f]">
+                    <div x-show="subject === 'order'" x-cloak class="space-y-6 p-6 rounded-2xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f]">
                         <div class="space-y-3">
                             <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400 uppercase">
                                 Order Type
@@ -267,7 +267,7 @@
                             <div class="grid grid-cols-2 gap-4">
                                 @foreach($orderType as $type)
                                     <label
-                                        :class="order_type === '{{ $type['id'] }}' ? 'border-sky-400 bg-sky-400/10 text-blue-900 dark:text-sky-400' : 'border-blue-900/10 dark:border-[#1e3a5f] hover:border-blue-900/20'"
+                                        :class="order_type === '{{ $type['id'] }}' ? 'border-sky-400 bg-sky-400/10 text-sky-950 dark:text-sky-400' : 'border-sky-950/10 dark:border-[#1e3a5f] hover:border-sky-950/20'"
                                         class="flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all"
                                     >
                                         <input
@@ -293,7 +293,7 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                 @foreach($recurrencePeriod as $period)
                                     <label
-                                        :class="recurrence_period === '{{ $period['id'] }}' ? 'border-sky-400 bg-sky-400/10 text-blue-900 dark:text-sky-400' : 'border-blue-900/10 dark:border-[#1e3a5f] hover:border-blue-900/20'"
+                                        :class="recurrence_period === '{{ $period['id'] }}' ? 'border-sky-400 bg-sky-400/10 text-sky-950 dark:text-sky-400' : 'border-sky-950/10 dark:border-[#1e3a5f] hover:border-sky-950/20'"
                                         class="flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all"
                                     >
                                         <input
@@ -315,7 +315,7 @@
                                     type="date"
                                     name="custom_recurrence_date"
                                     value="{{ old('custom_recurrence_date') }}"
-                                    class="w-full px-5 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-bold"
+                                    class="w-full px-5 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-bold"
                                     min="{{ now()->toDateString() }}"
                                 />
                             </div>
@@ -332,7 +332,7 @@
                         id="content"
                         name="content"
                         rows="6"
-                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none resize-none font-medium shadow-sm"
+                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none resize-none font-medium shadow-sm"
                         placeholder="Describe the problem or inquiry with as much detail as possible..."
                         required
                     >{{ old('content') }}</textarea>
@@ -358,9 +358,9 @@
                         />
                         <label
                             for="image-upload"
-                            class="flex flex-col items-center justify-center border-2 border-dashed border-blue-900/20 dark:border-[#1e3a5f] rounded-3xl p-10 hover:border-blue-900 dark:hover:border-sky-400 hover:bg-sky-400/5 transition-all cursor-pointer group"
+                            class="flex flex-col items-center justify-center border-2 border-dashed border-sky-950/20 dark:border-[#1e3a5f] rounded-3xl p-10 hover:border-sky-950 dark:hover:border-sky-400 hover:bg-sky-400/5 transition-all cursor-pointer group"
                         >
-                            <div class="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-[#1e293b] flex items-center justify-center text-slate-400 group-hover:bg-blue-900 group-hover:text-white transition-all shadow-sm">
+                            <div class="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-[#1e293b] flex items-center justify-center text-slate-400 group-hover:bg-sky-950 group-hover:text-white transition-all shadow-sm">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
@@ -376,7 +376,7 @@
 
                     {{-- Previews --}}
                     <div x-show="previewUrls.length > 0" x-cloak class="mt-6">
-                        <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-4 tracking-[0.2em]">
+                        <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-4 tracking-[0.2em]">
                             Ready for Ticket (<span x-text="previewUrls.length"></span>)
                         </div>
                         <div class="flex flex-wrap gap-4">
@@ -406,7 +406,7 @@
                     <button
                         type="submit"
                         x-bind:disabled="processing || {{ empty($categories) ? 'true' : 'false' }}"
-                        class="group w-full py-5 rounded-[2rem] bg-blue-900 text-white font-black text-xl shadow-2xl hover:bg-[#3b82f6] hover:text-[#1e3a8a] hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all flex items-center justify-center gap-2"
+                        class="group w-full py-5 rounded-[2rem] bg-sky-950 text-white font-black text-xl shadow-2xl hover:bg-sky-800 hover:text-white hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all flex items-center justify-center gap-2"
                     >
                         <template x-if="processing">
                             <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">

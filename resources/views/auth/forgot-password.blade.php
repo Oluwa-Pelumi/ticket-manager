@@ -11,7 +11,7 @@
 </div>
 
 @if(session('status'))
-<div class="mb-6 text-sm font-medium text-blue-500 bg-blue-500/10 p-3 rounded-xl border border-blue-500/20">
+<div class="mb-6 text-sm font-medium text-sky-500 bg-sky-500/10 p-3 rounded-xl border border-sky-500/20">
     {{ session('status') }}
 </div>
 @endif
@@ -20,13 +20,13 @@
     @csrf
     <div>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-            class="w-full px-4 py-3 rounded-xl bg-blue-50/50 dark:bg-[#1e293b]/50 border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
             placeholder="your@email.com">
         @error('email')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
     <div class="pt-2">
-        <button type="submit" x-bind:disabled="processing" class="w-full py-4 rounded-2xl bg-blue-900 text-white font-black text-lg shadow-xl hover:bg-[#3b82f6] hover:text-[#1e3a8a] transition-all tracking-widest disabled:opacity-50 flex items-center justify-center gap-2">
+        <button type="submit" x-bind:disabled="processing" class="w-full py-4 rounded-2xl bg-sky-950 text-white font-black text-lg shadow-xl hover:bg-sky-800 hover:text-white transition-all tracking-widest disabled:opacity-50 flex items-center justify-center gap-2">
             <template x-if="processing">
                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="text-center pt-4">
-        <a href="{{ route('login') }}" class="text-sm font-black tracking-widest text-slate-600 hover:text-blue-900 dark:hover:text-sky-400 transition-colors">
+        <a href="{{ route('login') }}" class="text-sm font-black tracking-widest text-slate-600 hover:text-sky-950 dark:hover:text-sky-400 transition-colors">
             Return to Access
         </a>
     </div>

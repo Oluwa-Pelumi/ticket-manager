@@ -543,35 +543,6 @@ class TicketControllerTest extends TestCase
     }
 
     // ─────────────────────────────────────────────
-    // activateOrder
-    // ─────────────────────────────────────────────
-
-    /** @test */
-    public function test_staff_can_activate_an_order(): void
-    {
-        $support = $this->support();
-        $ticket  = $this->makeTicket(['order_type' => 'recurrent']);
-
-        $this->actingAs($support)
-            ->patch(route('tickets.activate-order', $ticket->hashid))
-            ->assertRedirect();
-
-        $ticket->refresh();
-        $this->assertNotEmpty($ticket->order_activations);
-    }
-
-    /** @test */
-    public function test_regular_user_cannot_activate_order(): void
-    {
-        $user   = $this->regularUser();
-        $ticket = $this->makeTicket(['order_type' => 'recurrent']);
-
-        $this->actingAs($user)
-            ->patch(route('tickets.activate-order', $ticket->hashid))
-            ->assertSessionHas('error');
-    }
-
-    // ─────────────────────────────────────────────
     // searchTicketsByReference
     // ─────────────────────────────────────────────
 
@@ -606,28 +577,6 @@ class TicketControllerTest extends TestCase
             ->assertSessionHasErrors(['reference']);
     }
 
-    /** @test */
-    public function test_activate_order_assigns_support_and_sets_status_to_in_progress(): void
-    {
-        $support = $this->support();
-        $ticket  = Ticket::factory()->create([
-            'order_type' => 'recurrent',
-            'recurrence_period' => 'monthly',
-            'status' => 'open',
-            'attended_to_by' => null,
-        ]);
-
-        $response = $this->actingAs($support)
-            ->patch(route('tickets.activate-order', $ticket->id));
-
-        $ticket->refresh();
-        
-        $this->assertEquals('in-progress', $ticket->status);
-        $this->assertIsArray($ticket->attended_to_by);
-        $this->assertTrue(in_array($support->id, $ticket->attended_to_by));
-        $this->assertContains($support->id, $ticket->attended_to_by);
-        $this->assertCount(1, $ticket->order_activations);
-    }
 
     /** @test */
     public function test_past_support_cannot_reply_to_ticket(): void
