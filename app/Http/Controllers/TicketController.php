@@ -40,31 +40,24 @@ class TicketController extends Controller
     {
         // --- Validate submission ---
         $validated = $request->validate([
-            'custom_recurrence_date' => 'nullable|date',
             'images'                 => 'nullable|array',
             'images.*'               => 'image|max:5120',
             'content'                => 'required|string',
-            'recurrence_period'      => 'nullable|string',
             'email'                  => 'required|email|max:255',
             'name'                   => 'required|string|max:255',
             'subject'                => 'required|string|max:255',
             'category_id'            => 'nullable|exists:categories,id',
             'priority'               => 'required|string|in:low,medium,high',
-            'order_type'             => 'nullable|string|in:one-time,recurrent',
-            'whatsapp_number'        => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
+            'phone_number'        => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
         ], [
-            'whatsapp_number.regex'  => 'The WhatsApp number must be a valid international phone number (e.g., +2348000000000).'
+            'phone_number.regex'  => 'The phone number must be a valid international phone number (e.g., +2348000000000).'
         ]);
 
         $user = Auth::user();
 
-        if ($validated['subject'] === 'order' && !$user) {
-            return back()->withErrors(['subject' => 'The order category is only available for registered users.'])->withInput();
-        }
-
-        // --- Sync WhatsApp number to user profile ---
-        if ($user && $user->whatsapp_number !== ($validated['whatsapp_number'] ?? null)) {
-            $user->update(['whatsapp_number' => $validated['whatsapp_number'] ?? null]);
+        // --- Sync phone number to user profile ---
+        if ($user && $user->phone_number !== ($validated['phone_number'] ?? null)) {
+            $user->update(['phone_number' => $validated['phone_number'] ?? null]);
         }
 
         // --- Assign to support staff with fewest open tickets ---
@@ -80,10 +73,7 @@ class TicketController extends Controller
             'content'                => $validated['content'],
             'subject'                => $validated['subject'],
             'priority'               => $validated['priority'],
-            'whatsapp_number'        => $validated['whatsapp_number'] ?? null,
-            'order_type'             => $validated['order_type'] ?? null,
-            'recurrence_period'      => $validated['recurrence_period'] ?? null,
-            'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
+            'phone_number'        => $validated['phone_number'] ?? null,
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ]);
 
@@ -135,24 +125,18 @@ class TicketController extends Controller
         }
 
         $validated = $request->validate([
-            'custom_recurrence_date' => 'nullable|date',
             'images'                 => 'nullable|array',
             'images.*'               => 'image|max:5120',
             'content'                => 'required|string',
-            'recurrence_period'      => 'nullable|string',
             'subject'                => 'required|string|max:255',
             'category_id'            => 'nullable|exists:categories,id',
             'priority'               => 'required|string|in:low,medium,high',
-            'order_type'             => 'nullable|string|in:one-time,recurrent',
         ]);
 
         $updateData = [
             'subject'                => $validated['subject'],
             'content'                => $validated['content'],
             'priority'               => $validated['priority'],
-            'order_type'             => $validated['order_type'] ?? null,
-            'recurrence_period'      => $validated['recurrence_period'] ?? null,
-            'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ];
 
@@ -205,7 +189,7 @@ class TicketController extends Controller
         }
 
         $oldStatus = $ticket->status;
-        
+
         // --- Re-assign if transitioning from closed to open ---
         if ($oldStatus === 'closed' && in_array($validated['status'], ['open', 'in-progress']) && !$request->has('attended_to_by')) {
              $newSupportId = $this->assignToLeastBusySupport();
@@ -278,7 +262,7 @@ class TicketController extends Controller
         // --- Bulk status update with assignment ---
         foreach ($tickets as $ticket) {
             $oldStatus = $ticket->status;
-            
+
             // Auto-assign to current user if empty
             if (empty($ticket->attended_to_by)) {
                 $ticket->addAttendant(Auth::id());
@@ -432,39 +416,6 @@ class TicketController extends Controller
         ]);
     }
 
-    /** Record a recurring order activation timestamp (staff only). */
-    public function activateOrder(Request $request, Ticket $ticket)
-    {
-        if (!Auth::user()->isAdmin() && !Auth::user()->isSupport()) {
-            if ($request->wantsJson() || $request->ajax()) {
-                return response()->json(['error' => 'Unauthorized'], 403);
-            }
-            return back()->with('error', 'Unauthorized action.');
-        }
-
-        $activations = $ticket->order_activations ?? [];
-        $activations[] = now()->toDateTimeString();
-
-        // Assign current user
-        $ticket->addAttendant(Auth::id());
-
-        $ticket->update([
-            'order_activations' => $activations,
-            'status'            => 'in-progress'
-        ]);
-
-        if ($request->wantsJson() || $request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'status'  => 'in-progress',
-                'attendants' => $ticket->attendants,
-                'attendant' => $ticket->attendant
-            ]);
-        }
-
-        return back()->with('success', 'Order processed and recorded successfully.');
-    }
-
     /**
      * RESTful status update — PATCH /tickets/{ticket}/status/{status}
      * Used by the dashboard Alpine.js component.
@@ -588,7 +539,7 @@ class TicketController extends Controller
 
         foreach ($tickets as $ticket) {
             $oldStatus = $ticket->status;
-            
+
             if (empty($ticket->attended_to_by)) {
                 $ticket->addAttendant(Auth::id());
             }
@@ -636,11 +587,11 @@ class TicketController extends Controller
 
         $activeTickets = Ticket::whereIn('status', ['open', 'in-progress'])->get();
         $counts = [];
-        
+
         foreach ($supports as $support) {
             $counts[$support->id] = 0;
         }
-        
+
         foreach ($activeTickets as $ticket) {
             $attended = $ticket->attended_to_by ?? [];
             foreach ($attended as $suppId) {
@@ -649,7 +600,7 @@ class TicketController extends Controller
                 }
             }
         }
-        
+
         foreach ($supports as $support) {
             $support->setAttribute('assigned_tickets_count', $counts[$support->id]);
         }

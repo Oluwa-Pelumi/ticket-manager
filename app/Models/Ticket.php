@@ -81,12 +81,9 @@ class Ticket extends Model
         'content',
         'filename',
         'priority',
-        'order_type',
         'category_id',
         'attended_to_by',
-        'whatsapp_number',
-        'recurrence_period',
-        'order_activations',
+        'phone_number',
         'custom_recurrence_date',
     ];
 
@@ -97,7 +94,6 @@ class Ticket extends Model
      */
     protected $casts = [
         'images'            => 'array',
-        'order_activations' => 'array',
         'attended_to_by'    => 'array',
     ];
 

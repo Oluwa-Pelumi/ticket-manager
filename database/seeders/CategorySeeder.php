@@ -12,14 +12,17 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Order'],
-            ['name' => 'Enquiry'],
-            ['name' => 'Consultation'],
+            ['name' => 'Transcript Request'],
+            ['name' => 'Certificate Request'],
+            ['name' => 'Letter of Recommendation Request'],
+            ['name' => 'Syllabus Request'],
+            ['name' => 'Statement of Result Request'],
+            ['name' => 'Other'],
         ];
 
         foreach ($categories as $cat) {
             $slug = Str::slug($cat['name']);
-            
+
             $category = Category::updateOrCreate(
                 ['slug' => $slug],
                 ['name' => $cat['name']]

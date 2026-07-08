@@ -73,7 +73,7 @@
                     priority: '{{ old('priority', 'low') }}',
                     order_type: '{{ old('order_type', '') }}',
                     recurrence_period: '{{ old('recurrence_period', '') }}',
-                    whatsapp: '{{ old('whatsapp_number', $user->whatsapp_number ?? '') }}'.replace(/^\+234/, ''),
+                    phone: '{{ old('phone_number', $user->phone_number ?? '') }}'.replace(/^\+234/, ''),
                     previewUrls: [],
                     handleFiles(e) {
                         this.previewUrls = Array.from(e.target.files).map(f => URL.createObjectURL(f));
@@ -131,25 +131,25 @@
                         @enderror
                     </div>
 
-                    {{-- WhatsApp --}}
+                    {{-- Phone --}}
                     <div class="space-y-3">
-                        <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="whatsapp">
-                            WhatsApp Contact
+                        <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="phone">
+                            Phone Contact
                         </label>
                         <div class="flex rounded-2xl overflow-hidden border border-blue-900/10 dark:border-[#1e3a5f] shadow-sm focus-within:ring-2 focus-within:ring-sky-400 transition-all">
                             <span class="flex items-center px-4 bg-slate-100 dark:bg-[#0f2420] text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-blue-900/10 dark:border-[#1e3a5f] select-none shrink-0">
                                 +234
                             </span>
                             <input
-                                id="whatsapp"
+                                id="phone"
                                 type="tel"
-                                x-model="whatsapp"
+                                x-model="phone"
                                 class="flex-1 px-5 py-4 bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white outline-none font-medium"
                                 placeholder="8012345678"
                             />
                         </div>
-                        <input type="hidden" name="whatsapp_number" :value="whatsapp ? '+234' + whatsapp : ''">
-                        @error('whatsapp_number')
+                        <input type="hidden" name="phone_number" :value="phone ? '+234' + phone : ''">
+                        @error('phone_number')
                             <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
                         @enderror
                     </div>

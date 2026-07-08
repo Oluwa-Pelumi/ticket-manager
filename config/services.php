@@ -14,11 +14,7 @@ return [
     |
     */
 
-    'meta_whatsapp' => [
-        'token' => env('META_WHATSAPP_TOKEN'),
-        'phone_id' => env('META_WHATSAPP_PHONE_ID'),
-        'version' => env('META_WHATSAPP_VERSION')
-    ],
+ 
 
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),

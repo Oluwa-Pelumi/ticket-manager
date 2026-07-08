@@ -12,58 +12,58 @@ class UserSeeder extends Seeder
     {
         // ── Admin ────────────────────────────────────────────────────────────
         User::updateOrCreate(
-            ['email' => 'admin@laradrug.test'],
+            ['email' => 'admin@laradocs.test'],
             [
                 'name'             => 'Admin User',
                 'role'             => 'admin',
                 'password'         => Hash::make('password'),
-                'whatsapp_number'  => '+2348000000001',
+                'phone_number'  => '+2348000000001',
                 'email_verified_at' => now(),
             ]
         );
 
         // ── Support staff ────────────────────────────────────────────────────
         User::updateOrCreate(
-            ['email' => 'support1@laradrug.test'],
+            ['email' => 'support1@laradocs.test'],
             [
                 'name'             => 'Sarah Okonkwo',
                 'role'             => 'support',
                 'password'         => Hash::make('password'),
-                'whatsapp_number'  => '+2348000000002',
+                'phone_number'  => '+2348000000002',
                 'email_verified_at' => now(),
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'support2@laradrug.test'],
+            ['email' => 'support2@laradocs.test'],
             [
                 'name'             => 'Daniel Eze',
                 'role'             => 'support',
                 'password'         => Hash::make('password'),
-                'whatsapp_number'  => '+2348000000003',
+                'phone_number'  => '+2348000000003',
                 'email_verified_at' => now(),
             ]
         );
 
         // ── Regular users ────────────────────────────────────────────────────
         User::updateOrCreate(
-            ['email' => 'user1@laradrug.test'],
+            ['email' => 'user1@laradocs.test'],
             [
                 'name'             => 'Emeka Nwosu',
                 'role'             => 'user',
                 'password'         => Hash::make('password'),
-                'whatsapp_number'  => '+2348000000004',
+                'phone_number'  => '+2348000000004',
                 'email_verified_at' => now(),
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'user2@laradrug.test'],
+            ['email' => 'user2@laradocs.test'],
             [
                 'name'             => 'Fatima Aliyu',
                 'role'             => 'user',
                 'password'         => Hash::make('password'),
-                'whatsapp_number'  => '+2348000000005',
+                'phone_number'  => '+2348000000005',
                 'email_verified_at' => now(),
             ]
         );

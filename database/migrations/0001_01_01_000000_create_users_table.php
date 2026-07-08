@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('role')->default('user');
             $table->string('email')->unique();
-            $table->string('whatsapp_number')->nullable()->comment('Valid international phone number (e.g., +2348000000000)');
+            $table->string('phone_number')->nullable()->comment('Valid international phone number (e.g., +2348000000000)');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

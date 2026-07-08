@@ -16,12 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
 
-            $table->string('order_type')->nullable();
-            $table->string('recurrence_period')->nullable();
-            $table->date('custom_recurrence_date')->nullable();
-            $table->json('order_activations')->nullable();
-
-
             $table->json('attended_to_by')->nullable();
             $table->string('subject');
             $table->text('content');
@@ -34,7 +28,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->change();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
-            $table->string('whatsapp_number')->nullable();
+            $table->string('phone_number')->nullable();
         });
     }
 

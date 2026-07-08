@@ -588,7 +588,7 @@
                                                                     </div>
 
                                                                     <div class="space-y-1.5">
-                                                                        <template x-if="ticket.whatsapp_number || ticket.user?.whatsapp_number">
+                                                                        <template x-if="ticket.phone_number || ticket.user?.phone_number">
                                                                             <div
                                                                                 class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                                                                 <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
@@ -602,7 +602,7 @@
                                                                                         d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                                                                 </svg>
 
-                                                                                <span x-text="ticket.whatsapp_number || ticket.user?.whatsapp_number"></span>
+                                                                                <span x-text="ticket.phone_number || ticket.user?.phone_number"></span>
                                                                             </div>
                                                                         </template>
                                                                     </div>
