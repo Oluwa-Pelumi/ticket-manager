@@ -19,7 +19,7 @@ class TicketFactory extends Factory
         return [
             'name'                   => fake()->name(),
             'email'                  => fake()->safeEmail(),
-            'subject'                => fake()->randomElement(['general', 'billing', 'technical', 'order']),
+            'subject'                => fake()->randomElement(['consultation', 'enquiry', 'order']),
             'content'                => fake()->paragraph(),
             'status'                 => fake()->randomElement(['open', 'in-progress', 'closed']),
             'priority'               => fake()->randomElement(['low', 'medium', 'high']),

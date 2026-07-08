@@ -144,14 +144,14 @@ class ModelTest extends TestCase
     {
         $support1 = User::factory()->create(['role' => 'support']);
         $support2 = User::factory()->create(['role' => 'support']);
-        
+
         $ticket = Ticket::factory()->create(['attended_to_by' => $support1->id]);
         $ticket->addAttendant($support2->id);
 
         $this->assertCount(2, $ticket->attendants);
         $this->assertEquals($support1->id, $ticket->attendants[0]->id);
         $this->assertEquals($support2->id, $ticket->attendants[1]->id);
-        
+
         // The most recent attendant is support2
         $this->assertEquals($support2->id, $ticket->attendant->id);
     }
@@ -181,9 +181,9 @@ class ModelTest extends TestCase
     {
         $ticket  = Ticket::factory()->create();
         $hashid  = $ticket->hashid;
-        $resolved = (new Ticket())->resolveRouteBinding($hashid);
+        $closed = (new Ticket())->resolveRouteBinding($hashid);
 
-        $this->assertEquals($ticket->id, $resolved->id);
+        $this->assertEquals($ticket->id, $closed->id);
     }
 
     // ─────────────────────────────────────────────

@@ -21,7 +21,7 @@
         ],
         [
             'step' => 4,
-            'title' => 'Resolved',
+            'title' => 'Closed',
             'description' =>
                 'When your request is complete, the ticket is marked closed. You can still open past tickets from your dashboard or by status search with your email.',
         ],
@@ -106,7 +106,7 @@
             <section class="py-14">
                 <div class="container mx-auto px-4">
                     <div class="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
-                        @foreach ([['label' => 'Total Tickets', 'value' => $stats['totalTickets'] ?? 0], ['label' => 'Open Tickets', 'value' => $stats['openTickets'] ?? 0], ['label' => 'In Progress', 'value' => $stats['inProgressTickets'] ?? 0], ['label' => 'Resolved Tickets', 'value' => $stats['resolvedTickets'] ?? 0]] as $stat)
+                        @foreach ([['label' => 'Total Tickets', 'value' => $stats['totalTickets'] ?? 0], ['label' => 'Open Tickets', 'value' => $stats['openTickets'] ?? 0], ['label' => 'In Progress', 'value' => $stats['inProgressTickets'] ?? 0], ['label' => 'closed Tickets', 'value' => $stats['closedTickets'] ?? 0]] as $stat)
                             <div class="fauna-panel p-8 dark:bg-[#102824] dark:border-[#1d3a34]">
                                 <h3 class="text-3xl font-semibold">{{ $stat['value'] }}</h3>
                                 <p class="mt-2 text-slate-600 dark:text-slate-400">{{ $stat['label'] }}</p>

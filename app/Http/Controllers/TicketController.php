@@ -124,59 +124,59 @@ class TicketController extends Controller
     /**
      * Update ticket details and optionally append new images.
      */
-    public function update(Request $request, Ticket $ticket)
-    {
-        // --- Authorization and status checks ---
-        if ($ticket->user_id !== Auth::id()) {
-            return back()->with('error', 'Unauthorized action.');
-        }
+    // public function update(Request $request, Ticket $ticket)
+    // {
+    //     // --- Authorization and status checks ---
+    //     if ($ticket->user_id !== Auth::id()) {
+    //         return back()->with('error', 'Unauthorized action.');
+    //     }
 
-        if ($ticket->status === 'closed') {
-            return back()->with('error', 'Closed tickets cannot be edited.');
-        }
+    //     if ($ticket->status === 'closed') {
+    //         return back()->with('error', 'Closed tickets cannot be edited.');
+    //     }
 
-        $validated = $request->validate([
-            'custom_recurrence_date' => 'nullable|date',
-            'images'                 => 'nullable|array',
-            'images.*'               => 'image|max:5120',
-            'content'                => 'required|string',
-            'recurrence_period'      => 'nullable|string',
-            'subject'                => 'required|string|max:255',
-            'category_id'            => 'nullable|exists:categories,id',
-            'priority'               => 'required|string|in:low,medium,high',
-            'order_type'             => 'nullable|string|in:one-time,recurrent',
-        ]);
+    //     $validated = $request->validate([
+    //         'custom_recurrence_date' => 'nullable|date',
+    //         'images'                 => 'nullable|array',
+    //         'images.*'               => 'image|max:5120',
+    //         'content'                => 'required|string',
+    //         'recurrence_period'      => 'nullable|string',
+    //         'subject'                => 'required|string|max:255',
+    //         'category_id'            => 'nullable|exists:categories,id',
+    //         'priority'               => 'required|string|in:low,medium,high',
+    //         'order_type'             => 'nullable|string|in:one-time,recurrent',
+    //     ]);
 
-        $updateData = [
-            'subject'                => $validated['subject'],
-            'content'                => $validated['content'],
-            'priority'               => $validated['priority'],
-            'order_type'             => $validated['order_type'] ?? null,
-            'recurrence_period'      => $validated['recurrence_period'] ?? null,
-            'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
-            'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
-        ];
+    //     $updateData = [
+    //         'subject'                => $validated['subject'],
+    //         'content'                => $validated['content'],
+    //         'priority'               => $validated['priority'],
+    //         'order_type'             => $validated['order_type'] ?? null,
+    //         'recurrence_period'      => $validated['recurrence_period'] ?? null,
+    //         'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
+    //         'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
+    //     ];
 
-        // --- Merge new image uploads with existing paths ---
-        if ($request->hasFile('images')) {
-            $user       = Auth::user();
-            $username   = Str::slug($user->name, '_');
-            $folder     = $username . '-' . $user->id;
-            $imagePaths = $ticket->images ?? [];
+    //     // --- Merge new image uploads with existing paths ---
+    //     if ($request->hasFile('images')) {
+    //         $user       = Auth::user();
+    //         $username   = Str::slug($user->name, '_');
+    //         $folder     = $username . '-' . $user->id;
+    //         $imagePaths = $ticket->images ?? [];
 
-            foreach ($request->file('images') as $index => $file) {
-                $extension    = $file->getClientOriginalExtension();
-                $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
-                $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
-                $imagePaths[] = $filepath;
-            }
-            $updateData['images'] = $imagePaths;
-        }
+    //         foreach ($request->file('images') as $index => $file) {
+    //             $extension    = $file->getClientOriginalExtension();
+    //             $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
+    //             $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
+    //             $imagePaths[] = $filepath;
+    //         }
+    //         $updateData['images'] = $imagePaths;
+    //     }
 
-        $ticket->update($updateData);
+    //     $ticket->update($updateData);
 
-        return back()->with('success', 'Ticket updated successfully.');
-    }
+    //     return back()->with('success', 'Ticket updated successfully.');
+    // }
 
     /**
      * Update a single ticket's status and optionally reassign support staff.
@@ -206,7 +206,7 @@ class TicketController extends Controller
         }
 
         $oldStatus = $ticket->status;
-        
+
         // --- Re-assign if transitioning from closed to open ---
         if ($oldStatus === 'closed' && in_array($validated['status'], ['open', 'in-progress']) && !$request->has('attended_to_by')) {
              $newSupportId = $this->assignToLeastBusySupport();
@@ -280,7 +280,7 @@ class TicketController extends Controller
         // --- Bulk status update with assignment ---
         foreach ($tickets as $ticket) {
             $oldStatus = $ticket->status;
-            
+
             // Auto-assign to current user if empty
             if (empty($ticket->attended_to_by)) {
                 $ticket->addAttendant(Auth::id());
@@ -593,7 +593,7 @@ class TicketController extends Controller
 
         foreach ($tickets as $ticket) {
             $oldStatus = $ticket->status;
-            
+
             if (empty($ticket->attended_to_by)) {
                 $ticket->addAttendant(Auth::id());
             }
@@ -642,11 +642,11 @@ class TicketController extends Controller
 
         $activeTickets = Ticket::whereIn('status', ['open', 'in-progress'])->get();
         $counts = [];
-        
+
         foreach ($supports as $support) {
             $counts[$support->id] = 0;
         }
-        
+
         foreach ($activeTickets as $ticket) {
             $attended = $ticket->attended_to_by ?? [];
             foreach ($attended as $suppId) {
@@ -655,7 +655,7 @@ class TicketController extends Controller
                 }
             }
         }
-        
+
         foreach ($supports as $support) {
             $support->setAttribute('assigned_tickets_count', $counts[$support->id]);
         }

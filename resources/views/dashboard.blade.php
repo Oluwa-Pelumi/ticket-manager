@@ -83,7 +83,7 @@
                 @if (auth()->user()->role === 'user')
                     <a href="{{ route('submit-ticket') }}"
                         class="w-full md:w-auto text-center px-6 py-3 bg-teal-900 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-105 active:scale-95 transition-all">
-                        Submit Ticket
+                        Submit a New Ticket
                     </a>
                 @endif
             </div>
@@ -135,13 +135,12 @@
             </div>
 
             <button x-show="filters.status || filters.priority || filters.search" @click="clearFilters()"
-                    class="col-span-2 sm:col-span-1 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center">
-                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Clear All
-                </button>
+                class="col-span-2 sm:col-span-1 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Clear All
+            </button>
 
             <div class="flex items-center gap-4 w-full sm:w-auto sm:ml-auto">
                 <div class="flex items-center gap-2">
@@ -197,17 +196,19 @@
                             <th class="w-12 md:w-16 px-4 md:px-6 py-4">
                                 @if (in_array(auth()->user()->role, ['admin', 'support']))
                                     <label class="flex items-center px-1 cursor-pointer select-none group">
-                                        <input type="checkbox"
-                                            class="hidden"
+                                        <input type="checkbox" class="hidden"
                                             :checked="allTickets.length > 0 && selectedIds.length === allTickets.length"
-                                            @change="toggleSelectAll()"
-                                        />
+                                            @change="toggleSelectAll()" />
                                         <span
                                             class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-                                            :class="(allTickets.length > 0 && selectedIds.length === allTickets.length) ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
-                                        >
-                                            <svg x-show="allTickets.length > 0 && selectedIds.length === allTickets.length" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                            :class="(allTickets.length > 0 && selectedIds.length === allTickets.length) ?
+                                            'bg-[#064e3b] border-[#064e3b]' :
+                                            'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'">
+                                            <svg x-show="allTickets.length > 0 && selectedIds.length === allTickets.length"
+                                                class="w-3 h-3 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                    d="M5 13l4 4L19 7" />
                                             </svg>
                                         </span>
                                     </label>
@@ -261,14 +262,15 @@
                         </tr>
                     </thead>
 
-                    <tbody x-show="paginatedTickets.length === 0" x-cloak class="divide-y divide-slate-200 dark:divide-slate-800">
+                    <tbody x-show="paginatedTickets.length === 0" x-cloak
+                        class="divide-y divide-slate-200 dark:divide-slate-800">
                         <tr>
                             <td colspan="{{ in_array(auth()->user()->role, ['admin', 'support']) ? 9 : 7 }}"
                                 class="px-6 py-20 text-center">
                                 <div class="flex flex-col items-center">
                                     <div class="p-4 bg-slate-100 dark:bg-[#18342f] rounded-3xl mb-4">
-                                        <svg class="w-12 h-12 text-slate-400" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
@@ -283,177 +285,184 @@
                     </tbody>
 
                     <template x-for="(ticket, idx) in paginatedTickets" :key="ticket.id">
-                        <tbody class="divide-y divide-slate-200 dark:divide-slate-800 border-b border-slate-200/50 dark:border-[#1d3a34]/30">
+                        <tbody
+                            class="divide-y divide-slate-200 dark:divide-slate-800 border-b border-slate-200/50 dark:border-[#1d3a34]/30">
                             {{-- Main row --}}
                             <tr class="group hover:bg-emerald-50/50 dark:hover:bg-[#18342f]/70 transition-all duration-300 cursor-pointer"
                                 :class="expandedId === ticket.id ? 'bg-emerald-50/50/80 dark:bg-[#18342f]/80' : ''"
                                 @click="toggleExpand(ticket.id)">
-                                    {{-- Checkbox --}}
-                                    <td class="px-4 md:px-6 py-4" @click.stop>
-                                        @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                            <label class="flex items-center px-1 cursor-pointer select-none group">
-                                                <input type="checkbox"
-                                                    class="hidden"
-                                                    :checked="selectedIds.includes(ticket.id)"
-                                                    @change="toggleSelect(ticket.id)"
-                                                />
-                                                <span
-                                                    class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-                                                    :class="selectedIds.includes(ticket.id) ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
-                                                >
-                                                    <svg x-show="selectedIds.includes(ticket.id)" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                                                    </svg>
-                                                </span>
-                                            </label>
-                                        @endif
-                                    </td>
-
-                                    {{-- Reference --}}
-                                    <td class="px-4 md:px-6 py-4" @click.stop>
-                                        <span
-                                            class="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight"
-                                            x-text="'#' + ticket.hashid"></span>
-                                    </td>
-
-                                    {{-- Subject + snippet --}}
-                                    <td class="px-4 md:px-6 py-4">
-                                        <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1"
-                                            x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
-                                        </div>
-                                        <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[60px] md:max-w-[120px]"
-                                            x-text="ticket.content"></div>
-                                    </td>
-
-                                    {{-- User (admin/support) --}}
+                                {{-- Checkbox --}}
+                                <td class="px-4 md:px-6 py-4" @click.stop>
                                     @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                        <td class="hidden lg:table-cell px-4 md:px-6 py-4">
-                                            <div class="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[120px]"
-                                                x-text="ticket.name || ticket.user?.name"></div>
-                                            <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px]"
-                                                x-text="ticket.email || ticket.user?.email"></div>
-                                        </td>
+                                        <label class="flex items-center px-1 cursor-pointer select-none group">
+                                            <input type="checkbox" class="hidden"
+                                                :checked="selectedIds.includes(ticket.id)"
+                                                @change="toggleSelect(ticket.id)" />
+                                            <span
+                                                class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                                                :class="selectedIds.includes(ticket.id) ? 'bg-[#064e3b] border-[#064e3b]' :
+                                                    'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'">
+                                                <svg x-show="selectedIds.includes(ticket.id)"
+                                                    class="w-3 h-3 text-white" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="3" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </span>
+                                        </label>
                                     @endif
+                                </td>
 
-                                    {{-- Order details --}}
-                                    <td class="hidden lg:table-cell px-4 md:px-6 py-4" @click.stop>
-                                        <template x-if="ticket.order_type">
-                                            <div class="flex flex-col gap-2">
-                                                <div class="flex items-center gap-1.5 flex-wrap">
+                                {{-- Reference --}}
+                                <td class="px-4 md:px-6 py-4" @click.stop>
+                                    <span
+                                        class="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight"
+                                        x-text="'#' + ticket.hashid"></span>
+                                </td>
+
+                                {{-- Subject + snippet --}}
+                                <td class="px-4 md:px-6 py-4">
+                                    <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1"
+                                        x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
+                                    </div>
+                                    <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[60px] md:max-w-[120px]"
+                                        x-text="ticket.content"></div>
+                                </td>
+
+                                {{-- User (admin/support) --}}
+                                @if (in_array(auth()->user()->role, ['admin', 'support']))
+                                    <td class="hidden lg:table-cell px-4 md:px-6 py-4">
+                                        <div class="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[120px]"
+                                            x-text="ticket.name || ticket.user?.name"></div>
+                                        <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px]"
+                                            x-text="ticket.email || ticket.user?.email"></div>
+                                    </td>
+                                @endif
+
+                                {{-- Order details --}}
+                                <td class="hidden lg:table-cell px-4 md:px-6 py-4" @click.stop>
+                                    <template x-if="ticket.order_type">
+                                        <div class="flex flex-col gap-2">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span
+                                                    class="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider"
+                                                    :class="ticket.order_type === 'recurrent' ?
+                                                        'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' :
+                                                        'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'"
+                                                    x-text="orderTypeLabel(ticket.order_type)"></span>
+                                                <template x-if="ticket.order_type === 'recurrent'">
                                                     <span
-                                                        class="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider"
-                                                        :class="ticket.order_type === 'recurrent' ?
-                                                            'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' :
-                                                            'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'"
-                                                        x-text="orderTypeLabel(ticket.order_type)"></span>
-                                                    <template x-if="ticket.order_type === 'recurrent'">
-                                                        <span
-                                                            class="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#18342f] px-1.5 py-0.5 rounded border border-emerald-900/10 dark:border-[#28524a]"
-                                                            x-text="ticket.recurrence_period === 'custom' ? ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)"></span>
-                                                    </template>
-                                                </div>
-                                                <template
-                                                    x-if="ticket.order_activations && ticket.order_activations.length > 0">
-                                                    <div class="flex flex-col">
-                                                        <span
-                                                            class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Last
-                                                            Order Processing:</span>
-                                                        <span
-                                                            class="text-[9px] font-bold text-slate-500 dark:text-slate-400"
-                                                            x-text="formatDateTime(ticket.order_activations[ticket.order_activations.length - 1])"></span>
-                                                    </div>
+                                                        class="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#18342f] px-1.5 py-0.5 rounded border border-emerald-900/10 dark:border-[#28524a]"
+                                                        x-text="ticket.recurrence_period === 'custom' ? ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)"></span>
                                                 </template>
                                             </div>
-                                        </template>
-                                        <template x-if="!ticket.order_type">
-                                            <span class="text-[10px] italic text-slate-400 tracking-widest">General
-                                                Ticket</span>
-                                        </template>
-                                    </td>
+                                            <template
+                                                x-if="ticket.order_activations && ticket.order_activations.length > 0">
+                                                <div class="flex flex-col">
+                                                    <span
+                                                        class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Last
+                                                        Order Processing:</span>
+                                                    <span
+                                                        class="text-[9px] font-bold text-slate-500 dark:text-slate-400"
+                                                        x-text="formatDateTime(ticket.order_activations[ticket.order_activations.length - 1])"></span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    <template x-if="!ticket.order_type">
+                                        <span class="text-[10px] italic text-slate-400 tracking-widest">General
+                                            Ticket</span>
+                                    </template>
+                                </td>
 
-                                    {{-- Priority --}}
-                                    <td class="px-4 md:px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider"
+                                {{-- Priority --}}
+                                <td class="px-4 md:px-6 py-4">
+                                    <span
+                                        class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider"
+                                        :class="{
+                                            'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400': ticket
+                                                .priority === 'high',
+                                            'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400': ticket
+                                                .priority === 'medium',
+                                            'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400': ticket
+                                                .priority === 'low'
+                                        }">
+                                        <svg x-show="ticket.priority === 'high'" class="w-3 h-3" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                        </svg>
+                                        <svg x-show="ticket.priority === 'medium'" class="w-3 h-3" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M5 12h14" />
+                                        </svg>
+                                        <svg x-show="ticket.priority === 'low'" class="w-3 h-3" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                        </svg>
+                                        <span class="hidden md:inline" x-text="ticket.priority"></span>
+                                    </span>
+                                </td>
+
+                                {{-- Status --}}
+                                <td class="px-4 md:px-6 py-4" @click.stop>
+                                    @if (in_array(auth()->user()->role, ['admin', 'support']))
+                                        <select @change="statusUpdate(ticket.id, $event.target.value)"
+                                            class="text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-lime-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
                                             :class="{
-                                                'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400': ticket
-                                                    .priority === 'high',
-                                                'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400': ticket
-                                                    .priority === 'medium',
-                                                'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400': ticket
-                                                    .priority === 'low'
+                                                'border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400': ticket
+                                                    .status === 'open',
+                                                'border-emerald-500 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400': ticket
+                                                    .status === 'in-progress',
+                                                'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket
+                                                    .status === 'closed'
                                             }">
-                                            <svg x-show="ticket.priority === 'high'" class="w-3 h-3" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                            </svg>
-                                            <svg x-show="ticket.priority === 'medium'" class="w-3 h-3" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                    d="M5 12h14" />
-                                            </svg>
-                                            <svg x-show="ticket.priority === 'low'" class="w-3 h-3" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                    d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                            </svg>
-                                            <span class="hidden md:inline" x-text="ticket.priority"></span>
-                                        </span>
-                                    </td>
+                                            <option value="open" :selected="ticket.status === 'open'">Open
+                                            </option>
+                                            <option value="in-progress" :selected="ticket.status === 'in-progress'">
+                                                Processing</option>
+                                            <option value="closed" :selected="ticket.status === 'closed'">Closed
+                                            </option>
+                                        </select>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold"
+                                            :class="{
+                                                'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 ring-4 ring-blue-500/10': ticket
+                                                    .status === 'open',
+                                                'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10': ticket
+                                                    .status === 'in-progress',
+                                                'bg-slate-100 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400': ticket
+                                                    .status === 'closed'
+                                            }"
+                                            x-text="ticket.status.replace('-', ' ')"></span>
+                                    @endif
+                                </td>
 
-                                    {{-- Status --}}
-                                    <td class="px-4 md:px-6 py-4" @click.stop>
-                                        @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                            <select
-                                                @change="statusUpdate(ticket.id, $event.target.value)"
-                                                class="text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-lime-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
-                                                :class="{
-                                                    'border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400': ticket.status === 'open',
-                                                    'border-emerald-500 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400': ticket.status === 'in-progress',
-                                                    'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
-                                                }">
-                                                <option value="open"      :selected="ticket.status === 'open'">Open</option>
-                                                <option value="in-progress" :selected="ticket.status === 'in-progress'">Processing</option>
-                                                <option value="closed"    :selected="ticket.status === 'closed'">Resolved</option>
-                                            </select>
-                                        @else
-                                            <span
-                                                class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold"
-                                                :class="{
-                                                    'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 ring-4 ring-blue-500/10': ticket
-                                                        .status === 'open',
-                                                    'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10': ticket
-                                                        .status === 'in-progress',
-                                                    'bg-slate-100 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400': ticket
-                                                        .status === 'closed'
-                                                }"
-                                                x-text="ticket.status.replace('-', ' ')"></span>
-                                        @endif
-                                    </td>
+                                {{-- Attendant --}}
+                                <td class="hidden lg:table-cell px-6 py-4">
+                                    <template x-if="ticket.attendant">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                x-text="ticket.attendant.name.charAt(0)"></div>
+                                            <span class="text-xs font-medium text-slate-900 dark:text-white"
+                                                x-text="ticket.attendant.name"></span>
+                                        </div>
+                                    </template>
+                                    <template x-if="!ticket.attendant">
+                                        <span
+                                            class="text-[10px] italic text-slate-400 tracking-widest">Unassigned</span>
+                                    </template>
+                                </td>
 
-                                    {{-- Attendant --}}
-                                    <td class="hidden lg:table-cell px-6 py-4">
-                                        <template x-if="ticket.attendant">
-                                            <div class="flex items-center space-x-2">
-                                                <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
-                                                    x-text="ticket.attendant.name.charAt(0)"></div>
-                                                <span class="text-xs font-medium text-slate-900 dark:text-white"
-                                                    x-text="ticket.attendant.name"></span>
-                                            </div>
-                                        </template>
-                                        <template x-if="!ticket.attendant">
-                                            <span
-                                                class="text-[10px] italic text-slate-400 tracking-widest">Unassigned</span>
-                                        </template>
-                                    </td>
+                                {{-- Row actions --}}
+                                <td class="px-4 md:px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end space-x-1 md:space-x-2">
 
-                                    {{-- Row actions --}}
-                                    <td class="px-4 md:px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-1 md:space-x-2">
-
-                                            {{-- Edit (ticket owner, not closed) --}}
-                                            @if (auth()->user()->role === 'user')
+                                        {{-- Edit (ticket owner, not closed) --}}
+                                        {{-- @if (auth()->user()->role === 'user')
                                                 <template x-if="authId === ticket.user_id && ticket.status !== 'closed'">
                                                     <button @click.stop="openEditModal(ticket)"
                                                         class="p-1.5 md:p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-sm"
@@ -464,309 +473,195 @@
                                                         </svg>
                                                     </button>
                                                 </template>
-                                            @endif
+                                            @endif --}}
 
-                                            {{-- Expand toggle --}}
-                                            <button @click.stop="toggleExpand(ticket.id)"
-                                                class="p-1.5 md:p-2 rounded-lg transition-all"
-                                                :class="expandedId === ticket.id ? 'bg-teal-900 text-white rotate-180' :
-                                                    'bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400'">
+                                        {{-- Expand toggle --}}
+                                        <button @click.stop="toggleExpand(ticket.id)"
+                                            class="p-1.5 md:p-2 rounded-lg transition-all"
+                                            :class="expandedId === ticket.id ? 'bg-teal-900 text-white rotate-180' :
+                                                'bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400'">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </button>
+
+                                        {{-- Activate order (admin/support) --}}
+                                        @if (in_array(auth()->user()->role, ['admin', 'support', 'user']))
+                                            <template x-if="ticket.order_type">
+                                                <button @click.stop="activateOrder(ticket.id)"
+                                                    x-bind:disabled="activatingId === ticket.id"
+                                                    class="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-[#10b981] text-white dark:text-[#064e3b] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                                                    title="Process Order">
+                                                    <svg x-show="activatingId !== ticket.id" class="w-4 h-4"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                    </svg>
+                                                    <svg x-show="activatingId === ticket.id"
+                                                        class="w-4 h-4 animate-spin" fill="none"
+                                                        viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12"
+                                                            r="10" stroke="currentColor" stroke-width="4" />
+                                                        <path class="opacity-75" fill="currentColor"
+                                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                                    </svg>
+                                                </button>
+                                            </template>
+
+                                            {{-- Delete --}}
+                                            <button @click.stop="deleteTicket(ticket.id)"
+                                                class="p-1.5 md:p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                                                        stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </button>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
 
-                                            {{-- Activate order (admin/support) --}}
-                                            @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                                <template x-if="ticket.order_type">
-                                                    <button @click.stop="activateOrder(ticket.id)"
-                                                        x-bind:disabled="activatingId === ticket.id"
-                                                        class="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-[#10b981] text-white dark:text-[#064e3b] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
-                                                        title="Process Order">
-                                                        <svg x-show="activatingId !== ticket.id" class="w-4 h-4"
-                                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                                        </svg>
-                                                        <svg x-show="activatingId === ticket.id"
-                                                            class="w-4 h-4 animate-spin" fill="none"
-                                                            viewBox="0 0 24 24">
-                                                            <circle class="opacity-25" cx="12" cy="12"
-                                                                r="10" stroke="currentColor" stroke-width="4" />
-                                                            <path class="opacity-75" fill="currentColor"
-                                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                                        </svg>
-                                                    </button>
-                                                </template>
+                            {{-- ── Expanded row ──────────────────────────────────────── --}}
+                            <tr class="bg-emerald-50/50 dark:bg-[#18342f]/30" x-show="expandedId === ticket.id"
+                                x-cloak>
+                                <td colspan="{{ in_array(auth()->user()->role, ['admin', 'support']) ? 9 : 7 }}"
+                                    class="px-4 md:px-10 py-4 md:py-8 border-l-4 border-lime-500">
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
 
-                                                {{-- Delete --}}
-                                                <button @click.stop="deleteTicket(ticket.id)"
-                                                    class="p-1.5 md:p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
+                                        {{-- Left: specs + attachments --}}
+                                        <div class="space-y-8">
+                                            <div>
+                                                <h4
+                                                    class="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
+                                                    <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            stroke-width="2.5"
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                     </svg>
-                                                </button>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
+                                                    Specifications
+                                                </h4>
+                                                <div
+                                                    class="p-5 sm:p-8 rounded-2xl sm:rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
+                                                    <div
+                                                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30">
+                                                    </div>
 
-                                {{-- ── Expanded row ──────────────────────────────────────── --}}
-                                <tr class="bg-emerald-50/50 dark:bg-[#18342f]/30" x-show="expandedId === ticket.id" x-cloak>
-                                        <td colspan="{{ in_array(auth()->user()->role, ['admin', 'support']) ? 9 : 7 }}"
-                                            class="px-4 md:px-10 py-4 md:py-8 border-l-4 border-lime-500">
-                                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+                                                    <div
+                                                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                        Creator Information</div>
 
-                                                {{-- Left: specs + attachments --}}
-                                                <div class="space-y-8">
-                                                    <div>
-                                                        <h4
-                                                            class="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
-                                                            <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400"
-                                                                fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2.5"
-                                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                            </svg>
-                                                            Specifications
-                                                        </h4>
-                                                        <div
-                                                            class="p-5 sm:p-8 rounded-2xl sm:rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
-                                                            <div
-                                                                class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30">
-                                                            </div>
-
-                                                            <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
-                                                                Creator Information</div>
-
-                                                                <div class="mt-2 mb-6">
-                                                                    <div class="space-y-1.5">
-                                                                        <template x-if="ticket.name || ticket.user?.name">
-                                                                            <div
-                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
-                                                                                    fill="none"
-                                                                                    stroke="currentColor"
-                                                                                    viewBox="0 0 24 24">
-                                                                                    <path
-                                                                                        stroke-linecap="round"
-                                                                                        stroke-linejoin="round"
-                                                                                        stroke-width="2"
-                                                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                                                </svg>
-
-                                                                                <span x-text="ticket.name || ticket.user?.name"></span>
-                                                                            </div>
-                                                                        </template>
-                                                                    </div>
-
-                                                                    <div class="space-y-1.5">
-                                                                        <template x-if="ticket.email || ticket.user?.email">
-                                                                            <div
-                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
-                                                                                    fill="none"
-                                                                                    stroke="currentColor"
-                                                                                    viewBox="0 0 24 24">
-                                                                                    <path
-                                                                                        stroke-linecap="round"
-                                                                                        stroke-linejoin="round"
-                                                                                        stroke-width="2"
-                                                                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                                                                </svg>
-
-                                                                                <span x-text="ticket.email || ticket.user?.email"></span>
-                                                                            </div>
-                                                                        </template>
-                                                                    </div>
-
-                                                                    <div class="space-y-1.5">
-                                                                        <template x-if="ticket.whatsapp_number || ticket.user?.whatsapp_number">
-                                                                            <div
-                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
-                                                                                    fill="none"
-                                                                                    stroke="currentColor"
-                                                                                    viewBox="0 0 24 24">
-                                                                                    <path
-                                                                                        stroke-linecap="round"
-                                                                                        stroke-linejoin="round"
-                                                                                        stroke-width="2"
-                                                                                        d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                                                                </svg>
-
-                                                                                <span x-text="ticket.whatsapp_number || ticket.user?.whatsapp_number"></span>
-                                                                            </div>
-                                                                        </template>
-                                                                    </div>
-                                                                </div>
-
-                                                            <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
-                                                                Reference</div>
-                                                            <div class="flex items-center gap-3 mb-8">
-                                                                <div class="text-2xl text-slate-900 dark:text-white font-black tracking-tight"
-                                                                    x-text="ticket.hashid"></div>
-                                                                <button @click.stop="copyHashid(ticket.hashid)"
-                                                                    class="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20">
-                                                                    <template x-if="copiedId === ticket.hashid">
-                                                                        <span
-                                                                            class="flex items-center gap-1 text-[10px] font-bold text-emerald-500 tracking-wider">
-                                                                            <svg class="w-4 h-4" fill="none"
-                                                                                stroke="currentColor"
-                                                                                viewBox="0 0 24 24">
-                                                                                <path stroke-linecap="round"
-                                                                                    stroke-linejoin="round"
-                                                                                    stroke-width="2"
-                                                                                    d="M5 13l4 4L19 7" />
-                                                                            </svg>
-                                                                            Copied!
-                                                                        </span>
-                                                                    </template>
-                                                                    <template x-if="copiedId !== ticket.hashid">
-                                                                        <svg class="w-4 h-4" fill="none"
-                                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                stroke-width="2.5"
-                                                                                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                                                                        </svg>
-                                                                    </template>
-                                                                </button>
-                                                            </div>
-
-                                                            <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
-                                                                Subject</div>
-                                                            <div class="text-xl text-slate-900 dark:text-white font-bold mb-6"
-                                                                x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
-                                                            </div>
-
-                                                            <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
-                                                                Description</div>
-                                                            <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm"
-                                                                x-text="ticket.content"></div>
-
-                                                            <template x-if="ticket.order_type">
+                                                    <div class="mt-2 mb-6">
+                                                        <div class="space-y-1.5">
+                                                            <template x-if="ticket.name || ticket.user?.name">
                                                                 <div
-                                                                    class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                                                                    <div
-                                                                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
-                                                                        Order Information</div>
-                                                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                                                        <div>
-                                                                            <div
-                                                                                class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                                                                Frequency</div>
-                                                                            <div class="text-sm text-slate-900 dark:text-white capitalize"
-                                                                                x-text="['recurrent', 'recurring'].includes(ticket.order_type) ? orderTypeLabel(ticket.order_type) + ' - ' + (ticket.recurrence_period === 'custom' ? 'Custom: ' + ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)) : orderTypeLabel(ticket.order_type)">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <template
-                                                                        x-if="ticket.order_activations && ticket.order_activations.length > 0">
-                                                                        <div class="mt-6">
-                                                                            <div
-                                                                                class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">
-                                                                                Order Process History</div>
-                                                                            <div class="space-y-1.5">
-                                                                                <template
-                                                                                    x-for="(date, i) in ticket.order_activations"
-                                                                                    :key="i">
-                                                                                    <div
-                                                                                        class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                        <div
-                                                                                            class="w-1 h-1 rounded-full bg-lime-500 shrink-0">
-                                                                                        </div>
-                                                                                        <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
-                                                                                            fill="none"
-                                                                                            stroke="currentColor"
-                                                                                            viewBox="0 0 24 24">
-                                                                                            <path
-                                                                                                stroke-linecap="round"
-                                                                                                stroke-linejoin="round"
-                                                                                                stroke-width="2"
-                                                                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                                                        </svg>
-                                                                                        <span
-                                                                                            x-text="new Date(date).toLocaleDateString('en-GB')"></span>
-                                                                                        <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
-                                                                                            fill="none"
-                                                                                            stroke="currentColor"
-                                                                                            viewBox="0 0 24 24">
-                                                                                            <path
-                                                                                                stroke-linecap="round"
-                                                                                                stroke-linejoin="round"
-                                                                                                stroke-width="2"
-                                                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                                        </svg>
-                                                                                        <span
-                                                                                            x-text="new Date(date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })"></span>
-                                                                                    </div>
-                                                                                </template>
-                                                                            </div>
-                                                                        </div>
-                                                                    </template>
+                                                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                        fill="none" stroke="currentColor"
+                                                                        viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2"
+                                                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                                    </svg>
+
+                                                                    <span
+                                                                        x-text="ticket.name || ticket.user?.name"></span>
                                                                 </div>
                                                             </template>
+                                                        </div>
 
-                                                            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                                                                <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
-                                                                    Attending Support Staff
-                                                                </div>
+                                                        <div class="space-y-1.5">
+                                                            <template x-if="ticket.email || ticket.user?.email">
+                                                                <div
+                                                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                        fill="none" stroke="currentColor"
+                                                                        viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2"
+                                                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                                    </svg>
 
-                                                                <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                                                    Past 
+                                                                    <span
+                                                                        x-text="ticket.email || ticket.user?.email"></span>
                                                                 </div>
-                                                                <div class="flex flex-wrap gap-3 mb-4">
-                                                                    <template x-if="ticket.attendants && ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length > 0">
-                                                                        <template x-for="att in ticket.attendants.filter(a => a.id !== ticket.attendant?.id)" :key="att.id">
-                                                                            <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
-                                                                                <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
-                                                                                    x-text="att.name ? att.name.charAt(0).toUpperCase() : '?'"></div>
-                                                                                <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="att.name"></span>
-                                                                            </div>
-                                                                        </template>
-                                                                    </template>
-                                                                    <template x-if="!ticket.attendants || ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length === 0">
-                                                                        <span class="text-xs italic text-slate-400">No past support staff.</span>
-                                                                    </template>
-                                                                </div>
+                                                            </template>
+                                                        </div>
 
-                                                                <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                                                    Current 
+                                                        <div class="space-y-1.5">
+                                                            <template
+                                                                x-if="ticket.whatsapp_number || ticket.user?.whatsapp_number">
+                                                                <div
+                                                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                        fill="none" stroke="currentColor"
+                                                                        viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2"
+                                                                            d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                                                    </svg>
+
+                                                                    <span
+                                                                        x-text="ticket.whatsapp_number || ticket.user?.whatsapp_number"></span>
                                                                 </div>
-                                                                <div class="flex flex-wrap gap-3">
-                                                                    <template x-if="ticket.attendant">
-                                                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
-                                                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
-                                                                                x-text="ticket.attendant.name ? ticket.attendant.name.charAt(0).toUpperCase() : '?'"></div>
-                                                                            <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="ticket.attendant.name"></span>
-                                                                        </div>
-                                                                    </template>
-                                                                    <template x-if="!ticket.attendant">
-                                                                        <span class="text-xs italic text-slate-400">No current support staff assigned yet.</span>
-                                                                    </template>
-                                                                </div>
-                                                            </div>
+                                                            </template>
                                                         </div>
                                                     </div>
+
+                                                    <div
+                                                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                        Reference</div>
+                                                    <div class="flex items-center gap-3 mb-8">
+                                                        <div class="text-2xl text-slate-900 dark:text-white font-black tracking-tight"
+                                                            x-text="ticket.hashid"></div>
+                                                        <button @click.stop="copyHashid(ticket.hashid)"
+                                                            class="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20">
+                                                            <template x-if="copiedId === ticket.hashid">
+                                                                <span
+                                                                    class="flex items-center gap-1 text-[10px] font-bold text-emerald-500 tracking-wider">
+                                                                    <svg class="w-4 h-4" fill="none"
+                                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2"
+                                                                            d="M5 13l4 4L19 7" />
+                                                                    </svg>
+                                                                    Copied!
+                                                                </span>
+                                                            </template>
+                                                            <template x-if="copiedId !== ticket.hashid">
+                                                                <svg class="w-4 h-4" fill="none"
+                                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2.5"
+                                                                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                                                </svg>
+                                                            </template>
+                                                        </button>
+                                                    </div>
+
+                                                    <div
+                                                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
+                                                        Subject</div>
+                                                    <div class="text-xl text-slate-900 dark:text-white font-bold mb-6"
+                                                        x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
+                                                    </div>
+
+                                                    <div
+                                                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
+                                                        Description</div>
+                                                    <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm mb-6"
+                                                        x-text="ticket.content"></div>
 
                                                     {{-- Attachments --}}
                                                     <template
                                                         x-if="(ticket.images && ticket.images.length > 0) || ticket.filename">
                                                         <div>
                                                             <h4
-                                                                class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
+                                                                class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center uppercase">
                                                                 <svg class="w-4 h-4 mr-2 text-emerald-500"
                                                                     fill="none" stroke="currentColor"
                                                                     viewBox="0 0 24 24">
@@ -779,7 +674,7 @@
                                                             <div class="flex flex-wrap gap-4">
                                                                 <template x-if="ticket.filename">
                                                                     <a :href="'/storage/' + ticket.filename"
-                                                                        target="_blank"
+                                                                        :alt="ticket.filename" target="_blank"
                                                                         class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
                                                                         <img :src="'/storage/' + ticket.filename"
                                                                             class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
@@ -826,74 +721,243 @@
                                                             </div>
                                                         </div>
                                                     </template>
-                                                </div>
 
-                                                {{-- Right: comments + comment form --}}
-                                                <div class="space-y-8">
-                                                    <div>
-                                                        <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                                                            <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                                                            Conversation
-                                                        </h4>
-
-                                                        <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
-                                                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
-                                                            <template
-                                                                x-if="!ticket.comments || ticket.comments.length === 0">
-                                                                <div class="text-center py-2 opacity-40">
-                                                                    <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                                                                    <div class="italic text-sm">No comments yet. Start the conversation.</div>
+                                                    <template x-if="ticket.order_type">
+                                                        <div
+                                                            class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                                                            <div
+                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                                Order Information</div>
+                                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                                <div>
+                                                                    <div
+                                                                        class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                                                        Frequency</div>
+                                                                    <div class="text-sm text-slate-900 dark:text-white capitalize"
+                                                                        x-text="['recurrent', 'recurring'].includes(ticket.order_type) ? orderTypeLabel(ticket.order_type) + ' - ' + (ticket.recurrence_period === 'custom' ? 'Custom: ' + ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)) : orderTypeLabel(ticket.order_type)">
+                                                                    </div>
                                                                 </div>
-                                                            </template>
+                                                            </div>
 
-                                                            <template x-for="(comment, ci) in (ticket.comments || [])" :key="ci">
-                                                                <div class="flex flex-col"
-                                                                    :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')) ? 'items-end' : 'items-start'">
-                                                                    <div class="max-w-[95%] sm:max-w-[85%] p-4 sm:p-5"
-                                                                        :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin'))
-                                                                            ? 'bg-teal-900 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-sm sm:rounded-br-md'
-                                                                            : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] rounded-bl-sm sm:rounded-bl-md'">
-                                                                        <div class="flex items-center space-x-3 mb-2">
-                                                                            <span class="text-[9px] font-black tracking-widest opacity-80" x-text="comment.user?.name"></span>
-                                                                            <template x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">
-                                                                                <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-white/20 text-white">Support</span>
-                                                                            </template>
-                                                                            <span class="text-[9px] opacity-40" x-text="new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
-                                                                        </div>
-                                                                        <div class="text-sm font-medium leading-relaxed" x-text="comment.content"></div>
-                                                                        <template x-if="comment.images && comment.images.length > 0">
-                                                                            <div class="flex flex-wrap gap-2 mt-3">
-                                                                                <template x-for="(cimg, cii) in comment.images" :key="cii">
-                                                                                    <a :href="'/storage/' + cimg" target="_blank" class="w-16 h-16 rounded-lg overflow-hidden border border-white/20">
-                                                                                        <img :src="'/storage/' + cimg" class="w-full h-full object-cover" />
-                                                                                    </a>
-                                                                                </template>
+                                                            <template
+                                                                x-if="ticket.order_activations && ticket.order_activations.length > 0">
+                                                                <div class="mt-6">
+                                                                    <div
+                                                                        class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">
+                                                                        Order Process History</div>
+                                                                    <div class="space-y-1.5">
+                                                                        <template
+                                                                            x-for="(date, i) in ticket.order_activations"
+                                                                            :key="i">
+                                                                            <div
+                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                <div
+                                                                                    class="w-1 h-1 rounded-full bg-lime-500 shrink-0">
+                                                                                </div>
+                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    viewBox="0 0 24 24">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        stroke-width="2"
+                                                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                                </svg>
+                                                                                <span
+                                                                                    x-text="new Date(date).toLocaleDateString('en-GB')"></span>
+                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                    fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    viewBox="0 0 24 24">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        stroke-width="2"
+                                                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                </svg>
+                                                                                <span
+                                                                                    x-text="new Date(date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })"></span>
                                                                             </div>
                                                                         </template>
                                                                     </div>
                                                                 </div>
                                                             </template>
                                                         </div>
+                                                    </template>
 
-                                                        {{-- Comment form --}}
-                                                        @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                                            <div x-data="commentForm(ticket.id)" @click.stop>
-                                                                @include('dashboard._comment-form')
-                                                            </div>
-                                                        @else
-                                                            <template x-if="authId === ticket.user_id">
-                                                                <div x-data="commentForm(ticket.id)" @click.stop>
-                                                                    @include('dashboard._comment-form')
+                                                    <div
+                                                        class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                                                        <div
+                                                            class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                            Attending Support Staff
+                                                        </div>
+
+                                                        <div
+                                                            class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                                            Past
+                                                        </div>
+                                                        <div class="flex flex-wrap gap-3 mb-4">
+                                                            <template
+                                                                x-if="ticket.attendants && ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length > 0">
+                                                                <template
+                                                                    x-for="att in ticket.attendants.filter(a => a.id !== ticket.attendant?.id)"
+                                                                    :key="att.id">
+                                                                    <div
+                                                                        class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                                                        <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                                            x-text="att.name ? att.name.charAt(0).toUpperCase() : '?'">
+                                                                        </div>
+                                                                        <span
+                                                                            class="text-xs font-bold text-slate-900 dark:text-white"
+                                                                            x-text="att.name"></span>
+                                                                    </div>
+                                                                </template>
+                                                            </template>
+                                                            <template
+                                                                x-if="!ticket.attendants || ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length === 0">
+                                                                <span class="text-xs italic text-slate-400">No past
+                                                                    support staff.</span>
+                                                            </template>
+                                                        </div>
+
+                                                        <div
+                                                            class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                                            Current
+                                                        </div>
+                                                        <div class="flex flex-wrap gap-3">
+                                                            <template x-if="ticket.attendant">
+                                                                <div
+                                                                    class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                                                    <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                                        x-text="ticket.attendant.name ? ticket.attendant.name.charAt(0).toUpperCase() : '?'">
+                                                                    </div>
+                                                                    <span
+                                                                        class="text-xs font-bold text-slate-900 dark:text-white"
+                                                                        x-text="ticket.attendant.name"></span>
                                                                 </div>
                                                             </template>
-                                                        @endif
+                                                            <template x-if="!ticket.attendant">
+                                                                <span class="text-xs italic text-slate-400">No current
+                                                                    support staff assigned yet.</span>
+                                                            </template>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                        </template>
+                                        </div>
+
+                                        {{-- Right: comments + comment form --}}
+                                        <div class="space-y-8">
+                                            <div>
+                                                <h4
+                                                    class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
+                                                    <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2.5"
+                                                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                                    </svg>
+                                                    Conversation
+                                                </h4>
+
+                                                <div
+                                                    class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
+                                                    <div
+                                                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40">
+                                                    </div>
+                                                    <template x-if="!ticket.comments || ticket.comments.length === 0">
+                                                        <div class="text-center py-2 opacity-40">
+                                                            <svg class="w-12 h-12 mx-auto mb-3" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                            </svg>
+                                                            <div class="italic text-sm">No comments yet. Start the
+                                                                conversation.</div>
+                                                        </div>
+                                                    </template>
+
+                                                    <template
+                                                        x-for="(comment, ci) in [...(ticket.comments || [])].sort((a, b) => new Date(a.created_at) - new Date(b.created_at))"
+                                                        :key="ci">
+                                                        <div class="flex flex-col"
+                                                            :class="(comment.user && (comment.user.role === 'support' ||
+                                                                comment.user.role === 'admin')) ? 'items-end' :
+                                                            'items-start'">
+                                                            <div class="max-w-[95%] sm:max-w-[85%] p-4 sm:p-5"
+                                                                :class="(comment.user && (comment.user.role === 'support' ||
+                                                                    comment.user.role === 'admin')) ?
+                                                                'bg-teal-900 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-sm sm:rounded-br-md' :
+                                                                'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] rounded-bl-sm sm:rounded-bl-md'">
+                                                                <div class="flex items-center space-x-3 mb-2">
+                                                                    <span
+                                                                        class="text-[9px] font-black tracking-widest opacity-80"
+                                                                        x-text="comment.user?.name"></span>
+                                                                    <template
+                                                                        x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">
+                                                                        <span
+                                                                            class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-white/20 text-white">Support</span>
+                                                                    </template>
+                                                                    <span class="text-[9px] opacity-40"
+                                                                        x-text="timeAgo(comment.created_at) + ' · ' + new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
+                                                                </div>
+                                                                <div class="text-sm font-medium leading-relaxed"
+                                                                    x-text="comment.content"></div>
+                                                                <template
+                                                                    x-if="comment.images && comment.images.length > 0">
+                                                                    <div class="flex flex-wrap gap-2 mt-3">
+                                                                        <template
+                                                                            x-for="(cimg, cii) in (comment.images || [])"
+                                                                            :key="cii">
+                                                                            <a :href="'/storage/' + cimg"
+                                                                                target="_blank"
+                                                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                                                                <img :src="'/storage/' + cimg"
+                                                                                    class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                <div
+                                                                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                    <svg class="w-6 h-6 text-white"
+                                                                                        fill="none"
+                                                                                        stroke="currentColor"
+                                                                                        viewBox="0 0 24 24">
+                                                                                        <path stroke-linecap="round"
+                                                                                            stroke-linejoin="round"
+                                                                                            stroke-width="2"
+                                                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                                        <path stroke-linecap="round"
+                                                                                            stroke-linejoin="round"
+                                                                                            stroke-width="2"
+                                                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </a>
+                                                                        </template>
+                                                                    </div>
+                                                                </template>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+
+                                                {{-- Comment form --}}
+                                                @if (in_array(auth()->user()->role, ['admin', 'support']))
+                                                    <div x-data="commentForm(ticket.id)" @click.stop>
+                                                        @include('dashboard._comment-form')
+                                                    </div>
+                                                @else
+                                                    <template x-if="authId === ticket.user_id">
+                                                        <div x-data="commentForm(ticket.id)" @click.stop>
+                                                            @include('dashboard._comment-form')
+                                                        </div>
+                                                    </template>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
                 </table>
             </div>
 
@@ -904,7 +968,8 @@
                     <div class="text-[10px] font-black text-slate-400 tracking-widest uppercase"
                         x-text="'Page ' + currentPage + ' of ' + totalPages"></div>
                     <div class="flex items-center gap-2">
-                        <button @click="currentPage = Math.max(currentPage - 1, 1)" x-bind:disabled="currentPage === 1"
+                        <button @click="currentPage = Math.max(currentPage - 1, 1)"
+                            x-bind:disabled="currentPage === 1"
                             class="p-2 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 disabled:opacity-50 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -939,7 +1004,7 @@
         </div>
 
         {{-- ── Edit modal ─────────────────────────────────────────────────── --}}
-        <div x-show="editingTicket !== null" x-cloak
+        {{-- <div x-show="editingTicket !== null" x-cloak
             class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm"
             @keydown.escape.window="closeEditModal()">
             <div class="relative w-full max-w-2xl bg-white dark:bg-[#102824] rounded-3xl shadow-2xl border border-emerald-900/10 dark:border-[#1d3a34] p-8"
@@ -1023,12 +1088,13 @@
                             Cancel
                         </button>
                         <button type="submit" x-bind:disabled="editSubmitting"
-                            class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                        >
+                            class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2">
                             <template x-if="editSubmitting">
                                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4" />
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                                 </svg>
                             </template>
                             <span x-text="editSubmitting ? 'Saving...' : 'Edit Ticket'">Edit Ticket</span>
@@ -1036,7 +1102,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> --}}
     </div>
 
 
@@ -1070,7 +1136,7 @@
                 bulkDelete: () => `/tickets/bulk-delete`,
                 bulkStatus: () => `/tickets/bulk-status`,
                 activate: (id) => `/tickets/${id}/activate-order`,
-                editTicket: (id) => `/tickets/${id}`,
+                // editTicket: (id) => `/tickets/${id}`,
                 addComment: (id) => `/tickets/${id}/comments`,
             };
 
@@ -1130,8 +1196,10 @@
                         } = this.sortConfig;
                         if (!key) return items;
                         return items.sort((a, b) => {
-                            let av = key === 'user' ? a.user?.name : key === 'attendant' ? a.attendant?.name : a[key];
-                            let bv = key === 'user' ? b.user?.name : key === 'attendant' ? b.attendant?.name : b[key];
+                            let av = key === 'user' ? a.user?.name : key === 'attendant' ? a.attendant?.name : a[
+                                key];
+                            let bv = key === 'user' ? b.user?.name : key === 'attendant' ? b.attendant?.name : b[
+                                key];
                             if (av < bv) return direction === 'asc' ? -1 : 1;
                             if (av > bv) return direction === 'asc' ? 1 : -1;
                             return 0;
@@ -1150,7 +1218,8 @@
                     get visiblePages() {
                         const pages = [];
                         for (let p = 1; p <= this.totalPages; p++) {
-                            if (p === 1 || p === this.totalPages || (p >= this.currentPage - 1 && p <= this.currentPage + 1)) {
+                            if (p === 1 || p === this.totalPages || (p >= this.currentPage - 1 && p <= this.currentPage +
+                                    1)) {
                                 pages.push(p);
                             } else if (p === this.currentPage - 2 || p === this.currentPage + 2) {
                                 pages.push('...');
@@ -1200,10 +1269,12 @@
                         this.expandedId = this.expandedId === id ? null : id;
                     },
                     toggleSelectAll() {
-                        this.selectedIds = this.selectedIds.length === this.allTickets.length ? [] : this.allTickets.map(t => t.id);
+                        this.selectedIds = this.selectedIds.length === this.allTickets.length ? [] : this.allTickets.map(t => t
+                            .id);
                     },
                     toggleSelect(id) {
-                        this.selectedIds.includes(id) ? this.selectedIds.splice(this.selectedIds.indexOf(id), 1) : this.selectedIds.push(id);
+                        this.selectedIds.includes(id) ? this.selectedIds.splice(this.selectedIds.indexOf(id), 1) : this
+                            .selectedIds.push(id);
                     },
 
                     copyHashid(hashid) {
@@ -1236,8 +1307,8 @@
                             if (Array.isArray(v)) v.forEach(i => form.append(k + '[]', i));
                             else form.append(k, v);
                         }
-                        return fetch(url, { 
-                            method: 'POST', 
+                        return fetch(url, {
+                            method: 'POST',
                             body: form,
                             headers: {
                                 'Accept': 'application/json',
@@ -1258,8 +1329,8 @@
                             if (Array.isArray(v)) v.forEach(i => form.append(k + '[]', i));
                             else form.append(k, v);
                         }
-                        return fetch(url, { 
-                            method: 'POST', 
+                        return fetch(url, {
+                            method: 'POST',
                             body: form,
                             headers: {
                                 'Accept': 'application/json',
@@ -1271,7 +1342,10 @@
                     async statusUpdate(id, status) {
                         await this.patchFetch(ROUTES.statusUpdate(id, status));
                         // Optimistically update local state
-                        this.allTickets = this.allTickets.map(t => t.id === id ? { ...t, status } : t);
+                        this.allTickets = this.allTickets.map(t => t.id === id ? {
+                            ...t,
+                            status
+                        } : t);
                     },
 
                     async deleteTicket(id) {
@@ -1299,7 +1373,9 @@
                             message: `Delete ${this.selectedIds.length} tickets? This cannot be undone.`
                         });
                         if (!confirmed) return;
-                        const r = await this.deleteFetch(ROUTES.bulkDelete(), { ids: this.selectedIds });
+                        const r = await this.deleteFetch(ROUTES.bulkDelete(), {
+                            ids: this.selectedIds
+                        });
                         if (r.ok) {
                             const count = this.selectedIds.length;
                             this.allTickets = this.allTickets.filter(t => !this.selectedIds.includes(t.id));
@@ -1311,9 +1387,15 @@
                     },
 
                     async bulkStatusChange(status) {
-                        const r = await this.patchFetch(ROUTES.bulkStatus(), { ids: this.selectedIds, status });
+                        const r = await this.patchFetch(ROUTES.bulkStatus(), {
+                            ids: this.selectedIds,
+                            status
+                        });
                         if (r.ok) {
-                            this.allTickets = this.allTickets.map(t => this.selectedIds.includes(t.id) ? { ...t, status } : t);
+                            this.allTickets = this.allTickets.map(t => this.selectedIds.includes(t.id) ? {
+                                ...t,
+                                status
+                            } : t);
                             this.selectedIds = [];
                         }
                     },
@@ -1341,7 +1423,8 @@
                                 const days = totalDiff % 30;
                                 let elapsed = '';
                                 if (months > 0 && days > 0) {
-                                    elapsed = `${months} month${months > 1 ? 's' : ''} and ${days} day${days > 1 ? 's' : ''}`;
+                                    elapsed =
+                                        `${months} month${months > 1 ? 's' : ''} and ${days} day${days > 1 ? 's' : ''}`;
                                 } else if (months > 0) {
                                     elapsed = `${months} month${months > 1 ? 's' : ''}`;
                                 } else if (days > 0) {
@@ -1355,7 +1438,8 @@
                                 const reqDays = required % 30;
                                 let reqLabel = '';
                                 if (reqMonths > 0 && reqDays > 0) {
-                                    reqLabel = `${reqMonths} month${reqMonths > 1 ? 's' : ''} and ${reqDays} day${reqDays > 1 ? 's' : ''}`;
+                                    reqLabel =
+                                        `${reqMonths} month${reqMonths > 1 ? 's' : ''} and ${reqDays} day${reqDays > 1 ? 's' : ''}`;
                                 } else if (reqMonths > 0) {
                                     reqLabel = `${reqMonths} month${reqMonths > 1 ? 's' : ''}`;
                                 } else {
@@ -1447,6 +1531,28 @@
                         });
                     },
                 };
+            }
+
+            function timeAgo(dateStr) {
+                const date = new Date(dateStr);
+                const now = new Date();
+                const seconds = Math.floor((now - date) / 1000);
+
+                const intervals = [
+                    { label: 'y',  secs: 31536000 },
+                    { label: 'mo', secs: 2592000 },
+                    { label: 'd',  secs: 86400 },
+                    { label: 'h',  secs: 3600 },
+                    { label: 'm',  secs: 60 },
+                ];
+
+                for (const i of intervals) {
+                    const count = Math.floor(seconds / i.secs);
+                    if (count >= 1) {
+                        return `${count}${i.label} ago`;
+                    }
+                }
+                return 'just now';
             }
 
             function commentForm(ticketId) {

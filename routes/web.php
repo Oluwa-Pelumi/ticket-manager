@@ -17,7 +17,7 @@ Route::get('/home', function () {
         'stats' => [
             'totalTickets'      => Ticket::count(),
             'openTickets'       => Ticket::where('status', 'open')->count(),
-            'resolvedTickets'   => Ticket::where('status', 'closed')->count(),
+            'closedTickets'   => Ticket::where('status', 'closed')->count(),
             'inProgressTickets' => Ticket::where('status', 'in-progress')->count(),
         ],
         'faqs' => rescue(fn () => Faq::orderBy('order')->get(), []),
