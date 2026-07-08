@@ -92,7 +92,7 @@
                                     };
                                 @endphp
                                 <a
-                                    href="{{ route('ticket.show', $ticket->id) }}"
+                                    href="{{ route('ticket.show', $ticket->hashid) }}"
                                     class="block p-8 bg-white dark:bg-[#0f172a] rounded-[2.5rem] border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm hover:shadow-2xl hover:shadow-sky-400/10 hover:border-sky-950/50 transition-all group"
                                 >
                                     <div class="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">

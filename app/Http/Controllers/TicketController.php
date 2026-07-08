@@ -113,53 +113,53 @@ class TicketController extends Controller
     /**
      * Update ticket details and optionally append new images.
      */
-    public function update(Request $request, Ticket $ticket)
-    {
-        // --- Authorization and status checks ---
-        if ($ticket->user_id !== Auth::id()) {
-            return back()->with('error', 'Unauthorized action.');
-        }
+    // public function update(Request $request, Ticket $ticket)
+    // {
+    //     // --- Authorization and status checks ---
+    //     if ($ticket->user_id !== Auth::id()) {
+    //         return back()->with('error', 'Unauthorized action.');
+    //     }
 
-        if ($ticket->status === 'closed') {
-            return back()->with('error', 'Closed tickets cannot be edited.');
-        }
+    //     if ($ticket->status === 'closed') {
+    //         return back()->with('error', 'Closed tickets cannot be edited.');
+    //     }
 
-        $validated = $request->validate([
-            'images'                 => 'nullable|array',
-            'images.*'               => 'image|max:5120',
-            'content'                => 'required|string',
-            'subject'                => 'required|string|max:255',
-            'category_id'            => 'nullable|exists:categories,id',
-            'priority'               => 'required|string|in:low,medium,high',
-        ]);
+    //     $validated = $request->validate([
+    //         'images'                 => 'nullable|array',
+    //         'images.*'               => 'image|max:5120',
+    //         'content'                => 'required|string',
+    //         'subject'                => 'required|string|max:255',
+    //         'category_id'            => 'nullable|exists:categories,id',
+    //         'priority'               => 'required|string|in:low,medium,high',
+    //     ]);
 
-        $updateData = [
-            'subject'                => $validated['subject'],
-            'content'                => $validated['content'],
-            'priority'               => $validated['priority'],
-            'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
-        ];
+    //     $updateData = [
+    //         'subject'                => $validated['subject'],
+    //         'content'                => $validated['content'],
+    //         'priority'               => $validated['priority'],
+    //         'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
+    //     ];
 
-        // --- Merge new image uploads with existing paths ---
-        if ($request->hasFile('images')) {
-            $user       = Auth::user();
-            $username   = Str::slug($user->name, '_');
-            $folder     = $username . '-' . $user->id;
-            $imagePaths = $ticket->images ?? [];
+    //     // --- Merge new image uploads with existing paths ---
+    //     if ($request->hasFile('images')) {
+    //         $user       = Auth::user();
+    //         $username   = Str::slug($user->name, '_');
+    //         $folder     = $username . '-' . $user->id;
+    //         $imagePaths = $ticket->images ?? [];
 
-            foreach ($request->file('images') as $index => $file) {
-                $extension    = $file->getClientOriginalExtension();
-                $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
-                $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
-                $imagePaths[] = $filepath;
-            }
-            $updateData['images'] = $imagePaths;
-        }
+    //         foreach ($request->file('images') as $index => $file) {
+    //             $extension    = $file->getClientOriginalExtension();
+    //             $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
+    //             $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
+    //             $imagePaths[] = $filepath;
+    //         }
+    //         $updateData['images'] = $imagePaths;
+    //     }
 
-        $ticket->update($updateData);
+    //     $ticket->update($updateData);
 
-        return back()->with('success', 'Ticket updated successfully.');
-    }
+    //     return back()->with('success', 'Ticket updated successfully.');
+    // }
 
     /**
      * Update a single ticket's status and optionally reassign support staff.

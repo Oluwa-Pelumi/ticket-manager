@@ -80,9 +80,6 @@ Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment']
 Route::middleware(['auth', 'staff'])->group(function () {
     Route::patch('bulk-update-ticket-status', [TicketController::class, 'bulkUpdateStatus'])
         ->name('bulk-update-ticket-status');
-
-    Route::patch('/tickets/{ticket}/activate-order', [TicketController::class, 'activateOrder'])
-    ->name('tickets.activate-order');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

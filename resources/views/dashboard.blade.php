@@ -83,7 +83,7 @@
                 @if (auth()->user()->role === 'user')
                     <a href="{{ route('submit-ticket') }}"
                         class="w-full md:w-auto text-center px-6 py-3 bg-sky-950 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-sky-800 hover:text-white hover:scale-105 active:scale-95 transition-all">
-                        Submit Ticket
+                        Submit a New Ticket
                     </a>
                 @endif
             </div>
@@ -413,7 +413,7 @@
                                         <div class="flex items-center justify-end space-x-1 md:space-x-2">
 
                                             {{-- Edit (ticket owner, not closed) --}}
-                                            @if (auth()->user()->role === 'user')
+                                            {{-- @if (auth()->user()->role === 'user')
                                                 <template x-if="authId === ticket.user_id && ticket.status !== 'closed'">
                                                     <button @click.stop="openEditModal(ticket)"
                                                         class="p-1.5 md:p-2 rounded-lg bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white transition-all shadow-sm"
@@ -424,7 +424,7 @@
                                                         </svg>
                                                     </button>
                                                 </template>
-                                            @endif
+                                            @endif --}}
 
                                             {{-- Expand toggle --}}
                                             <button @click.stop="toggleExpand(ticket.id)"
@@ -438,7 +438,7 @@
                                                 </svg>
                                             </button>
 
-                                            @if (in_array(auth()->user()->role, ['admin', 'support']))
+                                            @if (in_array(auth()->user()->role, ['admin', 'support', 'user']))
                                                 {{-- Delete --}}
                                                 <button @click.stop="deleteTicket(ticket.id)"
                                                     class="p-1.5 md:p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm">
@@ -590,8 +590,74 @@
                                                             <div
                                                                 class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">
                                                                 Description</div>
-                                                            <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm"
+                                                            <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm mb-6"
                                                                 x-text="ticket.content"></div>
+
+                                                            {{-- Attachments --}}
+                                                            <template
+                                                                x-if="(ticket.images && ticket.images.length > 0) || ticket.filename">
+                                                                <div>
+                                                                    <h4
+                                                                        class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center uppercase">
+                                                                        <svg class="w-4 h-4 mr-2 text-sky-500"
+                                                                            fill="none" stroke="currentColor"
+                                                                            viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round" stroke-width="2"
+                                                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                        </svg>
+                                                                        Attachments
+                                                                    </h4>
+                                                                    <div class="flex flex-wrap gap-4">
+                                                                        <template x-if="ticket.filename">
+                                                                            <a :href="'/storage/' + ticket.filename"
+                                                                                target="_blank"
+                                                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                                                                <img :src="'/storage/' + ticket.filename" :alt="ticket.filename"
+                                                                                    class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                <div
+                                                                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                    <svg class="w-6 h-6 text-white"
+                                                                                        fill="none" stroke="currentColor"
+                                                                                        viewBox="0 0 24 24">
+                                                                                        <path stroke-linecap="round"
+                                                                                            stroke-linejoin="round"
+                                                                                            stroke-width="2"
+                                                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                                        <path stroke-linecap="round"
+                                                                                            stroke-linejoin="round"
+                                                                                            stroke-width="2"
+                                                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </a>
+                                                                        </template>
+                                                                        <template x-for="(img, i) in (ticket.images || [])"
+                                                                            :key="i">
+                                                                            <a :href="'/storage/' + img" target="_blank"
+                                                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                                                                <img :src="'/storage/' + img"
+                                                                                    class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                <div
+                                                                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                    <svg class="w-6 h-6 text-white"
+                                                                                        fill="none" stroke="currentColor"
+                                                                                        viewBox="0 0 24 24">
+                                                                                        <path stroke-linecap="round"
+                                                                                            stroke-linejoin="round"
+                                                                                            stroke-width="2"
+                                                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                                        <path stroke-linecap="round"
+                                                                                            stroke-linejoin="round"
+                                                                                            stroke-width="2"
+                                                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </a>
+                                                                        </template>
+                                                                    </div>
+                                                                </div>
+                                                            </template>
 
                                                             <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1e3a5f]/50">
                                                                 <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">
@@ -634,72 +700,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    {{-- Attachments --}}
-                                                    <template
-                                                        x-if="(ticket.images && ticket.images.length > 0) || ticket.filename">
-                                                        <div>
-                                                            <h4
-                                                                class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
-                                                                <svg class="w-4 h-4 mr-2 text-sky-500"
-                                                                    fill="none" stroke="currentColor"
-                                                                    viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round" stroke-width="2"
-                                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                                </svg>
-                                                                Attachments
-                                                            </h4>
-                                                            <div class="flex flex-wrap gap-4">
-                                                                <template x-if="ticket.filename">
-                                                                    <a :href="'/storage/' + ticket.filename"
-                                                                        target="_blank"
-                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                                                        <img :src="'/storage/' + ticket.filename"
-                                                                            class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                                        <div
-                                                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                                            <svg class="w-6 h-6 text-white"
-                                                                                fill="none" stroke="currentColor"
-                                                                                viewBox="0 0 24 24">
-                                                                                <path stroke-linecap="round"
-                                                                                    stroke-linejoin="round"
-                                                                                    stroke-width="2"
-                                                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                                <path stroke-linecap="round"
-                                                                                    stroke-linejoin="round"
-                                                                                    stroke-width="2"
-                                                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                                            </svg>
-                                                                        </div>
-                                                                    </a>
-                                                                </template>
-                                                                <template x-for="(img, i) in (ticket.images || [])"
-                                                                    :key="i">
-                                                                    <a :href="'/storage/' + img" target="_blank"
-                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                                                        <img :src="'/storage/' + img"
-                                                                            class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                                        <div
-                                                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                                            <svg class="w-6 h-6 text-white"
-                                                                                fill="none" stroke="currentColor"
-                                                                                viewBox="0 0 24 24">
-                                                                                <path stroke-linecap="round"
-                                                                                    stroke-linejoin="round"
-                                                                                    stroke-width="2"
-                                                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                                <path stroke-linecap="round"
-                                                                                    stroke-linejoin="round"
-                                                                                    stroke-width="2"
-                                                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                                            </svg>
-                                                                        </div>
-                                                                    </a>
-                                                                </template>
-                                                            </div>
-                                                        </div>
-                                                    </template>
                                                 </div>
 
                                                 {{-- Right: comments + comment form --}}
@@ -720,7 +720,7 @@
                                                                 </div>
                                                             </template>
 
-                                                            <template x-for="(comment, ci) in (ticket.comments || [])" :key="ci">
+                                                            <template x-for="(comment, ci) in [...(ticket.comments || [])].sort((a, b) => new Date(a.created_at) - new Date(b.created_at))" :key="ci">
                                                                 <div class="flex flex-col"
                                                                     :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')) ? 'items-end' : 'items-start'">
                                                                     <div class="max-w-[95%] sm:max-w-[85%] p-4 sm:p-5"
@@ -732,18 +732,38 @@
                                                                             <template x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">
                                                                                 <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded bg-white/20 text-white">Support</span>
                                                                             </template>
-                                                                            <span class="text-[9px] opacity-40" x-text="new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
+
+                                                                            <span class="text-[9px] opacity-40" x-text="timeAgo(comment.created_at) + ' · ' + new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
                                                                         </div>
                                                                         <div class="text-sm font-medium leading-relaxed" x-text="comment.content"></div>
                                                                         <template x-if="comment.images && comment.images.length > 0">
                                                                             <div class="flex flex-wrap gap-2 mt-3">
-                                                                                <template x-for="(cimg, cii) in comment.images" :key="cii">
-                                                                                    <a :href="'/storage/' + cimg" target="_blank" class="w-16 h-16 rounded-lg overflow-hidden border border-white/20">
-                                                                                        <img :src="'/storage/' + cimg" class="w-full h-full object-cover" />
+                                                                                <template x-for="(cimg, cii) in (comment.images || [])" :key="cii">
+                                                                                    <a :href="'/storage/' + cimg" target="_blank"
+                                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                                                                        <img :src="'/storage/' + cimg"
+                                                                                            class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                        <div
+                                                                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                            <svg class="w-6 h-6 text-white"
+                                                                                                fill="none" stroke="currentColor"
+                                                                                                viewBox="0 0 24 24">
+                                                                                                <path stroke-linecap="round"
+                                                                                                    stroke-linejoin="round"
+                                                                                                    stroke-width="2"
+                                                                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                                                <path stroke-linecap="round"
+                                                                                                    stroke-linejoin="round"
+                                                                                                    stroke-width="2"
+                                                                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                                                            </svg>
+                                                                                        </div>
                                                                                     </a>
                                                                                 </template>
                                                                             </div>
                                                                         </template>
+
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </template>
@@ -813,7 +833,7 @@
         </div>
 
         {{-- ── Edit modal ─────────────────────────────────────────────────── --}}
-        <div x-show="editingTicket !== null" x-cloak
+        {{-- <div x-show="editingTicket !== null" x-cloak
             class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm"
             @keydown.escape.window="closeEditModal()">
             <div class="relative w-full max-w-2xl bg-white dark:bg-[#0f172a] rounded-3xl shadow-2xl border border-sky-950/10 dark:border-[#1e3a5f] p-8"
@@ -910,7 +930,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> --}}
     </div>
 
 
@@ -922,7 +942,7 @@
                 delete: (id) => `/tickets/${id}`,
                 bulkDelete: () => `/tickets/bulk-delete`,
                 bulkStatus: () => `/tickets/bulk-status`,
-                editTicket: (id) => `/tickets/${id}`,
+                // editTicket: (id) => `/tickets/${id}`,
                 addComment: (id) => `/tickets/${id}/comments`,
             };
 
@@ -1224,6 +1244,28 @@
                         });
                     },
                 };
+            }
+
+            function timeAgo(dateStr) {
+                const date = new Date(dateStr);
+                const now = new Date();
+                const seconds = Math.floor((now - date) / 1000);
+
+                const intervals = [
+                    { label: 'y',  secs: 31536000 },
+                    { label: 'mo', secs: 2592000 },
+                    { label: 'd',  secs: 86400 },
+                    { label: 'h',  secs: 3600 },
+                    { label: 'm',  secs: 60 },
+                ];
+
+                for (const i of intervals) {
+                    const count = Math.floor(seconds / i.secs);
+                    if (count >= 1) {
+                        return `${count}${i.label} ago`;
+                    }
+                }
+                return 'just now';
             }
 
             function commentForm(ticketId) {

@@ -155,65 +155,30 @@
                     <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Description</div>
                     <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm mb-8">{{ $ticket->content }}</div>
 
-                    @if($ticket->order_type)
-                    <div class="pt-8 border-t border-slate-100 dark:border-[#1e3a5f]/50">
-                        <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">Order Information</div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div>
-                                <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
-                                <div class="text-sm text-slate-900 dark:text-white capitalize">
-                                    {{ str_replace('-', ' ', $ticket->order_type) }}
-                                    @if(in_array($ticket->order_type, ['recurrent', 'recurring']))
-                                        - 
-                                        @if($ticket->recurrence_period === 'custom')
-                                            Custom: {{ $ticket->custom_recurrence_date }}
-                                        @else
-                                            {{ str_replace('-', ' ', $ticket->recurrence_period) }}
-                                        @endif
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
+                    @if(($ticket->images && count($ticket->images) > 0) || $ticket->filename)
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
+                                <svg class="w-4 h-4 mr-2 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                Attachments
+                            </h4>
+                            <div class="flex flex-wrap gap-4">
+                                @if($ticket->filename)
+                                <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                    <img src="/storage/{{ $ticket->filename }}" alt="{{ $ticket->filename }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    </div>
+                                </a>
+                                @endif
 
-                    @if($ticket->order_type)
-                        <div class="mt-6">
-                            <div
-                                class="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">
-                                Order Process History</div>
-                            <div class="space-y-1.5">
-                                @if($ticket->order_activations !== null)
-                                    @foreach($ticket->order_activations as $date)
-                                        <div
-                                            class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                            <div
-                                                class="w-1 h-1 rounded-full bg-sky-400 shrink-0">
-                                            </div>
-                                            <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            <span>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</span>
-
-                                            <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <span>{{ \Carbon\Carbon::parse($date)->format('H:i') }}</span>
+                                @if($ticket->images)
+                                    @foreach($ticket->images as $img)
+                                    <a href="/storage/{{ $img }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                        <img src="/storage/{{ $img }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                         </div>
+                                    </a>
                                     @endforeach
                                 @endif
                             </div>
@@ -265,35 +230,6 @@
                     </div>
                 </div>
             </div>
-
-            @if(($ticket->images && count($ticket->images) > 0) || $ticket->filename)
-            <div>
-                <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
-                    <svg class="w-4 h-4 mr-2 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    Attachments
-                </h4>
-                <div class="flex flex-wrap gap-4">
-                    @if($ticket->filename)
-                    <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                        <img src="/storage/{{ $ticket->filename }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        </div>
-                    </a>
-                    @endif
-                    @if($ticket->images)
-                        @foreach($ticket->images as $img)
-                        <a href="/storage/{{ $img }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                            <img src="/storage/{{ $img }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                            </div>
-                        </a>
-                        @endforeach
-                    @endif
-                </div>
-            </div>
-            @endif
         </div>
 
         {{-- Right column: conversation --}}
@@ -308,31 +244,35 @@
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
 
                     @if($ticket->comments && $ticket->comments->count() > 0)
-                        @foreach($ticket->comments as $comment)
-                        @php
-                            $isOwnerSide = $comment->user_id === $ticket->user_id || (!$comment->user_id && !$ticket->user_id);
-                        @endphp
-                        <div class="flex flex-col {{ $isOwnerSide ? 'items-end' : 'items-start' }}">
-                            <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isOwnerSide ? 'bg-sky-950 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white rounded-bl-sm border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm' }}">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <span class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
-                                    @if($comment->user && ($comment->user->role === 'support' || $comment->user->role === 'admin'))
-                                        <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded {{ $isOwnerSide ? 'bg-white/20 text-white' : 'bg-sky-500/20 text-sky-900 dark:bg-sky-400/20 dark:text-sky-400' }}">Support</span>
+                        @foreach ($ticket->comments->sortBy('created_at') as $comment)
+                            @php
+                                $isSelf = $comment->user_id === auth()->id();
+                            @endphp
+                            <div class="flex flex-col {{ $isSelf ? 'items-end' : 'items-start' }}">
+                                <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isSelf ? 'bg-sky-950 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white rounded-bl-sm border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm' }}">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <span class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
+                                        @if($comment->user && ($comment->user->role === 'support' || $comment->user->role === 'admin'))
+                                            <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded {{ $isSelf ? 'bg-white/20 text-white' : 'bg-sky-500/20 text-sky-900 dark:bg-sky-400/20 dark:text-sky-400' }}">Support</span>
+                                        @endif
+                                        <span class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->diffForHumans() }} · {{ $comment->created_at->format('g:i A') }}</span>
+                                    </div>
+                                    <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ $comment->content }}</div>
+
+                                    @if($comment->images && count($comment->images) > 0)
+                                    <div class="flex flex-wrap gap-2 mt-3">
+                                        @foreach($comment->images as $cimg)
+                                        <a href="/storage/{{ $cimg }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                            <img src="/storage/{{ $cimg }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                            </div>
+                                        </a>
+                                        @endforeach
+                                    </div>
                                     @endif
-                                    <span class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->format('H:i') }}</span>
                                 </div>
-                                <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ $comment->content }}</div>
-                                @if($comment->images && count($comment->images) > 0)
-                                <div class="flex flex-wrap gap-2 mt-3">
-                                    @foreach($comment->images as $cimg)
-                                    <a href="/storage/{{ $cimg }}" target="_blank" class="w-12 h-12 md:w-16 md:h-16 rounded-xl overflow-hidden border border-white/20">
-                                        <img src="/storage/{{ $cimg }}" class="w-full h-full object-cover" />
-                                    </a>
-                                    @endforeach
-                                </div>
-                                @endif
                             </div>
-                        </div>
                         @endforeach
                     @else
                     <div class="text-center py-2 opacity-40">
