@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <h2 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight italic uppercase">
-                    FAQ <span class="text-teal-900 dark:text-lime-400">Management</span>
+                    FAQ <span class="text-blue-900 dark:text-sky-400">Management</span>
                 </h2>
                 <p class="mt-2 text-slate-600 dark:text-slate-400 font-medium tracking-wide">
                     Configure and maintain frequently asked questions for the platform.
@@ -11,7 +11,7 @@
             </div>
             <div class="flex justify-end shrink-0">
                 <button x-data @click="$dispatch('open-faq-modal', { faq: null })"
-                    class="inline-flex items-center gap-3 px-6 py-3 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10">
+                    class="inline-flex items-center gap-3 px-6 py-3 bg-blue-900 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-blue-900/20 dark:shadow-sky-400/10">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -31,14 +31,14 @@
             {{-- FAQ list --}}
             <div class="grid grid-cols-1 gap-6">
                 @forelse ($faqs as $faq)
-                    <div class="fauna-panel p-8 group hover:border-lime-500/30 transition-all duration-500">
+                    <div class="fauna-panel p-8 group hover:border-sky-400/30 transition-all duration-500">
                         <div class="flex justify-between items-start gap-6">
 
                             {{-- Content --}}
                             <div class="flex-1">
                                 <div class="flex items-center gap-4 mb-3">
                                     <span
-                                        class="px-3 py-1 rounded-full bg-teal-900/10 dark:bg-lime-500/10 text-teal-900 dark:text-lime-400 text-[10px] font-black uppercase tracking-widest border border-teal-900/20 dark:border-lime-500/20">
+                                        class="px-3 py-1 rounded-full bg-blue-900/10 dark:bg-sky-400/10 text-blue-900 dark:text-sky-400 text-[10px] font-black uppercase tracking-widest border border-blue-900/20 dark:border-sky-400/20">
                                         Order: {{ $faq->order ?? 0 }}
                                     </span>
                                 </div>
@@ -63,7 +63,7 @@
                                         order:    {{ $faq->order ?? 0 }}
                                     }
                                 })"
-                                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#18342f] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
+                                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 transition-all border border-transparent hover:border-blue-900/20"
                                     title="Edit FAQ">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -100,7 +100,7 @@
                 @empty
                     <div class="fauna-panel p-20 text-center">
                         <div
-                            class="w-20 h-20 rounded-[2rem] bg-slate-100 dark:bg-[#18342f] flex items-center justify-center mx-auto mb-6">
+                            class="w-20 h-20 rounded-[2rem] bg-slate-100 dark:bg-[#1e293b] flex items-center justify-center mx-auto mb-6">
                             <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -160,17 +160,17 @@
         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @keydown.escape.window="close()">
-        <div class="w-full max-w-2xl fauna-panel p-6 sm:p-10 bg-white/95 dark:bg-[#102824]/95 border-lime-500/20 overflow-y-auto max-h-[90vh]"
+        <div class="w-full max-w-2xl fauna-panel p-6 sm:p-10 bg-white/95 dark:bg-[#0f172a]/95 border-sky-400/20 overflow-y-auto max-h-[90vh]"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100" @click.stop>
             {{-- Modal header --}}
             <div class="flex justify-between items-center mb-10">
                 <h3 class="text-3xl font-black text-slate-900 dark:text-white italic uppercase tracking-tighter">
                     <span x-text="faq ? 'Edit' : 'Create'"></span>
-                    <span class="text-teal-900 dark:text-lime-400">FAQ</span>
+                    <span class="text-blue-900 dark:text-sky-400">FAQ</span>
                 </h3>
                 <button @click="close()"
-                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#18342f] text-slate-500 hover:text-rose-500 transition-colors">
+                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-500 hover:text-rose-500 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="M6 18L18 6M6 6l12 12" />
@@ -184,9 +184,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Question</label>
+                        class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-[0.3em] block">Question</label>
                     <input type="text" name="question" x-model="question"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-bold dark:text-white"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border-blue-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-sky-400 transition-all font-bold dark:text-white"
                         placeholder="Enter the question..." />
                     @error('question')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -196,9 +196,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Answer</label>
+                        class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-[0.3em] block">Answer</label>
                     <textarea name="answer" x-model="answer"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-medium dark:text-white min-h-[150px]"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border-blue-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-sky-400 transition-all font-medium dark:text-white min-h-[150px]"
                         placeholder="Enter the answer..."></textarea>
                     @error('answer')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -208,19 +208,19 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Display
+                        class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-[0.3em] block">Display
                         Order</label>
                     <input type="number" name="order" x-model="order"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-black dark:text-white" />
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border-blue-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-sky-400 transition-all font-black dark:text-white" />
                 </div>
 
                 <div class="flex gap-4 pt-4">
                     <button type="button" @click="close()"
-                        class="flex-1 py-5 px-8 rounded-[2rem] bg-slate-100 dark:bg-[#18342f] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
+                        class="flex-1 py-5 px-8 rounded-[2rem] bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
                         Cancel
                     </button>
                     <button type="submit" x-bind:disabled="processing"
-                        class="flex-[2] py-5 px-8 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10 text-sm disabled:opacity-50 flex items-center justify-center gap-2">
+                        class="flex-[2] py-5 px-8 bg-blue-900 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-blue-900/20 dark:shadow-sky-400/10 text-sm disabled:opacity-50 flex items-center justify-center gap-2">
                         <template x-if="processing">
                             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
@@ -240,9 +240,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Question</label>
+                        class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-[0.3em] block">Question</label>
                     <input type="text" name="question" x-model="question"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-bold dark:text-white"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border-blue-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-sky-400 transition-all font-bold dark:text-white"
                         placeholder="Enter the question..." />
                     @error('question')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -252,9 +252,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Answer</label>
+                        class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-[0.3em] block">Answer</label>
                     <textarea name="answer" x-model="answer"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-medium dark:text-white min-h-[150px]"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border-blue-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-sky-400 transition-all font-medium dark:text-white min-h-[150px]"
                         placeholder="Enter the answer..."></textarea>
                     @error('answer')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -264,19 +264,19 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-[0.3em] block">Display
+                        class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-[0.3em] block">Display
                         Order</label>
                     <input type="number" name="order" x-model="order"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-lime-500 transition-all font-black dark:text-white" />
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border-blue-900/10 dark:border-[#28524a] focus:ring-2 focus:ring-sky-400 transition-all font-black dark:text-white" />
                 </div>
 
                 <div class="flex gap-4 pt-4">
                     <button type="button" @click="close()"
-                        class="flex-1 py-5 px-8 rounded-[2rem] bg-slate-100 dark:bg-[#18342f] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
+                        class="flex-1 py-5 px-8 rounded-[2rem] bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
                         Cancel
                     </button>
                     <button type="submit" x-bind:disabled="processing"
-                        class="flex-[2] py-5 px-8 bg-teal-900 dark:bg-lime-500 text-white dark:text-[#102824] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-teal-900/20 dark:shadow-lime-500/10 text-sm disabled:opacity-50 flex items-center justify-center gap-2">
+                        class="flex-[2] py-5 px-8 bg-blue-900 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-blue-900/20 dark:shadow-sky-400/10 text-sm disabled:opacity-50 flex items-center justify-center gap-2">
                         <template x-if="processing">
                             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

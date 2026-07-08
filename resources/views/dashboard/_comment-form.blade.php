@@ -11,16 +11,16 @@
             @keydown.ctrl.enter.prevent="submit()"
             rows="3"
             placeholder="Write a comment… (Ctrl+Enter to send)"
-            class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:ring-2 focus:ring-lime-500 focus:border-transparent outline-none transition-all resize-none shadow-sm"
+            class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:ring-2 focus:ring-sky-400 focus:border-transparent outline-none transition-all resize-none shadow-sm"
         ></textarea>
     </div>
 
     {{-- Image previews --}}
     <template x-if="previews.length > 0">
-        <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34]">
+        <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-blue-50/50 dark:bg-[#1e293b]/50 border border-blue-900/10 dark:border-[#1e3a5f]">
             <template x-for="(url, i) in previews" :key="i">
                 <div class="relative group/prev">
-                    <img :src="url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-sm" />
+                    <img :src="url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
                     <button
                         type="button"
                         @click="removeImage(i)"
@@ -39,7 +39,7 @@
     <div class="flex items-center justify-between gap-3">
 
         {{-- Attach images --}}
-        <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all text-xs font-bold">
+        <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-500 dark:text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 cursor-pointer transition-all text-xs font-bold">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
@@ -52,7 +52,7 @@
             type="button"
             @click="submit()"
             x-bind:disabled="submitting || !content.trim()"
-            class="flex items-center gap-2 px-5 py-2 rounded-xl bg-teal-900 text-white text-xs font-black tracking-widest shadow-md hover:bg-[#10b981] hover:text-[#064e3b] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-900 disabled:hover:text-white disabled:active:scale-100"
+            class="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-900 text-white text-xs font-black tracking-widest shadow-md hover:bg-[#3b82f6] hover:text-[#1e3a8a] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-900 disabled:hover:text-white disabled:active:scale-100"
         >
             <template x-if="!submitting">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

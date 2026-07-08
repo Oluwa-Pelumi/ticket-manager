@@ -7,7 +7,7 @@
 </div>
 
 @if(session('status'))
-<div class="mb-6 text-sm font-bold text-emerald-500 bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/20 backdrop-blur-md">
+<div class="mb-6 text-sm font-bold text-blue-500 bg-blue-500/10 p-4 rounded-2xl border border-blue-500/20 backdrop-blur-md">
     {{ session('status') }}
 </div>
 @endif
@@ -18,7 +18,7 @@
     <div class="space-y-2">
         <label for="email" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300 pl-4">Email</label>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username"
-            class="w-full rounded-full border-emerald-900/20 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-[#1d3a34] dark:bg-[#18342f] dark:text-white"
+            class="w-full rounded-full border-blue-900/20 px-4 py-3 shadow focus:border-sky-400 focus:ring-sky-400 dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="your@email.com">
         @error('email')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -27,11 +27,11 @@
         <div class="flex items-center justify-between px-1">
             <label for="password" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300 pl-3">Password</label>
             @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-sm font-medium underline hover:text-lime-600 transition-colors">Forgot password?</a>
+                <a href="{{ route('password.request') }}" class="text-sm font-medium underline hover:text-sky-500 transition-colors">Forgot password?</a>
             @endif
         </div>
         <input id="password" type="password" name="password" required autocomplete="current-password"
-            class="w-full rounded-full border-emerald-900/20 px-4 py-3 shadow focus:border-lime-500 focus:ring-lime-500 dark:border-[#1d3a34] dark:bg-[#18342f] dark:text-white"
+            class="w-full rounded-full border-blue-900/20 px-4 py-3 shadow focus:border-sky-400 focus:ring-sky-400 dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="••••••••">
         @error('password')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -40,7 +40,7 @@
         <input id="remember" type="checkbox" name="remember" class="hidden" x-model="checked">
         <span 
             class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-            :class="checked ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
+            :class="checked ? 'bg-[#1e3a8a] border-[#1e3a8a]' : 'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'"
         >
             <svg x-show="checked" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
@@ -64,7 +64,7 @@
     <div class="text-center pt-4">
         <p class="text-sm text-slate-600 dark:text-slate-400">
             Don't have an account?
-            <a href="{{ route('register') }}" class="font-bold text-teal-900 dark:text-lime-400 hover:underline">Register</a>
+            <a href="{{ route('register') }}" class="font-bold text-blue-900 dark:text-sky-400 hover:underline">Register</a>
         </p>
     </div>
 </form>

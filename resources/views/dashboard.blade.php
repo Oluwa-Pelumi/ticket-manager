@@ -3,7 +3,7 @@
         <div class="flex items-center gap-4" x-data="{ selectedCount: 0 }"
             @selection-changed.window="selectedCount = $event.detail">
             <div
-                class="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
+                class="w-12 h-12 rounded-2xl bg-blue-900 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -14,7 +14,7 @@
                 <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">Overview & Management</span>
             </div>
             <div x-show="selectedCount > 0" x-cloak
-                class="ml-auto flex items-center px-4 py-2 rounded-xl bg-teal-900 text-white text-[10px] font-black tracking-widest shadow-lg">
+                class="ml-auto flex items-center px-4 py-2 rounded-xl bg-blue-900 text-white text-[10px] font-black tracking-widest shadow-lg">
                 Selected: <span x-text="selectedCount"></span> tickets
             </div>
         </div>
@@ -51,7 +51,7 @@
                 {{-- Bulk toolbar (admin/support only) --}}
                 @if (in_array(auth()->user()->role, ['admin', 'support']))
                     <div x-show="selectedIds.length > 0" x-cloak
-                        class="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-[#102824] rounded-2xl border border-emerald-900/10 dark:border-[#1d3a34]">
+                        class="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-[#0f172a] rounded-2xl border border-blue-900/10 dark:border-[#1e3a5f]">
                         <span class="hidden sm:inline text-xs font-bold text-slate-600 dark:text-slate-400 px-2"
                             x-text="selectedIds.length + ' Selected'"></span>
 
@@ -62,7 +62,7 @@
                                     : ($event.target.value = '')
                             "
                             :class="{ 'opacity-40 cursor-not-allowed': !selectedIds.length }"
-                            class="text-[10px] md:text-xs font-black bg-white dark:bg-[#18342f] text-slate-600 dark:text-slate-300 border-none rounded-xl focus:ring-2 focus:ring-lime-500 py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10">
+                            class="text-[10px] md:text-xs font-black bg-white dark:bg-[#1e293b] text-slate-600 dark:text-slate-300 border-none rounded-xl focus:ring-2 focus:ring-sky-400 py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10">
                             <option value="" disabled selected>Change Status of all selected</option>
                             <option value="open">Open</option>
                             <option value="in-progress">In Progress</option>
@@ -82,7 +82,7 @@
 
                 @if (auth()->user()->role === 'user')
                     <a href="{{ route('submit-ticket') }}"
-                        class="w-full md:w-auto text-center px-6 py-3 bg-teal-900 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-105 active:scale-95 transition-all">
+                        class="w-full md:w-auto text-center px-6 py-3 bg-blue-900 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-[#3b82f6] hover:text-[#1e3a8a] hover:scale-105 active:scale-95 transition-all">
                         Submit Ticket
                     </a>
                 @endif
@@ -93,7 +93,7 @@
 
         {{-- Filter bar --}}
         <div
-            class="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10/50 dark:border-[#1d3a34]">
+            class="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-blue-900/10/50 dark:border-[#1e3a5f]">
             <div class="flex items-center space-x-2 w-full sm:w-auto">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -104,7 +104,7 @@
 
             <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-3 w-full sm:w-auto">
                 <select x-model="filters.status" @change="currentPage = 1"
-                    class="bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer">
+                    class="bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-sky-400 outline-none transition-all cursor-pointer">
                     <option value="">All Statuses</option>
                     <option value="open">Open</option>
                     <option value="in-progress">In-Progress</option>
@@ -112,7 +112,7 @@
                 </select>
 
                 <select x-model="filters.priority" @change="currentPage = 1"
-                    class="bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer">
+                    class="bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-sky-400 outline-none transition-all cursor-pointer">
                     <option value="">All Priorities</option>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -123,7 +123,7 @@
             {{-- Search --}}
             <div class="relative group w-full lg:w-96">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-slate-400 group-focus-within:text-teal-900 dark:group-focus-within:text-lime-400 transition-colors"
+                    <svg class="h-5 w-5 text-slate-400 group-focus-within:text-blue-900 dark:group-focus-within:text-sky-400 transition-colors"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -131,7 +131,7 @@
                 </div>
                 <input type="text" x-model.debounce.300ms="filters.search" @input="currentPage = 1"
                     placeholder="Search by ID, subject, or user..."
-                    class="block w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-lime-500 focus:border-transparent transition-all shadow-sm" />
+                    class="block w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-sky-400 focus:border-transparent transition-all shadow-sm" />
             </div>
 
             <button x-show="filters.status || filters.priority || filters.search" @click="clearFilters()"
@@ -147,7 +147,7 @@
                 <div class="flex items-center gap-2">
                     <span class="text-[10px] font-black tracking-widest text-slate-400 uppercase">Rows:</span>
                     <select x-model.number="rowsPerPage" @change="currentPage = 1"
-                        class="text-[10px] font-black bg-slate-100 dark:bg-[#18342f] text-slate-600 dark:text-slate-300 border-none rounded-lg focus:ring-2 focus:ring-lime-500 py-1 pl-2 pr-8 transition-all cursor-pointer">
+                        class="text-[10px] font-black bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-300 border-none rounded-lg focus:ring-2 focus:ring-sky-400 py-1 pl-2 pr-8 transition-all cursor-pointer">
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50">50</option>
@@ -188,11 +188,11 @@
 
         {{-- ── Tickets table ──────────────────────────────────────────────── --}}
         <div
-            class="relative group overflow-hidden rounded-2xl fauna-panel transition-all duration-500 hover:shadow-lime-500/10">
+            class="relative group overflow-hidden rounded-2xl fauna-panel transition-all duration-500 hover:shadow-sky-400/10">
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-left min-w-[800px] lg:min-w-full border-collapse">
                     <thead>
-                        <tr class="border-b border-emerald-900/10 dark:border-[#1d3a34]">
+                        <tr class="border-b border-blue-900/10 dark:border-[#1e3a5f]">
                             {{-- Select-all --}}
                             <th class="w-12 md:w-16 px-4 md:px-6 py-4">
                                 @if (in_array(auth()->user()->role, ['admin', 'support']))
@@ -204,7 +204,7 @@
                                         />
                                         <span
                                             class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-                                            :class="(allTickets.length > 0 && selectedIds.length === allTickets.length) ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
+                                            :class="(allTickets.length > 0 && selectedIds.length === allTickets.length) ? 'bg-[#1e3a8a] border-[#1e3a8a]' : 'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'"
                                         >
                                             <svg x-show="allTickets.length > 0 && selectedIds.length === allTickets.length" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
@@ -266,7 +266,7 @@
                             <td colspan="{{ in_array(auth()->user()->role, ['admin', 'support']) ? 9 : 7 }}"
                                 class="px-6 py-20 text-center">
                                 <div class="flex flex-col items-center">
-                                    <div class="p-4 bg-slate-100 dark:bg-[#18342f] rounded-3xl mb-4">
+                                    <div class="p-4 bg-slate-100 dark:bg-[#1e293b] rounded-3xl mb-4">
                                         <svg class="w-12 h-12 text-slate-400" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -283,10 +283,10 @@
                     </tbody>
 
                     <template x-for="(ticket, idx) in paginatedTickets" :key="ticket.id">
-                        <tbody class="divide-y divide-slate-200 dark:divide-slate-800 border-b border-slate-200/50 dark:border-[#1d3a34]/30">
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-800 border-b border-slate-200/50 dark:border-[#1e3a5f]/30">
                             {{-- Main row --}}
-                            <tr class="group hover:bg-emerald-50/50 dark:hover:bg-[#18342f]/70 transition-all duration-300 cursor-pointer"
-                                :class="expandedId === ticket.id ? 'bg-emerald-50/50/80 dark:bg-[#18342f]/80' : ''"
+                            <tr class="group hover:bg-blue-50/50 dark:hover:bg-[#1e293b]/70 transition-all duration-300 cursor-pointer"
+                                :class="expandedId === ticket.id ? 'bg-blue-50/50/80 dark:bg-[#1e293b]/80' : ''"
                                 @click="toggleExpand(ticket.id)">
                                     {{-- Checkbox --}}
                                     <td class="px-4 md:px-6 py-4" @click.stop>
@@ -299,7 +299,7 @@
                                                 />
                                                 <span
                                                     class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-                                                    :class="selectedIds.includes(ticket.id) ? 'bg-[#064e3b] border-[#064e3b]' : 'border-slate-300 dark:border-[#1d3a34] bg-white dark:bg-[#18342f]'"
+                                                    :class="selectedIds.includes(ticket.id) ? 'bg-[#1e3a8a] border-[#1e3a8a]' : 'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'"
                                                 >
                                                     <svg x-show="selectedIds.includes(ticket.id)" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
@@ -312,7 +312,7 @@
                                     {{-- Reference --}}
                                     <td class="px-4 md:px-6 py-4" @click.stop>
                                         <span
-                                            class="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-teal-900 dark:group-hover:text-lime-400 transition-colors tracking-tight"
+                                            class="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-blue-900 dark:group-hover:text-sky-400 transition-colors tracking-tight"
                                             x-text="'#' + ticket.hashid"></span>
                                     </td>
 
@@ -348,7 +348,7 @@
                                                         x-text="orderTypeLabel(ticket.order_type)"></span>
                                                     <template x-if="ticket.order_type === 'recurrent'">
                                                         <span
-                                                            class="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#18342f] px-1.5 py-0.5 rounded border border-emerald-900/10 dark:border-[#28524a]"
+                                                            class="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#1e293b] px-1.5 py-0.5 rounded border border-blue-900/10 dark:border-[#28524a]"
                                                             x-text="ticket.recurrence_period === 'custom' ? ticket.custom_recurrence_date : recurrencePeriodLabel(ticket.recurrence_period)"></span>
                                                     </template>
                                                 </div>
@@ -380,7 +380,7 @@
                                                     .priority === 'high',
                                                 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400': ticket
                                                     .priority === 'medium',
-                                                'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400': ticket
+                                                'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-sky-400': ticket
                                                     .priority === 'low'
                                             }">
                                             <svg x-show="ticket.priority === 'high'" class="w-3 h-3" fill="none"
@@ -407,10 +407,10 @@
                                         @if (in_array(auth()->user()->role, ['admin', 'support']))
                                             <select
                                                 @change="statusUpdate(ticket.id, $event.target.value)"
-                                                class="text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-lime-500 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
+                                                class="text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-sky-400 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
                                                 :class="{
                                                     'border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400': ticket.status === 'open',
-                                                    'border-emerald-500 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400': ticket.status === 'in-progress',
+                                                    'border-blue-500 dark:border-sky-400 text-blue-600 dark:text-sky-400': ticket.status === 'in-progress',
                                                     'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
                                                 }">
                                                 <option value="open"      :selected="ticket.status === 'open'">Open</option>
@@ -423,7 +423,7 @@
                                                 :class="{
                                                     'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 ring-4 ring-blue-500/10': ticket
                                                         .status === 'open',
-                                                    'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 ring-4 ring-emerald-500/10': ticket
+                                                    'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-sky-400 ring-4 ring-blue-500/10': ticket
                                                         .status === 'in-progress',
                                                     'bg-slate-100 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400': ticket
                                                         .status === 'closed'
@@ -456,7 +456,7 @@
                                             @if (auth()->user()->role === 'user')
                                                 <template x-if="authId === ticket.user_id && ticket.status !== 'closed'">
                                                     <button @click.stop="openEditModal(ticket)"
-                                                        class="p-1.5 md:p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-sm"
+                                                        class="p-1.5 md:p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm"
                                                         title="Edit Ticket">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -469,8 +469,8 @@
                                             {{-- Expand toggle --}}
                                             <button @click.stop="toggleExpand(ticket.id)"
                                                 class="p-1.5 md:p-2 rounded-lg transition-all"
-                                                :class="expandedId === ticket.id ? 'bg-teal-900 text-white rotate-180' :
-                                                    'bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400'">
+                                                :class="expandedId === ticket.id ? 'bg-blue-900 text-white rotate-180' :
+                                                    'bg-slate-100 dark:bg-[#1e293b] text-slate-600 hover:text-blue-900 dark:hover:text-sky-400'">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -483,7 +483,7 @@
                                                 <template x-if="ticket.order_type">
                                                     <button @click.stop="activateOrder(ticket.id)"
                                                         x-bind:disabled="activatingId === ticket.id"
-                                                        class="p-1.5 md:p-2 rounded-lg bg-teal-900 dark:bg-[#10b981] text-white dark:text-[#064e3b] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                                                        class="p-1.5 md:p-2 rounded-lg bg-blue-900 dark:bg-[#3b82f6] text-white dark:text-[#1e3a8a] hover:scale-110 transition-all shadow-md disabled:opacity-60 disabled:hover:scale-100 disabled:cursor-not-allowed"
                                                         title="Process Order">
                                                         <svg x-show="activatingId !== ticket.id" class="w-4 h-4"
                                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -517,9 +517,9 @@
                                 </tr>
 
                                 {{-- ── Expanded row ──────────────────────────────────────── --}}
-                                <tr class="bg-emerald-50/50 dark:bg-[#18342f]/30" x-show="expandedId === ticket.id" x-cloak>
+                                <tr class="bg-blue-50/50 dark:bg-[#1e293b]/30" x-show="expandedId === ticket.id" x-cloak>
                                         <td colspan="{{ in_array(auth()->user()->role, ['admin', 'support']) ? 9 : 7 }}"
-                                            class="px-4 md:px-10 py-4 md:py-8 border-l-4 border-lime-500">
+                                            class="px-4 md:px-10 py-4 md:py-8 border-l-4 border-sky-400">
                                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
 
                                                 {{-- Left: specs + attachments --}}
@@ -527,7 +527,7 @@
                                                     <div>
                                                         <h4
                                                             class="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
-                                                            <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400"
+                                                            <svg class="w-5 h-5 mr-3 text-blue-900 dark:text-sky-400"
                                                                 fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -537,13 +537,13 @@
                                                             Specifications
                                                         </h4>
                                                         <div
-                                                            class="p-5 sm:p-8 rounded-2xl sm:rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm relative overflow-hidden">
+                                                            class="p-5 sm:p-8 rounded-2xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-blue-900/10 dark:border-[#1e3a5f] shadow-sm relative overflow-hidden">
                                                             <div
-                                                                class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-30">
+                                                                class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-30">
                                                             </div>
 
                                                             <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                                class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">
                                                                 Creator Information</div>
 
                                                                 <div class="mt-2 mb-6">
@@ -551,7 +551,7 @@
                                                                         <template x-if="ticket.name || ticket.user?.name">
                                                                             <div
                                                                                 class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -571,7 +571,7 @@
                                                                         <template x-if="ticket.email || ticket.user?.email">
                                                                             <div
                                                                                 class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -591,7 +591,7 @@
                                                                         <template x-if="ticket.whatsapp_number || ticket.user?.whatsapp_number">
                                                                             <div
                                                                                 class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -609,16 +609,16 @@
                                                                 </div>
 
                                                             <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                                class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">
                                                                 Reference</div>
                                                             <div class="flex items-center gap-3 mb-8">
                                                                 <div class="text-2xl text-slate-900 dark:text-white font-black tracking-tight"
                                                                     x-text="ticket.hashid"></div>
                                                                 <button @click.stop="copyHashid(ticket.hashid)"
-                                                                    class="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20">
+                                                                    class="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-100 dark:bg-[#1e293b] text-slate-600 hover:text-blue-900 dark:hover:text-sky-400 transition-all border border-transparent hover:border-blue-900/20">
                                                                     <template x-if="copiedId === ticket.hashid">
                                                                         <span
-                                                                            class="flex items-center gap-1 text-[10px] font-bold text-emerald-500 tracking-wider">
+                                                                            class="flex items-center gap-1 text-[10px] font-bold text-blue-500 tracking-wider">
                                                                             <svg class="w-4 h-4" fill="none"
                                                                                 stroke="currentColor"
                                                                                 viewBox="0 0 24 24">
@@ -643,23 +643,23 @@
                                                             </div>
 
                                                             <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
+                                                                class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">
                                                                 Subject</div>
                                                             <div class="text-xl text-slate-900 dark:text-white font-bold mb-6"
                                                                 x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
                                                             </div>
 
                                                             <div
-                                                                class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
+                                                                class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">
                                                                 Description</div>
                                                             <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm"
                                                                 x-text="ticket.content"></div>
 
                                                             <template x-if="ticket.order_type">
                                                                 <div
-                                                                    class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
+                                                                    class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1e3a5f]/50">
                                                                     <div
-                                                                        class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                                        class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">
                                                                         Order Information</div>
                                                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                                                         <div>
@@ -685,9 +685,9 @@
                                                                                     <div
                                                                                         class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                                                                         <div
-                                                                                            class="w-1 h-1 rounded-full bg-lime-500 shrink-0">
+                                                                                            class="w-1 h-1 rounded-full bg-sky-400 shrink-0">
                                                                                         </div>
-                                                                                        <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                        <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                                                                             fill="none"
                                                                                             stroke="currentColor"
                                                                                             viewBox="0 0 24 24">
@@ -699,7 +699,7 @@
                                                                                         </svg>
                                                                                         <span
                                                                                             x-text="new Date(date).toLocaleDateString('en-GB')"></span>
-                                                                                        <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                                                                        <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                                                                             fill="none"
                                                                                             stroke="currentColor"
                                                                                             viewBox="0 0 24 24">
@@ -719,8 +719,8 @@
                                                                 </div>
                                                             </template>
 
-                                                            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                                                                <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                                                            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1e3a5f]/50">
+                                                                <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">
                                                                     Attending Support Staff
                                                                 </div>
 
@@ -730,7 +730,7 @@
                                                                 <div class="flex flex-wrap gap-3 mb-4">
                                                                     <template x-if="ticket.attendants && ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length > 0">
                                                                         <template x-for="att in ticket.attendants.filter(a => a.id !== ticket.attendant?.id)" :key="att.id">
-                                                                            <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                                                            <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-blue-900/10 dark:border-[#28524a]">
                                                                                 <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
                                                                                     x-text="att.name ? att.name.charAt(0).toUpperCase() : '?'"></div>
                                                                                 <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="att.name"></span>
@@ -747,7 +747,7 @@
                                                                 </div>
                                                                 <div class="flex flex-wrap gap-3">
                                                                     <template x-if="ticket.attendant">
-                                                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-blue-900/10 dark:border-[#28524a]">
                                                                             <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
                                                                                 x-text="ticket.attendant.name ? ticket.attendant.name.charAt(0).toUpperCase() : '?'"></div>
                                                                             <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="ticket.attendant.name"></span>
@@ -767,7 +767,7 @@
                                                         <div>
                                                             <h4
                                                                 class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
-                                                                <svg class="w-4 h-4 mr-2 text-emerald-500"
+                                                                <svg class="w-4 h-4 mr-2 text-blue-500"
                                                                     fill="none" stroke="currentColor"
                                                                     viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round"
@@ -780,7 +780,7 @@
                                                                 <template x-if="ticket.filename">
                                                                     <a :href="'/storage/' + ticket.filename"
                                                                         target="_blank"
-                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                                                         <img :src="'/storage/' + ticket.filename"
                                                                             class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                                                                         <div
@@ -803,7 +803,7 @@
                                                                 <template x-for="(img, i) in (ticket.images || [])"
                                                                     :key="i">
                                                                     <a :href="'/storage/' + img" target="_blank"
-                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                                                         <img :src="'/storage/' + img"
                                                                             class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                                                                         <div
@@ -832,12 +832,12 @@
                                                 <div class="space-y-8">
                                                     <div>
                                                         <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                                                            <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                                                            <svg class="w-5 h-5 mr-3 text-blue-900 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                                                             Conversation
                                                         </h4>
 
                                                         <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
-                                                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
+                                                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
                                                             <template
                                                                 x-if="!ticket.comments || ticket.comments.length === 0">
                                                                 <div class="text-center py-2 opacity-40">
@@ -851,7 +851,7 @@
                                                                     :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')) ? 'items-end' : 'items-start'">
                                                                     <div class="max-w-[95%] sm:max-w-[85%] p-4 sm:p-5"
                                                                         :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin'))
-                                                                            ? 'bg-teal-900 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-sm sm:rounded-br-md'
+                                                                            ? 'bg-blue-900 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-sm sm:rounded-br-md'
                                                                             : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] rounded-bl-sm sm:rounded-bl-md'">
                                                                         <div class="flex items-center space-x-3 mb-2">
                                                                             <span class="text-[9px] font-black tracking-widest opacity-80" x-text="comment.user?.name"></span>
@@ -900,12 +900,12 @@
             {{-- Pagination --}}
             <template x-if="totalPages > 1">
                 <div
-                    class="px-6 py-4 border-t border-emerald-900/10 dark:border-[#1d3a34] flex items-center justify-between bg-slate-50/50 dark:bg-[#102824]/50">
+                    class="px-6 py-4 border-t border-blue-900/10 dark:border-[#1e3a5f] flex items-center justify-between bg-slate-50/50 dark:bg-[#0f172a]/50">
                     <div class="text-[10px] font-black text-slate-400 tracking-widest uppercase"
                         x-text="'Page ' + currentPage + ' of ' + totalPages"></div>
                     <div class="flex items-center gap-2">
                         <button @click="currentPage = Math.max(currentPage - 1, 1)" x-bind:disabled="currentPage === 1"
-                            class="p-2 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 disabled:opacity-50 transition-all">
+                            class="p-2 rounded-xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 disabled:opacity-50 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                     d="M15 19l-7-7 7-7" />
@@ -919,15 +919,15 @@
                                 <template x-if="page !== '...'">
                                     <button @click="currentPage = page"
                                         class="w-8 h-8 rounded-xl text-[10px] font-black transition-all"
-                                        :class="currentPage === page ? 'bg-teal-900 text-white shadow-lg shadow-teal-900/20' :
-                                            'text-slate-400 hover:text-teal-900 dark:hover:text-lime-400'"
+                                        :class="currentPage === page ? 'bg-blue-900 text-white shadow-lg shadow-blue-900/20' :
+                                            'text-slate-400 hover:text-blue-900 dark:hover:text-sky-400'"
                                         x-text="page"></button>
                                 </template>
                             </template>
                         </div>
                         <button @click="currentPage = Math.min(currentPage + 1, totalPages)"
                             x-bind:disabled="currentPage === totalPages"
-                            class="p-2 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 disabled:opacity-50 transition-all">
+                            class="p-2 rounded-xl bg-white dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 disabled:opacity-50 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                     d="M9 5l7 7-7 7" />
@@ -942,7 +942,7 @@
         <div x-show="editingTicket !== null" x-cloak
             class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm"
             @keydown.escape.window="closeEditModal()">
-            <div class="relative w-full max-w-2xl bg-white dark:bg-[#102824] rounded-3xl shadow-2xl border border-emerald-900/10 dark:border-[#1d3a34] p-8"
+            <div class="relative w-full max-w-2xl bg-white dark:bg-[#0f172a] rounded-3xl shadow-2xl border border-blue-900/10 dark:border-[#1e3a5f] p-8"
                 @click.stop>
                 <button @click="closeEditModal()"
                     class="absolute top-6 right-6 p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all">
@@ -962,7 +962,7 @@
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Subject /
                                 Category</label>
                             <select x-model="editData.category_id"
-                                class="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all">
+                                class="w-full px-4 py-3 rounded-xl bg-blue-50/50 dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none transition-all">
                                 <option value="" disabled>Select Category</option>
                                 @foreach ($categories as $cat)
                                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -972,7 +972,7 @@
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Priority</label>
                             <select x-model="editData.priority"
-                                class="w-full pl-4 pr-10 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all">
+                                class="w-full pl-4 pr-10 py-3 rounded-xl bg-blue-50/50 dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none transition-all">
                                 <option value="low">⬇️ Low</option>
                                 <option value="medium">⚡ Medium</option>
                                 <option value="high">🚩 High</option>
@@ -983,14 +983,14 @@
                     <div class="space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Content</label>
                         <textarea x-model="editData.content" rows="4"
-                            class="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none"></textarea>
+                            class="w-full px-4 py-3 rounded-xl bg-blue-50/50 dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none transition-all resize-none"></textarea>
                     </div>
 
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Attachments</label>
                             <label for="edit-images"
-                                class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#18342f] text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all border border-emerald-900/10 dark:border-[#1d3a34]">
+                                class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 cursor-pointer transition-all border border-blue-900/10 dark:border-[#1e3a5f]">
                                 Add Images
                             </label>
                             <input type="file" id="edit-images" class="hidden" multiple accept="image/*"
@@ -998,11 +998,11 @@
                         </div>
                         <template x-if="editPreviewUrls.length > 0">
                             <div
-                                class="flex flex-wrap gap-4 p-4 rounded-2xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34]">
+                                class="flex flex-wrap gap-4 p-4 rounded-2xl bg-blue-50/50 dark:bg-[#1e293b]/50 border border-blue-900/10 dark:border-[#1e3a5f]">
                                 <template x-for="(url, i) in editPreviewUrls" :key="i">
                                     <div class="relative group/ep">
                                         <img :src="url"
-                                            class="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-sm" />
+                                            class="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
                                         <button type="button" @click="removeEditImage(i)"
                                             class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover/ep:opacity-100 transition-opacity shadow-lg">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor"
@@ -1019,11 +1019,11 @@
 
                     <div class="flex space-x-4 pt-4">
                         <button type="button" @click="closeEditModal()"
-                            class="flex-1 py-4 px-6 rounded-2xl bg-slate-100 dark:bg-[#18342f] text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                            class="flex-1 py-4 px-6 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
                             Cancel
                         </button>
                         <button type="submit" x-bind:disabled="editSubmitting"
-                            class="flex-[2] py-4 px-6 rounded-2xl bg-teal-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                            class="flex-[2] py-4 px-6 rounded-2xl bg-blue-900 text-white font-black text-xs tracking-widest shadow-xl hover:bg-[#3b82f6] hover:text-[#1e3a8a] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                         >
                             <template x-if="editSubmitting">
                                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -1177,8 +1177,8 @@
                         if (this.sortConfig.key !== key)
                             return `<svg class="w-3 h-3 opacity-20 group-hover:opacity-50 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/></svg>`;
                         return this.sortConfig.direction === 'asc' ?
-                            `<svg class="w-3 h-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>` :
-                            `<svg class="w-3 h-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>`;
+                            `<svg class="w-3 h-3 text-blue-900 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>` :
+                            `<svg class="w-3 h-3 text-blue-900 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>`;
                     },
 
                     requestSort(key) {

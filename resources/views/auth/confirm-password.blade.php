@@ -22,7 +22,7 @@
                 id="password"
                 type="password"
                 name="password"
-                class="w-full px-4 py-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none"
+                class="w-full px-4 py-3 rounded-xl bg-blue-50/50 dark:bg-[#1e293b]/50 border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none"
                 autofocus
                 placeholder="••••••••"
             />
@@ -34,7 +34,7 @@
             <button
                 type="submit"
                 x-bind:disabled="processing"
-                class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest flex items-center justify-center gap-2"
+                class="w-full py-4 rounded-2xl bg-blue-900 text-white font-black text-lg shadow-xl hover:bg-[#3b82f6] hover:text-[#1e3a8a] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest flex items-center justify-center gap-2"
             >
                 <template x-if="processing">
                     <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

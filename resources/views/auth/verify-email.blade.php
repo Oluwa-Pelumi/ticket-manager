@@ -14,7 +14,7 @@
     </div>
 
     @if (session('status') === 'verification-link-sent')
-        <div class="mb-6 text-sm font-medium text-emerald-500 bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20">
+        <div class="mb-6 text-sm font-medium text-blue-500 bg-blue-500/10 p-3 rounded-xl border border-blue-500/20">
             A new verification link has been sent to the email address
             you provided during registration.
         </div>
@@ -28,7 +28,7 @@
             <button
                 type="submit"
                 x-bind:disabled="processing"
-                class="w-full py-4 rounded-2xl bg-teal-900 text-white font-black text-lg shadow-xl hover:bg-[#10b981] hover:text-[#064e3b] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest flex items-center justify-center gap-2"
+                class="w-full py-4 rounded-2xl bg-blue-900 text-white font-black text-lg shadow-xl hover:bg-[#3b82f6] hover:text-[#1e3a8a] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest flex items-center justify-center gap-2"
             >
                 <template x-if="processing">
                     <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@
         <div class="text-center">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="text-sm font-black tracking-widest text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
+                <button type="submit" class="text-sm font-black tracking-widest text-slate-600 hover:text-blue-900 dark:hover:text-sky-400 transition-colors">
                     Terminate Session
                 </button>
             </form>

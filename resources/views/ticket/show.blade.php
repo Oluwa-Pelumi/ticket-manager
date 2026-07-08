@@ -5,7 +5,7 @@
 @section('header')
 <div class="flex items-center justify-between w-full">
     <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
+        <div class="w-12 h-12 rounded-2xl bg-blue-900 flex items-center justify-center shadow-lg border border-white/20">
             <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -17,9 +17,9 @@
         </div>
     </div>
     <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm
-        @if($ticket->status === 'open') bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800
+        @if($ticket->status === 'open') bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-sky-400 border border-blue-200 dark:border-blue-800
         @elseif($ticket->status === 'in-progress') bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800
-        @else bg-slate-100 text-slate-600 dark:bg-[#18342f] dark:text-slate-400 border border-emerald-900/10 dark:border-[#1d3a34]
+        @else bg-slate-100 text-slate-600 dark:bg-[#1e293b] dark:text-slate-400 border border-blue-900/10 dark:border-[#1e3a5f]
         @endif">
         {{ str_replace('-', ' ', $ticket->status) }}
     </span>
@@ -29,7 +29,7 @@
 @section('content-body')
 <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8">
     <div class="flex items-center justify-between">
-        <a href="{{ auth()->guest() ? route('check-status') : route('dashboard') }}" class="inline-flex items-center text-sm font-bold text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
+        <a href="{{ auth()->guest() ? route('check-status') : route('dashboard') }}" class="inline-flex items-center text-sm font-bold text-slate-600 hover:text-blue-900 dark:hover:text-sky-400 transition-colors">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             {{ auth()->guest() ? 'Back to Status Search' : 'Back to Dashboard' }}
         </a>
@@ -48,20 +48,20 @@
         <div class="space-y-8">
             <div>
                 <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                    <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <svg class="w-5 h-5 mr-3 text-blue-900 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     Specifications
                 </h4>
 
                 <div class="fauna-panel p-6 md:p-8 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
 
-                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Creator Information</div>
+                    <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Creator Information</div>
                     <div class="mt-2 mb-6">
                         @if($ticket->name || $ticket->user?->name)
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                    <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -81,7 +81,7 @@
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                    <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -101,7 +101,7 @@
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                    <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -119,27 +119,27 @@
                     </div>
 
 
-                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Reference</div>
+                    <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Reference</div>
                     <div class="flex items-center gap-3 mb-8 group/id">
                         <div class="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{{ $ticket->hashid }}</div>
                         <button type="button" onclick="copyToClipboard('{{ $ticket->hashid }}', this)"
-                            class="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#18342f] text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-all border border-transparent hover:border-teal-900/20"
+                            class="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 hover:text-blue-900 dark:hover:text-sky-400 transition-all border border-transparent hover:border-blue-900/20"
                             title="Copy Reference">
                             <svg class="w-4 h-4 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
                         </button>
                     </div>
 
-                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Subject</div>
+                    <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Subject</div>
                     <div class="text-lg md:text-xl text-slate-900 dark:text-white font-bold mb-6">
                         {{ $ticket->category->name ?? str_replace('_', ' ', $ticket->subject) }}
                     </div>
 
-                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Priority</div>
+                    <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Priority</div>
                     <div class="mb-6">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-xs font-black tracking-wider
                             @if($ticket->priority === 'high') bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400
                             @elseif($ticket->priority === 'medium') bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400
-                            @else bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400
+                            @else bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-sky-400
                             @endif">
                             @if($ticket->priority === 'high')
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
@@ -152,12 +152,12 @@
                         </span>
                     </div>
 
-                    <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">Description</div>
+                    <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Description</div>
                     <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm mb-8">{{ $ticket->content }}</div>
 
                     @if($ticket->order_type)
-                    <div class="pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                        <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">Order Information</div>
+                    <div class="pt-8 border-t border-slate-100 dark:border-[#1e3a5f]/50">
+                        <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">Order Information</div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Frequency</div>
@@ -188,9 +188,9 @@
                                         <div
                                             class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                             <div
-                                                class="w-1 h-1 rounded-full bg-lime-500 shrink-0">
+                                                class="w-1 h-1 rounded-full bg-sky-400 shrink-0">
                                             </div>
-                                            <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                            <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -202,7 +202,7 @@
                                             </svg>
                                             <span>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</span>
 
-                                            <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
+                                            <svg class="w-3 h-3 text-blue-600 dark:text-sky-400 shrink-0"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -220,8 +220,8 @@
                         </div>
                     @endif
 
-                    <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
-                        <div class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.3em] uppercase">
+                    <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1e3a5f]/50">
+                        <div class="text-[10px] font-black text-blue-900 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">
                             Attending Support Staff
                         </div>
 
@@ -233,7 +233,7 @@
                             @if($ticket->attendants && count($ticket->attendants) > 0)
                                 @foreach($ticket->attendants as $att)
                                     @if($att->id !== $ticket->attendant?->id)
-                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-blue-900/10 dark:border-[#28524a]">
                                             <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
                                                 {{ $att->name ? Str::upper(Str::substr($att->name, 0, 1)) : '?' }}
                                             </div>
@@ -252,7 +252,7 @@
 
                         <div class="flex flex-wrap gap-3">
                             @if($ticket->attendant)
-                                <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
+                                <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-blue-900/10 dark:border-[#28524a]">
                                     <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
                                         {{ $ticket->attendant->name ? Str::upper(Str::substr($ticket->attendant->name, 0, 1)) : '?' }}
                                     </div>
@@ -269,12 +269,12 @@
             @if(($ticket->images && count($ticket->images) > 0) || $ticket->filename)
             <div>
                 <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
-                    <svg class="w-4 h-4 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     Attachments
                 </h4>
                 <div class="flex flex-wrap gap-4">
                     @if($ticket->filename)
-                    <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                    <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                         <img src="/storage/{{ $ticket->filename }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -283,7 +283,7 @@
                     @endif
                     @if($ticket->images)
                         @foreach($ticket->images as $img)
-                        <a href="/storage/{{ $img }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                        <a href="/storage/{{ $img }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                             <img src="/storage/{{ $img }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -300,12 +300,12 @@
         <div class="space-y-8">
             <div>
                 <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                    <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                    <svg class="w-5 h-5 mr-3 text-blue-900 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                     Conversation
                 </h4>
 
                 <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
 
                     @if($ticket->comments && $ticket->comments->count() > 0)
                         @foreach($ticket->comments as $comment)
@@ -313,11 +313,11 @@
                             $isOwnerSide = $comment->user_id === $ticket->user_id || (!$comment->user_id && !$ticket->user_id);
                         @endphp
                         <div class="flex flex-col {{ $isOwnerSide ? 'items-end' : 'items-start' }}">
-                            <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isOwnerSide ? 'bg-teal-900 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#18342f] text-slate-900 dark:text-white rounded-bl-sm border border-emerald-900/10 dark:border-[#1d3a34] shadow-sm' }}">
+                            <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isOwnerSide ? 'bg-blue-900 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white rounded-bl-sm border border-blue-900/10 dark:border-[#1e3a5f] shadow-sm' }}">
                                 <div class="flex items-center space-x-2 mb-2">
                                     <span class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
                                     @if($comment->user && ($comment->user->role === 'support' || $comment->user->role === 'admin'))
-                                        <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded {{ $isOwnerSide ? 'bg-white/20 text-white' : 'bg-teal-500/20 text-teal-800 dark:bg-lime-500/20 dark:text-lime-400' }}">Support</span>
+                                        <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded {{ $isOwnerSide ? 'bg-white/20 text-white' : 'bg-blue-500/20 text-blue-800 dark:bg-sky-400/20 dark:text-sky-400' }}">Support</span>
                                     @endif
                                     <span class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->format('H:i') }}</span>
                                 </div>
@@ -359,15 +359,15 @@
                     <div class="space-y-3">
                         <div class="relative group/comment">
                             <textarea name="content" x-model="content" placeholder="Type your message..." rows="4" required {{ $isPastAttendant ? 'disabled' : '' }}
-                                class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#18342f] disabled:cursor-not-allowed"></textarea>
+                                class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#1e293b] disabled:cursor-not-allowed"></textarea>
                         </div>
 
                         {{-- Image previews --}}
                         <template x-if="previews.length > 0">
-                            <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34]">
+                            <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-blue-50/50 dark:bg-[#1e293b]/50 border border-blue-900/10 dark:border-[#1e3a5f]">
                                 <template x-for="(url, i) in previews" :key="i">
                                     <div class="relative group/prev">
-                                        <img :src="url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-sm" />
+                                        <img :src="url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
                                         <button
                                             type="button"
                                             @click="removeImage(i)"
@@ -384,7 +384,7 @@
 
                         <div class="flex items-center justify-between gap-3">
                             {{-- Attach images --}}
-                            <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all text-xs font-bold">
+                            <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] border border-blue-900/10 dark:border-[#1e3a5f] text-slate-500 dark:text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 cursor-pointer transition-all text-xs font-bold">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
@@ -405,7 +405,7 @@
 
                             {{-- Submit --}}
                             <button type="submit" x-bind:disabled="processing || isPastAttendant || !content.trim()"
-                                class="flex items-center gap-2 px-5 py-2 rounded-xl bg-teal-900 text-white text-xs font-black tracking-widest shadow-md hover:bg-[#10b981] hover:text-[#064e3b] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-900 disabled:hover:text-white disabled:active:scale-100">
+                                class="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-900 text-white text-xs font-black tracking-widest shadow-md hover:bg-[#3b82f6] hover:text-[#1e3a8a] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-900 disabled:hover:text-white disabled:active:scale-100">
                                 <template x-if="!processing">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                 </template>
@@ -424,7 +424,7 @@
                 @endif
 
                 @if($ticket->status === 'closed')
-                <div class="p-4 bg-slate-100 dark:bg-[#18342f]/50 rounded-2xl text-center text-sm font-medium text-slate-600 border border-emerald-900/10 dark:border-[#1d3a34]">
+                <div class="p-4 bg-slate-100 dark:bg-[#1e293b]/50 rounded-2xl text-center text-sm font-medium text-slate-600 border border-blue-900/10 dark:border-[#1e3a5f]">
                     This ticket is closed. No further comments can be added.
                 </div>
                 @endif

@@ -51,23 +51,23 @@
         .fauna-shell {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-color: rgb(255 247 237);
+            background-color: rgb(239 246 255);
             color: rgb(15 23 42);
         }
         .dark .fauna-shell {
-            background-color: #0b1715;
+            background-color: #020617;
             color: rgb(241 245 249);
         }
 
         .fauna-panel {
             border-radius: 1.5rem;
-            border: 1px solid rgba(6, 78, 59, 0.1);
+            border: 1px solid rgba(30, 58, 138, 0.1);
             background-color: #ffffff;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
         .dark .fauna-panel {
-            border-color: #1d3a34;
-            background-color: #102824;
+            border-color: #1e3a5f;
+            background-color: #0f172a;
         }
 
         .glass-card {
@@ -79,7 +79,7 @@
         }
         .dark .glass-card {
             background-color: rgba(16, 40, 36, 0.75);
-            border-color: #1d3a34;
+            border-color: #1e3a5f;
         }
 
         .nav-link {
@@ -96,12 +96,12 @@
         .dark .nav-link { color: rgb(148 163 184); }
         .nav-link:hover, .nav-link-active {
             background-color: #ffffff;
-            color: rgb(19 78 74);
+            color: rgb(30 58 138);
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
         }
         .dark .nav-link:hover, .dark .nav-link-active {
-            background-color: #18342f;
-            color: rgb(163 230 53);
+            background-color: #1e293b;
+            color: rgb(56 189 248);
         }
 
         .dropdown-link {
@@ -116,51 +116,51 @@
         .dark .dropdown-link { color: rgb(203 213 225); }
         .dropdown-link:hover {
             background-color: rgb(241 245 249);
-            color: rgb(19 78 74);
+            color: rgb(30 58 138);
             padding-left: 1.25rem;
         }
         .dark .dropdown-link:hover {
-            background-color: #18342f;
-            color: rgb(163 230 53);
+            background-color: #1e293b;
+            color: rgb(56 189 248);
         }
 
         .fauna-btn-primary {
             display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 9999px; border: 1px solid #064e3b; background-color: #064e3b;
+            border-radius: 9999px; border: 1px solid #1e3a8a; background-color: #1e3a8a;
             padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 500;
             color: #ffffff; transition: all 0.2s; text-decoration: none;
         }
-        .fauna-btn-primary:hover { border-color: #10b981; background-color: #10b981; color: #064e3b; }
+        .fauna-btn-primary:hover { border-color: #3b82f6; background-color: #3b82f6; color: #1e3a8a; }
 
         .fauna-btn-secondary {
             display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 9999px; border: 1px solid #064e3b;
+            border-radius: 9999px; border: 1px solid #1e3a8a;
             padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 500;
-            color: #064e3b; transition: all 0.2s; text-decoration: none;
+            color: #1e3a8a; transition: all 0.2s; text-decoration: none;
         }
         .dark .fauna-btn-secondary { border-color: rgb(71 85 105); color: rgb(241 245 249); }
-        .fauna-btn-secondary:hover { background-color: #064e3b; color: #ffffff; }
+        .fauna-btn-secondary:hover { background-color: #1e3a8a; color: #ffffff; }
         .dark .fauna-btn-secondary:hover { background-color: rgb(30 41 59); }
 
         .mesh-gradient {
             background-image:
-                radial-gradient(at 0% 0%,   rgba(2,44,34,.16)   0px, transparent 50%),
-                radial-gradient(at 100% 0%,  rgba(163,230,53,.14) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(2,44,34,.08)   0px, transparent 50%),
-                radial-gradient(at 0% 100%,  rgba(163,230,53,.1)  0px, transparent 50%);
+                radial-gradient(at 0% 0%,   rgba(30, 58, 138,.16)   0px, transparent 50%),
+                radial-gradient(at 100% 0%,  rgba(56, 189, 248,.14) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(30, 58, 138,.08)   0px, transparent 50%),
+                radial-gradient(at 0% 100%,  rgba(56, 189, 248,.1)  0px, transparent 50%);
         }
         .dark .mesh-gradient {
             background-image:
-                radial-gradient(at 0% 0%,   rgba(2,44,34,.2)   0px, transparent 50%),
-                radial-gradient(at 100% 0%,  rgba(132,204,22,.1)  0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(2,44,34,.12)  0px, transparent 50%),
-                radial-gradient(at 0% 100%,  rgba(132,204,22,.08) 0px, transparent 50%);
+                radial-gradient(at 0% 0%,   rgba(30, 58, 138,.2)   0px, transparent 50%),
+                radial-gradient(at 100% 0%,  rgba(56, 189, 248,.1)  0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(30, 58, 138,.12)  0px, transparent 50%),
+                radial-gradient(at 0% 100%,  rgba(56, 189, 248,.08) 0px, transparent 50%);
         }
 
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(241,245,249,.5); border-radius: 9999px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgb(203 213 225); border-radius: 9999px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgb(163 230 53); }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgb(56 189 248); }
         .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(24,52,47,.3); }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgb(51 65 85); }
         .custom-scrollbar { scrollbar-width: thin; scrollbar-color: rgb(203 213 225) transparent; }
@@ -175,18 +175,18 @@
 
     {{-- ── Global navbar ── --}}
     @if($showNavbar ?? true)
-    <nav class="relative z-50 border-b border-emerald-900/10 bg-white shadow-md dark:border-[#1d3a34] dark:bg-[#102824]" x-data="{ showingMobileMenu: false }">
+    <nav class="relative z-50 border-b border-blue-900/10 bg-white shadow-md dark:border-[#1e3a5f] dark:bg-[#0f172a]" x-data="{ showingMobileMenu: false }">
         <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
             <div class="flex h-20 justify-between items-center">
                 <div class="flex items-center gap-8">
                     <a href="/" class="flex items-center gap-3 group">
                         <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="w-9 h-9">
                         <span class="hidden sm:block text-xl font-black tracking-tight text-slate-900 dark:text-white">
-                            {{ config('app.name') }}<span class="text-lime-500">.</span>
+                            {{ config('app.name') }}<span class="text-sky-400">.</span>
                         </span>
                     </a>
 
-                    <div class="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#102824]/70 rounded-2xl border border-emerald-900/10 dark:border-[#1d3a34] backdrop-blur-md">
+                    <div class="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#0f172a]/70 rounded-2xl border border-blue-900/10 dark:border-[#1e3a5f] backdrop-blur-md">
                         <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Home</a>
                         @auth
                             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}">Dashboard</a>
@@ -209,11 +209,11 @@
                             <button
                                 @click="open = !open"
                                 type="button"
-                                class="relative w-10 h-10 rounded-2xl flex items-center justify-center border border-emerald-900/10/50 bg-white text-slate-600 transition-all hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400 group"
+                                class="relative w-10 h-10 rounded-2xl flex items-center justify-center border border-blue-900/10/50 bg-white text-slate-600 transition-all hover:text-blue-900 dark:border-[#1e3a5f] dark:bg-[#0f172a] dark:text-slate-400 group"
                                 title="{{ count($due_tickets) }} orders due for processing"
                             >
                                 <svg
-                                    class="w-5 h-5 {{ count($due_tickets) > 0 ? 'animate-bounce text-lime-500' : '' }}"
+                                    class="w-5 h-5 {{ count($due_tickets) > 0 ? 'animate-bounce text-sky-400' : '' }}"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -226,15 +226,15 @@
                                     />
                                 </svg>
                                 @if(count($due_tickets) > 0)
-                                    <span class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-black text-white shadow-lg ring-2 ring-white dark:ring-[#102824]">
+                                    <span class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-black text-white shadow-lg ring-2 ring-white dark:ring-[#0f172a]">
                                         {{ count($due_tickets) }}
                                     </span>
                                 @endif
                             </button>
 
                             <div x-show="open" @click.outside="open = false" x-cloak
-                                class="absolute right-0 mt-2 w-80 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#102824]/95 backdrop-blur-xl border border-emerald-900/10 dark:border-[#1d3a34] py-1 z-50 shadow-xl">
-                                <div class="p-4 border-b border-slate-100 dark:border-[#1d3a34]">
+                                class="absolute right-0 mt-2 w-80 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-blue-900/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
+                                <div class="p-4 border-b border-slate-100 dark:border-[#1e3a5f]">
                                     <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1">
                                         Due for Processing
                                     </h3>
@@ -245,15 +245,15 @@
                                 <div class="max-h-96 overflow-y-auto custom-scrollbar">
                                     @if(count($due_tickets) > 0)
                                         @foreach($due_tickets as $ticket)
-                                            <div class="block p-4 hover:bg-emerald-50/50 dark:hover:bg-[#18342f] transition-colors border-b border-slate-100 dark:border-[#1d3a34] last:border-0 text-left">
+                                            <div class="block p-4 hover:bg-blue-50/50 dark:hover:bg-[#1e293b] transition-colors border-b border-slate-100 dark:border-[#1e3a5f] last:border-0 text-left">
                                                 <div class="flex justify-between items-start mb-1 gap-2">
                                                     <a
                                                         href="{{ route('dashboard') }}"
-                                                        class="text-xs font-bold text-slate-900 dark:text-white truncate pr-2 hover:text-teal-900 dark:hover:text-lime-400"
+                                                        class="text-xs font-bold text-slate-900 dark:text-white truncate pr-2 hover:text-blue-900 dark:hover:text-sky-400"
                                                     >
                                                         {{ ucfirst($ticket->subject) }}
                                                     </a>
-                                                    <span class="text-[9px] font-black uppercase bg-lime-500/10 text-lime-600 dark:text-lime-400 px-1.5 py-0.5 rounded shrink-0">
+                                                    <span class="text-[9px] font-black uppercase bg-sky-400/10 text-sky-500 dark:text-sky-400 px-1.5 py-0.5 rounded shrink-0">
                                                         {{ $ticket->period }}
                                                     </span>
                                                 </div>
@@ -268,7 +268,7 @@
                                                         <button
                                                             type="button"
                                                             onclick="copyToClipboard('{{ $ticket->hashid }}', this)"
-                                                            class="p-1 rounded bg-slate-100 dark:bg-[#18342f] text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 transition-all"
+                                                            class="p-1 rounded bg-slate-100 dark:bg-[#1e293b] text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 transition-all"
                                                             title="Copy Reference"
                                                         >
                                                             <svg class="w-3 h-3 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -291,10 +291,10 @@
                                     @endif
                                 </div>
                                 @if(count($due_tickets) > 0)
-                                    <div class="p-3 bg-slate-50 dark:bg-[#0b1715]/50 text-center">
+                                    <div class="p-3 bg-slate-50 dark:bg-[#020617]/50 text-center">
                                         <a
                                             href="{{ route('dashboard') }}"
-                                            class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-widest hover:underline"
+                                            class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-widest hover:underline"
                                         >
                                             View all in Dashboard
                                         </a>
@@ -305,20 +305,20 @@
                         @endif
                     @endauth
 
-                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl flex items-center justify-center border border-emerald-900/10 bg-white text-slate-600 hover:text-teal-900 dark:border-[#1d3a34] dark:bg-[#102824] dark:text-slate-400" aria-label="Toggle theme">
+                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl flex items-center justify-center border border-blue-900/10 bg-white text-slate-600 hover:text-blue-900 dark:border-[#1e3a5f] dark:bg-[#0f172a] dark:text-slate-400" aria-label="Toggle theme">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
                     </button>
 
                     @auth
                     <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" type="button" class="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border border-emerald-900/10 dark:border-[#1d3a34]/50 hover:border-lime-500/50 transition-all">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-teal-900 to-teal-700 flex items-center justify-center text-white text-[10px] font-black shadow-lg">
+                        <button @click="open = !open" type="button" class="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border border-blue-900/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center text-white text-[10px] font-black shadow-lg">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </div>
                             <span class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[120px]">{{ auth()->user()->name }}</span>
                         </button>
                         <div x-show="open" @click.outside="open = false" x-cloak
-                            class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/80 dark:bg-[#102824]/90 backdrop-blur-xl border border-emerald-900/10 dark:border-[#1d3a34] py-1 z-50 shadow-xl">
+                            class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/80 dark:bg-[#0f172a]/90 backdrop-blur-xl border border-blue-900/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
                             <a href="{{ route('profile.edit') }}" class="dropdown-link">Profile Settings</a>
                             @if(auth()->user()->role === 'admin')
                                 <a href="{{ route('admin.categories.index') }}" class="dropdown-link">Manage Categories</a>
@@ -332,8 +332,8 @@
                     </div>
                     @else
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('login') }}" class="nav-link bg-slate-200/40 dark:bg-[#18342f] text-slate-700 dark:text-slate-200 hover:text-teal-900 border border-emerald-900/10 dark:border-[#1d3a34]">Login</a>
-                        <a href="{{ route('register') }}" class="nav-link bg-teal-900 text-white hover:bg-[#10b981] hover:text-[#064e3b] shadow-md">Register</a>
+                        <a href="{{ route('login') }}" class="nav-link bg-slate-200/40 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200 hover:text-blue-900 border border-blue-900/10 dark:border-[#1e3a5f]">Login</a>
+                        <a href="{{ route('register') }}" class="nav-link bg-blue-900 text-white hover:bg-[#3b82f6] hover:text-[#1e3a8a] shadow-md">Register</a>
                     </div>
                     @endauth
                 </div>
@@ -346,11 +346,11 @@
                             <button
                                 @click="open = !open"
                                 type="button"
-                                class="relative w-9 h-9 rounded-xl flex items-center justify-center border border-emerald-900/10 dark:border-[#1d3a34] bg-white dark:bg-[#102824] text-slate-600 dark:text-slate-400 group"
+                                class="relative w-9 h-9 rounded-xl flex items-center justify-center border border-blue-900/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] text-slate-600 dark:text-slate-400 group"
                                 title="{{ count($due_tickets) }} orders due for processing"
                             >
                                 <svg
-                                    class="w-4 h-4 {{ count($due_tickets) > 0 ? 'animate-bounce text-lime-500' : '' }}"
+                                    class="w-4 h-4 {{ count($due_tickets) > 0 ? 'animate-bounce text-sky-400' : '' }}"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -363,15 +363,15 @@
                                     />
                                 </svg>
                                 @if(count($due_tickets) > 0)
-                                    <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[8px] font-black text-white shadow-lg ring-2 ring-white dark:ring-[#102824]">
+                                    <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[8px] font-black text-white shadow-lg ring-2 ring-white dark:ring-[#0f172a]">
                                         {{ count($due_tickets) }}
                                     </span>
                                 @endif
                             </button>
 
                             <div x-show="open" @click.outside="open = false" x-cloak
-                                class="fixed inset-x-4 top-24 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#102824]/95 backdrop-blur-xl border border-emerald-900/10 dark:border-[#1d3a34] py-1 z-50 shadow-xl max-w-sm mx-auto">
-                                <div class="p-4 border-b border-slate-100 dark:border-[#1d3a34] text-left">
+                                class="fixed inset-x-4 top-24 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-blue-900/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl max-w-sm mx-auto">
+                                <div class="p-4 border-b border-slate-100 dark:border-[#1e3a5f] text-left">
                                     <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-1">
                                         Due for Processing
                                     </h3>
@@ -382,15 +382,15 @@
                                 <div class="max-h-80 overflow-y-auto custom-scrollbar">
                                     @if(count($due_tickets) > 0)
                                         @foreach($due_tickets as $ticket)
-                                            <div class="block p-4 hover:bg-emerald-50/50 dark:hover:bg-[#18342f] transition-colors border-b border-slate-100 dark:border-[#1d3a34] last:border-0 text-left">
+                                            <div class="block p-4 hover:bg-blue-50/50 dark:hover:bg-[#1e293b] transition-colors border-b border-slate-100 dark:border-[#1e3a5f] last:border-0 text-left">
                                                 <div class="flex justify-between items-start mb-1 gap-2">
                                                     <a
                                                         href="{{ route('dashboard') }}"
-                                                        class="text-xs font-bold text-slate-900 dark:text-white truncate pr-2 hover:text-teal-900 dark:hover:text-lime-400"
+                                                        class="text-xs font-bold text-slate-900 dark:text-white truncate pr-2 hover:text-blue-900 dark:hover:text-sky-400"
                                                     >
                                                         {{ ucfirst($ticket->subject) }}
                                                     </a>
-                                                    <span class="text-[9px] font-black uppercase bg-lime-500/10 text-lime-600 dark:text-lime-400 px-1.5 py-0.5 rounded shrink-0">
+                                                    <span class="text-[9px] font-black uppercase bg-sky-400/10 text-sky-500 dark:text-sky-400 px-1.5 py-0.5 rounded shrink-0">
                                                         {{ $ticket->period }}
                                                     </span>
                                                 </div>
@@ -405,7 +405,7 @@
                                                         <button
                                                             type="button"
                                                             onclick="copyToClipboard('{{ $ticket->hashid }}', this)"
-                                                            class="p-1 rounded bg-slate-100 dark:bg-[#18342f] text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 transition-all"
+                                                            class="p-1 rounded bg-slate-100 dark:bg-[#1e293b] text-slate-400 hover:text-blue-900 dark:hover:text-sky-400 transition-all"
                                                             title="Copy Reference"
                                                         >
                                                             <svg class="w-3 h-3 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -428,10 +428,10 @@
                                     @endif
                                 </div>
                                 @if(count($due_tickets) > 0)
-                                    <div class="p-3 bg-slate-50 dark:bg-[#0b1715]/50 text-center">
+                                    <div class="p-3 bg-slate-50 dark:bg-[#020617]/50 text-center">
                                         <a
                                             href="{{ route('dashboard') }}"
-                                            class="text-[10px] font-black text-teal-900 dark:text-lime-400 uppercase tracking-widest hover:underline"
+                                            class="text-[10px] font-black text-blue-900 dark:text-sky-400 uppercase tracking-widest hover:underline"
                                         >
                                             View all in Dashboard
                                         </a>
@@ -442,11 +442,11 @@
                         @endif
                     @endauth
 
-                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl flex items-center justify-center border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400">
+                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl flex items-center justify-center border border-blue-900/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
                     </button>
 
-                    <button @click="showingMobileMenu = !showingMobileMenu" class="w-9 h-9 rounded-xl flex items-center justify-center border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 dark:text-slate-400">
+                    <button @click="showingMobileMenu = !showingMobileMenu" class="w-9 h-9 rounded-xl flex items-center justify-center border border-blue-900/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
                         <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path :class="{'hidden': showingMobileMenu, 'inline-flex': !showingMobileMenu }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             <path :class="{'hidden': !showingMobileMenu, 'inline-flex': showingMobileMenu }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -457,17 +457,17 @@
         </div>
 
         {{-- Mobile Dropdown Menu --}}
-        <div x-show="showingMobileMenu" x-cloak class="sm:hidden border-t border-emerald-900/10 dark:border-[#1d3a34] bg-white dark:bg-[#102824] px-4 py-4 space-y-3">
-            <a href="{{ route('home') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('home') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Home</a>
+        <div x-show="showingMobileMenu" x-cloak class="sm:hidden border-t border-blue-900/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] px-4 py-4 space-y-3">
+            <a href="{{ route('home') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('home') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Home</a>
             @auth
-                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('dashboard') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('dashboard') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Dashboard</a>
             @else
-                <a href="{{ route('submit-ticket') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('submit-ticket') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Submit Ticket</a>
+                <a href="{{ route('submit-ticket') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('submit-ticket') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Submit Ticket</a>
             @endauth
-            <a href="{{ route('check-status') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status', 'search-tickets') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Check Status</a>
+            <a href="{{ route('check-status') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status', 'search-tickets') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Check Status</a>
             @auth
                 @if(auth()->user()->role === 'admin')
-                    <a href="{{ route('admin.users') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-emerald-500/10 text-emerald-600 dark:text-lime-400' : '' }}">Users Management</a>
+                    <a href="{{ route('admin.users') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-blue-500/10 text-blue-600 dark:text-sky-400' : '' }}">Users Management</a>
                     <a href="{{ route('admin.categories.index') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage Categories</a>
                     <a href="{{ route('admin.faqs.index') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage FAQs</a>
                 @endif
@@ -477,9 +477,9 @@
                     <button type="submit" class="w-full text-left block px-3 py-2 rounded-xl text-sm font-bold text-rose-500">Sign Out</button>
                 </form>
             @else
-                <div class="pt-4 border-t border-emerald-900/10 dark:border-[#1d3a34] flex gap-2">
-                    <a href="{{ route('login') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#18342f] text-slate-700 dark:text-slate-200">Login</a>
-                    <a href="{{ route('register') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-teal-900 text-white hover:bg-[#10b981] hover:text-[#064e3b] shadow-md">Register</a>
+                <div class="pt-4 border-t border-blue-900/10 dark:border-[#1e3a5f] flex gap-2">
+                    <a href="{{ route('login') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200">Login</a>
+                    <a href="{{ route('register') }}" class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-blue-900 text-white hover:bg-[#3b82f6] hover:text-[#1e3a8a] shadow-md">Register</a>
                 </div>
             @endauth
         </div>
@@ -491,7 +491,7 @@
     <header class="relative z-10 py-3 md:py-10">
         <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
             <div class="fauna-panel relative overflow-hidden p-4 sm:p-6 md:p-10">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
                 {{ $header }}
             </div>
         </div>
@@ -549,7 +549,7 @@
 
         {{-- Panel --}}
         <div
-            class="relative z-10 w-full max-w-md bg-white dark:bg-[#102824] rounded-3xl shadow-2xl border border-slate-100 dark:border-[#1d3a34] overflow-hidden p-8"
+            class="relative z-10 w-full max-w-md bg-white dark:bg-[#0f172a] rounded-3xl shadow-2xl border border-slate-100 dark:border-[#1e3a5f] overflow-hidden p-8"
             @click.stop
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 scale-95"
@@ -589,7 +589,7 @@
             <div class="flex gap-3 justify-end">
                 <button
                     @click="cancel()"
-                    class="px-5 py-2.5 rounded-2xl text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#18342f] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-transparent"
+                    class="px-5 py-2.5 rounded-2xl text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-transparent"
                 >
                     Cancel
                 </button>
@@ -628,7 +628,7 @@
             }
 
             const configs = {
-                success: { color: '#10b981', label: 'Success', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>' },
+                success: { color: '#3b82f6', label: 'Success', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>' },
                 error:   { color: '#f43f5e', label: 'Error',   icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>' },
                 warning: { color: '#f59e0b', label: 'Warning', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>' },
                 info:    { color: '#3b82f6', label: 'Info',    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z"/>' },
@@ -673,7 +673,7 @@
                 const originalHtml = icon.outerHTML;
                 const isW3 = icon.classList.contains('w-3');
                 const sizeClass = isW3 ? 'w-3 h-3' : 'w-4 h-4';
-                icon.outerHTML = `<svg class="${sizeClass} text-emerald-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
+                icon.outerHTML = `<svg class="${sizeClass} text-blue-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
                 setTimeout(() => {
                     const currentIcon = btn.querySelector('.copy-icon') || btn;
                     currentIcon.outerHTML = originalHtml;

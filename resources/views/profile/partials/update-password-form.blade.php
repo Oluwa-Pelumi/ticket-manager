@@ -63,7 +63,7 @@
                 x-transition:enter-start="opacity-0 translate-y-1"
                 x-transition:leave="transition ease-in-out duration-300"
                 x-transition:leave-end="opacity-0"
-                class="flex items-center gap-1.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400"
+                class="flex items-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-sky-400"
             >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
