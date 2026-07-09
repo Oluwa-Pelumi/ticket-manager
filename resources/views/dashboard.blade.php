@@ -314,6 +314,7 @@
 
                                     {{-- Subject + snippet --}}
                                     <td class="px-4 md:px-6 py-4">
+					
                                         <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1"
                                             x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
                                         </div>

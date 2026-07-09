@@ -71,8 +71,6 @@
                     subject: '{{ old('subject', '') }}',
                     category_id: '{{ old('category_id', '') }}',
                     priority: '{{ old('priority', 'low') }}',
-                    order_type: '{{ old('order_type', '') }}',
-                    recurrence_period: '{{ old('recurrence_period', '') }}',
                     phone: '{{ old('phone_number', $user->phone_number ?? '') }}'.replace(/^\+234/, ''),
                     previewUrls: [],
                     handleFiles(e) {
@@ -217,8 +215,6 @@
                         @change="
                             const opt = $event.target.selectedOptions[0];
                             category_id = opt.dataset.categoryId || '';
-                            order_type = '';
-                            recurrence_period = '';
                         "
                         class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-bold shadow-sm"
                         required
@@ -231,14 +227,12 @@
                                 $catSlug = $cat['slug'] ?? $cat->slug;
                                 $catName = $cat['name'] ?? $cat->name;
                                 $catId   = $cat['id'] ?? $cat->id;
-                                $isDisabled = !$user && $catSlug === 'order';
-                                $label = $isDisabled ? "{$catName} (requires account)" : $catName;
+                                $label   =  $catName;
                             @endphp
                             <option
                                 value="{{ $catSlug }}"
                                 data-category-id="{{ $catId }}"
                                 @selected(old('subject') === $catSlug)
-                                @disabled($isDisabled)
                                 class="text-slate-900 dark:text-white font-medium"
                             >
                                 {{ $label }}
@@ -256,72 +250,6 @@
                         <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
                     @enderror
                 </div>
-
-                {{-- Conditional Order Fields --}}
-                @if($user)
-                    <div x-show="subject === 'order'" x-cloak class="space-y-6 p-6 rounded-2xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f]">
-                        <div class="space-y-3">
-                            <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400 uppercase">
-                                Order Type
-                            </label>
-                            <div class="grid grid-cols-2 gap-4">
-                                @foreach($orderType as $type)
-                                    <label
-                                        :class="order_type === '{{ $type['id'] }}' ? 'border-sky-400 bg-sky-400/10 text-sky-950 dark:text-sky-400' : 'border-sky-950/10 dark:border-[#1e3a5f] hover:border-sky-950/20'"
-                                        class="flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all"
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="order_type"
-                                            value="{{ $type['id'] }}"
-                                            class="hidden"
-                                            x-model="order_type"
-                                            @change="recurrence_period = ''"
-                                        />
-                                        <span class="text-xs font-black tracking-widest uppercase">
-                                            {{ $type['label'] }}
-                                        </span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div x-show="order_type === 'recurrent'" x-cloak class="space-y-3">
-                            <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400 uppercase">
-                                Recurrence Period
-                            </label>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                @foreach($recurrencePeriod as $period)
-                                    <label
-                                        :class="recurrence_period === '{{ $period['id'] }}' ? 'border-sky-400 bg-sky-400/10 text-sky-950 dark:text-sky-400' : 'border-sky-950/10 dark:border-[#1e3a5f] hover:border-sky-950/20'"
-                                        class="flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all"
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="recurrence_period"
-                                            value="{{ $period['id'] }}"
-                                            class="hidden"
-                                            x-model="recurrence_period"
-                                        />
-                                        <span class="text-[10px] font-black tracking-tight uppercase text-center">
-                                            {{ $period['label'] }}
-                                        </span>
-                                    </label>
-                                @endforeach
-                            </div>
-
-                            <div x-show="recurrence_period === 'custom'" x-cloak class="pt-2">
-                                <input
-                                    type="date"
-                                    name="custom_recurrence_date"
-                                    value="{{ old('custom_recurrence_date') }}"
-                                    class="w-full px-5 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-bold"
-                                    min="{{ now()->toDateString() }}"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                @endif
 
                 {{-- Content --}}
                 <div class="space-y-3">
@@ -425,6 +353,4 @@
             </form>
         </div>
     </div>
-
-
 </x-app-layout>

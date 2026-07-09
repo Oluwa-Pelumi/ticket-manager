@@ -73,7 +73,7 @@ class TicketController extends Controller
             'content'                => $validated['content'],
             'subject'                => $validated['subject'],
             'priority'               => $validated['priority'],
-            'phone_number'        => $validated['phone_number'] ?? null,
+            'phone_number'           => $validated['phone_number'] ?? null,
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ]);
 
