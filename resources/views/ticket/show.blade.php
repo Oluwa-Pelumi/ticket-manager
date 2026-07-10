@@ -155,26 +155,45 @@
                     <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Description</div>
                     <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm mb-8">{{ $ticket->content }}</div>
 
-                    @if(($ticket->images && count($ticket->images) > 0) || $ticket->filename)
+                    @php
+                        $imgExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
+                        $isImg = fn($p) => in_array(strtolower(pathinfo($p, PATHINFO_EXTENSION)), $imgExts);
+                    @endphp
+
+                    @if(($ticket->attachments && count($ticket->attachments) > 0) || $ticket->filename)
                         <div>
                             <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
-                                <svg class="w-4 h-4 mr-2 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <svg class="w-4 h-4 mr-2 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
                                 Attachments
                             </h4>
                             <div class="flex flex-wrap gap-4">
                                 @if($ticket->filename)
-                                <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                    <img src="/storage/{{ $ticket->filename }}" alt="{{ $ticket->filename }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    </div>
-                                </a>
+                                    <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
+                                        @if($isImg($ticket->filename))
+                                            <img src="/storage/{{ $ticket->filename }}" alt="{{ $ticket->filename }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                        @else
+                                            <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
+                                                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                                <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($ticket->filename, PATHINFO_EXTENSION)) }}</span>
+                                            </div>
+                                        @endif
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        </div>
+                                    </a>
                                 @endif
 
-                                @if($ticket->images)
-                                    @foreach($ticket->images as $img)
+                                @if($ticket->attachments)
+                                    @foreach($ticket->attachments as $img)
                                     <a href="/storage/{{ $img }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                        <img src="/storage/{{ $img }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                        @if($isImg($img))
+                                            <img src="/storage/{{ $img }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                        @else
+                                            <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
+                                                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                                <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($img, PATHINFO_EXTENSION)) }}</span>
+                                            </div>
+                                        @endif
                                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                         </div>
@@ -259,11 +278,18 @@
                                     </div>
                                     <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ $comment->content }}</div>
 
-                                    @if($comment->images && count($comment->images) > 0)
+                                    @if($comment->attachments && count($comment->attachments) > 0)
                                     <div class="flex flex-wrap gap-2 mt-3">
-                                        @foreach($comment->images as $cimg)
+                                        @foreach($comment->attachments as $cimg)
                                         <a href="/storage/{{ $cimg }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                            <img src="/storage/{{ $cimg }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                            @if($isImg($cimg))
+                                                <img src="/storage/{{ $cimg }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                            @else
+                                                <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b]/70 gap-1">
+                                                    <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                                    <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($cimg, PATHINFO_EXTENSION)) }}</span>
+                                                </div>
+                                            @endif
                                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                             </div>
@@ -289,11 +315,10 @@
                         </div>
                     @endif
 
-                <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}"
-                    enctype="multipart/form-data"
+                <form enctype="multipart/form-data"
                     class="space-y-4 {{ $isPastAttendant ? 'opacity-60 pointer-events-none' : '' }}"
-                    x-data="commentForm({{ $isPastAttendant ? 'true' : 'false' }})"
-                    @submit="processing = true">
+                    x-data="commentForm({{ $isPastAttendant ? 'true' : 'false' }}, '{{ route('add-comment', ['ticket' => $ticket->id]) }}')"
+                    @submit.prevent="submit()">
                     @csrf
 
                     <div class="space-y-3">
@@ -302,15 +327,25 @@
                                 class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#1e293b] disabled:cursor-not-allowed"></textarea>
                         </div>
 
-                        {{-- Image previews --}}
+                        {{-- File previews --}}
                         <template x-if="previews.length > 0">
                             <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f]">
-                                <template x-for="(url, i) in previews" :key="i">
+                                <template x-for="(file, i) in previews" :key="i">
                                     <div class="relative group/prev">
-                                        <img :src="url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
+                                        <template x-if="file.isImage">
+                                            <img :src="file.url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
+                                        </template>
+                                        <template x-if="!file.isImage">
+                                            <div class="w-16 h-16 rounded-xl border-2 border-white dark:border-[#1e3a5f] shadow-sm bg-slate-100 dark:bg-[#1e293b] flex flex-col items-center justify-center gap-1">
+                                                <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                                <span class="text-[8px] font-bold text-slate-500 truncate" x-text="file.name.split('.').pop().toUpperCase()"></span>
+                                            </div>
+                                        </template>
                                         <button
                                             type="button"
-                                            @click="removeImage(i)"
+                                            @click="removeFile(i)"
                                             class="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center bg-red-500 text-white rounded-full opacity-0 group-hover/prev:opacity-100 transition-opacity shadow-md"
                                         >
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,20 +358,20 @@
                         </template>
 
                         <div class="flex items-center justify-between gap-3">
-                            {{-- Attach images --}}
+                            {{-- Attach files --}}
                             <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-500 dark:text-slate-400 hover:text-sky-950 dark:hover:text-sky-400 cursor-pointer transition-all text-xs font-bold">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
                                 </svg>
-                                <span>Image</span>
+                                <span>Attachment</span>
 
                                 <input
                                     type="file"
-                                    name="images[]"
-                                    id="comment-images"
+                                    name="attachments[]"
+                                    id="comment-attachments"
                                     x-ref="fileInput"
                                     multiple
-                                    accept="image/*"
+                                    accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     @change="handleFiles($event)"
                                     class="hidden"
                                     {{ $isPastAttendant ? 'disabled' : '' }}
@@ -375,7 +410,7 @@
 
 <script>
 
-function commentForm(isPastAttendant) {
+function commentForm(isPastAttendant, actionUrl) {
     return {
         isPastAttendant,
         processing: false,
@@ -386,12 +421,16 @@ function commentForm(isPastAttendant) {
         handleFiles(e) {
             const newFiles = Array.from(e.target.files);
             this.files = [...this.files, ...newFiles];
-            this.previews = [...this.previews, ...newFiles.map(file => URL.createObjectURL(file))];
+            this.previews = [...this.previews, ...newFiles.map(file => ({
+                url: URL.createObjectURL(file),
+                name: file.name,
+                isImage: file.type.startsWith('image/')
+            }))];
             this.syncInput();
         },
 
-        removeImage(index) {
-            URL.revokeObjectURL(this.previews[index]);
+        removeFile(index) {
+            URL.revokeObjectURL(this.previews[index].url);
             this.files.splice(index, 1);
             this.previews.splice(index, 1);
             this.syncInput();
@@ -401,6 +440,28 @@ function commentForm(isPastAttendant) {
             const dataTransfer = new DataTransfer();
             this.files.forEach(file => dataTransfer.items.add(file));
             this.$refs.fileInput.files = dataTransfer.files;
+        },
+
+        async submit() {
+            if (!this.content.trim() || this.isPastAttendant || this.processing) return;
+            this.processing = true;
+            try {
+                const form = new FormData();
+                form.append('_token', document.querySelector('meta[name=csrf-token]').content);
+                form.append('content', this.content);
+                this.files.forEach(f => form.append('attachments[]', f));
+                const r = await fetch(actionUrl, {
+                    method: 'POST',
+                    body: form,
+                    redirect: 'manual'
+                });
+                if (r.ok || r.type === 'opaqueredirect') {
+                    window.location.reload();
+                }
+            } catch (err) {
+                console.error('Comment submission failed:', err);
+                this.processing = false;
+            }
         },
     };
 }

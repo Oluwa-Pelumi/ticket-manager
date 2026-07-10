@@ -15,7 +15,6 @@ class CategorySeeder extends Seeder
             ['name' => 'Transcript Request'],
             ['name' => 'Certificate Request'],
             ['name' => 'Letter of Recommendation Request'],
-            ['name' => 'Syllabus Request'],
             ['name' => 'Statement of Result Request'],
             ['name' => 'Other'],
         ];

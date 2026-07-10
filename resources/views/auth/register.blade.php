@@ -10,11 +10,27 @@
     @csrf
 
     <div class="space-y-2">
-        <label for="name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Full Name</label>
-        <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name"
+        <label for="first_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">First Name</label>
+        <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" required autofocus autocomplete="first_name"
             class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
             placeholder="John Doe">
-        @error('name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
+        @error('first_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
+    </div>
+
+    <div class="space-y-2">
+        <label for="middle_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Middle Name</label>
+        <input id="middle_name" type="text" name="middle_name" value="{{ old('middle_name') }}" required autofocus autocomplete="middle_name"
+            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+            placeholder="John Doe">
+        @error('middle_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
+    </div>
+
+    <div class="space-y-2">
+        <label for="last_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Last Name</label>
+        <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" required autofocus autocomplete="last_name"
+            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+            placeholder="John Doe">
+        @error('last_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
     <div class="space-y-2">
@@ -23,6 +39,30 @@
             class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
             placeholder="john@example.com">
         @error('email')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
+    </div>
+
+    <div class="space-y-2">
+        <label for="email" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Matriculation Number</label>
+        <input id="matric_no" type="number" name="matric_no" value="{{ old('matric_no') }}" required autocomplete="username"
+            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+            placeholder="john@example.com">
+        @error('matric_no')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
+    </div>
+
+    <div class="space-y-2">
+        <label for="faculty" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Faculty</label>
+        <input id="faculty" type="number" name="faculty" value="{{ old('faculty') }}" required autocomplete="username"
+            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+            placeholder="john@example.com">
+        @error('faculty')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
+    </div>
+
+    <div class="space-y-2">
+        <label for="department" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Matriculation Number</label>
+        <input id="department" type="number" name="department" value="{{ old('department') }}" required autocomplete="username"
+            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+            placeholder="john@example.com">
+        @error('department')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
     <div class="space-y-2">

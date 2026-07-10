@@ -75,7 +75,7 @@ class Ticket extends Model
         'name',
         'email',
         'status',
-        'images',
+        'attachments',
         'user_id',
         'subject',
         'content',
@@ -93,7 +93,7 @@ class Ticket extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'images'            => 'array',
+        'attachments'            => 'array',
         'attended_to_by'    => 'array',
     ];
 

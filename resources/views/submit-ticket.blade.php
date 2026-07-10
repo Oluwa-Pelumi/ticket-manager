@@ -72,25 +72,102 @@
                     category_id: '{{ old('category_id', '') }}',
                     priority: '{{ old('priority', 'low') }}',
                     phone: '{{ old('phone_number', $user->phone_number ?? '') }}'.replace(/^\+234/, ''),
-                    previewUrls: [],
+                    previews: [],
+                    attachedFiles: [],
+                    submitted: false,
+                    ticketRef: '',
+                    submitError: '',
                     handleFiles(e) {
-                        this.previewUrls = Array.from(e.target.files).map(f => URL.createObjectURL(f));
+                        const newFiles = Array.from(e.target.files);
+                        this.attachedFiles = [...this.attachedFiles, ...newFiles];
+                        this.previews = [...this.previews, ...newFiles.map(f => ({
+                            url: URL.createObjectURL(f),
+                            name: f.name,
+                            isImage: f.type.startsWith('image/')
+                        }))];
+                        this.syncInput();
                     },
-                    removePreview(idx, inputEl) {
+                    removePreview(idx) {
+                        URL.revokeObjectURL(this.previews[idx].url);
+                        this.attachedFiles.splice(idx, 1);
+                        this.previews.splice(idx, 1);
+                        this.syncInput();
+                    },
+                    syncInput() {
                         const dt = new DataTransfer();
-                        const files = Array.from(inputEl.files);
-                        files.splice(idx, 1);
-                        files.forEach(f => dt.items.add(f));
-                        inputEl.files = dt.files;
-                        this.previewUrls.splice(idx, 1);
+                        this.attachedFiles.forEach(f => dt.items.add(f));
+                        document.getElementById('file-upload').files = dt.files;
+                    },
+                    async submitTicket() {
+                        if (this.processing) return;
+                        this.processing = true;
+                        this.submitError = '';
+                        try {
+                            const form = new FormData(this.$el);
+                            const r = await fetch(this.$el.action, {
+                                method: 'POST',
+                                body: form,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            const data = await r.json();
+                            if (r.ok && data.success) {
+                                this.ticketRef = data.hashid;
+                                this.submitted = true;
+                            } else {
+                                const msgs = data.errors
+                                    ? Object.values(data.errors).flat().join(' ')
+                                    : (data.message || 'Submission failed. Please try again.');
+                                this.submitError = msgs;
+                            }
+                        } catch (err) {
+                            this.submitError = 'An error occurred. Please check your connection.';
+                            console.error(err);
+                        } finally {
+                            this.processing = false;
+                        }
                     }
                 }"
-                @submit="processing = true"
+                @submit.prevent="submitTicket()"
             >
                 @csrf
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {{-- ✅ Success state --}}
+                <div x-show="submitted" x-cloak class="py-12 flex flex-col items-center text-center space-y-6">
+                    <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center ring-4 ring-emerald-200 dark:ring-emerald-800/40">
+                        <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Ticket Submitted!</h2>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Your support request has been received.</p>
+                    </div>
+                    <div class="px-6 py-4 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-900/50 space-y-1">
+                        <div class="text-[10px] font-black tracking-widest text-sky-950 dark:text-sky-400 uppercase">Reference Code</div>
+                        <div class="text-2xl font-black tracking-widest text-sky-950 dark:text-white" x-text="ticketRef"></div>
+                        <div class="text-xs text-slate-400">Bookmark the ticket page to track updates</div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+                        <a :href="'/ticket/' + ticketRef"
+                            class="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-sky-950 text-white font-black text-sm shadow-lg hover:bg-sky-800 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            View Ticket
+                        </a>
+                        <button type="button"
+                            @click="submitted = false; ticketRef = ''; submitError = ''; processing = false; phone = ''; subject = ''; content = ''; previews = []; attachedFiles = [];"
+                            class="flex-1 px-5 py-3 rounded-2xl border border-sky-950/20 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400 font-black text-sm hover:bg-slate-50 dark:hover:bg-[#1e293b] transition-all">
+                            Submit Another
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Form fields --}}
+                <div x-show="!submitted" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {{-- Name --}}
                     <div class="space-y-3">
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="name">
@@ -134,7 +211,8 @@
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="phone">
                             Phone Contact
                         </label>
-                        <div class="flex rounded-2xl overflow-hidden border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm focus-within:ring-2 focus-within:ring-sky-400 transition-all">
+                        <div class="flex rounded-2xl overflow-hidden border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm focus-within:ring-2 focus-within:ring-sky-400 transition-all"
+                            :class="phone.length === 10 ? 'focus-within:ring-amber-400 ring-1 ring-amber-300/50' : ''">
                             <span class="flex items-center px-4 bg-slate-100 dark:bg-[#0f2420] text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-sky-950/10 dark:border-[#1e3a5f] select-none shrink-0">
                                 +234
                             </span>
@@ -142,14 +220,25 @@
                                 id="phone"
                                 type="tel"
                                 x-model="phone"
+                                maxlength="10"
+                                @input="phone = phone.replace(/\D/g, '').slice(0, 10)"
                                 class="flex-1 px-5 py-4 bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white outline-none font-medium"
                                 placeholder="8012345678"
                             />
                         </div>
                         <input type="hidden" name="phone_number" :value="phone ? '+234' + phone : ''">
-                        @error('phone_number')
-                            <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
-                        @enderror
+                        <div class="flex items-center justify-between mt-1">
+                            <div>
+                                @error('phone_number')
+                                    <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
+                                @enderror
+                                <div x-show="phone.length === 10" x-cloak class="text-amber-500 text-xs font-semibold">Maximum 10 digits reached</div>
+                            </div>
+                            <div x-show="phone.length > 0" x-cloak class="text-xs font-bold tabular-nums"
+                                :class="phone.length === 10 ? 'text-amber-500' : 'text-slate-400'">
+                                <span x-text="phone.length"></span>/10
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Priority --}}
@@ -277,15 +366,15 @@
                     <div class="relative group/upload">
                         <input
                             type="file"
-                            name="images[]"
+                            name="attachments[]"
                             @change="handleFiles($event)"
                             class="hidden"
-                            id="image-upload"
-                            accept="image/*"
+                            id="file-upload"
+                            accept="image/*,.txt,text/plain,.xls,.xlsx,.pdf,.doc,.docx,application/vnd.ms-excel,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             multiple
                         />
                         <label
-                            for="image-upload"
+                            for="file-upload"
                             class="flex flex-col items-center justify-center border-2 border-dashed border-sky-950/20 dark:border-[#1e3a5f] rounded-3xl p-10 hover:border-sky-950 dark:hover:border-sky-400 hover:bg-sky-400/5 transition-all cursor-pointer group"
                         >
                             <div class="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-[#1e293b] flex items-center justify-center text-slate-400 group-hover:bg-sky-950 group-hover:text-white transition-all shadow-sm">
@@ -294,26 +383,36 @@
                                 </svg>
                             </div>
                             <span class="text-slate-900 dark:text-white font-bold text-sm">
-                                Upload Snapshots
+                                Upload Attachments
                             </span>
                             <span class="text-slate-600 text-xs mt-1">
-                                PNG, JPG up to 5MB each. Drag and drop supported.
+                                Any image format and/or document file up to 5MB each. Drag and drop supported.
                             </span>
                         </label>
                     </div>
 
                     {{-- Previews --}}
-                    <div x-show="previewUrls.length > 0" x-cloak class="mt-6">
+                    <div x-show="previews.length > 0" x-cloak class="mt-6">
                         <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-4 tracking-[0.2em]">
-                            Ready for Ticket (<span x-text="previewUrls.length"></span>)
+                            Ready for Ticket (<span x-text="previews.length"></span>)
                         </div>
                         <div class="flex flex-wrap gap-4">
-                            <template x-for="(url, idx) in previewUrls" :key="idx">
+                            <template x-for="(file, idx) in previews" :key="idx">
                                 <div class="relative group/preview">
-                                    <img :src="url" class="w-28 h-28 object-cover rounded-2xl border-2 border-white dark:border-[#1e3a5f] shadow-2xl transition-transform group-hover/preview:scale-110" :alt="'Preview ' + (idx + 1)">
+                                    <template x-if="file.isImage">
+                                        <img :src="file.url" class="w-28 h-28 object-cover rounded-2xl border-2 border-white dark:border-[#1e3a5f] shadow-2xl transition-transform group-hover/preview:scale-110" :alt="file.name">
+                                    </template>
+                                    <template x-if="!file.isImage">
+                                        <div class="w-28 h-28 rounded-2xl border-2 border-white dark:border-[#1e3a5f] shadow-2xl bg-slate-100 dark:bg-[#1e293b] flex flex-col items-center justify-center gap-1 p-2">
+                                            <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <span class="text-[9px] font-bold text-slate-500 text-center w-full truncate" x-text="file.name.split('.').pop().toUpperCase()"></span>
+                                        </div>
+                                    </template>
                                     <button
                                         type="button"
-                                        @click="removePreview(idx, document.getElementById('image-upload'))"
+                                        @click="removePreview(idx)"
                                         class="absolute -top-3 -right-3 bg-red-500 text-white p-2 rounded-xl shadow-xl hover:bg-red-600 transition-all opacity-0 group-hover/preview:opacity-100 scale-75 group-hover/preview:scale-100"
                                     >
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,13 +423,14 @@
                             </template>
                         </div>
                     </div>
-                    @error('images')
+                    @error('attachments')
                         <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
                     @enderror
                 </div>
 
                 {{-- Submit --}}
                 <div class="pt-6">
+                    <div x-show="submitError" x-cloak class="mb-4 p-4 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 text-red-600 dark:text-red-400 text-sm font-semibold" x-text="submitError"></div>
                     <button
                         type="submit"
                         x-bind:disabled="processing || {{ empty($categories) ? 'true' : 'false' }}"
@@ -350,6 +450,7 @@
                         </template>
                     </button>
                 </div>
+                </div>{{-- /x-show="!submitted" --}}
             </form>
         </div>
     </div>

@@ -30,7 +30,8 @@
     =====================================================================
     --}}
     <div class="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6" x-data="dashboard()"
-        x-init="init()">
+        x-init="init()"
+        @comment-added.window="handleNewComment($event.detail)">
 
         {{-- Page header + bulk actions --}}
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
@@ -314,7 +315,7 @@
 
                                     {{-- Subject + snippet --}}
                                     <td class="px-4 md:px-6 py-4">
-					
+                    
                                         <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1"
                                             x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
                                         </div>
@@ -596,7 +597,7 @@
 
                                                             {{-- Attachments --}}
                                                             <template
-                                                                x-if="(ticket.images && ticket.images.length > 0) || ticket.filename">
+                                                                x-if="(ticket.attachments && ticket.attachments.length > 0) || ticket.filename">
                                                                 <div>
                                                                     <h4
                                                                         class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center uppercase">
@@ -614,8 +615,24 @@
                                                                             <a :href="'/storage/' + ticket.filename"
                                                                                 target="_blank"
                                                                                 class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                                                                <img :src="'/storage/' + ticket.filename" :alt="ticket.filename"
-                                                                                    class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+
+                                                                                {{-- Image preview --}}
+                                                                                <template x-if="isImage(ticket.filename)">
+                                                                                    <img :src="'/storage/' + ticket.filename" :alt="ticket.filename"
+                                                                                        class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                </template>
+
+                                                                                {{-- Document icon --}}
+                                                                                <template x-if="!isImage(ticket.filename)">
+                                                                                    <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
+                                                                                        <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                                        </svg>
+                                                                                        <span class="text-[9px] font-black text-slate-500" x-text="fileExt(ticket.filename)"></span>
+                                                                                    </div>
+                                                                                </template>
+
                                                                                 <div
                                                                                     class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                                                     <svg class="w-6 h-6 text-white"
@@ -633,12 +650,28 @@
                                                                                 </div>
                                                                             </a>
                                                                         </template>
-                                                                        <template x-for="(img, i) in (ticket.images || [])"
+                                                                        <template x-for="(img, i) in (ticket.attachments || [])"
                                                                             :key="i">
                                                                             <a :href="'/storage/' + img" target="_blank"
                                                                                 class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                                                                <img :src="'/storage/' + img"
-                                                                                    class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+
+                                                                                {{-- Image preview --}}
+                                                                                <template x-if="isImage(img)">
+                                                                                    <img :src="'/storage/' + img"
+                                                                                        class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                </template>
+
+                                                                                {{-- Document icon --}}
+                                                                                <template x-if="!isImage(img)">
+                                                                                    <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
+                                                                                        <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                                        </svg>
+                                                                                        <span class="text-[9px] font-black text-slate-500" x-text="fileExt(img)"></span>
+                                                                                    </div>
+                                                                                </template>
+
                                                                                 <div
                                                                                     class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                                                     <svg class="w-6 h-6 text-white"
@@ -737,13 +770,29 @@
                                                                             <span class="text-[9px] opacity-40" x-text="timeAgo(comment.created_at) + ' · ' + new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
                                                                         </div>
                                                                         <div class="text-sm font-medium leading-relaxed" x-text="comment.content"></div>
-                                                                        <template x-if="comment.images && comment.images.length > 0">
+                                                                        <template x-if="comment.attachments && comment.attachments.length > 0">
                                                                             <div class="flex flex-wrap gap-2 mt-3">
-                                                                                <template x-for="(cimg, cii) in (comment.images || [])" :key="cii">
+                                                                                <template x-for="(cimg, cii) in (comment.attachments || [])" :key="cii">
                                                                                     <a :href="'/storage/' + cimg" target="_blank"
                                                                                         class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                                                                        <img :src="'/storage/' + cimg"
-                                                                                            class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+
+                                                                                        {{-- Image preview --}}
+                                                                                        <template x-if="isImage(cimg)">
+                                                                                            <img :src="'/storage/' + cimg"
+                                                                                                class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                                                        </template>
+
+                                                                                        {{-- Document icon --}}
+                                                                                        <template x-if="!isImage(cimg)">
+                                                                                            <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
+                                                                                                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                                                </svg>
+                                                                                                <span class="text-[9px] font-black text-slate-500" x-text="fileExt(cimg)"></span>
+                                                                                            </div>
+                                                                                        </template>
+
                                                                                         <div
                                                                                             class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                                                                             <svg class="w-6 h-6 text-white"
@@ -884,12 +933,12 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Attachments</label>
-                            <label for="edit-images"
+                            <label for="edit-attachments"
                                 class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-sky-950 dark:hover:text-sky-400 cursor-pointer transition-all border border-sky-950/10 dark:border-[#1e3a5f]">
-                                Add Images
+                                Add attachments
                             </label>
-                            <input type="file" id="edit-images" class="hidden" multiple accept="image/*"
-                                @change="handleEditImages($event)" />
+                            <input type="file" id="edit-attachments" class="hidden" multiple accept="image/*,txt,test/plain,xls,xlsx,.pdf,.doc,.docx,application/vnd.ms-excel,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetxml.sheet"
+                                @change="handleEditAttachments($event)" />
                         </div>
                         <template x-if="editPreviewUrls.length > 0">
                             <div
@@ -898,7 +947,7 @@
                                     <div class="relative group/ep">
                                         <img :src="url"
                                             class="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
-                                        <button type="button" @click="removeEditImage(i)"
+                                        <button type="button" @click="removeEditAttachment(i)"
                                             class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover/ep:opacity-100 transition-opacity shadow-lg">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -1046,6 +1095,19 @@
                         });
                     },
 
+                    // Returns true if the given filename/path looks like an image based on extension
+                    isImage(filename) {
+                        if (!filename) return false;
+                        const ext = filename.split('.').pop().toLowerCase().split('?')[0];
+                        return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'].includes(ext);
+                    },
+
+                    // Returns the uppercase file extension for a filename/path (used as the document-icon label)
+                    fileExt(filename) {
+                        if (!filename) return '';
+                        return filename.split('.').pop().toUpperCase().split('?')[0];
+                    },
+
                     getSortIcon(key) {
                         if (this.sortConfig.key !== key)
                             return `<svg class="w-3 h-3 opacity-20 group-hover:opacity-50 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/></svg>`;
@@ -1147,6 +1209,14 @@
                         this.allTickets = this.allTickets.map(t => t.id === id ? { ...t, status } : t);
                     },
 
+                    handleNewComment({ ticketId, comment }) {
+                        const ticket = this.allTickets.find(t => t.id === ticketId);
+                        if (ticket) {
+                            if (!ticket.comments) ticket.comments = [];
+                            ticket.comments.push(comment);
+                        }
+                    },
+
                     async deleteTicket(id) {
                         const confirmed = await this.confirm({
                             type: 'danger',
@@ -1199,7 +1269,7 @@
                             priority: ticket.priority,
                             content: ticket.content
                         };
-                        this.editPreviewUrls = (ticket.images || []).map(img => '/storage/' + img);
+                        this.editPreviewUrls = (ticket.attachments || []).map(img => '/storage/' + img);
                         this.editFiles = [];
                     },
                     closeEditModal() {
@@ -1207,11 +1277,11 @@
                         this.editPreviewUrls = [];
                         this.editFiles = [];
                     },
-                    handleEditImages(e) {
+                    handleEditAttachments(e) {
                         this.editFiles = Array.from(e.target.files);
                         this.editPreviewUrls = this.editFiles.map(f => URL.createObjectURL(f));
                     },
-                    removeEditImage(i) {
+                    removeEditAttachment(i) {
                         this.editFiles.splice(i, 1);
                         this.editPreviewUrls.splice(i, 1);
                     },
@@ -1223,7 +1293,7 @@
                         form.append('category_id', this.editData.category_id);
                         form.append('priority', this.editData.priority);
                         form.append('content', this.editData.content);
-                        this.editFiles.forEach(f => form.append('images[]', f));
+                        this.editFiles.forEach(f => form.append('attachments[]', f));
                         await fetch(ROUTES.editTicket(this.editingTicket.id), {
                             method: 'POST',
                             body: form,
@@ -1275,32 +1345,55 @@
                     files: [],
                     previews: [],
                     submitting: false,
-                    handleImages(e) {
-                        this.files = Array.from(e.target.files);
-                        this.previews = this.files.map(f => URL.createObjectURL(f));
+                    handleAttachments(e) {
+                        const newFiles = Array.from(e.target.files);
+                        this.files = [...this.files, ...newFiles];
+                        this.previews = [...this.previews, ...newFiles.map(f => ({
+                            url: URL.createObjectURL(f),
+                            name: f.name,
+                            isImage: f.type.startsWith('image/')
+                        }))];
                     },
-                    removeImage(i) {
+                    removeAttachment(i) {
+                        URL.revokeObjectURL(this.previews[i].url);
                         this.files.splice(i, 1);
                         this.previews.splice(i, 1);
                     },
                     async submit() {
                         if (!this.content.trim()) return;
                         this.submitting = true;
-                        const form = new FormData();
-                        form.append('_token', document.querySelector('meta[name=csrf-token]').content);
-                        form.append('content', this.content);
-                        this.files.forEach(f => form.append('images[]', f));
-                        const r = await fetch(`/tickets/${ticketId}/comments`, {
-                            method: 'POST',
-                            body: form,
-                            redirect: 'manual'
-                        });
-                        this.submitting = false;
-                        if (r.ok || r.redirected || r.type === 'opaqueredirect') {
-                            this.content = '';
-                            this.files = [];
-                            this.previews = [];
-                            window.location.reload();
+                        try {
+                            const form = new FormData();
+                            form.append('_token', document.querySelector('meta[name=csrf-token]').content);
+                            form.append('content', this.content);
+                            this.files.forEach(f => form.append('attachments[]', f));
+                            const r = await fetch(`/tickets/${ticketId}/comments`, {
+                                method: 'POST',
+                                body: form,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            if (r.ok) {
+                                const data = await r.json();
+                                if (data.success && data.comment) {
+                                    window.dispatchEvent(new CustomEvent('comment-added', {
+                                        detail: { ticketId: ticketId, comment: data.comment }
+                                    }));
+                                }
+                                this.content = '';
+                                this.files = [];
+                                this.previews = [];
+                                window.showToast('Comment posted successfully.');
+                            } else {
+                                window.showToast('Failed to post comment. Please try again.', 'error');
+                            }
+                        } catch (err) {
+                            console.error('Comment error:', err);
+                            window.showToast('An error occurred. Please try again.', 'error');
+                        } finally {
+                            this.submitting = false;
                         }
                     }
                 };

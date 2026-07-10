@@ -26,7 +26,7 @@ class FaqSeeder extends Seeder
 
         \App\Models\Faq::create([
             'question' => 'What should I include in my ticket description?',
-            'answer'   => 'Include medication name, dosage, when the issue happened, what you expected, and what happened instead. Add images when relevant.',
+            'answer'   => 'Include medication name, dosage, when the issue happened, what you expected, and what happened instead. Add attachments when relevant.',
             'order'    => 3,
         ]);
 

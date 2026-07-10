@@ -34,23 +34,27 @@ class TicketController extends Controller
     }
 
     /**
-     * Create a new ticket, assign support, upload images, and notify the submitter.
+     * Create a new ticket, assign support, upload files, and notify the submitter.
      */
     public function save(Request $request)
     {
         // --- Validate submission ---
         $validated = $request->validate([
-            'images'                 => 'nullable|array',
-            'images.*'               => 'image|max:5120',
+            'attachments.*' => [
+                'nullable',
+                'file',
+                'max:5120', // 5MB, adjust as needed
+                'extensions:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt',
+            ],
             'content'                => 'required|string',
             'email'                  => 'required|email|max:255',
             'name'                   => 'required|string|max:255',
             'subject'                => 'required|string|max:255',
             'category_id'            => 'nullable|exists:categories,id',
             'priority'               => 'required|string|in:low,medium,high',
-            'phone_number'        => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
+            'phone_number'        => ['nullable', 'string', 'regex:/^(\+234)?\d{1,10}$/'],
         ], [
-            'phone_number.regex'  => 'The phone number must be a valid international phone number (e.g., +2348000000000).'
+            'phone_number.regex'  => 'The phone number must not exceed 10 digits.'
         ]);
 
         $user = Auth::user();
@@ -77,22 +81,22 @@ class TicketController extends Controller
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ]);
 
-        // --- Upload attached images ---
-        $imagePaths = [];
-        if ($request->hasFile('images')) {
+        // --- Upload attached files ---
+        $attachmentPaths = [];
+        if ($request->hasFile('attachments')) {
             $username  = Str::slug($validated['name'], '_');
             $folder    = $username . '-' . ($user ? $user->id : 'guest');
 
-            foreach ($request->file('images') as $index => $file) {
+            foreach ($request->file('attachments') as $index => $file) {
                 $extension    = $file->getClientOriginalExtension();
                 $filename     = $ticket->id . '_' . $index . '_' . time() . '.' . $extension;
                 $filepath     = $file->storeAs('tickets/' . $folder, $filename, 'public');
-                $imagePaths[] = $filepath;
+                $attachmentPaths[] = $filepath;
             }
         }
 
         $ticket->update([
-            'images' => $imagePaths
+            'attachments' => $attachmentPaths
         ]);
 
         // --- Notify submitter via mail ---
@@ -107,11 +111,20 @@ class TicketController extends Controller
                 ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $validated['name']));
         }
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success'  => true,
+                'message'  => "Ticket submitted! Your reference is {$ticket->hashid}.",
+                'redirect' => route('ticket.show', $ticket->hashid),
+                'hashid'   => $ticket->hashid,
+            ]);
+        }
+
         return redirect()->route('ticket.show', $ticket->hashid)->with('success', "Ticket submitted successfully. Your reference code is {$ticket->hashid}. You can bookmark this page to track your ticket.");
     }
 
     /**
-     * Update ticket details and optionally append new images.
+     * Update ticket details and optionally append new attachments.
      */
     // public function update(Request $request, Ticket $ticket)
     // {
@@ -125,8 +138,12 @@ class TicketController extends Controller
     //     }
 
     //     $validated = $request->validate([
-    //         'images'                 => 'nullable|array',
-    //         'images.*'               => 'image|max:5120',
+                //     'attachments.*' => [
+                //     'nullable',
+                //     'file',
+                //     'max:10240', // 10MB, adjust as needed
+                //     'mimes:jpg,jpeg,png,gif,webp,pdf,doc,docx',
+                // ],
     //         'content'                => 'required|string',
     //         'subject'                => 'required|string|max:255',
     //         'category_id'            => 'nullable|exists:categories,id',
@@ -140,20 +157,20 @@ class TicketController extends Controller
     //         'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
     //     ];
 
-    //     // --- Merge new image uploads with existing paths ---
-    //     if ($request->hasFile('images')) {
+    //     // --- Merge new attachment uploads with existing paths ---
+    //     if ($request->hasFile('attachments')) {
     //         $user       = Auth::user();
     //         $username   = Str::slug($user->name, '_');
     //         $folder     = $username . '-' . $user->id;
-    //         $imagePaths = $ticket->images ?? [];
+    //         $attachmentPaths = $ticket->attachments ?? [];
 
-    //         foreach ($request->file('images') as $index => $file) {
+    //         foreach ($request->file('attachments') as $index => $file) {
     //             $extension    = $file->getClientOriginalExtension();
     //             $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
     //             $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
-    //             $imagePaths[] = $filepath;
+    //             $attachmentPaths[] = $filepath;
     //         }
-    //         $updateData['images'] = $imagePaths;
+    //         $updateData['attachments'] = $attachmentPaths;
     //     }
 
     //     $ticket->update($updateData);
@@ -332,29 +349,33 @@ class TicketController extends Controller
         }
 
         $validated = $request->validate([
-            'images'   => 'nullable|array',
-            'images.*' => 'image|max:5120',
+            'attachments.*' => [
+                'nullable',
+                'file',
+                'max:5120', // 5MB, adjust as needed
+                'extensions:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt',
+            ],
             'content'  => 'required|string',
         ]);
 
-        // --- Upload comment images ---
-        $imagePaths = [];
-        if ($request->hasFile('images')) {
+        // --- Upload comment attachments ---
+        $attachmentPaths = [];
+        if ($request->hasFile('attachments')) {
             $user      = Auth::user();
             $username  = $user ? Str::slug($user->name, '_') : 'guest';
             $folder    = 'comments/' . $username . '-' . ($user ? $user->id : 'guest');
 
-            foreach ($request->file('images') as $index => $file) {
+            foreach ($request->file('attachments') as $index => $file) {
                             $extension = $file->getClientOriginalExtension();
                             $filename  = time() . '_' . $index . '.' . $extension;
                             $filepath  = $file->storeAs($folder, $filename, 'public');
-                $imagePaths[]          = $filepath;
+                $attachmentPaths[]          = $filepath;
             }
         }
 
         $comment = $ticket->comments()->create([
             'user_id' => Auth::id(),
-            'images'  => $imagePaths,
+            'attachments'  => $attachmentPaths,
             'content' => $validated['content'],
         ]);
 
@@ -376,6 +397,24 @@ class TicketController extends Controller
         if ($ticket->status === 'open' && Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport())) {
             $ticket->addAttendant(Auth::id());
             $ticket->update(['status' => 'in-progress']);
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            $comment->load('user');
+            return response()->json([
+                'success' => true,
+                'comment' => [
+                    'id'          => $comment->id,
+                    'content'     => $comment->content,
+                    'attachments' => $comment->attachments ?? [],
+                    'created_at'  => $comment->created_at->toISOString(),
+                    'user'        => $comment->user ? [
+                        'id'   => $comment->user->id,
+                        'name' => $comment->user->name,
+                        'role' => $comment->user->role,
+                    ] : null,
+                ],
+            ]);
         }
 
         return back()->with('success', 'Comment added successfully.');
@@ -476,8 +515,8 @@ class TicketController extends Controller
         if ($ticket->filename) {
             Storage::disk('public')->delete($ticket->filename);
         }
-        if (!empty($ticket->images)) {
-            foreach ($ticket->images as $img) {
+        if (!empty($ticket->attachments)) {
+            foreach ($ticket->attachments as $img) {
                 Storage::disk('public')->delete($img);
             }
         }
@@ -508,8 +547,8 @@ class TicketController extends Controller
             if ($ticket->filename) {
                 Storage::disk('public')->delete($ticket->filename);
             }
-            if (!empty($ticket->images)) {
-                foreach ($ticket->images as $img) {
+            if (!empty($ticket->attachments)) {
+                foreach ($ticket->attachments as $img) {
                     Storage::disk('public')->delete($img);
                 }
             }

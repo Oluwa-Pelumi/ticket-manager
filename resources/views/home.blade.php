@@ -5,7 +5,7 @@
             'step' => 1,
             'title' => 'Submit',
             'description' =>
-                'Create a ticket with the right category, your contact details, and what happened. Attach images if they help our team understand faster.',
+                'Create a ticket with the right category, your contact details, and what happened. Attach files if they help our team understand faster.',
         ],
         [
             'step' => 2,

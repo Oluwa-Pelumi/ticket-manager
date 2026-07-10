@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('subject');
             $table->text('content');
             $table->string('filename')->nullable();
-            $table->json('images')->nullable();
+            $table->json('attachments')->nullable();
             $table->string('priority')->default('medium');
             $table->string('status')->default('open');
             $table->timestamps();
