@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('title', 'Login')
+
 @section('guest-content')
 <div class="mb-10 text-center">
     <h1 class="text-4xl font-medium text-slate-900 dark:text-white">Login</h1>

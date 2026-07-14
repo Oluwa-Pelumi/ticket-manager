@@ -94,7 +94,7 @@
 
         {{-- Filter bar --}}
         <div
-            class="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-sky-950/10/50 dark:border-[#1e3a5f]">
+            class="flex flex-wrap items-center gap-3 md:gap-4 mb-6 p-4 rounded-2xl bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-sky-950/10 dark:border-[#1e3a5f]">
             <div class="flex items-center space-x-2 w-full sm:w-auto">
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -136,7 +136,7 @@
             </div>
 
             <button x-show="filters.status || filters.priority || filters.search" @click="clearFilters()"
-                    class="col-span-2 sm:col-span-1 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center">
+                    class="flex-shrink-0 text-[10px] md:text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-rose-500/10 transition-all flex items-center justify-center">
                     <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
@@ -144,7 +144,7 @@
                     Clear All
                 </button>
 
-            <div class="flex items-center gap-4 w-full sm:w-auto sm:ml-auto">
+            <div class="order-last flex items-center gap-4 w-full sm:w-auto sm:ml-auto">
                 <div class="flex items-center gap-2">
                     <span class="text-[10px] font-black tracking-widest text-slate-400 uppercase">Rows:</span>
                     <select x-model.number="rowsPerPage" @change="currentPage = 1"
@@ -173,7 +173,7 @@
                     </svg>
                     <div class="flex flex-col gap-0.5">
                         <span class="text-xs font-black tracking-wider uppercase">Notice</span>
-                        <span class="text-[11px] font-medium leading-relaxed">Some columns are hidden on mobile. Switch
+                        <span class="text-[11px] font-medium leading-relaxed">Some columns are hidden on smaller screens. Switch
                             to desktop mode or a wider screen to see the full table.</span>
                     </div>
                 </div>
@@ -315,9 +315,9 @@
 
                                     {{-- Subject + snippet --}}
                                     <td class="px-4 md:px-6 py-4">
-                    
+
                                         <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1"
-                                            x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/_/g, ' ')">
+                                            x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())">
                                         </div>
                                         <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[60px] md:max-w-[120px]"
                                             x-text="ticket.content"></div>
@@ -369,7 +369,7 @@
                                         @if (in_array(auth()->user()->role, ['admin', 'support']))
                                             <select
                                                 @change="statusUpdate(ticket.id, $event.target.value)"
-                                                class="text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-sky-400 cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
+                                                class="text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 border-sky-400 bg-transparent focus:ring-2 focus:ring-sky-400 focus:outline-none cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
                                                 :class="{
                                                     'border-sky-400 dark:border-sky-500 text-sky-600 dark:text-sky-400': ticket.status === 'open',
                                                     'border-sky-500 dark:border-sky-400 text-sky-600 dark:text-sky-400': ticket.status === 'in-progress',
@@ -699,7 +699,7 @@
                                                                 </div>
 
                                                                 <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                                                    Past 
+                                                                    Past
                                                                 </div>
                                                                 <div class="flex flex-wrap gap-3 mb-4">
                                                                     <template x-if="ticket.attendants && ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length > 0">
@@ -717,7 +717,7 @@
                                                                 </div>
 
                                                                 <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                                                    Current 
+                                                                    Current
                                                                 </div>
                                                                 <div class="flex flex-wrap gap-3">
                                                                     <template x-if="ticket.attendant">
@@ -813,7 +813,7 @@
                                                                             </div>
                                                                         </template>
 
-                                                                        
+
                                                                     </div>
                                                                 </div>
                                                             </template>
@@ -857,16 +857,18 @@
                         </button>
                         <div class="flex items-center gap-1">
                             <template x-for="page in visiblePages" :key="page">
-                                <template x-if="page === '...'">
-                                    <span class="text-slate-300 dark:text-slate-700 text-[10px]">...</span>
-                                </template>
-                                <template x-if="page !== '...'">
-                                    <button @click="currentPage = page"
-                                        class="w-8 h-8 rounded-xl text-[10px] font-black transition-all"
-                                        :class="currentPage === page ? 'bg-sky-950 text-white shadow-lg shadow-sky-950/20' :
-                                            'text-slate-400 hover:text-sky-950 dark:hover:text-sky-400'"
-                                        x-text="page"></button>
-                                </template>
+                                <span>
+                                    <template x-if="page === '...'">
+                                        <span class="text-slate-300 dark:text-slate-700 text-[10px]">...</span>
+                                    </template>
+                                    <template x-if="page !== '...'">
+                                        <button @click="currentPage = page"
+                                            class="w-8 h-8 rounded-xl text-[10px] font-black transition-all"
+                                            :class="currentPage === page ? 'bg-sky-950 text-white shadow-lg shadow-sky-950/20' :
+                                                'text-slate-400 hover:text-sky-950 dark:hover:text-sky-400'"
+                                            x-text="page"></button>
+                                    </template>
+                                </span>
                             </template>
                         </div>
                         <button @click="currentPage = Math.min(currentPage + 1, totalPages)"
@@ -1171,8 +1173,8 @@
                             if (Array.isArray(v)) v.forEach(i => form.append(k + '[]', i));
                             else form.append(k, v);
                         }
-                        return fetch(url, { 
-                            method: 'POST', 
+                        return fetch(url, {
+                            method: 'POST',
                             body: form,
                             headers: {
                                 'Accept': 'application/json',
@@ -1193,8 +1195,8 @@
                             if (Array.isArray(v)) v.forEach(i => form.append(k + '[]', i));
                             else form.append(k, v);
                         }
-                        return fetch(url, { 
-                            method: 'POST', 
+                        return fetch(url, {
+                            method: 'POST',
                             body: form,
                             headers: {
                                 'Accept': 'application/json',

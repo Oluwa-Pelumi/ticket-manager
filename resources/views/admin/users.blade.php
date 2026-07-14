@@ -29,7 +29,7 @@
         <x-flash-handler />
 
         {{-- Users table --}}
-        <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-sky-950/10/50 dark:border-[#1e3a5f] shadow-2xl">
+        <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-sky-950/10 dark:border-[#1e3a5f] shadow-2xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>

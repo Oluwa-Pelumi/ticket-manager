@@ -40,21 +40,27 @@ class ProfileControllerTest extends TestCase
     // ─────────────────────────────────────────────
 
     /** @test */
-    public function test_user_can_update_their_name_and_email(): void
+    public function test_user_can_update_their_profile_details(): void
     {
         $user = $this->user();
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'name'  => 'New Name',
-                'email' => 'new@example.com',
+                'first_name'  => 'Newfirst',
+                'middle_name' => 'Newmiddle',
+                'last_name'   => 'Newlast',
+                'email'       => 'new@example.com',
+                'matric_no'   => '999999',
             ])
             ->assertRedirect(route('profile.edit'));
 
         $this->assertDatabaseHas('users', [
-            'id'    => $user->id,
-            'name'  => 'New Name',
-            'email' => 'new@example.com',
+            'id'          => $user->id,
+            'first_name'  => 'Newfirst',
+            'middle_name' => 'Newmiddle',
+            'last_name'   => 'Newlast',
+            'email'       => 'new@example.com',
+            'matric_no'   => '999999',
         ]);
     }
 
@@ -69,8 +75,11 @@ class ProfileControllerTest extends TestCase
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'name'  => $user->name,
-                'email' => 'changed@example.com',
+                'first_name'  => $user->first_name,
+                'middle_name' => $user->middle_name,
+                'last_name'   => $user->last_name,
+                'email'       => 'changed@example.com',
+                'matric_no'   => $user->matric_no,
             ]);
 
         $this->assertNull($user->fresh()->email_verified_at);
@@ -86,8 +95,11 @@ class ProfileControllerTest extends TestCase
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'name'  => 'Updated Name',
-                'email' => $user->email,
+                'first_name'  => 'Updatedfirst',
+                'middle_name' => $user->middle_name,
+                'last_name'   => $user->last_name,
+                'email'       => $user->email,
+                'matric_no'   => $user->matric_no,
             ]);
 
         $this->assertNotNull($user->fresh()->email_verified_at);
@@ -100,23 +112,29 @@ class ProfileControllerTest extends TestCase
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'name'  => $user->name,
-                'email' => $user->email,
+                'first_name'  => $user->first_name,
+                'middle_name' => $user->middle_name,
+                'last_name'   => $user->last_name,
+                'email'       => $user->email,
+                'matric_no'   => $user->matric_no,
             ])
             ->assertSessionHas('status', 'profile-updated');
     }
 
     /** @test */
-    public function test_profile_update_validates_name_is_required(): void
+    public function test_profile_update_validates_first_name_is_required(): void
     {
         $user = $this->user();
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'name'  => '',
-                'email' => $user->email,
+                'first_name'  => '',
+                'middle_name' => $user->middle_name,
+                'last_name'   => $user->last_name,
+                'email'       => $user->email,
+                'matric_no'   => $user->matric_no,
             ])
-            ->assertSessionHasErrors(['name']);
+            ->assertSessionHasErrors(['first_name']);
     }
 
     /** @test */
@@ -126,8 +144,11 @@ class ProfileControllerTest extends TestCase
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
-                'name'  => 'Valid Name',
-                'email' => 'not-an-email',
+                'first_name'  => 'Validfirst',
+                'middle_name' => $user->middle_name,
+                'last_name'   => $user->last_name,
+                'email'       => 'not-an-email',
+                'matric_no'   => $user->matric_no,
             ])
             ->assertSessionHasErrors(['email']);
     }

@@ -7,6 +7,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\DepartmentController;
 
 Route::get('/', function () {
     return redirect()->route('home');
@@ -100,12 +102,31 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('/admin/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
+    // Faculty Management
+    Route::get('/admin/faculties', [FacultyController::class, 'index'])->name('admin.faculties.index');
+    Route::post('/admin/faculties', [FacultyController::class, 'store'])->name('admin.faculties.store');
+    Route::patch('/admin/faculties/{faculty}', [FacultyController::class, 'update'])->name('admin.faculties.update');
+    Route::delete('/admin/faculties/{faculty}', [FacultyController::class, 'destroy'])->name('admin.faculties.destroy');
+
+    // Department Management
+    Route::get('/admin/departments', [DepartmentController::class, 'index'])->name('admin.departments.index');
+    Route::post('/admin/departments', [DepartmentController::class, 'store'])->name('admin.departments.store');
+    Route::patch('/admin/departments/{department}', [DepartmentController::class, 'update'])->name('admin.departments.update');
+    Route::delete('/admin/departments/{department}', [DepartmentController::class, 'destroy'])->name('admin.departments.destroy');
+
+    // Combined Faculties + Departments view
+    Route::get('/admin/structure', [FacultyController::class, 'structure'])->name('admin.structure.index');
+
     // FAQ Management
     Route::get('/admin/faqs', [\App\Http\Controllers\FaqController::class, 'index'])->name('admin.faqs.index');
     Route::post('/admin/faqs', [\App\Http\Controllers\FaqController::class, 'store'])->name('admin.faqs.store');
     Route::patch('/admin/faqs/{faq}', [\App\Http\Controllers\FaqController::class, 'update'])->name('admin.faqs.update');
     Route::delete('/admin/faqs/{faq}', [\App\Http\Controllers\FaqController::class, 'destroy'])->name('admin.faqs.destroy');
 });
+
+// Public API — returns departments for a given faculty (used by Alpine.js on register page)
+Route::get('/api/faculties/{faculty}/departments', [DepartmentController::class, 'byFaculty'])
+    ->name('api.faculties.departments');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

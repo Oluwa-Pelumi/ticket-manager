@@ -22,20 +22,8 @@
         })();
     </script>
 
-    {{-- Tailwind CDN --}}
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Figtree', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    {{-- Vite: Tailwind CSS + App JS --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Alpine.js --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -169,7 +157,7 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="font-sans antialiased fauna-shell">
+<body class="font-sans antialiased fauna-shell flex flex-col min-h-screen">
 
     @include('components.flash-handler')
 
@@ -220,6 +208,7 @@
                             <a href="{{ route('profile.edit') }}" class="dropdown-link">Profile Settings</a>
                             @if(auth()->user()->role === 'admin')
                                 <a href="{{ route('admin.categories.index') }}" class="dropdown-link">Manage Categories</a>
+                                <a href="{{ route('admin.structure.index') }}" class="dropdown-link">Manage Faculty/Department</a>
                                 <a href="{{ route('admin.faqs.index') }}" class="dropdown-link">Manage FAQs</a>
                             @endif
                             <form method="POST" action="{{ route('logout') }}">
@@ -265,6 +254,7 @@
                 @if(auth()->user()->role === 'admin')
                     <a href="{{ route('admin.users') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400' : '' }}">Users Management</a>
                     <a href="{{ route('admin.categories.index') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage Categories</a>
+                    <a href="{{ route('admin.structure.index') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage Faculty/Department</a>
                     <a href="{{ route('admin.faqs.index') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage FAQs</a>
                 @endif
                 <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Profile Settings</a>
@@ -298,7 +288,9 @@
     {{-- For direct component use (e.g. dashboard), $slot is the page content.        --}}
     {{-- For @extends('layouts.authenticated'), $slot is the full layout HTML from    --}}
     {{-- authenticated.blade.php which already includes its own header/main wrappers. --}}
-    {{ $slot ?? '' }}
+    <div class="flex-1">
+        {{ $slot ?? '' }}
+    </div>
 
     @include('components.footer')
 

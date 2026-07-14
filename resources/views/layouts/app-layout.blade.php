@@ -15,13 +15,16 @@
             } catch (e) {}
         })();
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- Vite: Tailwind CSS + App JS --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased fauna-shell">
+<body class="font-sans antialiased fauna-shell flex flex-col min-h-screen">
     @include('components.flash-handler')
 
-    {{ $slot ?? '' }}
-    @yield('content')
+    <div class="flex-1">
+        {{ $slot ?? '' }}
+        @yield('content')
+    </div>
 
     @include('components.footer')
 </body>

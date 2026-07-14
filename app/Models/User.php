@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Authenticated user with role-based access (admin, support, user).
@@ -30,8 +31,8 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'matric_no',
-        'department',
-        'faculty'
+        'faculty_id',
+        'department_id',
     ];
 
     /**
@@ -55,6 +56,16 @@ class User extends Authenticatable
             'password'          => 'hashed',
             'email_verified_at' => 'datetime',
         ];
+    }
+
+    protected $appends = ['name'];
+
+    public function name(): Attribute
+    {
+        return Attribute::get(
+            fn() =>
+            trim("{$this->first_name} {$this->middle_name} {$this->last_name}")
+        );
     }
 
     /** Check whether the user has the admin role. */
@@ -90,6 +101,18 @@ class User extends Authenticatable
     /** Accessor to load tickets assigned to this support user from JSON column. */
     public function getAssignedTicketsAttribute() {
         return Ticket::whereJsonContains('attended_to_by', $this->id)->get();
+    }
+
+    /** The faculty this user belongs to. */
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class);
+    }
+
+    /** The department this user belongs to. */
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
 }

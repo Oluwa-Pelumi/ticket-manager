@@ -14,7 +14,9 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@laradocs.test'],
             [
-                'name'             => 'Admin User',
+                'first_name'             => 'Admin',
+                'middle_name'             => '',
+                'last_name'             => 'User',
                 'role'             => 'admin',
                 'password'         => Hash::make('password'),
                 'phone_number'  => '+2348000000001',
@@ -26,7 +28,9 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'support1@laradocs.test'],
             [
-                'name'             => 'Sarah Okonkwo',
+                'first_name'             => 'Sarah',
+                'middle_name'             => '',
+                'last_name'             => 'Okonkwo',
                 'role'             => 'support',
                 'password'         => Hash::make('password'),
                 'phone_number'  => '+2348000000002',
@@ -37,7 +41,9 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'support2@laradocs.test'],
             [
-                'name'             => 'Daniel Eze',
+                'first_name'             => 'Daniel',
+                'middle_name'             => '',
+                'last_name'             => 'Eze',
                 'role'             => 'support',
                 'password'         => Hash::make('password'),
                 'phone_number'  => '+2348000000003',
@@ -49,7 +55,10 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'user1@laradocs.test'],
             [
-                'name'             => 'Emeka Nwosu',
+                 'first_name'             => 'Emeka',
+                'middle_name'             => '',
+                'last_name'             => 'Nwosu',
+                 'matric_no' => 192211,
                 'role'             => 'user',
                 'password'         => Hash::make('password'),
                 'phone_number'  => '+2348000000004',
@@ -60,7 +69,10 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'user2@laradocs.test'],
             [
-                'name'             => 'Fatima Aliyu',
+                 'first_name'             => 'Fatima',
+                'middle_name'             => '',
+                'last_name'             => 'Aliyu',
+                'matric_no' => 192210,
                 'role'             => 'user',
                 'password'         => Hash::make('password'),
                 'phone_number'  => '+2348000000005',

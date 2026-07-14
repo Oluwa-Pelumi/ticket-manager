@@ -1,6 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+    --color-primary: rgb(8 47 73);
+    --color-accent: rgb(56 189 248);
+}
 
 @layer base {
     html, body {
@@ -64,7 +71,7 @@
     }
 
     .mesh-gradient {
-        background-image: 
+        background-image:
             radial-gradient(at 0% 0%, rgba(8, 47, 73, 0.16) 0px, transparent 50%),
             radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.14) 0px, transparent 50%),
             radial-gradient(at 100% 100%, rgba(8, 47, 73, 0.08) 0px, transparent 50%),
@@ -72,7 +79,7 @@
     }
 
     .dark .mesh-gradient {
-        background-image: 
+        background-image:
             radial-gradient(at 0% 0%, rgba(8, 47, 73, 0.2) 0px, transparent 50%),
             radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
             radial-gradient(at 100% 100%, rgba(8, 47, 73, 0.12) 0px, transparent 50%),

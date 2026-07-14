@@ -17,17 +17,45 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" value="Name" />
+            <x-input-label for="first_name" value="First Name" />
             <x-text-input
-                id="name"
-                name="name"
+                id="first_name"
+                name="first_name"
                 class="mt-1 block w-full"
-                value="{{ old('name', $user->name) }}"
+                value="{{ old('first_name', $user->first_name) }}"
                 required
                 autofocus
-                autocomplete="name"
+                autocomplete="first_name"
             />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-error class="mt-2" :messages="$errors->get('first_name')" />
+        </div>
+
+        <div>
+            <x-input-label for="middle_name" value="Middle Name" />
+            <x-text-input
+                id="middle_name"
+                name="middle_name"
+                class="mt-1 block w-full"
+                value="{{ old('middle_name', $user->middle_name) }}"
+                required
+                autofocus
+                autocomplete="middle_name"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('middle_name')" />
+        </div>
+
+        <div>
+            <x-input-label for="last_name" value="Last Name" />
+            <x-text-input
+                id="last_name"
+                name="last_name"
+                class="mt-1 block w-full"
+                value="{{ old('last_name', $user->last_name) }}"
+                required
+                autofocus
+                autocomplete="last_name"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
         </div>
 
         <div>
@@ -42,6 +70,20 @@
                 autocomplete="username"
             />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        </div>
+
+        <div>
+            <x-input-label for="matric_no" value="Matriculation Number" />
+            <x-text-input
+                id="matric_no"
+                name="matric_no"
+                type="matric_no"
+                class="mt-1 block w-full"
+                value="{{ old('matric_no', $user->matric_no) }}"
+                required
+                autocomplete="matric_no"
+            />
+            <x-input-error class="mt-2" :messages="$errors->get('matric_no')" />
         </div>
 
         @if ($mustVerifyEmail && $user->email_verified_at === null)
