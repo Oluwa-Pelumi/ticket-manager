@@ -105,7 +105,7 @@
 
             <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-3 w-full sm:w-auto">
                 <select x-model="filters.status" @change="currentPage = 1"
-                    class="bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-sky-400 outline-none transition-all cursor-pointer">
+                    class="bg-white dark:bg-[#0f172a] border border-sky-950/10 dark:border-[#1e3a5f] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-sky-400 outline-none transition-all cursor-pointer">
                     <option value="">All Statuses</option>
                     <option value="open">Open</option>
                     <option value="in-progress">In-Progress</option>
@@ -113,7 +113,7 @@
                 </select>
 
                 <select x-model="filters.priority" @change="currentPage = 1"
-                    class="bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-sky-400 outline-none transition-all cursor-pointer">
+                    class="bg-white dark:bg-[#0f172a] border border-sky-950/10 dark:border-[#1e3a5f] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-sky-400 outline-none transition-all cursor-pointer">
                     <option value="">All Priorities</option>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -369,15 +369,15 @@
                                         @if (in_array(auth()->user()->role, ['admin', 'support']))
                                             <select
                                                 @change="statusUpdate(ticket.id, $event.target.value)"
-                                                class="text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 border-sky-400 bg-transparent focus:ring-2 focus:ring-sky-400 focus:outline-none cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
+                                                class="fauna-select-chevron text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 border-sky-400 bg-transparent focus:ring-2 focus:ring-sky-400 focus:outline-none cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
                                                 :class="{
                                                     'border-sky-400 dark:border-sky-500 text-sky-600 dark:text-sky-400': ticket.status === 'open',
                                                     'border-sky-500 dark:border-sky-400 text-sky-600 dark:text-sky-400': ticket.status === 'in-progress',
                                                     'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
                                                 }">
-                                                <option value="open"      :selected="ticket.status === 'open'">Open</option>
-                                                <option value="in-progress" :selected="ticket.status === 'in-progress'">Processing</option>
-                                                <option value="closed"    :selected="ticket.status === 'closed'">Resolved</option>
+                                                <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="open"      :selected="ticket.status === 'open'">Open</option>
+                                                <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="in-progress" :selected="ticket.status === 'in-progress'">Processing</option>
+                                                <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="closed"    :selected="ticket.status === 'closed'">Resolved</option>
                                             </select>
                                         @else
                                             <span
@@ -398,7 +398,7 @@
                                     <td class="hidden lg:table-cell px-6 py-4">
                                         <template x-if="ticket.attendant">
                                             <div class="flex items-center space-x-2">
-                                                <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-300"
                                                     x-text="ticket.attendant.name.charAt(0)"></div>
                                                 <span class="text-xs font-medium text-slate-900 dark:text-white"
                                                     x-text="ticket.attendant.name"></span>
@@ -432,7 +432,7 @@
                                             <button @click.stop="toggleExpand(ticket.id)"
                                                 class="p-1.5 md:p-2 rounded-lg transition-all"
                                                 :class="expandedId === ticket.id ? 'bg-sky-950 text-white rotate-180' :
-                                                    'bg-slate-100 dark:bg-[#1e293b] text-slate-600 hover:text-sky-950 dark:hover:text-sky-400'">
+                                                    'bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-300 hover:text-sky-950 dark:hover:text-sky-400'">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -704,8 +704,8 @@
                                                                 <div class="flex flex-wrap gap-3 mb-4">
                                                                     <template x-if="ticket.attendants && ticket.attendants.filter(a => a.id !== ticket.attendant?.id).length > 0">
                                                                         <template x-for="att in ticket.attendants.filter(a => a.id !== ticket.attendant?.id)" :key="att.id">
-                                                                            <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#28524a]">
-                                                                                <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                                            <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#1e3a5f]">
+                                                                                <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-300"
                                                                                     x-text="att.name ? att.name.charAt(0).toUpperCase() : '?'"></div>
                                                                                 <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="att.name"></span>
                                                                             </div>
@@ -721,8 +721,8 @@
                                                                 </div>
                                                                 <div class="flex flex-wrap gap-3">
                                                                     <template x-if="ticket.attendant">
-                                                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#28524a]">
-                                                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600"
+                                                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#1e3a5f]">
+                                                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-300"
                                                                                 x-text="ticket.attendant.name ? ticket.attendant.name.charAt(0).toUpperCase() : '?'"></div>
                                                                             <span class="text-xs font-bold text-slate-900 dark:text-white" x-text="ticket.attendant.name"></span>
                                                                         </div>
@@ -1403,4 +1403,9 @@
         </script>
     @endpush
 
+    <style>
+        .dark .fauna-select-chevron {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23cbd5e1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+        }
+    </style>
 </x-app-layout>

@@ -209,26 +209,26 @@
                             Attending Support Staff
                         </div>
 
-                        <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                            Past 
-                        </div>
+                        @php
+                            $pastAttendants = $ticket->attendants ? $ticket->attendants->filter(fn($att) => $att->id !== $ticket->attendant?->id) : collect();
+                        @endphp
 
-                        <div class="flex flex-wrap gap-3">
-                            @if($ticket->attendants && count($ticket->attendants) > 0)
-                                @foreach($ticket->attendants as $att)
-                                    @if($att->id !== $ticket->attendant?->id)
-                                        <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#28524a]">
-                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
-                                                {{ $att->name ? Str::upper(Str::substr($att->name, 0, 1)) : '?' }}
-                                            </div>
-                                            <span class="text-xs font-bold text-slate-900 dark:text-white">{{ $att->name }}</span>
+                        @if($pastAttendants->isNotEmpty())
+                            <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                Past 
+                            </div>
+
+                            <div class="flex flex-wrap gap-3 mb-4">
+                                @foreach($pastAttendants as $att)
+                                    <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#0f172a] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#1e3a5f]">
+                                        <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-200">
+                                            {{ $att->name ? Str::upper(Str::substr($att->name, 0, 1)) : '?' }}
                                         </div>
-                                    @endif
+                                        <span class="text-xs font-bold text-slate-900 dark:text-white">{{ $att->name }}</span>
+                                    </div>
                                 @endforeach
-                            @else
-                                <span class="text-xs italic text-slate-400">No past support staff.</span>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
 
                         <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest mt-4">
                             Current
@@ -236,8 +236,8 @@
 
                         <div class="flex flex-wrap gap-3">
                             @if($ticket->attendant)
-                                <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#1e293b] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#28524a]">
-                                    <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
+                                <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#0f172a] px-3 py-1.5 rounded-xl border border-sky-950/10 dark:border-[#1e3a5f]">
+                                    <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-200">
                                         {{ $ticket->attendant->name ? Str::upper(Str::substr($ticket->attendant->name, 0, 1)) : '?' }}
                                     </div>
                                     <span class="text-xs font-bold text-slate-900 dark:text-white">{{ $ticket->attendant->name }}</span>

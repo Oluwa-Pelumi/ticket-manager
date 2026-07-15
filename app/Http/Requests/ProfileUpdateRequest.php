@@ -32,7 +32,7 @@ class ProfileUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'matric_no' => [
-                'required',
+                $this->user()->role === 'user' ? 'required' : 'nullable',
                 'numeric',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],

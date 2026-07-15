@@ -21,7 +21,7 @@
         <div class="mx-auto max-w-3xl space-y-6 sm:px-6 lg:px-8">
 
             {{-- Update Profile Information --}}
-            <div class="glass-card p-6 sm:p-10 border-white/20 dark:border-[#1e3a5f]/50">
+            <div class="glass-card rounded-[2rem] p-6 sm:p-10 border-white/20 dark:border-[#1e3a5f]/50">
                 @include('profile.partials.update-profile-information-form', [
                     'mustVerifyEmail' => $mustVerifyEmail,
                     'status' => $status ?? null,
@@ -29,12 +29,12 @@
             </div>
 
             {{-- Update Password --}}
-            <div class="glass-card p-6 sm:p-10 border-white/20 dark:border-[#1e3a5f]/50">
+            <div class="glass-card rounded-[2rem] p-6 sm:p-10 border-white/20 dark:border-[#1e3a5f]/50">
                 @include('profile.partials.update-password-form')
             </div>
 
             {{-- Delete Account --}}
-            <div class="glass-card p-6 sm:p-10 border-rose-200/50 dark:border-rose-900/40">
+            <div class="glass-card rounded-[2rem] p-6 sm:p-10 border-rose-200/50 dark:border-rose-900/40">
                 @include('profile.partials.delete-user-form')
             </div>
 

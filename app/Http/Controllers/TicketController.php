@@ -38,6 +38,25 @@ class TicketController extends Controller
      */
     public function save(Request $request)
     {
+        $user = Auth::user();
+
+        if ($user) {
+            $request->merge([
+                'name'         => $user->name,
+                'email'        => $user->email,
+                'phone_number' => $user->phone_number,
+            ]);
+        } else {
+            $request->validate([
+                'first_name'  => 'required|string|max:80',
+                'middle_name' => 'nullable|string|max:80',
+                'last_name'   => 'required|string|max:80',
+            ]);
+            $request->merge([
+                'name' => trim(preg_replace('/\s+/', ' ', collect([$request->first_name, $request->middle_name, $request->last_name])->filter()->implode(' '))),
+            ]);
+        }
+
         // --- Validate submission ---
         $validated = $request->validate([
             'attachments.*' => [
@@ -52,12 +71,10 @@ class TicketController extends Controller
             'subject'                => 'required|string|max:255',
             'category_id'            => 'nullable|exists:categories,id',
             'priority'               => 'required|string|in:low,medium,high',
-            'phone_number'        => ['nullable', 'string', 'regex:/^(\+234)?\d{1,10}$/'],
+            'phone_number'           => ['nullable', 'string', 'regex:/^(\+234)?\d{1,10}$/'],
         ], [
             'phone_number.regex'  => 'The phone number must not exceed 10 digits.'
         ]);
-
-        $user = Auth::user();
 
         // --- Sync phone number to user profile ---
         if ($user && $user->phone_number !== ($validated['phone_number'] ?? null)) {

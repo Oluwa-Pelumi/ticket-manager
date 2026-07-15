@@ -168,23 +168,64 @@
                 {{-- Form fields --}}
                 <div x-show="!submitted" class="space-y-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {{-- Name --}}
-                    <div class="space-y-3">
-                        <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="name">
-                            Name *
-                        </label>
-                        <input
-                            id="name"
-                            name="name"
-                            type="text"
-                            value="{{ old('name', $user->name ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm"
-                            placeholder="Enter your name"
-                            required
-                        />
-                        @error('name')
-                            <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
-                        @enderror
+                    {{-- Name Fields --}}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:col-span-2">
+                        {{-- First Name --}}
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="first_name">
+                                First Name *
+                            </label>
+                            <input
+                                id="first_name"
+                                name="first_name"
+                                type="text"
+                                value="{{ old('first_name', $user->first_name ?? '') }}"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
+                                placeholder="First name"
+                                {{ $user ? 'disabled' : 'required' }}
+                            />
+                            @error('first_name')
+                                <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Middle Name --}}
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="middle_name">
+                                Middle Name
+                            </label>
+                            <input
+                                id="middle_name"
+                                name="middle_name"
+                                type="text"
+                                value="{{ old('middle_name', $user->middle_name ?? '') }}"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
+                                placeholder="Middle name"
+                                {{ $user ? 'disabled' : '' }}
+                            />
+                            @error('middle_name')
+                                <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Last Name --}}
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="last_name">
+                                Last Name *
+                            </label>
+                            <input
+                                id="last_name"
+                                name="last_name"
+                                type="text"
+                                value="{{ old('last_name', $user->last_name ?? '') }}"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
+                                placeholder="Last name"
+                                {{ $user ? 'disabled' : 'required' }}
+                            />
+                            @error('last_name')
+                                <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                     {{-- Email --}}
@@ -197,9 +238,9 @@
                             name="email"
                             type="email"
                             value="{{ old('email', $user->email ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm"
+                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
                             placeholder="email@example.com"
-                            required
+                            {{ $user ? 'disabled' : 'required' }}
                         />
                         @error('email')
                             <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
@@ -211,9 +252,8 @@
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="phone">
                             Phone Contact
                         </label>
-                        <div class="flex rounded-2xl overflow-hidden border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm focus-within:ring-2 focus-within:ring-sky-400 transition-all"
-                            :class="phone.length === 10 ? 'focus-within:ring-amber-400 ring-1 ring-amber-300/50' : ''">
-                            <span class="flex items-center px-4 bg-slate-100 dark:bg-[#0f2420] text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-sky-950/10 dark:border-[#1e3a5f] select-none shrink-0">
+                        <div class="flex rounded-2xl overflow-hidden border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm {{ $user ? 'opacity-50 bg-slate-100 dark:bg-[#0f172a] pointer-events-none' : 'bg-white dark:bg-[#1e293b] focus-within:ring-2 focus-within:ring-sky-400' }} transition-all">
+                            <span class="flex items-center px-4 bg-slate-100/50 dark:bg-[#0f172a]/50 text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-sky-950/10 dark:border-[#1e3a5f] select-none shrink-0">
                                 +234
                             </span>
                             <input
@@ -222,8 +262,9 @@
                                 x-model="phone"
                                 maxlength="10"
                                 @input="phone = phone.replace(/\D/g, '').slice(0, 10)"
-                                class="flex-1 px-5 py-4 bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white outline-none font-medium"
+                                class="flex-1 px-5 py-4 border-0 focus:ring-0 bg-transparent dark:bg-transparent text-slate-900 dark:text-white outline-none font-medium"
                                 placeholder="8012345678"
+                                {{ $user ? 'disabled' : '' }}
                             />
                         </div>
                         <input type="hidden" name="phone_number" :value="phone ? '+234' + phone : ''">
@@ -232,7 +273,6 @@
                                 @error('phone_number')
                                     <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
                                 @enderror
-                                <div x-show="phone.length === 10" x-cloak class="text-amber-500 text-xs font-semibold">Maximum 10 digits reached</div>
                             </div>
                             <div x-show="phone.length > 0" x-cloak class="text-xs font-bold tabular-nums"
                                 :class="phone.length === 10 ? 'text-amber-500' : 'text-slate-400'">
@@ -242,7 +282,7 @@
                     </div>
 
                     {{-- Priority --}}
-                    <div class="space-y-3">
+                    <div class="space-y-3 md:col-span-2">
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1">
                             Priority *
                         </label>

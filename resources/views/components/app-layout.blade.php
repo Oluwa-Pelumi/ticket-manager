@@ -66,7 +66,7 @@
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
         .dark .glass-card {
-            background-color: rgba(16, 40, 36, 0.75);
+            background-color: rgba(15, 23, 42, 0.75);
             border-color: #1e3a5f;
         }
 
@@ -149,7 +149,7 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(241,245,249,.5); border-radius: 9999px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgb(203 213 225); border-radius: 9999px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgb(56 189 248); }
-        .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(24,52,47,.3); }
+        .dark .custom-scrollbar::-webkit-scrollbar-track { background: rgba(30,41,59,.3); }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgb(51 65 85); }
         .custom-scrollbar { scrollbar-width: thin; scrollbar-color: rgb(203 213 225) transparent; }
         .dark .custom-scrollbar { scrollbar-color: rgb(51 65 85) transparent; }

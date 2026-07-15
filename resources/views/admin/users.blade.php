@@ -110,7 +110,7 @@
                                                     name="role"
                                                     @change="$el.closest('form').dispatchEvent(new Event('submit'))"
                                                     {{ $user->id === auth()->id() ? 'disabled' : '' }}
-                                                    class="text-[10px] md:text-xs font-black bg-white dark:bg-[#1e293b] border-sky-950/10 dark:border-[#28524a] rounded-xl focus:ring-2 focus:ring-sky-400 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
+                                                    class="text-[10px] md:text-xs font-black bg-white dark:bg-[#0f172a] border-sky-950/10 dark:border-[#1e3a5f] rounded-xl focus:ring-2 focus:ring-sky-400 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
                                                 >
                                                     <option value="user"    {{ $user->role === 'user'    ? 'selected' : '' }}>User</option>
                                                     <option value="support" {{ $user->role === 'support' ? 'selected' : '' }}>Support</option>

@@ -72,12 +72,13 @@
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
 
+        @if (auth()->user()->role === 'user')
         <div>
             <x-input-label for="matric_no" value="Matriculation Number" />
             <x-text-input
                 id="matric_no"
                 name="matric_no"
-                type="matric_no"
+                type="text"
                 class="mt-1 block w-full"
                 value="{{ old('matric_no', $user->matric_no) }}"
                 required
@@ -85,6 +86,7 @@
             />
             <x-input-error class="mt-2" :messages="$errors->get('matric_no')" />
         </div>
+        @endif
 
         @if ($mustVerifyEmail && $user->email_verified_at === null)
             <div class="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 p-4">
