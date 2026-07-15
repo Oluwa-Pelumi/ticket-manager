@@ -227,23 +227,9 @@
                 @endif
 
                 <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-4">
-                    <div>
-                        <div class="mb-4 inline-flex items-center gap-2">
-                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-6 w-6">
-                            <span
-                                class="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">{{ config('app.name') }}</span>
-                        </div>
-                    </div>
+
                     <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">
 
-                    </div>
-                    <div class="rounded-2xl bg-sky-950 p-6 dark:bg-[#0f172a] dark:border dark:border-[#1e3a5f]">
-                        <h4 class="mb-3 text-xl font-medium text-white">Open a new support request</h4>
-                        <p class="mb-6 text-white/80">Use the ticket system to report issues, request updates, or ask
-                            for help.</p>
-                        <a href="{{ route('submit-ticket') }}"
-                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-sky-950 dark:!border-[#3b82f6]/50 dark:hover:!bg-[#3b82f6] dark:hover:!text-[#1e3a8a] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
-                            Create Ticket</a>
                     </div>
                 </div>
             </div>
