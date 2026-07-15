@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Department;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -52,6 +53,7 @@ class UserSeeder extends Seeder
         );
 
         // ── Regular users ────────────────────────────────────────────────────
+        $dept1 = Department::inRandomOrder()->first();
         User::updateOrCreate(
             ['email' => 'user1@laradocs.test'],
             [
@@ -62,10 +64,13 @@ class UserSeeder extends Seeder
                 'role'             => 'user',
                 'password'         => Hash::make('password'),
                 'phone_number'  => '+2348000000004',
+                'faculty_id'    => $dept1 ? $dept1->faculty_id : null,
+                'department_id' => $dept1 ? $dept1->id : null,
                 'email_verified_at' => now(),
             ]
         );
 
+        $dept2 = Department::inRandomOrder()->first();
         User::updateOrCreate(
             ['email' => 'user2@laradocs.test'],
             [
@@ -76,6 +81,8 @@ class UserSeeder extends Seeder
                 'role'             => 'user',
                 'password'         => Hash::make('password'),
                 'phone_number'  => '+2348000000005',
+                'faculty_id'    => $dept2 ? $dept2->faculty_id : null,
+                'department_id' => $dept2 ? $dept2->id : null,
                 'email_verified_at' => now(),
             ]
         );
