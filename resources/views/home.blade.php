@@ -49,13 +49,13 @@
                 <nav class="py-6">
                     <div class="flex items-center justify-between">
                         <div class="inline-flex items-center gap-3 text-white">
-                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-8 w-8 drop-shadow-lg">
+                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-12 w-12 drop-shadow-lg">
                             <span class="text-xl font-black tracking-tight text-white drop-shadow-md">{{ config('app.name') }}</span>
                         </div>
 
                         <div class="flex items-center gap-3 sm:gap-4">
                             @guest
-                                <a href="{{ route('login') }}" class="hidden sm:block text-sm font-bold text-white/80 hover:text-white transition-colors">Login</a>
+                                <a href="{{ route('login') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
                                 <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Register</a>
                             @else
                                 <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Dashboard</a>
@@ -64,7 +64,8 @@
                                 <svg id="theme-icon-dark" class="w-4 h-4 text-sky-400 hidden" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
                                 </svg>
-                                <svg id="theme-icon-light" class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+
+                                <svg id="theme-icon-light" class="w-4 h-4 text-amber-400 hidden" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                                 </svg>
                             </button>
@@ -75,7 +76,6 @@
                 <div class="pb-24 sm:pb-32 pt-16 sm:pt-24 text-center">
                     {{-- Badge --}}
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-8">
-                        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
                         Streamlined Institutional Requests
                     </div>
 
@@ -83,11 +83,11 @@
                         Your Dedicated <br/>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">Support System</span>
                     </h1>
-                    
+
                     <p class="mx-auto mb-12 max-w-2xl text-lg sm:text-xl text-slate-300 font-medium leading-relaxed drop-shadow">
                         Providing a seamless process for students to request transcripts, certificates, letters of recommendation, and other official institutional documents.
                     </p>
-                    
+
                     <div class="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
                         <a href="{{ route('submit-ticket') }}"
                             class="group relative px-8 py-4 bg-sky-500 text-white rounded-full font-black text-sm tracking-widest uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(14,165,233,0.3)] hover:shadow-[0_0_40px_rgba(14,165,233,0.5)] overflow-hidden w-full sm:w-auto">
@@ -95,15 +95,21 @@
                             <span class="relative z-10">Create Ticket</span>
                         </a>
 
-                        <a href="{{ auth()->user() ? route('dashboard') : route('check-status') }}"
+                        @if (auth()->user())
+                            <a href="{{ route('dashboard') }}"
+                                class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest uppercase hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
+                                <span>Dashboard</span>
+                            </a>
+                        @endif
+
+                        <a href="{{ route('check-status') }}"
                             class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest uppercase hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                            <span>View Ticket</span>
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <span>Check Ticket Status</span>
                         </a>
                     </div>
                 </div>
             </div>
-            
+
         </section>
 
         {{-- Admin/support ticket stats --}}
@@ -147,12 +153,12 @@
                         <div class="group relative z-10">
                             {{-- Step card --}}
                             <div class="h-full p-8 rounded-[2rem] bg-white dark:bg-[#0f172a] border border-sky-100 dark:border-[#1e3a5f] shadow-xl shadow-sky-900/5 dark:shadow-none hover:-translate-y-2 hover:shadow-2xl hover:shadow-sky-900/10 dark:hover:border-sky-400/30 transition-all duration-300">
-                                
+
                                 {{-- Step number badge --}}
                                 <div class="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/30 flex items-center justify-center text-2xl font-black text-sky-600 dark:text-sky-400 mb-8 group-hover:scale-110 group-hover:bg-sky-100 dark:group-hover:bg-sky-900/40 transition-all duration-300">
                                     {{ $item['step'] }}
                                 </div>
-                                
+
                                 <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">{{ $item['title'] }}</h3>
                                 <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                                     {{ $item['description'] }}
@@ -236,7 +242,6 @@
         </section>
     </div>
 
-    @guest
     <script>
         function toggleTheme() {
             const html = document.documentElement;
@@ -261,5 +266,4 @@
 
         document.addEventListener('DOMContentLoaded', updateThemeIcons);
     </script>
-    @endguest
 </x-app-layout>

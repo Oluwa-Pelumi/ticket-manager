@@ -60,7 +60,7 @@
                         @if($ticket->name || $ticket->user?->name)
                             <div class="space-y-1.5">
                                 <div
-                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                    class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                     <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
@@ -80,8 +80,8 @@
                         @if($ticket->email || $ticket->user?->email)
                             <div class="space-y-1.5">
                                 <div
-                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
+                                    class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -100,8 +100,8 @@
                         @if($ticket->phone_number || $ticket->user?->phone_number)
                             <div class="space-y-1.5">
                                 <div
-                                    class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
+                                    class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -153,7 +153,7 @@
                     </div>
 
                     <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Description</div>
-                    <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm mb-8">{{ $ticket->content }}</div>
+                    <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[14px] md:text-md mb-8">{{ $ticket->content }}</div>
 
                     @php
                         $imgExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
@@ -215,7 +215,7 @@
 
                         @if($pastAttendants->isNotEmpty())
                             <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                Past 
+                                Past
                             </div>
 
                             <div class="flex flex-wrap gap-3 mb-4">

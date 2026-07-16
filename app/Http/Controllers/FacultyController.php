@@ -65,7 +65,13 @@ class FacultyController extends Controller
         }
 
         $faculties = Faculty::withCount('departments')->orderBy('name')->get();
-        $departments = Department::with('faculty')->orderBy('name')->get();
+        $departments = Department::with('faculty')
+            ->join('faculties', 'departments.faculty_id', '=', 'faculties.id')
+            ->orderBy('faculties.name', 'asc')
+            ->orderBy('departments.name', 'asc')
+            ->select('departments.*')
+            ->get()
+            ->groupBy(fn ($dept) => $dept->faculty->name ?? 'Uncategorized');
 
         return view('admin.structure', compact('faculties', 'departments', 'editingFaculty', 'editingDepartment'));
     }

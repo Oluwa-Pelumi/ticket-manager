@@ -490,8 +490,8 @@
                                                                     <div class="space-y-1.5">
                                                                         <template x-if="ticket.name || ticket.user?.name">
                                                                             <div
-                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
+                                                                                class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -510,8 +510,8 @@
                                                                     <div class="space-y-1.5">
                                                                         <template x-if="ticket.email || ticket.user?.email">
                                                                             <div
-                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
+                                                                                class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -530,8 +530,8 @@
                                                                     <div class="space-y-1.5">
                                                                         <template x-if="ticket.phone_number || ticket.user?.phone_number">
                                                                             <div
-                                                                                class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                                                                <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
+                                                                                class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                                                                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -592,7 +592,7 @@
                                                             <div
                                                                 class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">
                                                                 Description</div>
-                                                            <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-sm mb-6"
+                                                            <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-lg mb-6"
                                                                 x-text="ticket.content"></div>
 
                                                             {{-- Attachments --}}

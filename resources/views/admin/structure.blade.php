@@ -50,7 +50,7 @@
                 Departments
                 <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-black"
                     :class="tab === 'departments' ? 'bg-white/20' : 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'">
-                    {{ $departments->count() }}
+                    {{ $departments->flatten()->count() }}
                 </span>
             </button>
         </div>
@@ -250,45 +250,59 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
-                                @forelse ($departments as $dept)
-                                    <tr class="hover:bg-sky-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
-                                        <td class="px-6 py-5">
-                                            <div class="text-sm font-bold text-slate-900 dark:text-white">{{ $dept->name }}</div>
-                                            <div class="text-[10px] font-mono text-slate-400 tracking-tighter">{{ $dept->slug }}</div>
-                                        </td>
-                                        <td class="px-6 py-5">
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
-                                                {{ $dept->faculty->name ?? '—' }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-5 text-right">
-                                            <div class="flex items-center justify-end gap-2">
-                                                <a href="{{ route('admin.structure.index', ['edit_department' => $dept->id]) }}"
-                                                    class="p-2 bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white rounded-lg transition-all" title="Edit">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                    </svg>
-                                                </a>
-                                                <form method="POST" action="{{ route('admin.departments.destroy', $dept->id) }}"
-                                                    x-data
-                                                    @submit.prevent="$dispatch('confirm', {
-                                                        type: 'danger',
-                                                        title: 'Delete Department',
-                                                        confirmText: 'Delete Department',
-                                                        message: 'Delete \'{{ addslashes($dept->name) }}\'?',
-                                                        onConfirm: () => $el.submit()
-                                                    })">
-                                                    @csrf @method('DELETE')
-                                                    <button type="submit"
-                                                        class="p-2 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all" title="Delete">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                    </button>
-                                                </form>
+                                @forelse ($departments as $facultyName => $depts)
+                                    {{-- Faculty Group Header --}}
+                                    <tr class="bg-sky-50/80 dark:bg-[#1e293b]/50">
+                                        <td colspan="3" class="px-6 py-3">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                </svg>
+                                                <span class="text-xs font-black tracking-widest text-sky-800 dark:text-sky-300">{{ $facultyName }}</span>
+                                                <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-200/60 dark:bg-sky-900/40 text-sky-700 dark:text-sky-400">{{ $depts->count() }}</span>
                                             </div>
                                         </td>
                                     </tr>
+                                    @foreach ($depts as $dept)
+                                        <tr class="hover:bg-sky-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
+                                            <td class="px-6 py-5 pl-12">
+                                                <div class="text-sm font-bold text-slate-900 dark:text-white">{{ $dept->name }}</div>
+                                                <div class="text-[10px] font-mono text-slate-400 tracking-tighter">{{ $dept->slug }}</div>
+                                            </td>
+                                            <td class="px-6 py-5">
+                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
+                                                    {{ $dept->faculty->name ?? '—' }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-5 text-right">
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <a href="{{ route('admin.structure.index', ['edit_department' => $dept->id]) }}"
+                                                        class="p-2 bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white rounded-lg transition-all" title="Edit">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </a>
+                                                    <form method="POST" action="{{ route('admin.departments.destroy', $dept->id) }}"
+                                                        x-data
+                                                        @submit.prevent="$dispatch('confirm', {
+                                                            type: 'danger',
+                                                            title: 'Delete Department',
+                                                            confirmText: 'Delete Department',
+                                                            message: 'Delete \'{{ addslashes($dept->name) }}\'?',
+                                                            onConfirm: () => $el.submit()
+                                                        })">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit"
+                                                            class="p-2 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all" title="Delete">
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @empty
                                     <tr>
                                         <td colspan="3" class="px-6 py-12 text-center">
