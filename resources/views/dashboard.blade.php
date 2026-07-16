@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-4" x-data="{ selectedCount: 0 }"
-            @selection-changed.window="selectedCount = $event.detail">
+        <div class="flex items-center gap-4" x-data="{ selectedCount: 0, totalSelected: 0 }"
+            @selection-changed.window="selectedCount = $event.detail.filtered; totalSelected = $event.detail.total">
             <div
                 class="w-12 h-12 rounded-2xl bg-sky-950 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -14,8 +14,11 @@
                 <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">Overview & Management</span>
             </div>
             <div x-show="selectedCount > 0" x-cloak
-                class="ml-auto flex items-center px-4 py-2 rounded-xl bg-sky-950 text-white text-[10px] font-black tracking-widest shadow-lg">
-                Selected: <span x-text="selectedCount"></span> tickets
+                class="ml-auto flex items-center px-4 py-2 text-slate text-[10px] font-bold tracking-widest">
+                <span class="mr-1" x-text="selectedCount"></span>selected tickets
+                <template x-if="totalSelected > selectedCount">
+                    <span class="ml-1 text-slate-400" x-text="'(' + totalSelected + ' total)'"></span>
+                </template>
             </div>
         </div>
     </x-slot>
@@ -35,34 +38,22 @@
 
         {{-- Page header + bulk actions --}}
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Ticket Management</h1>
-                <p class="text-sm md:text-base text-slate-600 dark:text-slate-400 mt-1">
-                    @if (auth()->user()->role === 'support')
-                        Manage and resolve tickets.
-                    @elseif (auth()->user()->role === 'user')
-                        Track and manage your submitted tickets.
-                    @else
-                        Manage Tickets.
-                    @endif
-                </p>
-            </div>
             <div class="flex w-full md:w-auto items-center justify-between md:justify-end gap-4">
 
                 {{-- Bulk toolbar (admin/support only) --}}
                 @if (in_array(auth()->user()->role, ['admin', 'support']))
-                    <div x-show="selectedIds.length > 0" x-cloak
+                    <div x-show="effectiveSelectedIds.length > 0" x-cloak
                         class="flex items-center space-x-2 p-1.5 md:p-2 bg-slate-100 dark:bg-[#0f172a] rounded-2xl border border-sky-950/10 dark:border-[#1e3a5f]">
                         <span class="hidden sm:inline text-xs font-bold text-slate-600 dark:text-slate-400 px-2"
-                            x-text="selectedIds.length + ' Selected'"></span>
+                            x-text="effectiveSelectedIds.length + ' Selected'"></span>
 
                         <select
                             @change="
-                                selectedIds.length
+                                effectiveSelectedIds.length
                                     ? (bulkStatusChange($event.target.value), $event.target.value = '')
                                     : ($event.target.value = '')
                             "
-                            :class="{ 'opacity-40 cursor-not-allowed': !selectedIds.length }"
+                            :class="{ 'opacity-40 cursor-not-allowed': !effectiveSelectedIds.length }"
                             class="text-[10px] md:text-xs font-black bg-white dark:bg-[#1e293b] text-slate-600 dark:text-slate-300 border-none rounded-xl focus:ring-2 focus:ring-sky-400 py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10">
                             <option value="" disabled selected>Change Status of all selected</option>
                             <option value="open">Open</option>
@@ -200,14 +191,14 @@
                                     <label class="flex items-center px-1 cursor-pointer select-none group">
                                         <input type="checkbox"
                                             class="hidden"
-                                            :checked="allTickets.length > 0 && selectedIds.length === allTickets.length"
+                                            :checked="filteredTickets.length > 0 && filteredTickets.every(t => selectedIds.includes(t.id))"
                                             @change="toggleSelectAll()"
                                         />
                                         <span
                                             class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-                                            :class="(allTickets.length > 0 && selectedIds.length === allTickets.length) ? 'bg-[#1e3a8a] border-[#1e3a8a]' : 'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'"
+                                            :class="(filteredTickets.length > 0 && filteredTickets.every(t => selectedIds.includes(t.id))) ? 'bg-[#1e3a8a] border-[#1e3a8a]' : 'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'"
                                         >
-                                            <svg x-show="allTickets.length > 0 && selectedIds.length === allTickets.length" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg x-show="filteredTickets.length > 0 && filteredTickets.every(t => selectedIds.includes(t.id))" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
                                             </svg>
                                         </span>
@@ -369,9 +360,9 @@
                                         @if (in_array(auth()->user()->role, ['admin', 'support']))
                                             <select
                                                 @change="statusUpdate(ticket.id, $event.target.value)"
-                                                class="fauna-select-chevron text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 border-sky-400 bg-transparent focus:ring-2 focus:ring-sky-400 focus:outline-none cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
+                                                class="fauna-select-chevron text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-sky-400 focus:outline-none cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
                                                 :class="{
-                                                    'border-sky-400 dark:border-sky-500 text-sky-600 dark:text-sky-400': ticket.status === 'open',
+                                                    'border-green-400 dark:border-green-500 text-green-600 dark:text-green-400': ticket.status === 'open',
                                                     'border-sky-500 dark:border-sky-400 text-sky-600 dark:text-sky-400': ticket.status === 'in-progress',
                                                     'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
                                                 }">
@@ -383,7 +374,7 @@
                                             <span
                                                 class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold"
                                                 :class="{
-                                                    'bg-sky-100 text-sky-600 dark:bg-sky-950/30 dark:text-sky-400 ring-4 ring-sky-500/10': ticket
+                                                    'bg-green-100 text-green-600 dark:bg-green-950/30 dark:text-green-400 ring-4 ring-green-500/10': ticket
                                                         .status === 'open',
                                                     'bg-sky-100 text-sky-600 dark:bg-sky-950/30 dark:text-sky-400 ring-4 ring-sky-500/10': ticket
                                                         .status === 'in-progress',
@@ -1031,10 +1022,29 @@
                     editSubmitting: false,
 
                     init() {
-                        this.$watch('selectedIds', v => this.$dispatch('selection-changed', v.length));
+                        this.$watch('selectedIds', () => {
+                            this.$dispatch('selection-changed', {
+                                filtered: this.effectiveSelectedIds.length,
+                                total: this.selectedIds.length
+                            });
+                        });
+                        // Also re-dispatch when filters change so the header count updates
+                        this.$watch('filters', () => {
+                            this.$dispatch('selection-changed', {
+                                filtered: this.effectiveSelectedIds.length,
+                                total: this.selectedIds.length
+                            });
+                        }, { deep: true });
                     },
 
                     // ── Computed ──────────────────────────────────────────────────
+
+                    // The IDs that are both selected AND currently visible after filtering
+                    get effectiveSelectedIds() {
+                        const filteredIds = new Set(this.filteredTickets.map(t => t.id));
+                        return this.selectedIds.filter(id => filteredIds.has(id));
+                    },
+
                     get filteredTickets() {
                         return this.allTickets.filter(t => {
                             const s = this.filters.search.toLowerCase();
@@ -1137,7 +1147,17 @@
                         this.expandedId = this.expandedId === id ? null : id;
                     },
                     toggleSelectAll() {
-                        this.selectedIds = this.selectedIds.length === this.allTickets.length ? [] : this.allTickets.map(t => t.id);
+                        const filteredIds = this.filteredTickets.map(t => t.id);
+                        const allFilteredSelected = filteredIds.every(id => this.selectedIds.includes(id));
+                        if (allFilteredSelected) {
+                            // Deselect only the filtered tickets, keep any selections outside current filter
+                            this.selectedIds = this.selectedIds.filter(id => !filteredIds.includes(id));
+                        } else {
+                            // Select all filtered tickets (merge with existing selections)
+                            const existing = new Set(this.selectedIds);
+                            filteredIds.forEach(id => existing.add(id));
+                            this.selectedIds = [...existing];
+                        }
                     },
                     toggleSelect(id) {
                         this.selectedIds.includes(id) ? this.selectedIds.splice(this.selectedIds.indexOf(id), 1) : this.selectedIds.push(id);
@@ -1237,18 +1257,21 @@
                     },
 
                     async bulkDelete() {
+                        const ids = this.effectiveSelectedIds;
+                        if (!ids.length) return;
                         const confirmed = await this.confirm({
                             type: 'danger',
                             title: 'Bulk Delete',
-                            confirmText: `Delete ${this.selectedIds.length} Tickets`,
-                            message: `Delete ${this.selectedIds.length} tickets? This cannot be undone.`
+                            confirmText: `Delete ${ids.length} Tickets`,
+                            message: `Delete ${ids.length} tickets? This cannot be undone.`
                         });
                         if (!confirmed) return;
-                        const r = await this.deleteFetch(ROUTES.bulkDelete(), { ids: this.selectedIds });
+                        const r = await this.deleteFetch(ROUTES.bulkDelete(), { ids });
                         if (r.ok) {
-                            const count = this.selectedIds.length;
-                            this.allTickets = this.allTickets.filter(t => !this.selectedIds.includes(t.id));
-                            this.selectedIds = [];
+                            const count = ids.length;
+                            const deletedSet = new Set(ids);
+                            this.allTickets = this.allTickets.filter(t => !deletedSet.has(t.id));
+                            this.selectedIds = this.selectedIds.filter(id => !deletedSet.has(id));
                             window.showToast(`${count} tickets deleted successfully.`);
                         } else {
                             window.showToast('Failed to delete tickets.', 'error');
@@ -1256,10 +1279,14 @@
                     },
 
                     async bulkStatusChange(status) {
-                        const r = await this.patchFetch(ROUTES.bulkStatus(), { ids: this.selectedIds, status });
+                        const ids = this.effectiveSelectedIds;
+                        if (!ids.length) return;
+                        const r = await this.patchFetch(ROUTES.bulkStatus(), { ids, status });
                         if (r.ok) {
-                            this.allTickets = this.allTickets.map(t => this.selectedIds.includes(t.id) ? { ...t, status } : t);
-                            this.selectedIds = [];
+                            const updatedSet = new Set(ids);
+                            this.allTickets = this.allTickets.map(t => updatedSet.has(t.id) ? { ...t, status } : t);
+                            // Remove the affected IDs from selection
+                            this.selectedIds = this.selectedIds.filter(id => !updatedSet.has(id));
                         }
                     },
 

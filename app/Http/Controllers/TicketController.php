@@ -42,7 +42,9 @@ class TicketController extends Controller
 
         if ($user) {
             $request->merge([
-                'name'         => $user->name,
+                'first_name'         => $user->name,
+                'middle_name'         => $user->name,
+                'last_name'         => $user->name,
                 'email'        => $user->email,
                 'phone_number' => $user->phone_number,
             ]);

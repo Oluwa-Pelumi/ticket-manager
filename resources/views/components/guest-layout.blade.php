@@ -17,9 +17,8 @@
             </a>
 
             <div class="absolute right-0 flex items-center">
-                <button onclick="toggleTheme()"
-                    class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5 hover:bg-black/10 border border-gray-300 text-gray-900 dark:bg-white/5 dark:hover:bg-white/10 dark:border-white/10 dark:text-white transition-all backdrop-blur-md hover:scale-110 active:scale-95"
-                    aria-label="Toggle Theme">
+                                            <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all" aria-label="Toggle Theme">
+
                     <svg id="theme-icon-dark" class="w-4 h-4 text-sky-400 hidden" fill="currentColor"
                         viewBox="0 0 20 20">
                         <path
