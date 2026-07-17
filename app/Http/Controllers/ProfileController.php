@@ -53,6 +53,10 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->isAdmin() && \App\Models\User::where('role', 'admin')->count() === 1) {
+            return back()->with('error', 'You are the only admin. Promote another user to admin before deleting your account.');
+        }
+
         Auth::logout();
 
         $user->delete();

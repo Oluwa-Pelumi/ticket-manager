@@ -2,7 +2,7 @@
     Comment form partial — included inside an Alpine `commentForm(ticketId)` scope.
     State available: content, files, previews, submitting, handleAttachments(), removeAttachment(), submit()
 --}}
-<div class="space-y-3">
+<div class="space-y-3 min-w-0 max-w-full w-full">
 
     {{-- Text area --}}
     <div class="relative">
@@ -46,7 +46,7 @@
     </template>
 
     {{-- Actions row --}}
-    <div class="flex items-center justify-between gap-3">
+    <div class="flex flex-wrap items-center justify-between gap-3">
 
         {{-- Attach attachments --}}
         <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-500 dark:text-slate-400 hover:text-sky-950 dark:hover:text-sky-400 cursor-pointer transition-all text-xs font-bold">

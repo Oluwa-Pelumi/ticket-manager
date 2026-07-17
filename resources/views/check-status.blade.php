@@ -26,7 +26,7 @@
 
             <div class="text-center mb-10">
                 <p class="mt-4 text-sm md:text-lg text-slate-600 dark:text-slate-400 px-4">
-                    Enter the reference code to view the current status of your ticket.
+                    Enter the 8 character reference code to view the current status of your ticket.
                 </p>
             </div>
 

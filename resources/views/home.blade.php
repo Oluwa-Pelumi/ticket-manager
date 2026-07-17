@@ -141,7 +141,7 @@
                     <span class="text-sm font-black tracking-widest text-sky-600 dark:text-sky-400 uppercase mb-3 block">Process overview</span>
                     <h2 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-6">How ticketing works</h2>
                     <p class="text-lg text-slate-600 dark:text-slate-400 font-medium">
-                        From your first message to a closed ticket—here is what happens in {{ config('app.name') }}.
+                        From your first message to a closed ticket—here is what happens.
                     </p>
                 </div>
 

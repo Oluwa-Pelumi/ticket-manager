@@ -41,6 +41,7 @@
         $isSupport = auth()->check() && auth()->user()->role === 'support';
         $isCurrentAttendant = $isSupport && auth()->id() === $ticket->attendant?->id;
         $isPastAttendant = $isSupport && !$isCurrentAttendant && in_array(auth()->id(), $ticket->attended_to_by ?? []);
+        $commentBlocked = $isPastAttendant && $ticket->status !== 'closed';
     @endphp
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -57,7 +58,7 @@
 
                     <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.2em] uppercase">Creator Information</div>
                     <div class="mt-2 mb-6">
-                        @if($ticket->name || $ticket->user?->name)
+                        @if($ticket->user?->name)
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
@@ -72,12 +73,12 @@
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
 
-                                    <span>{{ $ticket->name ?? $ticket->user?->name }}</span>
+                                    <span>{{ $ticket->user?->name }}</span>
                                 </div>
                             </div>
                         @endif
 
-                        @if($ticket->email || $ticket->user?->email)
+                        @if($ticket->user?->email)
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
@@ -92,12 +93,12 @@
                                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
 
-                                    <span>{{ $ticket->email ?? $ticket->user?->email }}</span>
+                                    <span>{{ $ticket->user?->email }}</span>
                                 </div>
                             </div>
                         @endif
 
-                        @if($ticket->phone_number || $ticket->user?->phone_number)
+                        @if($ticket->user?->phone_number)
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
@@ -112,7 +113,7 @@
                                             d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                     </svg>
 
-                                    <span>{{ $ticket->phone_number ?? $ticket->user?->phone_number }}</span>
+                                    <span>{{ $ticket->user?->phone_number }}</span>
                                 </div>
                             </div>
                         @endif
@@ -308,22 +309,28 @@
                     @endif
                 </div>
 
-                @if(($isTicketOwner || $isAdmin || $isSupport) && $ticket->status !== 'closed')
-                    @if($isPastAttendant)
+                @if($isTicketOwner || $isAdmin || $isSupport)
+                    @if($commentBlocked)
                         <div class="p-4 bg-sky-50 dark:bg-sky-950/30 rounded-2xl text-sm font-medium text-sky-900 dark:text-sky-300 border border-sky-200 dark:border-sky-900/50 mb-4">
                             This ticket is currently assigned to {{ $ticket->attendant->name ?? 'another support' }}. You are viewing it as a past attendant and cannot reply.
                         </div>
                     @endif
 
+                    @if($ticket->status === 'closed')
+                        <div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl text-sm font-medium text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50 mb-4">
+                            This ticket is closed. Adding a comment will reopen it and assign it to a support staff member.
+                        </div>
+                    @endif
+
                 <form enctype="multipart/form-data"
-                    class="space-y-4 {{ $isPastAttendant ? 'opacity-60 pointer-events-none' : '' }}"
-                    x-data="commentForm({{ $isPastAttendant ? 'true' : 'false' }}, '{{ route('add-comment', ['ticket' => $ticket->id]) }}')"
+                    class="space-y-4 {{ $commentBlocked ? 'opacity-60 pointer-events-none' : '' }}"
+                    x-data="commentForm({{ $commentBlocked ? 'true' : 'false' }}, '{{ route('add-comment', ['ticket' => $ticket->id]) }}')"
                     @submit.prevent="submit()">
                     @csrf
 
                     <div class="space-y-3">
                         <div class="relative group/comment">
-                            <textarea name="content" x-model="content" placeholder="Type your message..." rows="4" required {{ $isPastAttendant ? 'disabled' : '' }}
+                            <textarea name="content" x-model="content" placeholder="Type your message..." rows="4" required {{ $commentBlocked ? 'disabled' : '' }}
                                 class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#1e293b] disabled:cursor-not-allowed"></textarea>
                         </div>
 
@@ -374,7 +381,7 @@
                                     accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                     @change="handleFiles($event)"
                                     class="hidden"
-                                    {{ $isPastAttendant ? 'disabled' : '' }}
+                                    {{ $commentBlocked ? 'disabled' : '' }}
                                 />
                             </label>
 
@@ -396,12 +403,6 @@
                         </div>
                     </div>
                 </form>
-                @endif
-
-                @if($ticket->status === 'closed')
-                <div class="p-4 bg-slate-100 dark:bg-[#1e293b]/50 rounded-2xl text-center text-sm font-medium text-slate-600 border border-sky-950/10 dark:border-[#1e3a5f]">
-                    This ticket is closed. No further comments can be added.
-                </div>
                 @endif
             </div>
         </div>

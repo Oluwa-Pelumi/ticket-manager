@@ -33,10 +33,12 @@
                 @include('profile.partials.update-password-form')
             </div>
 
-            {{-- Delete Account --}}
-            <div class="glass-card rounded-[2rem] p-6 sm:p-10 border-rose-200/50 dark:border-rose-900/40">
-                @include('profile.partials.delete-user-form')
-            </div>
+            {{-- Delete Account (hidden when user is the sole admin) --}}
+            @unless(auth()->user()->isAdmin() && \App\Models\User::where('role', 'admin')->count() === 1)
+                <div class="glass-card rounded-[2rem] p-6 sm:p-10 border-rose-200/50 dark:border-rose-900/40">
+                    @include('profile.partials.delete-user-form')
+                </div>
+            @endunless
 
         </div>
     </div>

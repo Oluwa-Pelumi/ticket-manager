@@ -40,25 +40,6 @@ class TicketController extends Controller
     {
         $user = Auth::user();
 
-        if ($user) {
-            $request->merge([
-                'first_name'         => $user->name,
-                'middle_name'         => $user->name,
-                'last_name'         => $user->name,
-                'email'        => $user->email,
-                'phone_number' => $user->phone_number,
-            ]);
-        } else {
-            $request->validate([
-                'first_name'  => 'required|string|max:80',
-                'middle_name' => 'nullable|string|max:80',
-                'last_name'   => 'required|string|max:80',
-            ]);
-            $request->merge([
-                'name' => trim(preg_replace('/\s+/', ' ', collect([$request->first_name, $request->middle_name, $request->last_name])->filter()->implode(' '))),
-            ]);
-        }
-
         // --- Validate submission ---
         $validated = $request->validate([
             'attachments.*' => [
@@ -68,8 +49,6 @@ class TicketController extends Controller
                 'extensions:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt',
             ],
             'content'                => 'required|string',
-            'email'                  => 'required|email|max:255',
-            'name'                   => 'required|string|max:255',
             'subject'                => 'required|string|max:255',
             'category_id'            => 'nullable|exists:categories,id',
             'priority'               => 'required|string|in:low,medium,high',
@@ -79,7 +58,7 @@ class TicketController extends Controller
         ]);
 
         // --- Sync phone number to user profile ---
-        if ($user && $user->phone_number !== ($validated['phone_number'] ?? null)) {
+        if ($user->phone_number !== ($validated['phone_number'] ?? null)) {
             $user->update(['phone_number' => $validated['phone_number'] ?? null]);
         }
 
@@ -89,22 +68,19 @@ class TicketController extends Controller
         // --- Persist ticket record ---
         $ticket = Ticket::create([
             'status'                 => 'open',
-            'user_id'                => Auth::id(),
+            'user_id'                => $user->id,
             'attended_to_by'         => $assignedSupportId,
-            'name'                   => $validated['name'],
-            'email'                  => $validated['email'],
             'content'                => $validated['content'],
             'subject'                => $validated['subject'],
             'priority'               => $validated['priority'],
-            'phone_number'           => $validated['phone_number'] ?? null,
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ]);
 
         // --- Upload attached files ---
         $attachmentPaths = [];
         if ($request->hasFile('attachments')) {
-            $username  = Str::slug($validated['name'], '_');
-            $folder    = $username . '-' . ($user ? $user->id : 'guest');
+            $username  = Str::slug($user->name, '_');
+            $folder    = $username . '-' . $user->id;
 
             foreach ($request->file('attachments') as $index => $file) {
                 $extension    = $file->getClientOriginalExtension();
@@ -123,12 +99,7 @@ class TicketController extends Controller
 
         $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
 
-        if ($user) {
-            $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
-        } else {
-            \Illuminate\Support\Facades\Notification::route('mail', $validated['email'])
-                ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $validated['name']));
-        }
+        $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -241,12 +212,7 @@ class TicketController extends Controller
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
             $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
-            if ($ticket->user) {
-                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
-            } else if ($ticket->email) {
-                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
-            }
+            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
         }
 
         return back()->with('success', 'Ticket updated successfully.');
@@ -322,12 +288,7 @@ class TicketController extends Controller
                     $notificationMsg = "Your ticket (ID: {$ticket->id}) has been closed.\nView here: " . route('ticket.show', $ticket->id);
                     $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
-                    if ($ticket->user) {
-                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
-                    } else if ($ticket->email) {
-                        \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                            ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_closed'));
-                    }
+                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
                 }
             }
         }
@@ -360,8 +321,10 @@ class TicketController extends Controller
      */
     public function addComment(Request $request, Ticket $ticket)
     {
-        // --- Authorization for Supports ---
-        if (Auth::user() && Auth::user()->isSupport() && !Auth::user()->isAdmin()) {
+        $wasClosed = $ticket->status === 'closed';
+
+        // --- Authorization for Supports (skip for closed tickets — they will be reassigned) ---
+        if (!$wasClosed && Auth::user() && Auth::user()->isSupport() && !Auth::user()->isAdmin()) {
             if ($ticket->attendant && Auth::id() !== $ticket->attendant->id) {
                 return back()->with('error', 'You are not the currently assigned support for this ticket and cannot reply.');
             }
@@ -381,8 +344,8 @@ class TicketController extends Controller
         $attachmentPaths = [];
         if ($request->hasFile('attachments')) {
             $user      = Auth::user();
-            $username  = $user ? Str::slug($user->name, '_') : 'guest';
-            $folder    = 'comments/' . $username . '-' . ($user ? $user->id : 'guest');
+            $username  = Str::slug($user->name, '_');
+            $folder    = 'comments/' . $username . '-' . $user->id;
 
             foreach ($request->file('attachments') as $index => $file) {
                             $extension = $file->getClientOriginalExtension();
@@ -404,12 +367,17 @@ class TicketController extends Controller
 
             $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
-            if ($ticket->user) {
-                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
-            } else if ($ticket->email) {
-                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_is_replied'));
+            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
+        }
+
+        // --- Reopen closed tickets and assign a new support staff member ---
+        if ($wasClosed) {
+            $newSupportId = $this->assignToLeastBusySupport();
+            if ($newSupportId) {
+                $ticket->addAttendant($newSupportId);
             }
+            $ticket->update(['status' => 'open']);
+            $ticket->refresh();
         }
 
         // --- Auto-transition open tickets to in-progress on staff reply ---
@@ -510,12 +478,7 @@ class TicketController extends Controller
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
             $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
-            if ($ticket->user) {
-                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
-            } elseif ($ticket->email) {
-                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
-            }
+            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
         }
 
         return response()->json(['success' => true, 'status' => $status]);
@@ -619,12 +582,7 @@ class TicketController extends Controller
                     $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
                     $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
-                    if ($ticket->user) {
-                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
-                    } elseif ($ticket->email) {
-                        \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
-                            ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
-                    }
+                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
                 }
             }
         }

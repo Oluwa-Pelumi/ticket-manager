@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
 
             $table->json('attended_to_by')->nullable();
@@ -24,15 +24,6 @@ return new class extends Migration
             $table->string('priority')->default('medium');
             $table->string('status')->default('open');
             $table->timestamps();
-
-            $table->foreignId('user_id')->nullable()->change();
-            
-            $table->string('first_name')->nullable();
-            $table->string('middle_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('matric_no')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone_number')->nullable();
         });
     }
 
@@ -42,9 +33,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('tickets');
-
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable(false)->change();
-        });
     }
 };

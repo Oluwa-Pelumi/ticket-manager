@@ -542,6 +542,36 @@ class TicketControllerTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function test_comment_on_closed_ticket_reopens_and_assigns_support(): void
+    {
+        Notification::fake();
+        $support = $this->support();
+        $user    = $this->regularUser();
+        $ticket  = $this->makeTicket([
+            'user'           => $user,
+            'status'         => 'closed',
+            'attended_to_by' => [$support->id],
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('tickets.add-comment', $ticket->hashid), [
+                'content' => 'I still need help with this.',
+            ])
+            ->assertRedirect();
+
+        $ticket->refresh();
+
+        $this->assertSame('open', $ticket->status);
+        $this->assertNotEmpty($ticket->attended_to_by);
+        $this->assertContains($ticket->attendant->id, $ticket->attended_to_by);
+        $this->assertDatabaseHas('comments', [
+            'ticket_id' => $ticket->id,
+            'user_id'   => $user->id,
+            'content'   => 'I still need help with this.',
+        ]);
+    }
+
     // ─────────────────────────────────────────────
     // searchTicketsByReference
     // ─────────────────────────────────────────────

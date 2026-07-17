@@ -72,8 +72,6 @@ class Ticket extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
         'status',
         'attachments',
         'user_id',
@@ -83,8 +81,6 @@ class Ticket extends Model
         'priority',
         'category_id',
         'attended_to_by',
-        'phone_number',
-        'custom_recurrence_date',
     ];
 
     /**

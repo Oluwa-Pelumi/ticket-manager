@@ -59,7 +59,7 @@
                                 name="name"
                                 value="{{ old('name', $editingCategory->name ?? '') }}"
                                 class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-medium"
-                                placeholder="e.g. Prescription Issues"
+                                placeholder="e.g. Transcript Request"
                                 required
                             />
                             @error('name')
