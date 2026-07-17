@@ -252,8 +252,8 @@
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="phone">
                             Phone Contact
                         </label>
-                        <div class="flex rounded-2xl overflow-hidden border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm opacity-50 bg-slate-100 dark:bg-[#0f172a] pointer-events-none transition-all">
-                            <span class="flex items-center px-4 bg-slate-100/50 dark:bg-[#0f172a]/50 text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-sky-950/10 dark:border-[#1e3a5f] select-none shrink-0">
+                        <div class="flex rounded-2xl overflow-hidden border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm @if($user->phone_number) opacity-50 bg-slate-100 dark:bg-[#0f172a] pointer-events-none @else bg-white dark:bg-[#1e293b] @endif transition-all">
+                            <span class="flex items-center px-4 @if($user->phone_number) bg-slate-100/50 dark:bg-[#0f172a]/50 @else bg-slate-50 dark:bg-[#1e293b]/50 @endif text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-sky-950/10 dark:border-[#1e3a5f] select-none shrink-0">
                                 +234
                             </span>
                             <input
@@ -264,7 +264,7 @@
                                 @input="phone = phone.replace(/\D/g, '').slice(0, 10)"
                                 class="flex-1 px-5 py-4 border-0 focus:ring-0 bg-transparent dark:bg-transparent text-slate-900 dark:text-white outline-none font-medium"
                                 placeholder="8012345678"
-                                disabled
+                                @if($user->phone_number) disabled @endif
                             />
                         </div>
                         <input type="hidden" name="phone_number" :value="phone ? '+234' + phone : ''">

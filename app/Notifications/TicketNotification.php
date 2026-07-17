@@ -47,8 +47,11 @@ class TicketNotification extends Notification implements ShouldQueue
 
         return (new MailMessage)
             ->subject($this->subject)
-            ->greeting('Hello ' . $name . '!')
-            ->line($content)
-            ->line('Thank you for using our platform!');
+            ->view('emails.ticket_notification', [
+                'subject' => $this->subject,
+                'message' => $content,
+                'recipientName' => $name,
+                'ticketUrl' => $this->ticketUrl,
+            ]);
     }
 }

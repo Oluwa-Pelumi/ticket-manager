@@ -97,7 +97,8 @@ class TicketController extends Controller
         // --- Notify submitter via mail ---
         $notificationMessage = "Your ticket (Reference: {$ticket->hashid}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->hashid);
 
-        $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
+        $category = $ticket->category;
+        $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $validated['subject']));
 
         $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
 
@@ -210,9 +211,19 @@ class TicketController extends Controller
         // --- Notify ticket owner when closed ---
         if ($oldStatus !== 'closed' && $validated['status'] === 'closed' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+            $category = $ticket->category;
+            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+        }
+
+        // --- Notify ticket owner when status changes to in progress ---
+        if ($oldStatus !== 'in_progress' && $validated['status'] === 'in_progress' && $ticket->user_id !== Auth::id()) {
+            $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
+            $category = $ticket->category;
+            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
         }
 
         return back()->with('success', 'Ticket updated successfully.');
@@ -286,9 +297,23 @@ class TicketController extends Controller
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
                     $notificationMsg = "Your ticket (ID: {$ticket->id}) has been closed.\nView here: " . route('ticket.show', $ticket->id);
-                    $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+                    $category = $ticket->category;
+                    $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
                     $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
+                }
+            }
+        }
+
+        // --- Notify owners of tickets moved to in progress ---
+        if ($validated['status'] === 'in_progress') {
+            foreach ($tickets as $ticket) {
+                if ($ticket->status !== 'in_progress' && $ticket->user_id !== Auth::id()) {
+                    $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->id);
+                    $category = $ticket->category;
+                    $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_in_progress'));
                 }
             }
         }
@@ -364,8 +389,8 @@ class TicketController extends Controller
         // --- Notify ticket owner when staff replies ---
         if (Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport()) && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Subject: {$ticket->subject}\nView here: " . route('ticket.show', $ticket->id);
-
-            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+            $category = $ticket->category;
+            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
         }
@@ -476,9 +501,19 @@ class TicketController extends Controller
         // Notify owner when closed
         if ($oldStatus !== 'closed' && $status === 'closed' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+            $category = $ticket->category;
+            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+        }
+
+        // Notify owner when status changes to in progress
+        if ($oldStatus !== 'in_progress' && $status === 'in_progress' && $ticket->user_id !== Auth::id()) {
+            $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
+            $category = $ticket->category;
+            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
         }
 
         return response()->json(['success' => true, 'status' => $status]);
@@ -580,9 +615,23 @@ class TicketController extends Controller
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
                     $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-                    $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+                    $category = $ticket->category;
+                    $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
                     $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+                }
+            }
+        }
+
+        // Notify owners of tickets moved to in progress
+        if ($validated['status'] === 'in_progress') {
+            foreach ($tickets as $ticket) {
+                if ($ticket->status !== 'in_progress' && $ticket->user_id !== Auth::id()) {
+                    $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
+                    $category = $ticket->category;
+                    $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
                 }
             }
         }
