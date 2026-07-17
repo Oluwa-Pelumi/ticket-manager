@@ -32,4 +32,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeIcons();
+        }
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const lightIcon = document.getElementById('theme-icon-light');
+            if (darkIcon) darkIcon.classList.toggle('hidden', !isDark);
+            if (lightIcon) lightIcon.classList.toggle('hidden', isDark);
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeIcons);
+    </script>
 </x-app-layout>

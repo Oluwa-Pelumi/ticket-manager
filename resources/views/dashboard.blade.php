@@ -32,7 +32,7 @@
     Data flows: PHP renders JSON into x-data, Alpine drives the UI.
     =====================================================================
     --}}
-    <div class="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6 overflow-x-hidden" x-data="dashboard()"
+    <div class="mx-auto py-2 px-2 sm:px-4 lg:px-6 max-w-[98%] xl:max-w-[1700px] overflow-x-hidden" x-data="dashboard()"
         x-init="init()"
         @comment-added.window="handleNewComment($event.detail)">
 
@@ -179,11 +179,10 @@
 
         {{-- ── Tickets table ──────────────────────────────────────────────── --}}
         <div
-            class="relative group overflow-hidden max-w-full rounded-2xl fauna-panel transition-all duration-500 hover:shadow-sky-400/10">
-            <div class="max-w-full overflow-x-hidden">
-                <table class="w-full max-w-full table-fixed text-left border-collapse">
+            class="relative group rounded-2xl fauna-panel transition-all duration-500 hover:shadow-sky-400/10 overflow-hidden max-w-full">
+            <div class="max-w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full table-auto text-left border-collapse">
                     <thead>
-                        <tr class="border-b border-sky-950/10 dark:border-[#1e3a5f]">
                             {{-- Select-all --}}
                             <th class="w-12 md:w-16 px-2 sm:px-4 md:px-6 py-4">
                                 @if (in_array(auth()->user()->role, ['admin', 'support']))
@@ -204,46 +203,46 @@
                                     </label>
                                 @endif
                             </th>
-                            <th class="w-[4.5rem] sm:w-20 md:w-24 px-2 sm:px-4 md:px-6 py-4">
+                            <th class="px-2 sm:px-4 md:px-6 py-4 min-w-[4rem]">
                                 <button @click="requestSort('id')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Reference <span x-html="getSortIcon('id')" class="ml-1"></span>
                                 </button>
                             </th>
-                            <th class="px-2 sm:px-4 md:px-6 py-4">
+                            <th class="px-2 sm:px-4 md:px-6 py-4 min-w-[120px]">
                                 <button @click="requestSort('subject')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Info <span x-html="getSortIcon('subject')" class="ml-1"></span>
                                 </button>
                             </th>
                             @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                <th class="hidden lg:table-cell w-32 md:w-44 px-4 md:px-6 py-4">
+                                <th class="hidden lg:table-cell px-4 md:px-6 py-4 min-w-[100px]">
                                     <button @click="requestSort('user')"
                                         class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                         User <span x-html="getSortIcon('user')" class="ml-1"></span>
                                     </button>
                                 </th>
                             @endif
-                            <th class="w-20 sm:w-24 md:w-28 px-2 sm:px-4 md:px-6 py-4">
+                            <th class="px-2 sm:px-4 md:px-6 py-4 min-w-[80px]">
                                 <button @click="requestSort('priority')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Priority <span x-html="getSortIcon('priority')" class="ml-1"></span>
                                 </button>
                             </th>
-                            <th class="hidden md:table-cell w-32 md:w-48 px-4 md:px-6 py-4">
+                            <th class="hidden md:table-cell px-4 md:px-6 py-4 min-w-[100px]">
                                 <button @click="requestSort('status')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Status <span x-html="getSortIcon('status')" class="ml-1"></span>
                                 </button>
                             </th>
-                            <th class="hidden lg:table-cell w-48 px-6 py-4">
+                            <th class="hidden lg:table-cell px-6 py-4 min-w-[100px]">
                                 <button @click="requestSort('attendant')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Attendant <span x-html="getSortIcon('attendant')" class="ml-1"></span>
                                 </button>
                             </th>
                             <th
-                                class="hidden lg:table-cell w-20 md:w-24 px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">
+                                class="hidden lg:table-cell px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right min-w-[80px]">
                                 Actions</th>
                         </tr>
                     </thead>
@@ -306,11 +305,11 @@
                                     {{-- Subject + snippet --}}
                                     <td class="px-4 md:px-6 py-4">
                                         <div class="flex items-center justify-between gap-2">
-                                            <div class="min-w-0">
-                                        <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1"
+                                            <div class="min-w-0 flex-1">
+                                        <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1 overflow-hidden"
                                             x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())">
                                         </div>
-                                        <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px] sm:max-w-[180px]"
+                                        <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[150px] sm:max-w-[250px] md:max-w-[350px] overflow-hidden"
                                             x-text="ticket.content"></div>
                                             </div>
                                             <svg class="lg:hidden w-4 h-4 shrink-0 text-slate-400 transition-transform"
@@ -457,11 +456,12 @@
                                 {{-- ── Expanded row ──────────────────────────────────────── --}}
                                 <tr class="bg-sky-50/50 dark:bg-[#1e293b]/30" x-show="expandedId === ticket.id" x-cloak>
                                         <td colspan="{{ in_array(auth()->user()->role, ['admin', 'support']) ? 9 : 7 }}"
-                                            class="w-full max-w-full min-w-0 overflow-x-hidden box-border px-2 sm:px-3 md:px-6 lg:px-8 py-4 md:py-8 border-l-4 border-sky-400">
-                                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 min-w-0 max-w-full w-full">
+                                            class="border-l-4 border-sky-400 p-0">
+                                            <div class="px-2 sm:px-3 md:px-6 lg:px-8 py-4 md:py-8 overflow-x-hidden w-full">
+                                            <div class="grid grid-cols-1 gap-6 lg:gap-8 min-w-0 w-full">
 
                                                 {{-- Left: specs + attachments --}}
-                                                <div class="space-y-8 min-w-0 max-w-full w-full">
+                                                <div class="space-y-8">
                                                     <div>
                                                         <h4
                                                             class="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
@@ -475,7 +475,7 @@
                                                             Specifications
                                                         </h4>
                                                         <div
-                                                            class="p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm relative overflow-hidden min-w-0 max-w-full w-full">
+                                                            class="p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm relative overflow-hidden min-w-0">
                                                             <div
                                                                 class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-30">
                                                             </div>
@@ -827,14 +827,14 @@
                                                 </div>
 
                                                 {{-- Right: comments + comment form --}}
-                                                <div class="space-y-8 min-w-0 max-w-full w-full">
-                                                    <div class="min-w-0 max-w-full w-full">
+                                                <div class="space-y-8">
+                                                    <div>
                                                         <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
                                                             <svg class="w-5 h-5 mr-3 text-sky-950 dark:text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                                                             Conversation
                                                         </h4>
 
-                                                        <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto overflow-x-hidden pr-1 md:pr-2 custom-scrollbar relative min-w-0 max-w-full w-full space-y-4">
+                                                        <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto overflow-x-hidden pr-1 md:pr-2 custom-scrollbar relative space-y-4 min-w-0">
                                                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
                                                             <template
                                                                 x-if="!ticket.comments || ticket.comments.length === 0">
@@ -849,8 +849,8 @@
                                                                     :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')) ? 'items-end' : 'items-start'">
                                                                     <div class="max-w-full w-full sm:max-w-[85%] p-4 sm:p-5 min-w-0"
                                                                         :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin'))
-                                                                            ? 'bg-sky-950 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-sm sm:rounded-br-md'
-                                                                            : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] rounded-bl-sm sm:rounded-bl-md'">
+                                                                            ? 'bg-sky-950 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-none sm:rounded-br-md'
+                                                                            : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] rounded-bl-none sm:rounded-bl-md'">
                                                                         <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2 min-w-0">
                                                                             <span class="text-[9px] font-black tracking-widest opacity-80 break-words" x-text="comment.user?.name"></span>
                                                                             <template x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">

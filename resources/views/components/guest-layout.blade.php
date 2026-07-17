@@ -17,8 +17,7 @@
             </a>
 
             <div class="absolute right-0 flex items-center">
-                                            <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all" aria-label="Toggle Theme">
-
+                <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all" aria-label="Toggle Theme">
                     <svg id="theme-icon-dark" class="w-4 h-4 text-sky-400 hidden" fill="currentColor"
                         viewBox="0 0 20 20">
                         <path
@@ -39,4 +38,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeIcons();
+        }
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const lightIcon = document.getElementById('theme-icon-light');
+            if (darkIcon) darkIcon.classList.toggle('hidden', !isDark);
+            if (lightIcon) lightIcon.classList.toggle('hidden', isDark);
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeIcons);
+    </script>
 </x-app-layout>

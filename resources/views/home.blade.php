@@ -55,8 +55,9 @@
 
                         <div class="flex items-center gap-3 sm:gap-4">
                             @guest
+                                <a href="{{ route('login') }}" class="block sm:hidden px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
                                 <a href="{{ route('login') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
-                                <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Register</a>
+                                <a href="{{ route('register') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Register</a>
                             @else
                                 <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Dashboard</a>
                             @endauth
