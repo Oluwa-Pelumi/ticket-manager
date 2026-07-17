@@ -26,14 +26,16 @@ Route::get('/home', function () {
     ]);
 })->name('home');
 
-Route::get('/submit-ticket', function () {
-    return view('submit-ticket', [
-        'categories' => rescue(fn () => \App\Models\Category::all(), []),
-    ]);
-})->name('submit-ticket');
+Route::middleware('auth')->group(function () {
+    Route::get('/submit-ticket', function () {
+        return view('submit-ticket', [
+            'categories' => rescue(fn () => \App\Models\Category::all(), []),
+        ]);
+    })->name('submit-ticket');
 
-Route::post('submit-ticket', [TicketController::class, 'save'])
-    ->name('save-ticket');
+    Route::post('submit-ticket', [TicketController::class, 'save'])
+        ->name('save-ticket');
+});
 
 Route::get('/check-status', function () {
     return view('check-status');

@@ -318,9 +318,9 @@
                                     @if (in_array(auth()->user()->role, ['admin', 'support']))
                                         <td class="hidden lg:table-cell px-4 md:px-6 py-4">
                                             <div class="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[120px]"
-                                                x-text="ticket.name || ticket.user?.name"></div>
+                                                x-text="ticket.user?.name"></div>
                                             <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px]"
-                                                x-text="ticket.email || ticket.user?.email"></div>
+                                                x-text="ticket.user?.email"></div>
                                         </td>
                                     @endif
 
@@ -479,7 +479,7 @@
 
                                                                 <div class="mt-2 mb-6">
                                                                     <div class="space-y-1.5">
-                                                                        <template x-if="ticket.name || ticket.user?.name">
+                                                                        <template x-if="ticket.user?.name">
                                                                             <div
                                                                                 class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                                                                 <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
@@ -493,13 +493,13 @@
                                                                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                                                 </svg>
 
-                                                                                <span x-text="ticket.name || ticket.user?.name"></span>
+                                                                                <span x-text="ticket.user?.name"></span>
                                                                             </div>
                                                                         </template>
                                                                     </div>
 
                                                                     <div class="space-y-1.5">
-                                                                        <template x-if="ticket.email || ticket.user?.email">
+                                                                        <template x-if="ticket.user?.email">
                                                                             <div
                                                                                 class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                                                                 <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
@@ -513,13 +513,13 @@
                                                                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                                                                 </svg>
 
-                                                                                <span x-text="ticket.email || ticket.user?.email"></span>
+                                                                                <span x-text="ticket.user?.email"></span>
                                                                             </div>
                                                                         </template>
                                                                     </div>
 
                                                                     <div class="space-y-1.5">
-                                                                        <template x-if="ticket.phone_number || ticket.user?.phone_number">
+                                                                        <template x-if="ticket.user?.phone_number">
                                                                             <div
                                                                                 class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                                                                                 <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
@@ -533,7 +533,7 @@
                                                                                         d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                                                                 </svg>
 
-                                                                                <span x-text="ticket.phone_number || ticket.user?.phone_number"></span>
+                                                                                <span x-text="ticket.user?.phone_number"></span>
                                                                             </div>
                                                                         </template>
                                                                     </div>
