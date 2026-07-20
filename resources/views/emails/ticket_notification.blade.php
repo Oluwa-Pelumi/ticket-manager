@@ -143,9 +143,10 @@
             <h1>{{ $subject }}</h1>
             <p>Ticket Notification</p>
         </div>
+
         <div class="content">
             <h2 class="greeting">Hello {{ $recipientName }},</h2>
-            <p class="intro">{{ $message }}</p>
+            <p class="intro">{{ $notificationMessage }}</p>
             
             @if($ticketUrl)
             <div class="btn-container">
@@ -153,6 +154,7 @@
             </div>
             @endif
         </div>
+        
         <div class="footer">
             <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
             <p style="margin-top: 5px; font-size: 11px; color: #cbd5e1;">This is an automated notification regarding your support ticket.</p>

@@ -130,6 +130,7 @@
             <h1>Account Registered</h1>
             <p>Your registration was successful!</p>
         </div>
+
         <div class="content">
             <h2 class="greeting">Hello {{ $user->first_name }},</h2>
             <p class="intro">Welcome to {{ config('app.name') }}. Your account has been successfully created. Below are your registration details for your reference:</p>
@@ -169,6 +170,7 @@
                 <a href="{{ config('app.url') }}" class="btn">Go to Dashboard</a>
             </div>
         </div>
+        
         <div class="footer">
             <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
             <p style="margin-top: 5px; font-size: 11px; color: #cbd5e1;">If you did not create this account, please ignore this email.</p>

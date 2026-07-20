@@ -1328,6 +1328,9 @@
                         await this.patchFetch(ROUTES.statusUpdate(id, status));
                         // Optimistically update local state
                         this.allTickets = this.allTickets.map(t => t.id === id ? { ...t, status } : t);
+                        // Show notification
+                        const statusLabel = status === 'open' ? 'Open' : status === 'in-progress' ? 'In Progress' : 'Closed';
+                        window.showToast(`Ticket status updated to ${statusLabel}`, 'success');
                     },
 
                     handleNewComment({ ticketId, comment }) {
@@ -1386,6 +1389,9 @@
                             this.allTickets = this.allTickets.map(t => updatedSet.has(t.id) ? { ...t, status } : t);
                             // Remove the affected IDs from selection
                             this.selectedIds = this.selectedIds.filter(id => !updatedSet.has(id));
+                            // Show notification
+                            const statusLabel = status === 'open' ? 'Open' : status === 'in-progress' ? 'In Progress' : 'Closed';
+                            window.showToast(`${ids.length} tickets updated to ${statusLabel}`, 'success');
                         }
                     },
 

@@ -77,6 +77,7 @@
                     submitted: false,
                     ticketRef: '',
                     submitError: '',
+                    copiedRef: false,
                     handleFiles(e) {
                         const newFiles = Array.from(e.target.files);
                         this.attachedFiles = [...this.attachedFiles, ...newFiles];
@@ -148,7 +149,28 @@
                     </div>
                     <div class="px-6 py-4 rounded-2xl bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-900/50 space-y-1">
                         <div class="text-[10px] font-black tracking-widest text-sky-950 dark:text-sky-400 uppercase">Reference Code</div>
-                        <div class="text-2xl font-black tracking-widest text-sky-950 dark:text-white" x-text="ticketRef"></div>
+                        <div class="flex items-center justify-center gap-2">
+                            <div class="text-2xl font-black tracking-widest text-sky-950 dark:text-white" x-text="ticketRef"></div>
+                            <button type="button" @click="
+                                (navigator.clipboard?.writeText(ticketRef) ?? Promise.reject())
+                                .catch(() => {
+                                    const ta = Object.assign(document.createElement('textarea'), { value: ticketRef, style: 'position:fixed;left:-9999px' });
+                                    document.body.appendChild(ta);
+                                    ta.select();
+                                    document.execCommand('copy');
+                                    ta.remove();
+                                });
+                                copiedRef = true;
+                                setTimeout(() => copiedRef = false, 2000);
+                            " class="p-2 rounded-lg bg-sky-200 dark:bg-sky-800/50 text-sky-700 dark:text-sky-300 hover:bg-sky-300 dark:hover:bg-sky-700 transition-all" title="Copy Reference Code">
+                                <svg x-show="!copiedRef" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <svg x-show="copiedRef" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </button>
+                        </div>
                         <div class="text-xs text-slate-400">Bookmark the ticket page to track updates</div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
@@ -158,7 +180,7 @@
                             View Ticket
                         </a>
                         <button type="button"
-                            @click="submitted = false; ticketRef = ''; submitError = ''; processing = false; phone = ''; subject = ''; content = ''; previews = []; attachedFiles = [];"
+                            @click="submitted = false; ticketRef = ''; submitError = ''; processing = false; phone = ''; subject = ''; content = ''; previews = []; attachedFiles = []; copiedRef = false;"
                             class="flex-1 px-5 py-3 rounded-2xl border border-sky-950/20 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400 font-black text-sm hover:bg-slate-50 dark:hover:bg-[#1e293b] transition-all">
                             Submit Another
                         </button>

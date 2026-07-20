@@ -1,31 +1,31 @@
 @php
-    // Static data — steps explaining the ticket lifecycle
-    $ticketingSteps = [
-        [
-            'step' => 1,
-            'title' => 'Submit',
-            'description' =>
-                'Create a ticket with the right category, your contact details, and what happened. Attach files if they help our team understand faster.',
-        ],
-        [
-            'step' => 2,
-            'title' => 'Review',
-            'description' =>
-                'Our team sees your ticket on the dashboard, filters by status or priority, and updates progress—including assigning someone when needed.',
-        ],
-        [
-            'step' => 3,
-            'title' => 'Reply in thread',
-            'description' =>
-                'Conversation stays on the ticket page: add comments or files anytime it is open. Check the same ticket for staff replies.',
-        ],
-        [
-            'step' => 4,
-            'title' => 'Resolved',
-            'description' =>
-                'When your request is complete, the ticket is marked closed. You can still open past tickets from your dashboard or by status search with your email.',
-        ],
-    ];
+// Static data — steps explaining the ticket lifecycle
+$ticketingSteps = [
+[
+'step' => 1,
+'title' => 'Submit',
+'description' =>
+'Create a ticket with the right category, your contact details, and what happened. Attach files if they help our team understand faster.',
+],
+[
+'step' => 2,
+'title' => 'Review',
+'description' =>
+'Our team sees your ticket on the dashboard, filters by status or priority, and updates progress—including assigning someone when needed.',
+],
+[
+'step' => 3,
+'title' => 'Reply in thread',
+'description' =>
+'Conversation stays on the ticket page: add comments or files anytime it is open. Check the same ticket for staff replies.',
+],
+[
+'step' => 4,
+'title' => 'Resolved',
+'description' =>
+'When your request is complete, the ticket is marked closed. You can still open past tickets from your dashboard or by status search with your email.',
+],
+];
 @endphp
 
 <x-app-layout :show-navbar="false">
@@ -55,18 +55,21 @@
 
                         <div class="flex items-center gap-3 sm:gap-4">
                             @guest
-                                <a href="{{ route('login') }}" class="block sm:hidden px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
-                                <a href="{{ route('login') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
-                                <a href="{{ route('register') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Register</a>
+                            <a href="{{ route('login') }}" class="block sm:hidden px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
+                            <a href="{{ route('login') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
+                            <a href="{{ route('register') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Register</a>
                             @else
-                                <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Dashboard</a>
+                            <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Dashboard</a>
                             @endauth
                             <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all backdrop-blur-md hover:scale-110 active:scale-95" aria-label="Toggle Theme">
-                                <svg id="theme-icon-dark" class="w-4 h-4 text-sky-400 hidden" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
+                                <svg class="theme-icon-dark w-4 h-4 text-sky-400 hidden" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path
+                                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
                                 </svg>
 
-                                <svg id="theme-icon-light" class="w-4 h-4 text-amber-400 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                <svg class="theme-icon-light w-4 h-4 text-amber-400 hidden" fill="currentColor"
+                                    viewBox="0 0 20 20">
                                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                                 </svg>
                             </button>
@@ -81,7 +84,7 @@
                     </div>
 
                     <h1 class="mx-auto mb-8 max-w-4xl text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter text-white drop-shadow-2xl leading-[1.1]">
-                        Your Dedicated <br/>
+                        Your Dedicated <br />
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">Support System</span>
                     </h1>
 
@@ -97,10 +100,10 @@
                         </a>
 
                         @if (auth()->user())
-                            <a href="{{ route('dashboard') }}"
-                                class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest uppercase hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                                <span>Dashboard</span>
-                            </a>
+                        <a href="{{ route('dashboard') }}"
+                            class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest uppercase hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
+                            <span>Dashboard</span>
+                        </a>
                         @endif
 
                         <a href="{{ route('check-status') }}"
@@ -115,18 +118,18 @@
 
         {{-- Admin/support ticket stats --}}
         @if (auth()->user()?->role === 'admin' || auth()->user()?->role === 'support')
-            <section class="py-14">
-                <div class="container mx-auto px-4">
-                    <div class="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
-                        @foreach ([['label' => 'Total Tickets', 'value' => $stats['totalTickets'] ?? 0], ['label' => 'Open Tickets', 'value' => $stats['openTickets'] ?? 0], ['label' => 'In Progress', 'value' => $stats['inProgressTickets'] ?? 0], ['label' => 'Resolved Tickets', 'value' => $stats['resolvedTickets'] ?? 0]] as $stat)
-                            <div class="fauna-panel p-8 dark:bg-[#0f172a] dark:border-[#1e3a5f]">
-                                <h3 class="text-3xl font-semibold">{{ $stat['value'] }}</h3>
-                                <p class="mt-2 text-slate-600 dark:text-slate-400">{{ $stat['label'] }}</p>
-                            </div>
-                        @endforeach
+        <section class="py-14">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
+                    @foreach ([['label' => 'Total Tickets', 'value' => $stats['totalTickets'] ?? 0], ['label' => 'Open Tickets', 'value' => $stats['openTickets'] ?? 0], ['label' => 'In Progress', 'value' => $stats['inProgressTickets'] ?? 0], ['label' => 'Resolved Tickets', 'value' => $stats['resolvedTickets'] ?? 0]] as $stat)
+                    <div class="fauna-panel p-8 dark:bg-[#0f172a] dark:border-[#1e3a5f]">
+                        <h3 class="text-3xl font-semibold">{{ $stat['value'] }}</h3>
+                        <p class="mt-2 text-slate-600 dark:text-slate-400">{{ $stat['label'] }}</p>
                     </div>
+                    @endforeach
                 </div>
-            </section>
+            </div>
+        </section>
         @endif
 
         {{-- How ticketing works — step-by-step guide --}}
@@ -151,21 +154,21 @@
                     <div class="hidden lg:block absolute top-[2.5rem] left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-sky-100 via-sky-200 to-sky-100 dark:from-sky-900/50 dark:via-sky-800/50 dark:to-sky-900/50 z-0"></div>
 
                     @foreach ($ticketingSteps as $index => $item)
-                        <div class="group relative z-10">
-                            {{-- Step card --}}
-                            <div class="h-full p-8 rounded-[2rem] bg-white dark:bg-[#0f172a] border border-sky-100 dark:border-[#1e3a5f] shadow-xl shadow-sky-900/5 dark:shadow-none hover:-translate-y-2 hover:shadow-2xl hover:shadow-sky-900/10 dark:hover:border-sky-400/30 transition-all duration-300">
+                    <div class="group relative z-10">
+                        {{-- Step card --}}
+                        <div class="h-full p-8 rounded-[2rem] bg-white dark:bg-[#0f172a] border border-sky-100 dark:border-[#1e3a5f] shadow-xl shadow-sky-900/5 dark:shadow-none hover:-translate-y-2 hover:shadow-2xl hover:shadow-sky-900/10 dark:hover:border-sky-400/30 transition-all duration-300">
 
-                                {{-- Step number badge --}}
-                                <div class="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/30 flex items-center justify-center text-2xl font-black text-sky-600 dark:text-sky-400 mb-8 group-hover:scale-110 group-hover:bg-sky-100 dark:group-hover:bg-sky-900/40 transition-all duration-300">
-                                    {{ $item['step'] }}
-                                </div>
-
-                                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">{{ $item['title'] }}</h3>
-                                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                                    {{ $item['description'] }}
-                                </p>
+                            {{-- Step number badge --}}
+                            <div class="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800/30 flex items-center justify-center text-2xl font-black text-sky-600 dark:text-sky-400 mb-8 group-hover:scale-110 group-hover:bg-sky-100 dark:group-hover:bg-sky-900/40 transition-all duration-300">
+                                {{ $item['step'] }}
                             </div>
+
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">{{ $item['title'] }}</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                                {{ $item['description'] }}
+                            </p>
                         </div>
+                    </div>
                     @endforeach
                 </div>
 
@@ -173,7 +176,9 @@
                     <a href="{{ route('submit-ticket') }}"
                         class="px-8 py-4 bg-sky-950 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:scale-105 active:scale-95 transition-all shadow-xl shadow-sky-950/20 dark:shadow-sky-400/10 inline-flex items-center gap-3">
                         <span>Create ticket</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
                     </a>
 
                     <a href="{{ route('check-status') }}"
@@ -181,10 +186,10 @@
                         Check status
                     </a>
                     @auth
-                        <a href="{{ route('dashboard') }}"
-                            class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-sky-100 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-sky-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
-                            Dashboard
-                        </a>
+                    <a href="{{ route('dashboard') }}"
+                        class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-sky-100 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-sky-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
+                        Dashboard
+                    </a>
                     @endauth
                 </div>
             </div>
@@ -208,19 +213,20 @@
                 </div>
                 <div class="mx-auto max-w-4xl space-y-4">
                     @if (!empty($faqs) && count($faqs) > 0)
-                        @foreach ($faqs as $item)
-                            <details class="fauna-panel p-6 dark:bg-[#0f172a] dark:border-[#1e3a5f]">
-                                <summary class="cursor-pointer font-medium">{{ $item['question'] ?? $item->question }}
-                                </summary>
-                                <p class="mt-3 text-slate-600 dark:text-slate-400">
-                                    {{ $item['answer'] ?? $item->answer }}</p>
-                            </details>
-                        @endforeach
+                    @foreach ($faqs as $item)
+                    <details class="fauna-panel p-6 dark:bg-[#0f172a] dark:border-[#1e3a5f]">
+                        <summary class="cursor-pointer font-medium">{{ $item['question'] ?? $item->question }}
+                        </summary>
+                        <p class="mt-3 text-slate-600 dark:text-slate-400">
+                            {{ $item['answer'] ?? $item->answer }}
+                        </p>
+                    </details>
+                    @endforeach
                     @else
-                        <div class="text-center p-8 fauna-panel dark:bg-[#0f172a] dark:border-[#1e3a5f]">
-                            <p class="text-slate-600 dark:text-slate-400">No frequently asked questions are available at
-                                this time.</p>
-                        </div>
+                    <div class="text-center p-8 fauna-panel dark:bg-[#0f172a] dark:border-[#1e3a5f]">
+                        <p class="text-slate-600 dark:text-slate-400">No frequently asked questions are available at
+                            this time.</p>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -230,7 +236,7 @@
         <section class="bg-sky-50/50 py-16 dark:bg-[#020617]">
             <div class="container mx-auto px-4">
                 @if (session('success') || session('error') || session('status'))
-                    <x-flash-handler />
+                <x-flash-handler />
                 @endif
 
                 <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-4">
@@ -259,10 +265,8 @@
 
         function updateThemeIcons() {
             const isDark = document.documentElement.classList.contains('dark');
-            const darkIcon = document.getElementById('theme-icon-dark');
-            const lightIcon = document.getElementById('theme-icon-light');
-            if (darkIcon) darkIcon.classList.toggle('hidden', !isDark);
-            if (lightIcon) lightIcon.classList.toggle('hidden', isDark);
+            document.querySelectorAll('.theme-icon-dark').forEach(el => el.classList.toggle('hidden', !isDark));
+            document.querySelectorAll('.theme-icon-light').forEach(el => el.classList.toggle('hidden', isDark));
         }
 
         document.addEventListener('DOMContentLoaded', updateThemeIcons);

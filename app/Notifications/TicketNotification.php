@@ -42,15 +42,15 @@ class TicketNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $content = is_string($this->message) ? $this->message : $this->message->content;
+        $content = is_string($this->message) ? $this->message : (is_object($this->message) && method_exists($this->message, '__toString') ? (string) $this->message : 'Ticket notification');
         $name    = $this->recipientName ?? $notifiable->name ?? 'there';
 
         return (new MailMessage)
             ->subject($this->subject)
             ->view('emails.ticket_notification', [
-                'subject' => $this->subject,
-                'message' => $content,
+                'notificationMessage' => $content,
                 'recipientName' => $name,
+                'subject' => $this->subject,
                 'ticketUrl' => $this->ticketUrl,
             ]);
     }
