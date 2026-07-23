@@ -299,8 +299,8 @@
                                     @if (auth()->user()->role === 'admin')
                                         <a href="{{ route('admin.categories.index') }}" class="dropdown-link">Manage
                                             Categories</a>
-                                        <a href="{{ route('admin.structure.index') }}" class="dropdown-link">Manage
-                                            Faculty/Department</a>
+                                        <a href="{{ route('admin.programmes.index') }}" class="dropdown-link">Manage
+                                            Programmes</a>
                                         <a href="{{ route('admin.faqs.index') }}" class="dropdown-link">Manage FAQs</a>
                                     @endif
                                     <form method="POST" action="{{ route('logout') }}">
@@ -386,9 +386,9 @@
                         <a href="{{ route('admin.categories.index') }}"
                             class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage
                             Categories</a>
-                        <a href="{{ route('admin.structure.index') }}"
+                        <a href="{{ route('admin.programmes.index') }}"
                             class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage
-                            Faculty/Department</a>
+                            Programmes</a>
                         <a href="{{ route('admin.faqs.index') }}"
                             class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage
                             FAQs</a>

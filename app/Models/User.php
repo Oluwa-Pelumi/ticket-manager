@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 /**
  * Authenticated user with role-based access (admin, support, user).
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -31,8 +31,7 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'matric_no',
-        'faculty_id',
-        'department_id',
+        'programme_id',
     ];
 
     /**
@@ -103,16 +102,10 @@ class User extends Authenticatable
         return Ticket::whereJsonContains('attended_to_by', $this->id)->get();
     }
 
-    /** The faculty this user belongs to. */
-    public function faculty()
+    /** The programme this user belongs to. */
+    public function programme()
     {
-        return $this->belongsTo(Faculty::class);
-    }
-
-    /** The department this user belongs to. */
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Programme::class);
     }
 
 }

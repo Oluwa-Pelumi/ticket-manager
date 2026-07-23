@@ -157,12 +157,8 @@
                     <td class="details-value">{{ $user->matric_no }}</td>
                 </tr>
                 <tr class="details-row">
-                    <td class="details-label">Faculty</td>
-                    <td class="details-value">{{ $user->faculty?->name ?: 'N/A' }}</td>
-                </tr>
-                <tr class="details-row">
-                    <td class="details-label">Department</td>
-                    <td class="details-value">{{ $user->department?->name ?: 'N/A' }}</td>
+                    <td class="details-label">Programme</td>
+                    <td class="details-value">{{ $user->programme?->name ?: 'N/A' }}</td>
                 </tr>
             </table>
 

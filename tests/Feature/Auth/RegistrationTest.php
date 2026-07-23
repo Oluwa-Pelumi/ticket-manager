@@ -5,8 +5,7 @@ namespace Tests\Feature\Auth;
 use App\Mail\RegistrationDetailsMail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Faculty;
-use App\Models\Department;
+use App\Models\Programme;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -24,11 +23,9 @@ class RegistrationTest extends TestCase
     {
         Mail::fake();
 
-        $faculty = Faculty::create(['name' => 'Science', 'slug' => 'science']);
-        $department = Department::create([
+        $programme = Programme::create([
             'name' => 'Computer Science',
             'slug' => 'computer-science',
-            'faculty_id' => $faculty->id
         ]);
 
         $response = $this->post('/register', [
@@ -37,8 +34,7 @@ class RegistrationTest extends TestCase
             'last_name' => 'User',
             'email' => 'test@example.com',
             'matric_no' => '123456',
-            'faculty_id' => $faculty->id,
-            'department_id' => $department->id,
+            'programme_id' => $programme->id,
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);

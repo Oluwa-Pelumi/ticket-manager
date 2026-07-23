@@ -26,8 +26,7 @@ return new class extends Migration
             $table->string('matric_no')->nullable()->unique();
             $table->string('phone_number')->nullable()->comment('Valid international phone number (e.g., +2348000000000)');
             
-            $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('faculty_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('programme_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

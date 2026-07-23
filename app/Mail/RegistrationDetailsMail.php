@@ -22,7 +22,7 @@ class RegistrationDetailsMail extends Mailable implements ShouldQueue
      */
     public function __construct(public User $user)
     {
-        $this->user->loadMissing(['faculty', 'department']);
+        $this->user->loadMissing('programme');
     }
 
     /**

@@ -2,15 +2,14 @@
     <x-slot name="title">Email Verification</x-slot>
 
     <div class="text-center mb-8">
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Verify Email</h1>
-        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Almost there! Check your inbox</p>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Verify Your Email</h1>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Please verify your email address to access your dashboard.</p>
     </div>
 
     <div class="mb-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-        Thanks for signing up! Before getting started, could you verify
+        Thanks for signing up! Before accessing your dashboard, please verify
         your email address by clicking on the link we just emailed to
-        you? If you didn't receive the email, we will gladly send you
-        another.
+        you. If you didn't receive the email, click the button below to request another.
     </div>
 
     @if (session('status') === 'verification-link-sent')
@@ -36,7 +35,7 @@
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                     </svg>
                 </template>
-                <span x-text="processing ? 'Re-verifying Identity...' : 'Re-verify Identity'"></span>
+                <span x-text="processing ? 'Sending Email...' : 'Resend Verification Email'"></span>
             </button>
         </div>
 
