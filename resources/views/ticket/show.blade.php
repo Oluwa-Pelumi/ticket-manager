@@ -27,7 +27,7 @@
 @endsection
 
 @section('content-body')
-<div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8">
+<div class="max-w-9xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8">
     <div class="flex items-center justify-between">
         <a href="{{ auth()->guest() ? route('check-status') : route('dashboard') }}" class="inline-flex items-center text-sm font-bold text-slate-600 hover:text-sky-950 dark:hover:text-sky-400 transition-colors">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -62,7 +62,7 @@
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0"
+                                    <svg class="w-6 h-6 text-sky-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -82,7 +82,7 @@
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
+                                    <svg class="w-6 h-6 text-sky-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -102,7 +102,7 @@
                             <div class="space-y-1.5">
                                 <div
                                     class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0"
+                                    <svg class="w-6 h-6 text-sky-600 dark:text-sky-400 shrink-0"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -269,7 +269,7 @@
                                 $isSelf = $comment->user_id === auth()->id();
                             @endphp
                             <div class="flex flex-col {{ $isSelf ? 'items-end' : 'items-start' }}">
-                                <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isSelf ? 'bg-sky-950 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white rounded-bl-sm border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm' }}">
+                                <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isSelf ? 'bg-sky-950 text-white rounded-br-none shadow-xl' : 'bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white rounded-bl-none border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm' }}">
                                     <div class="flex items-center space-x-2 mb-2">
                                         <span class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
                                         @if($comment->user && ($comment->user->role === 'support' || $comment->user->role === 'admin'))

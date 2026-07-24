@@ -175,7 +175,7 @@
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
                         <a :href="'/ticket/' + ticketRef"
-                            class="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-sky-950 text-white font-black text-sm shadow-lg hover:bg-sky-800 transition-all">
+                            class="fauna-btn-primary flex-1 flex items-center justify-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             View Ticket
                         </a>
@@ -496,7 +496,7 @@
                     <button
                         type="submit"
                         x-bind:disabled="processing || {{ empty($categories) ? 'true' : 'false' }}"
-                        class="group w-full py-5 rounded-[2rem] bg-sky-950 text-white font-black text-xl shadow-2xl hover:bg-sky-800 hover:text-white hover:-translate-y-1 active:translate-y-0 active:shadow-none disabled:opacity-50 disabled:hover:translate-y-0 transition-all flex items-center justify-center gap-2"
+                        class="fauna-btn-primary group w-full !py-5 !text-xl disabled:opacity-50 disabled:hover:translate-y-0 flex items-center justify-center gap-2"
                     >
                         <template x-if="processing">
                             <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">

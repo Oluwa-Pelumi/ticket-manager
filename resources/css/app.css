@@ -7,19 +7,28 @@
     --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
     --color-primary: rgb(8 47 73);
     --color-accent: rgb(56 189 248);
+
+    /* Ynew ingido button color system variables */
+    --color-fauna-rose: #e36c8e;
+    --color-fauna-rose-hover: #ca4d71;
+    --color-fauna-rose-disabled: #e7b0be;
 }
 
 @layer base {
-    html, body {
+
+    html,
+    body {
         overflow-x: hidden;
         -webkit-tap-highlight-color: transparent;
         scroll-behavior: smooth;
     }
+
     :root {
         --primary: 8 47 73;
         --accent: 56 189 248;
         --primary-glow: rgba(8, 47, 73, 0.18);
     }
+
     .dark {
         --primary: 15 23 42;
         --accent: 56 189 248;
@@ -32,16 +41,20 @@
         width: 6px;
         height: 6px;
     }
+
     .custom-scrollbar::-webkit-scrollbar-track {
         @apply bg-slate-100/50 dark:bg-[#1e293b]/30 rounded-full;
     }
+
     .custom-scrollbar::-webkit-scrollbar-thumb {
         @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-sky-400 transition-all duration-300;
     }
+
     .custom-scrollbar {
         scrollbar-width: thin;
         scrollbar-color: theme('colors.slate.300') transparent;
     }
+
     .dark .custom-scrollbar {
         scrollbar-color: theme('colors.slate.700') transparent;
     }
@@ -62,8 +75,9 @@
         @apply rounded-3xl border border-sky-950/10 dark:border-[#1e3a5f] bg-white shadow-md dark:bg-[#0f172a];
     }
 
+    /* Cleaned up using the theme tokens */
     .fauna-btn-primary {
-        @apply inline-flex items-center justify-center rounded-full border border-sky-950 bg-sky-950 px-6 py-3 text-sm font-medium text-white transition duration-200 hover:border-sky-500 hover:bg-sky-500 hover:text-sky-950;
+        @apply inline-flex items-center justify-center rounded-full border border-fauna-rose bg-fauna-rose px-6 py-3 text-sm font-medium text-white transition duration-200 hover:border-fauna-rose-hover hover:bg-fauna-rose-hover hover:text-white disabled:pointer-events-none disabled:border-fauna-rose-disabled disabled:bg-fauna-rose-disabled disabled:opacity-70;
     }
 
     .fauna-btn-secondary {

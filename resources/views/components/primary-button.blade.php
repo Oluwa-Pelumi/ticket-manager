@@ -1,4 +1,4 @@
-<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-sky-950 text-white text-xs font-black tracking-widest shadow-lg hover:bg-sky-800 hover:text-white hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed gap-2']) }}>
+<button {{ $attributes->merge(['type' => 'submit', 'class' => 'fauna-btn-primary inline-flex items-center justify-center gap-2']) }}>
     <template x-if="typeof processing !== 'undefined' && processing">
         <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

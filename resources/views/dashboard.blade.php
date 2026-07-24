@@ -1,20 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-4" x-data="{ selectedCount: 0, totalSelected: 0 }"
+        <div class="flex items-center gap-3 sm:gap-4" x-data="{ selectedCount: 0, totalSelected: 0 }"
             @selection-changed.window="selectedCount = $event.detail.filtered; totalSelected = $event.detail.total">
             <div
-                class="w-12 h-12 rounded-2xl bg-sky-950 flex items-center justify-center shadow-lg border border-white/20">
-                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-sky-950 flex items-center justify-center shadow-lg border border-white/20 shrink-0">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
             </div>
-            <div class="flex flex-col">
-                <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Dashboard</h2>
-                <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">Overview & Management</span>
+            <div class="flex flex-col min-w-0">
+                <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight truncate">Dashboard</h2>
+                <span class="text-[9px] sm:text-[10px] font-black tracking-[0.2em] sm:tracking-[0.3em] text-slate-400 truncate">Overview & Management</span>
             </div>
             <div x-show="selectedCount > 0" x-cloak
-                class="ml-auto flex items-center px-4 py-2 text-slate text-[10px] font-bold tracking-widest">
+                class="ml-auto flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-sky-50 dark:bg-[#1e293b] rounded-xl border border-sky-950/10 dark:border-[#1e3a5f] text-slate-700 dark:text-slate-200 text-[10px] font-bold tracking-widest shrink-0">
                 <span class="mr-1" x-text="selectedCount"></span>selected tickets
                 <template x-if="totalSelected > selectedCount">
                     <span class="ml-1 text-slate-400" x-text="'(' + totalSelected + ' total)'"></span>
@@ -74,7 +74,7 @@
 
                 @if (auth()->user()->role === 'user')
                     <a href="{{ route('submit-ticket') }}"
-                        class="w-full md:w-auto text-center px-6 py-3 bg-sky-950 text-white rounded-2xl font-black text-xs tracking-widest shadow-xl hover:bg-sky-800 hover:text-white hover:scale-105 active:scale-95 transition-all">
+                        class="fauna-btn-primary w-full md:w-auto text-center">
                         Submit a New Ticket
                     </a>
                 @endif
@@ -373,7 +373,7 @@
                                                     'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
                                                 }">
                                                 <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="open"      :selected="ticket.status === 'open'">Open</option>
-                                                <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="in-progress" :selected="ticket.status === 'in-progress'">Processing</option>
+                                                <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="in-progress" :selected="ticket.status === 'in-progress'">In Progress</option>
                                                 <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="closed"    :selected="ticket.status === 'closed'">Resolved</option>
                                             </select>
                                         @else
@@ -411,19 +411,17 @@
                                     <td class="hidden lg:table-cell px-4 md:px-6 py-4 text-right">
                                         <div class="flex items-center justify-end space-x-1 md:space-x-2">
 
-                                            {{-- Edit (ticket owner, not closed) --}}
-                                            {{-- @if (auth()->user()->role === 'user')
-                                                <template x-if="authId === ticket.user_id && ticket.status !== 'closed'">
-                                                    <button @click.stop="openEditModal(ticket)"
-                                                        class="p-1.5 md:p-2 rounded-lg bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white transition-all shadow-sm"
-                                                        title="Edit Ticket">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                    </button>
-                                                </template>
-                                            @endif --}}
+                                            {{-- Edit (ticket owner or admin, if no support has replied and not closed) --}}
+                                            <template x-if="(authRole === 'admin' || authId === ticket.user_id) && !ticket.has_support_replied && ticket.status !== 'closed'">
+                                                <button @click.stop="openEditModal(ticket)"
+                                                    class="p-1.5 md:p-2 rounded-lg bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white transition-all shadow-sm"
+                                                    title="Edit Ticket">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                </button>
+                                            </template>
 
                                             {{-- Expand toggle --}}
                                             <button @click.stop="toggleExpand(ticket.id)"
@@ -458,10 +456,10 @@
                                         <td colspan="{{ in_array(auth()->user()->role, ['admin', 'support']) ? 9 : 7 }}"
                                             class="border-l-4 border-sky-400 p-0">
                                             <div class="px-2 sm:px-3 md:px-6 lg:px-8 py-4 md:py-8 overflow-x-hidden w-full">
-                                            <div class="grid grid-cols-1 gap-6 lg:gap-8 min-w-0 w-full">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 min-w-0 w-full items-start">
 
                                                 {{-- Left: specs + attachments --}}
-                                                <div class="space-y-8">
+                                                <div class="space-y-8 min-w-0">
                                                     <div>
                                                         <h4
                                                             class="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center tracking-tight">
@@ -495,7 +493,7 @@
                                                                                 'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
                                                                             }">
                                                                             <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="open" :selected="ticket.status === 'open'">Open</option>
-                                                                            <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="in-progress" :selected="ticket.status === 'in-progress'">Processing</option>
+                                                                            <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="in-progress" :selected="ticket.status === 'in-progress'">In Progress</option>
                                                                             <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="closed" :selected="ticket.status === 'closed'">Resolved</option>
                                                                         </select>
                                                                     @else
@@ -528,6 +526,16 @@
                                                                     <div>
                                                                         <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 mb-2 tracking-[0.3em] uppercase">Actions</div>
                                                                         <div class="flex flex-wrap items-center gap-2">
+                                                                            <template x-if="(authRole === 'admin' || authId === ticket.user_id) && !ticket.has_support_replied && ticket.status !== 'closed'">
+                                                                                <button @click.stop="openEditModal(ticket)"
+                                                                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500/10 text-sky-500 hover:bg-sky-500 hover:text-white transition-all shadow-sm text-xs font-black tracking-widest">
+                                                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                                    </svg>
+                                                                                    Edit Ticket
+                                                                                </button>
+                                                                            </template>
                                                                             <button @click.stop="deleteTicket(ticket.id)"
                                                                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm text-xs font-black tracking-widest">
                                                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -581,7 +589,7 @@
                                                                         <template x-if="ticket.user?.name">
                                                                             <div
                                                                                 class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-start gap-2 min-w-0">
-                                                                                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5"
+                                                                                <svg class="w-6 h-6 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -601,7 +609,7 @@
                                                                         <template x-if="ticket.user?.email">
                                                                             <div
                                                                                 class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-start gap-2 min-w-0">
-                                                                                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5"
+                                                                                <svg class="w-6 h-6 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -621,7 +629,7 @@
                                                                         <template x-if="ticket.user?.phone_number">
                                                                             <div
                                                                                 class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-start gap-2 min-w-0">
-                                                                                <svg class="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5"
+                                                                                <svg class="w-6 h-6 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5"
                                                                                     fill="none"
                                                                                     stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
@@ -846,11 +854,11 @@
 
                                                             <template x-for="(comment, ci) in [...(ticket.comments || [])].sort((a, b) => new Date(a.created_at) - new Date(b.created_at))" :key="ci">
                                                                 <div class="flex flex-col min-w-0 max-w-full w-full"
-                                                                    :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')) ? 'items-end' : 'items-start'">
+                                                                    :class="(comment.user_id === authId) ? 'items-end' : 'items-start'">
                                                                     <div class="max-w-full w-full sm:max-w-[85%] p-4 sm:p-5 min-w-0"
-                                                                        :class="(comment.user && (comment.user.role === 'support' || comment.user.role === 'admin'))
-                                                                            ? 'bg-sky-950 text-white shadow-xl rounded-2xl sm:rounded-[2rem] rounded-br-none sm:rounded-br-md'
-                                                                            : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] rounded-bl-none sm:rounded-bl-md'">
+                                                                        :class="(comment.user_id === authId)
+                                                                            ? 'bg-sky-950 text-white shadow-xl rounded-2xl sm:rounded-[2rem] !rounded-br-none'
+                                                                            : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] !rounded-bl-none'">
                                                                         <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2 min-w-0">
                                                                             <span class="text-[9px] font-black tracking-widest opacity-80 break-words" x-text="comment.user?.name"></span>
                                                                             <template x-if="comment.user && (comment.user.role === 'support' || comment.user.role === 'admin')">
@@ -975,7 +983,7 @@
         </div>
 
         {{-- ── Edit modal ─────────────────────────────────────────────────── --}}
-        {{-- <div x-show="editingTicket !== null" x-cloak
+        <div x-show="editingTicket !== null" x-cloak
             class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm"
             @keydown.escape.window="closeEditModal()">
             <div class="relative w-full max-w-2xl bg-white dark:bg-[#0f172a] rounded-3xl shadow-2xl border border-sky-950/10 dark:border-[#1e3a5f] p-8"
@@ -995,8 +1003,7 @@
                     enctype="multipart/form-data">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Subject /
-                                Category</label>
+                            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Category</label>
                             <select x-model="editData.category_id"
                                 class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none transition-all">
                                 <option value="" disabled>Select Category</option>
@@ -1025,26 +1032,67 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Attachments</label>
-                            <label for="edit-attachments"
+                            <label for="edit-modal-file-input"
                                 class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-sky-950 dark:hover:text-sky-400 cursor-pointer transition-all border border-sky-950/10 dark:border-[#1e3a5f]">
                                 Add attachments
                             </label>
-                            <input type="file" id="edit-attachments" class="hidden" multiple accept="image/*,txt,test/plain,xls,xlsx,.pdf,.doc,.docx,application/vnd.ms-excel,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetxml.sheet"
+                            <input type="file" id="edit-modal-file-input" class="hidden" multiple accept="image/*,.txt,text/plain,.xls,.xlsx,.pdf,.doc,.docx,application/vnd.ms-excel,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetxml.sheet"
                                 @change="handleEditAttachments($event)" />
                         </div>
-                        <template x-if="editPreviewUrls.length > 0">
+                        <template x-if="editExistingAttachments.length > 0 || editNewPreviews.length > 0">
                             <div
                                 class="flex flex-wrap gap-4 p-4 rounded-2xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f]">
-                                <template x-for="(url, i) in editPreviewUrls" :key="i">
+                                {{-- Existing server attachments --}}
+                                <template x-for="(img, i) in editExistingAttachments" :key="'existing-' + i">
                                     <div class="relative group/ep">
-                                        <img :src="url"
-                                            class="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
-                                        <button type="button" @click="removeEditAttachment(i)"
-                                            class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover/ep:opacity-100 transition-opacity shadow-lg">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12" />
+                                        <template x-if="isImage(img)">
+                                            <a :href="'/storage/' + img" target="_blank" class="block">
+                                                <img :src="'/storage/' + img"
+                                                    class="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm hover:scale-105 transition-transform" />
+                                            </a>
+                                        </template>
+                                        <template x-if="!isImage(img)">
+                                            <a :href="'/storage/' + img" target="_blank"
+                                                class="w-20 h-20 rounded-xl border-2 border-white dark:border-[#1e3a5f] shadow-sm bg-slate-100 dark:bg-[#1e293b] flex flex-col items-center justify-center gap-1 p-1 hover:scale-105 transition-transform">
+                                                <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                                <span class="text-[8px] font-bold text-slate-500 text-center w-full truncate" x-text="fileExt(img)"></span>
+                                            </a>
+                                        </template>
+                                        <button type="button" @click="removeExistingAttachment(i)"
+                                            class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover/ep:opacity-100 transition-opacity shadow-lg"
+                                            title="Remove attachment">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </template>
+
+                                {{-- Newly added file attachments --}}
+                                <template x-for="(file, i) in editNewPreviews" :key="'new-' + i">
+                                    <div class="relative group/ep">
+                                        <template x-if="file.isImage">
+                                            <a :href="file.url" target="_blank" class="block">
+                                                <img :src="file.url"
+                                                    class="w-20 h-20 rounded-xl object-cover border-2 border-emerald-400 dark:border-emerald-500 shadow-sm hover:scale-105 transition-transform" />
+                                            </a>
+                                        </template>
+                                        <template x-if="!file.isImage">
+                                            <a :href="file.url" target="_blank"
+                                                class="w-20 h-20 rounded-xl border-2 border-emerald-400 dark:border-emerald-500 shadow-sm bg-slate-100 dark:bg-[#1e293b] flex flex-col items-center justify-center gap-1 p-1 hover:scale-105 transition-transform">
+                                                <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                                <span class="text-[8px] font-bold text-slate-500 text-center w-full truncate" x-text="file.name.split('.').pop().toUpperCase()"></span>
+                                            </a>
+                                        </template>
+                                        <button type="button" @click="removeNewAttachment(i)"
+                                            class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover/ep:opacity-100 transition-opacity shadow-lg"
+                                            title="Remove attachment">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
                                     </div>
@@ -1072,7 +1120,7 @@
                     </div>
                 </form>
             </div>
-        </div> --}}
+        </div>
     </div>
 
 
@@ -1084,7 +1132,7 @@
                 delete: (id) => `/tickets/${id}`,
                 bulkDelete: () => `/tickets/bulk-delete`,
                 bulkStatus: () => `/tickets/bulk-status`,
-                // editTicket: (id) => `/tickets/${id}`,
+                editTicket: (id) => `/update-ticket/${id}`,
                 addComment: (id) => `/tickets/${id}/comments`,
             };
 
@@ -1092,6 +1140,7 @@
                 return {
                     allTickets: @json($tickets),
                     authId: {{ auth()->id() ?? 'null' }},
+                    authRole: '{{ auth()->user()->role ?? "user" }}',
                     filters: {
                         status: '',
                         priority: '',
@@ -1134,6 +1183,38 @@
                                 total: this.selectedIds.length
                             });
                         }, { deep: true });
+
+                        // ── Status polling ───────────────────────────────────────────
+                        // Poll every 30 s so status badges stay in sync when another
+                        // user (e.g. admin/support) changes a ticket in another session.
+                        const pollStatuses = async () => {
+                            try {
+                                const r = await fetch('/tickets/statuses', {
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    }
+                                });
+                                if (!r.ok) return;
+                                const statuses = await r.json(); // [{id, status}, ...]
+                                let changed = false;
+                                const updated = this.allTickets.map(t => {
+                                    const fresh = statuses.find(s => s.id === t.id);
+                                    if (fresh && fresh.status !== t.status) {
+                                        changed = true;
+                                        return { ...t, status: fresh.status };
+                                    }
+                                    return t;
+                                });
+                                if (changed) this.allTickets = updated;
+                            } catch (_) { /* silent — network error */ }
+                        };
+
+                        // Start polling after a short delay so initial page render completes
+                        setTimeout(() => {
+                            pollStatuses();
+                            setInterval(pollStatuses, 30000);
+                        }, 5000);
                     },
 
                     // ── Computed ──────────────────────────────────────────────────
@@ -1333,12 +1414,19 @@
                         window.showToast(`Ticket status updated to ${statusLabel}`, 'success');
                     },
 
-                    handleNewComment({ ticketId, comment }) {
-                        const ticket = this.allTickets.find(t => t.id === ticketId);
-                        if (ticket) {
-                            if (!ticket.comments) ticket.comments = [];
-                            ticket.comments.push(comment);
-                        }
+                    handleNewComment({ ticketId, comment, ticketStatus }) {
+                        // Replace the matching ticket with a new object so Alpine detects the change
+                        this.allTickets = this.allTickets.map(t => {
+                            if (t.id !== ticketId) return t;
+                            const updated = {
+                                ...t,
+                                comments: [...(t.comments || []), comment]
+                            };
+                            if (ticketStatus) {
+                                updated.status = ticketStatus;
+                            }
+                            return updated;
+                        });
                     },
 
                     async deleteTicket(id) {
@@ -1396,6 +1484,17 @@
                     },
 
                     // Edit modal
+                    editingTicket: null,
+                    editData: {
+                        category_id: '',
+                        priority: 'medium',
+                        content: ''
+                    },
+                    editExistingAttachments: [],
+                    editFiles: [],
+                    editNewPreviews: [],
+                    editSubmitting: false,
+
                     openEditModal(ticket) {
                         this.editingTicket = ticket;
                         this.editData = {
@@ -1403,39 +1502,87 @@
                             priority: ticket.priority,
                             content: ticket.content
                         };
-                        this.editPreviewUrls = (ticket.attachments || []).map(img => '/storage/' + img);
+                        this.editExistingAttachments = [...(ticket.attachments || [])];
                         this.editFiles = [];
+                        this.editNewPreviews = [];
                     },
                     closeEditModal() {
                         this.editingTicket = null;
-                        this.editPreviewUrls = [];
+                        (this.editNewPreviews || []).forEach(p => p.url && URL.revokeObjectURL(p.url));
+                        this.editExistingAttachments = [];
                         this.editFiles = [];
+                        this.editNewPreviews = [];
                     },
                     handleEditAttachments(e) {
-                        this.editFiles = Array.from(e.target.files);
-                        this.editPreviewUrls = this.editFiles.map(f => URL.createObjectURL(f));
+                        const newFiles = Array.from(e.target.files);
+                        if (!newFiles.length) return;
+
+                        this.editFiles = [...this.editFiles, ...newFiles];
+                        this.editNewPreviews = [
+                            ...this.editNewPreviews,
+                            ...newFiles.map(f => ({
+                                url: URL.createObjectURL(f),
+                                name: f.name,
+                                isImage: f.type.startsWith('image/')
+                            }))
+                        ];
+                        e.target.value = '';
                     },
-                    removeEditAttachment(i) {
+                    removeExistingAttachment(i) {
+                        this.editExistingAttachments.splice(i, 1);
+                    },
+                    removeNewAttachment(i) {
+                        if (this.editNewPreviews[i]?.url) {
+                            URL.revokeObjectURL(this.editNewPreviews[i].url);
+                        }
                         this.editFiles.splice(i, 1);
-                        this.editPreviewUrls.splice(i, 1);
+                        this.editNewPreviews.splice(i, 1);
                     },
                     async submitEdit() {
                         this.editSubmitting = true;
-                        const form = new FormData();
-                        form.append('_token', document.querySelector('meta[name=csrf-token]').content);
-                        form.append('_method', 'PATCH');
-                        form.append('category_id', this.editData.category_id);
-                        form.append('priority', this.editData.priority);
-                        form.append('content', this.editData.content);
-                        this.editFiles.forEach(f => form.append('attachments[]', f));
-                        await fetch(ROUTES.editTicket(this.editingTicket.id), {
-                            method: 'POST',
-                            body: form,
-                            redirect: 'manual'
-                        });
-                        this.editSubmitting = false;
-                        this.closeEditModal();
-                        window.location.reload();
+                        try {
+                            const form = new FormData();
+                            form.append('_token', document.querySelector('meta[name=csrf-token]').content);
+                            form.append('_method', 'PATCH');
+                            if (this.editData.category_id) {
+                                form.append('category_id', this.editData.category_id);
+                            }
+                            form.append('priority', this.editData.priority);
+                            form.append('content', this.editData.content);
+
+                            // Send retained existing attachments
+                            this.editExistingAttachments.forEach(path => form.append('existing_attachments[]', path));
+
+                            // Send new files
+                            this.editFiles.forEach(f => form.append('attachments[]', f));
+
+                            const r = await fetch(ROUTES.editTicket(this.editingTicket.id), {
+                                method: 'POST',
+                                body: form,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            if (r.ok) {
+                                const data = await r.json();
+                                if (data.success && data.ticket) {
+                                    // Update local state reactively
+                                    this.allTickets = this.allTickets.map(t => t.id === this.editingTicket.id ? { ...t, ...data.ticket } : t);
+                                    window.showToast('Ticket updated successfully.');
+                                }
+                                this.closeEditModal();
+                            } else {
+                                const data = await r.json().catch(() => ({}));
+                                window.showToast(data.error || 'Failed to update ticket.', 'error');
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            window.showToast('An error occurred. Please try again.', 'error');
+                        } finally {
+                            this.editSubmitting = false;
+                        }
                     },
 
                     // Confirm helper — integrates with your existing confirm modal
@@ -1512,9 +1659,13 @@
                             if (r.ok) {
                                 const data = await r.json();
                                 if (data.success && data.comment) {
-                                    window.dispatchEvent(new CustomEvent('comment-added', {
-                                        detail: { ticketId: ticketId, comment: data.comment }
-                                    }));
+                                    // Use Alpine's $dispatch so the event bubbles through
+                                    // the component tree and reaches @comment-added.window
+                                    this.$dispatch('comment-added', {
+                                        ticketId: ticketId,
+                                        comment: data.comment,
+                                        ticketStatus: data.ticketStatus ?? null
+                                    });
                                 }
                                 this.content = '';
                                 this.files = [];

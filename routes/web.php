@@ -75,6 +75,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('tickets.destroy');
     Route::post('/tickets/{ticket}/comments', [TicketController::class, 'addComment'])
         ->name('tickets.add-comment');
+
+    // Lightweight polling endpoint — returns [{id, status}] for the user's visible tickets
+    Route::get('/tickets/statuses', [TicketController::class, 'ticketStatuses'])
+        ->name('tickets.statuses');
 });
 
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])

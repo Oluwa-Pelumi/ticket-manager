@@ -134,8 +134,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 9999px;
-            border: 1px solid #1e3a8a;
-            background-color: #1e3a8a;
+            border: 1px solid #e36c8e;
+            background-color: #e36c8e;
             padding: 0.75rem 1.5rem;
             font-size: 0.875rem;
             font-weight: 500;
@@ -145,9 +145,17 @@
         }
 
         .fauna-btn-primary:hover {
-            border-color: #3b82f6;
-            background-color: #3b82f6;
-            color: #1e3a8a;
+            border-color: #ca4d71;
+            background-color: #ca4d71;
+            color: #ffffff; 
+        }
+
+        .fauna-btn-primary:disabled,
+        .fauna-btn-primary[disabled] {
+            pointer-events: none;
+            border-color: #e7b0be;
+            background-color: #e7b0be;
+            opacity: 0.7;
         }
 
         .fauna-btn-secondary {
@@ -245,19 +253,19 @@
         <nav class="relative z-50 border-b border-sky-950/10 bg-white shadow-md dark:border-[#1e3a5f] dark:bg-[#0f172a]"
             x-data="{ showingMobileMenu: false }">
             <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
-                <div class="flex h-20 justify-between items-center">
-                    <div class="flex items-center gap-8">
-                        <a href="/" class="flex items-center gap-3 group">
+                <div class="flex h-16 md:h-20 justify-between items-center">
+                    <div class="flex items-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-w-0">
+                        <a href="/" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
                             <img src="{{ asset('logo.svg') }}?v=2" alt="{{ config('app.name') }} logo"
-                                class="w-12 h-12">
+                                class="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 transition-transform group-hover:scale-105">
                             <span
-                                class="hidden sm:block text-xl font-black tracking-tight text-slate-900 dark:text-white">
+                                class="hidden md:block text-lg lg:text-xl font-black tracking-tight text-slate-900 dark:text-white">
                                 {{ config('app.name') }}<span class="text-sky-400">.</span>
                             </span>
                         </a>
 
                         <div
-                            class="hidden sm:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#0f172a]/70 rounded-2xl border border-sky-950/10 dark:border-[#1e3a5f] backdrop-blur-md">
+                            class="hidden md:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#0f172a]/70 rounded-2xl border border-sky-950/10 dark:border-[#1e3a5f] backdrop-blur-md">
                             <a href="{{ route('home') }}"
                                 class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Home</a>
                             @auth
@@ -274,27 +282,27 @@
                             @auth
                                 @if (auth()->user()->role === 'admin')
                                     <a href="{{ route('admin.users') }}"
-                                        class="nav-link {{ request()->routeIs('admin.users') ? 'nav-link-active' : '' }}">Users
-                                        Management</a>
+                                        class="nav-link {{ request()->routeIs('admin.users') ? 'nav-link-active' : '' }}">Users<span class="hidden lg:inline ml-1">Management</span></a>
                                 @endif
                             @endauth
                         </div>
                     </div>
 
-                    <div class="hidden sm:flex sm:items-center gap-4">
+                    <div class="hidden md:flex md:items-center gap-3 lg:gap-4 shrink-0">
                         @auth
                             <div class="relative" x-data="{ open: false }">
                                 <button @click="open = !open" type="button"
-                                    class="flex items-center gap-3 p-1.5 pr-4 rounded-2xl glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all">
+                                    class="flex items-center gap-2.5 p-1.5 pr-3 md:pr-4 rounded-2xl glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all">
                                     <div
-                                        class="w-8 h-8 rounded-full bg-gradient-to-br from-sky-950 to-sky-800 flex items-center justify-center text-white text-[10px] font-black shadow-lg">
+                                        class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-sky-950 to-sky-800 flex items-center justify-center text-white text-[10px] font-black shadow-lg shrink-0">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     </div>
                                     <span
-                                        class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[120px]">{{ auth()->user()->name }}</span>
+                                        class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[80px] lg:max-w-[140px]">{{ auth()->user()->name }}</span>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                                 </button>
                                 <div x-show="open" @click.outside="open = false" x-cloak
-                                    class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/80 dark:bg-[#0f172a]/90 backdrop-blur-xl border border-sky-950/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
+                                    class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-sky-950/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
                                     <a href="{{ route('profile.edit') }}" class="dropdown-link">Profile Settings</a>
                                     @if (auth()->user()->role === 'admin')
                                         <a href="{{ route('admin.categories.index') }}" class="dropdown-link">Manage
@@ -318,7 +326,7 @@
                             </div>
                         @endauth
 
-                        <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all" aria-label="Toggle Theme">
+                        <button onclick="toggleTheme()" class="inline-flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all" aria-label="Toggle Theme">
                             <svg class="theme-icon-dark w-4 h-4 text-sky-400 hidden" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path
@@ -333,8 +341,8 @@
                     </div>
 
                     {{-- Mobile menu button --}}
-                    <div class="flex sm:hidden items-center gap-2">
-                        <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all" aria-label="Toggle Theme">
+                    <div class="flex md:hidden items-center gap-2">
+                        <button onclick="toggleTheme()" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full glass-card border border-sky-950/10 dark:border-[#1e3a5f]/50 hover:border-sky-400/50 transition-all" aria-label="Toggle Theme">
                             <svg class="theme-icon-dark w-4 h-4 text-sky-400 hidden" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path
@@ -364,7 +372,7 @@
 
             {{-- Mobile Dropdown Menu --}}
             <div x-show="showingMobileMenu" x-cloak
-                class="sm:hidden border-t border-sky-950/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] px-4 py-4 space-y-3">
+                class="md:hidden border-t border-sky-950/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] px-4 py-4 space-y-3 shadow-2xl">
                 <a href="{{ route('home') }}"
                     class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('home') ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400' : '' }}">Home</a>
                 @auth
@@ -399,11 +407,11 @@
                     <form method="POST" action="{{ route('logout') }}" class="block">
                         @csrf
                         <button type="submit"
-                            class="w-full text-left block px-3 py-2 rounded-xl text-sm font-bold text-rose-500">Sign
+                            class="w-full text-left px-3 py-2 rounded-xl text-sm font-bold text-rose-500 hover:bg-rose-500/10">Sign
                             Out</button>
                     </form>
                 @else
-                    <div class="pt-4 border-t border-sky-950/10 dark:border-[#1e3a5f] flex gap-2">
+                    <div class="pt-2 border-t border-sky-950/10 dark:border-[#1e3a5f] flex gap-2">
                         <a href="{{ route('login') }}"
                             class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200">Login</a>
                         <a href="{{ route('register') }}"
@@ -416,9 +424,9 @@
 
     {{-- ── Page header slot (used by views that set <x-slot name="header">) ── --}}
     @if (isset($header))
-        <header class="relative z-10 py-3 md:py-10">
+        <header class="relative z-10 py-3 sm:py-4 md:py-8">
             <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
-                <div class="fauna-panel relative overflow-hidden p-4 sm:p-6 md:p-10">
+                <div class="fauna-panel relative overflow-hidden p-4 sm:p-6 md:p-8">
                     <div
                         class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40">
                     </div>

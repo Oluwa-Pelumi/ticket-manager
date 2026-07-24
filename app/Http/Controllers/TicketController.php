@@ -115,59 +115,88 @@ class TicketController extends Controller
     }
 
     /**
-     * Update ticket details and optionally append new attachments.
+     * Update ticket details (only allowed if no support has replied yet and ticket is open/in-progress).
      */
-    // public function update(Request $request, Ticket $ticket)
-    // {
-    //     // --- Authorization and status checks ---
-    //     if ($ticket->user_id !== Auth::id()) {
-    //         return back()->with('error', 'Unauthorized action.');
-    //     }
+    public function update(Request $request, Ticket $ticket)
+    {
+        $user = Auth::user();
+        $isOwner = $user && ($user->id === $ticket->user_id);
+        $isAdmin = $user && $user->isAdmin();
 
-    //     if ($ticket->status === 'closed') {
-    //         return back()->with('error', 'Closed tickets cannot be edited.');
-    //     }
+        if (!$isOwner && !$isAdmin) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => 'Unauthorized action.'], 403);
+            }
+            return back()->with('error', 'Unauthorized action.');
+        }
 
-    //     $validated = $request->validate([
-                //     'attachments.*' => [
-                //     'nullable',
-                //     'file',
-                //     'max:10240', // 10MB, adjust as needed
-                //     'mimes:jpg,jpeg,png,gif,webp,pdf,doc,docx',
-                // ],
-    //         'content'                => 'required|string',
-    //         'subject'                => 'required|string|max:255',
-    //         'category_id'            => 'nullable|exists:categories,id',
-    //         'priority'               => 'required|string|in:low,medium,high',
-    //     ]);
+        if ($ticket->status === 'closed') {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => 'Closed tickets cannot be edited.'], 422);
+            }
+            return back()->with('error', 'Closed tickets cannot be edited.');
+        }
 
-    //     $updateData = [
-    //         'subject'                => $validated['subject'],
-    //         'content'                => $validated['content'],
-    //         'priority'               => $validated['priority'],
-    //         'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
-    //     ];
+        if ($ticket->has_support_replied) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => 'Ticket cannot be edited once support has responded.'], 422);
+            }
+            return back()->with('error', 'Ticket cannot be edited once support has responded.');
+        }
 
-    //     // --- Merge new attachment uploads with existing paths ---
-    //     if ($request->hasFile('attachments')) {
-    //         $user       = Auth::user();
-    //         $username   = Str::slug($user->name, '_');
-    //         $folder     = $username . '-' . $user->id;
-    //         $attachmentPaths = $ticket->attachments ?? [];
+        $validated = $request->validate([
+            'attachments.*' => [
+                'nullable',
+                'file',
+                'max:5120',
+                'extensions:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt',
+            ],
+            'content'     => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'priority'    => 'required|string|in:low,medium,high',
+        ]);
 
-    //         foreach ($request->file('attachments') as $index => $file) {
-    //             $extension    = $file->getClientOriginalExtension();
-    //             $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
-    //             $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
-    //             $attachmentPaths[] = $filepath;
-    //         }
-    //         $updateData['attachments'] = $attachmentPaths;
-    //     }
+        $updateData = [
+            'content'     => $validated['content'],
+            'priority'    => $validated['priority'],
+        ];
 
-    //     $ticket->update($updateData);
+        if ($request->has('category_id') && !empty($validated['category_id'])) {
+            $updateData['category_id'] = $validated['category_id'];
+        }
 
-    //     return back()->with('success', 'Ticket updated successfully.');
-    // }
+        $attachmentPaths = $request->has('existing_attachments')
+            ? (array) $request->input('existing_attachments')
+            : [];
+
+        if ($request->hasFile('attachments')) {
+            $username  = Str::slug($user->name, '_');
+            $folder    = $username . '-' . $user->id;
+
+            foreach ($request->file('attachments') as $index => $file) {
+                $extension         = $file->getClientOriginalExtension();
+                $filename          = $ticket->id . '_' . time() . '_' . $index . '.' . $extension;
+                $filepath          = $file->storeAs('tickets/' . $folder, $filename, 'public');
+                $attachmentPaths[] = $filepath;
+            }
+        }
+
+        $updateData['attachments'] = array_values($attachmentPaths);
+
+        $ticket->update($updateData);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            $ticket->refresh();
+            $ticket->load(['category', 'user', 'comments.user']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Ticket updated successfully.',
+                'ticket'  => $ticket
+            ]);
+        }
+
+        return back()->with('success', 'Ticket updated successfully.');
+    }
 
     /**
      * Update a single ticket's status and optionally reassign support staff.
@@ -413,8 +442,10 @@ class TicketController extends Controller
 
         if ($request->ajax() || $request->wantsJson()) {
             $comment->load('user');
+            $ticket->refresh();
             return response()->json([
-                'success' => true,
+                'success'       => true,
+                'ticketStatus'  => $ticket->status,
                 'comment' => [
                     'id'          => $comment->id,
                     'content'     => $comment->content,
@@ -430,6 +461,23 @@ class TicketController extends Controller
         }
 
         return back()->with('success', 'Comment added successfully.');
+    }
+
+    /**
+     * Polling endpoint — returns minimal [{id, status}] data for the visible tickets.
+     * Called by the dashboard every 30 s to keep status badges in sync across sessions.
+     */
+    public function ticketStatuses()
+    {
+        $user = Auth::user();
+
+        $tickets = $user->role === 'admin'
+            ? Ticket::select('id', 'status')->latest()->get()
+            : ($user->role === 'support'
+                ? Ticket::select('id', 'status')->whereJsonContains('attended_to_by', $user->id)->latest()->get()
+                : Ticket::select('id', 'status')->where('user_id', $user->id)->latest()->get());
+
+        return response()->json($tickets);
     }
 
     /** Search for a ticket by its public hashid reference. */

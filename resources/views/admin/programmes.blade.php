@@ -47,7 +47,7 @@
 
                         <div class="flex flex-col gap-3">
                             <button type="submit" x-bind:disabled="processing"
-                                class="w-full py-4 rounded-xl bg-sky-950 text-white font-black text-sm tracking-widest shadow-lg hover:bg-sky-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                                class="fauna-btn-primary w-full !py-4 disabled:opacity-50 flex items-center justify-center gap-2">
                                 <template x-if="processing">
                                     <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

@@ -60,7 +60,7 @@
                     <button
                         type="submit"
                         x-bind:disabled="processing"
-                        class="px-8 py-4 rounded-2xl bg-sky-950 text-white font-black text-xs tracking-widest shadow-xl hover:bg-sky-800 hover:text-white hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 transition-all whitespace-nowrap flex items-center justify-center gap-2"
+                        class="fauna-btn-primary disabled:opacity-50 whitespace-nowrap flex items-center justify-center gap-2"
                     >
                         <template x-if="processing">
                             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

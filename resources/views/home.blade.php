@@ -94,7 +94,7 @@ $ticketingSteps = [
 
                     <div class="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
                         <a href="{{ route('submit-ticket') }}"
-                            class="group relative px-8 py-4 bg-sky-500 text-white rounded-full font-black text-sm tracking-widest uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(14,165,233,0.3)] hover:shadow-[0_0_40px_rgba(14,165,233,0.5)] overflow-hidden w-full sm:w-auto">
+                            class="fauna-btn-primary group relative overflow-hidden w-full sm:w-auto">
                             <div class="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
                             <span class="relative z-10">Create Ticket</span>
                         </a>
@@ -174,7 +174,7 @@ $ticketingSteps = [
 
                 <div class="flex flex-wrap items-center justify-center gap-4 pt-8">
                     <a href="{{ route('submit-ticket') }}"
-                        class="px-8 py-4 bg-sky-950 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:scale-105 active:scale-95 transition-all shadow-xl shadow-sky-950/20 dark:shadow-sky-400/10 inline-flex items-center gap-3">
+                        class="fauna-btn-primary inline-flex items-center gap-3">
                         <span>Create ticket</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />

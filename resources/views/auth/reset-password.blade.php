@@ -34,7 +34,7 @@
     </div>
 
     <div class="pt-4">
-        <button type="submit" x-bind:disabled="processing" class="w-full py-4 rounded-2xl bg-sky-950 text-white font-black text-lg shadow-xl hover:bg-sky-800 hover:text-white transition-all tracking-widest disabled:opacity-50 flex items-center justify-center gap-2">
+        <button type="submit" x-bind:disabled="processing" class="fauna-btn-primary w-full !py-4 text-lg disabled:opacity-50 flex items-center justify-center gap-2">
             <template x-if="processing">
                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

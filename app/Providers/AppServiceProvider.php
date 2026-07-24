@@ -6,10 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Notifications\ChannelManager;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Notifications\Events\NotificationFailed;
-use App\Listeners\MarkEmailAsInvalid;
 
 /**
  * Core application service provider for gates, Vite, and custom notification channels.
@@ -21,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Event::listen(NotificationFailed::class, MarkEmailAsInvalid::class);
     }
 
     /**

@@ -11,7 +11,7 @@
             </div>
             <div class="flex justify-end shrink-0">
                 <button x-data @click="$dispatch('open-faq-modal', { faq: null })"
-                    class="inline-flex items-center gap-3 px-6 py-3 bg-sky-950 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-sky-950/20 dark:shadow-sky-400/10">
+                    class="fauna-btn-primary inline-flex items-center gap-3">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -220,7 +220,7 @@
                         Cancel
                     </button>
                     <button type="submit" x-bind:disabled="processing"
-                        class="flex-[2] py-5 px-8 bg-sky-950 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-sky-950/20 dark:shadow-sky-400/10 text-sm disabled:opacity-50 flex items-center justify-center gap-2">
+                        class="fauna-btn-primary flex-[2] !py-5 !px-8 disabled:opacity-50 flex items-center justify-center gap-2">
                         <template x-if="processing">
                             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
@@ -276,7 +276,7 @@
                         Cancel
                     </button>
                     <button type="submit" x-bind:disabled="processing"
-                        class="flex-[2] py-5 px-8 bg-sky-950 dark:bg-sky-400 text-white dark:text-[#0f172a] rounded-[2rem] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-sky-950/20 dark:shadow-sky-400/10 text-sm disabled:opacity-50 flex items-center justify-center gap-2">
+                        class="fauna-btn-primary flex-[2] !py-5 !px-8 disabled:opacity-50 flex items-center justify-center gap-2">
                         <template x-if="processing">
                             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

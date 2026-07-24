@@ -19,13 +19,10 @@ return new class extends Migration
             $table->string('role')->default('user');
 
             $table->string('email')->unique();
-            $table->boolean('email_invalid')->default(false);   
-            $table->text('email_invalid_reason')->nullable();
-
 
             $table->string('matric_no')->nullable()->unique();
             $table->string('phone_number')->nullable()->comment('Valid international phone number (e.g., +2348000000000)');
-            
+
             $table->foreignId('programme_id')->nullable()->constrained()->nullOnDelete();
 
             $table->timestamp('email_verified_at')->nullable();
