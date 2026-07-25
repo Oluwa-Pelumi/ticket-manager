@@ -14,7 +14,7 @@
     <div class="space-y-2">
         <label for="first_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">First Name</label>
         <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" required autofocus autocomplete="first_name"
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="John">
         @error('first_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -22,7 +22,7 @@
     <div class="space-y-2">
         <label for="middle_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Middle Name</label>
         <input id="middle_name" type="text" name="middle_name" value="{{ old('middle_name') }}" required autofocus autocomplete="middle_name"
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="James">
         @error('middle_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -30,7 +30,7 @@
     <div class="space-y-2">
         <label for="last_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Last Name</label>
         <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" required autofocus autocomplete="last_name"
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="Doe">
         @error('last_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -38,7 +38,7 @@
     <div class="space-y-2">
         <label for="email" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Email Address</label>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username"
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="john@example.com">
         @error('email')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -46,7 +46,7 @@
     <div class="space-y-2">
         <label for="email" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Matriculation Number</label>
         <input id="matric_no" type="number" name="matric_no" value="{{ old('matric_no') }}" required autocomplete="username"
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="192250">
         @error('matric_no')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -55,7 +55,7 @@
     <div class="space-y-2">
         <label for="programme_id" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Programme</label>
         <select id="programme_id" name="programme_id" required
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none">
+                        class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white">
             <option value="" disabled {{ old('programme_id') ? '' : 'selected' }}>Select your programme…</option>
             @foreach ($programmes as $programme)
                 <option value="{{ $programme->id }}" {{ old('programme_id') == $programme->id ? 'selected' : '' }}>
@@ -67,23 +67,23 @@
     </div>
 
     <div class="space-y-2">
-        <label for="password" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Password</label>
+        <label for="password" class="block text-sm font-black tracking-widest italic text-slate-700 dark:text-slate-300">Password</label>
         <input id="password" type="password" name="password" required autocomplete="new-password"
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="••••••••">
         @error('password')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
     <div class="space-y-2">
-        <label for="password_confirmation" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Confirm Password</label>
+        <label for="password_confirmation" class="block text-sm font-black tracking-widest italic text-slate-700 dark:text-slate-300">Confirm Password</label>
         <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
-            class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
             placeholder="••••••••">
         @error('password_confirmation')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
     <div class="pt-4">
-        <button type="submit" x-bind:disabled="processing" class="fauna-btn-primary w-full !py-4 text-lg disabled:opacity-50 flex items-center justify-center gap-2">
+        <button type="submit" x-bind:disabled="processing" class="fauna-btn-primary w-full py-4! text-lg disabled:opacity-50 flex items-center justify-center gap-2">
             <template x-if="processing">
                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

@@ -272,11 +272,11 @@
 
                 <div class="flex gap-4 pt-4">
                     <button type="button" @click="close()"
-                        class="flex-1 py-5 px-8 rounded-[2rem] bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
+                        class="flex-1 py-5 px-8 rounded-4xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest hover:bg-slate-200 transition-all text-sm">
                         Cancel
                     </button>
                     <button type="submit" x-bind:disabled="processing"
-                        class="fauna-btn-primary flex-[2] !py-5 !px-8 disabled:opacity-50 flex items-center justify-center gap-2">
+                        class="fauna-btn-primary flex-2 py-5! px-8! disabled:opacity-50 flex items-center justify-center gap-2">
                         <template x-if="processing">
                             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

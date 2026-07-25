@@ -23,7 +23,7 @@
                 class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300 pl-4">Email</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
                 autocomplete="username"
-                class="w-full rounded-full border-[color:var(--color-fauna-rose)]/20 px-4 py-3 shadow focus:border-[color:var(--color-fauna-rose)] focus:ring-[color:var(--color-fauna-rose)] dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
                 placeholder="your@email.com">
             @error('email')
                 <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
@@ -40,7 +40,7 @@
                 @endif
             </div>
             <input id="password" type="password" name="password" required autocomplete="current-password"
-                class="w-full rounded-full border-[color:var(--color-fauna-rose)]/20 px-4 py-3 shadow focus:border-[color:var(--color-fauna-rose)] focus:ring-[color:var(--color-fauna-rose)] dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
                 placeholder="••••••••">
             @error('password')
                 <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
@@ -50,7 +50,7 @@
         <label for="remember" class="flex items-center px-1 cursor-pointer select-none group" x-data="{ checked: false }">
             <input id="remember" type="checkbox" name="remember" class="hidden" x-model="checked">
             <span class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-                :class="checked ? 'bg-[color:var(--color-fauna-rose)] border-[color:var(--color-fauna-rose)]' :
+                :class="checked ? 'bg-fauna-rose border-fauna-rose' :
                     'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'">
                 <svg x-show="checked" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
@@ -64,7 +64,7 @@
 
         <div class="pt-2">
             <button type="submit" x-bind:disabled="processing"
-                class="fauna-btn-primary w-full !py-3.5 text-lg disabled:opacity-50 flex items-center justify-center gap-2">
+                class="fauna-btn-primary w-full py-3.5! text-lg disabled:opacity-50 flex items-center justify-center gap-2">
                 <template x-if="processing">
                     <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"

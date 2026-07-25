@@ -43,7 +43,7 @@
                     window.addEventListener('open-delete-modal', this._openHandler);
                     window.addEventListener('close',             this._closeHandler);
                 },
-                
+
                 destroy() {
                     window.removeEventListener('open-delete-modal', this._openHandler);
                     window.removeEventListener('close',             this._closeHandler);

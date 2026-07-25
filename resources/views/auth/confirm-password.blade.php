@@ -22,7 +22,7 @@
                 id="password"
                 type="password"
                 name="password"
-                class="w-full px-4 py-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none"
+                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white transition-all"
                 autofocus
                 placeholder="••••••••"
             />
@@ -42,7 +42,7 @@
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                     </svg>
                 </template>
-                <span x-text="processing ? 'Validating Identity...' : 'Validate Identity'"></span>
+                <span x-text="processing ? 'Confirming Password...' : 'Confirm Password'"></span>
             </button>
         </div>
     </form>
