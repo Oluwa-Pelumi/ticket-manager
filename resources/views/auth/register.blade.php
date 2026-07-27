@@ -97,7 +97,7 @@
     <div class="text-center pt-4">
         <p class="text-sm text-slate-600 dark:text-slate-400">
             Already have an account?
-            <a href="{{ route('login') }}" class="font-bold text-sky-950 dark:text-sky-400 hover:underline">Sign In</a>
+            <a href="{{ route('login') }}" class="font-bold text-rose-950 dark:text-rose-400 hover:underline">Sign In</a>
         </p>
     </div>
 </form>

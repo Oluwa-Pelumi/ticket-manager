@@ -11,13 +11,13 @@
             @keydown.ctrl.enter.prevent="submit()"
             rows="3"
             placeholder="Write a comment… (Ctrl+Enter to send)"
-            class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:ring-2 focus:ring-sky-400 focus:border-transparent outline-none transition-all resize-none shadow-sm"
+            class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:ring-2 focus:ring-rose-400 focus:border-transparent outline-none transition-all resize-none shadow-sm"
         ></textarea>
     </div>
 
     {{-- Attachment previews --}}
     <template x-if="previews.length > 0">
-        <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-sky-50/50 dark:bg-[#1e293b]/50 border border-sky-950/10 dark:border-[#1e3a5f]">
+        <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-rose-50/50 dark:bg-[#1e293b]/50 border border-rose-950/10 dark:border-[#1e3a5f]">
             <template x-for="(file, i) in previews" :key="i">
                 <div class="relative group/prev">
                     <template x-if="file.isImage">
@@ -49,7 +49,7 @@
     <div class="flex flex-wrap items-center justify-between gap-3">
 
         {{-- Attach attachments --}}
-        <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-500 dark:text-slate-400 hover:text-sky-950 dark:hover:text-sky-400 cursor-pointer transition-all text-xs font-bold">
+        <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-500 dark:text-slate-400 hover:text-rose-950 dark:hover:text-rose-400 cursor-pointer transition-all text-xs font-bold">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
             </svg>
@@ -64,7 +64,7 @@
             type="button"
             @click="submit()"
             x-bind:disabled="submitting || !content.trim()"
-            class="flex items-center gap-2 px-5 py-2 rounded-xl bg-sky-950 text-white text-xs font-black tracking-widest shadow-md hover:bg-sky-800 hover:text-white active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-sky-950 disabled:hover:text-white disabled:active:scale-100"
+            class="flex items-center gap-2 px-5 py-2 rounded-xl bg-rose-950 text-white text-xs font-black tracking-widest shadow-md hover:bg-rose-800 hover:text-white active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-rose-950 disabled:hover:text-white disabled:active:scale-100"
         >
             <template x-if="!submitting">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

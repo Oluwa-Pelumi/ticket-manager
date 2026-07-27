@@ -10,9 +10,9 @@
 
             {{-- Page header --}}
             <div class="fauna-panel mb-6 sm:mb-10 p-4 sm:p-6 md:p-10 relative overflow-hidden text-left mt-6">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-400 to-transparent opacity-40"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-40"></div>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-sky-950 flex items-center justify-center shadow-lg border border-white/20">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-950 flex items-center justify-center shadow-lg border border-white/20">
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
@@ -48,7 +48,7 @@
                             type="text"
                             name="reference"
                             value="{{ old('reference', $searchedReference ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-sky-400 transition-all outline-none font-mono"
+                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none font-mono"
                             placeholder="Enter your ticket reference..."
                             required
                             maxlength="8"
@@ -78,7 +78,7 @@
                 <div>
                     <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">
                         Ticket status for:
-                        <span class="font-mono text-sky-950 dark:text-sky-400">{{ $searchedReference }}</span>
+                        <span class="font-mono text-rose-950 dark:text-rose-400">{{ $searchedReference }}</span>
                     </h2>
 
                     @if ($tickets->count() > 0)
@@ -86,21 +86,21 @@
                             @foreach ($tickets as $ticket)
                                 @php
                                     $statusClass = match($ticket->status) {
-                                        'open'        => 'bg-sky-100 text-sky-600 dark:bg-sky-950/30 dark:text-sky-400 ring-4 ring-sky-500/10',
+                                        'open'        => 'bg-rose-100 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400 ring-4 ring-rose-500/10',
                                         'in-progress' => 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 ring-4 ring-orange-500/10',
                                         default       => 'bg-slate-100 text-slate-600 dark:bg-[#1e293b] dark:text-slate-400',
                                     };
                                 @endphp
                                 <a
                                     href="{{ route('ticket.show', $ticket->hashid) }}"
-                                    class="block p-8 bg-white dark:bg-[#0f172a] rounded-[2.5rem] border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm hover:shadow-2xl hover:shadow-sky-400/10 hover:border-sky-950/50 transition-all group"
+                                    class="block p-8 bg-white dark:bg-[#0f172a] rounded-[2.5rem] border border-rose-950/10 dark:border-[#1e3a5f] shadow-sm hover:shadow-2xl hover:shadow-rose-400/10 hover:border-rose-950/50 transition-all group"
                                 >
                                     <div class="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">
                                         <div>
-                                            <div class="text-[10px] font-black text-sky-950 dark:text-sky-400 tracking-[0.2em] mb-1 font-mono uppercase">
+                                            <div class="text-[10px] font-black text-rose-950 dark:text-rose-400 tracking-[0.2em] mb-1 font-mono uppercase">
                                                 #{{ $ticket->hashid }}
                                             </div>
-                                            <h3 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white group-hover:text-sky-950 dark:group-hover:text-sky-400 transition-colors line-clamp-1">
+                                            <h3 class="text-lg md:text-xl font-bold text-slate-900 dark:text-white group-hover:text-rose-950 dark:group-hover:text-rose-400 transition-colors line-clamp-1">
                                                 {{ $ticket->category?->name ?? str_replace('_', ' ', $ticket->subject) }}
                                             </h3>
                                         </div>
@@ -120,7 +120,7 @@
                                                 Date: <span class="text-slate-900 dark:text-white">{{ $ticket->created_at->toFormattedDateString() }}</span>
                                             </span>
                                         </div>
-                                        <div class="flex items-center text-sky-950 dark:text-sky-400 font-black tracking-widest group-hover:translate-x-1 transition-transform self-end sm:self-auto">
+                                        <div class="flex items-center text-rose-950 dark:text-rose-400 font-black tracking-widest group-hover:translate-x-1 transition-transform self-end sm:self-auto">
                                             Open Ticket
                                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
@@ -131,7 +131,7 @@
                             @endforeach
                         </div>
                     @else
-                        <div class="p-12 text-center bg-white dark:bg-[#0f172a] rounded-3xl border border-sky-950/10 dark:border-[#1e3a5f]">
+                        <div class="p-12 text-center bg-white dark:bg-[#0f172a] rounded-3xl border border-rose-950/10 dark:border-[#1e3a5f]">
                             <svg class="w-16 h-16 mx-auto text-slate-300 dark:text-slate-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>

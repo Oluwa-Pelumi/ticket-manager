@@ -10,7 +10,7 @@
 
     @if (session('status'))
         <div
-            class="mb-6 text-sm font-bold text-sky-500 bg-sky-500/10 p-4 rounded-2xl border border-sky-500/20 backdrop-blur-md">
+            class="mb-6 text-sm font-bold text-rose-500 bg-rose-500/10 p-4 rounded-2xl border border-rose-500/20 backdrop-blur-md">
             {{ session('status') }}
         </div>
     @endif
@@ -36,7 +36,7 @@
                     class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300 pl-3">Password</label>
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}"
-                        class="text-sm font-medium underline hover:text-sky-500 transition-colors">Forgot password?</a>
+                        class="text-sm font-medium underline hover:text-rose-500 transition-colors">Forgot password?</a>
                 @endif
             </div>
             <input id="password" type="password" name="password" required autocomplete="current-password"
@@ -81,7 +81,7 @@
             <p class="text-sm text-slate-600 dark:text-slate-400">
                 Don't have an account?
                 <a href="{{ route('register') }}"
-                    class="font-bold text-sky-950 dark:text-sky-400 hover:underline">Register</a>
+                    class="font-bold text-rose-950 dark:text-rose-400 hover:underline">Register</a>
             </p>
         </div>
     </form>

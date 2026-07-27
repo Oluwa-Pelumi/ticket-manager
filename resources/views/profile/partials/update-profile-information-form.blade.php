@@ -94,14 +94,14 @@
                     Your email address is unverified.
                     <form method="POST" action="{{ route('verification.send') }}" class="inline">
                         @csrf
-                        <button type="submit" class="font-semibold underline hover:text-sky-950 dark:hover:text-sky-400 transition-colors focus:outline-none">
+                        <button type="submit" class="font-semibold underline hover:text-rose-950 dark:hover:text-rose-400 transition-colors focus:outline-none">
                             Click here to re-send the verification email.
                         </button>
                     </form>
                 </p>
 
                 @if (session('status') === 'verification-link-sent')
-                    <div class="mt-2 text-sm font-medium text-sky-600 dark:text-sky-400">
+                    <div class="mt-2 text-sm font-medium text-rose-600 dark:text-rose-400">
                         A new verification link has been sent to your email address.
                     </div>
                 @endif
@@ -119,7 +119,7 @@
                 x-transition:enter-start="opacity-0 translate-y-1"
                 x-transition:leave="transition ease-in-out duration-300"
                 x-transition:leave-end="opacity-0"
-                class="flex items-center gap-1.5 text-sm font-semibold text-sky-600 dark:text-sky-400"
+                class="flex items-center gap-1.5 text-sm font-semibold text-rose-600 dark:text-rose-400"
             >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />

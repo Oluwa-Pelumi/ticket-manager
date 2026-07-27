@@ -99,7 +99,7 @@
                                 id="del-password"
                                 type="password"
                                 name="password"
-                                class="mt-1 block w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border border-sky-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-500 transition-all outline-none"
+                                class="mt-1 block w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-500 transition-all outline-none"
                                 placeholder="Enter your password to confirm"
                                 x-ref="password"
                             />
@@ -112,7 +112,7 @@
                             <button
                                 type="button"
                                 @click="open = false; processing = false"
-                                class="inline-flex items-center justify-center rounded-2xl border border-sky-950/20 dark:border-[#1e3a5f] px-5 py-2.5 text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-[#1e293b]"
+                                class="inline-flex items-center justify-center rounded-2xl border border-rose-950/20 dark:border-[#1e3a5f] px-5 py-2.5 text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-[#1e293b]"
                             >
                                 Cancel
                             </button>

@@ -5,8 +5,8 @@
 
 @theme {
     --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
-    --color-primary: rgb(8 47 73);
-    --color-accent: rgb(56 189 248);
+    --color-primary: #e36c8e;
+    --color-accent: #e36c8e;
 
     /* Ynew ingido button color system variables */
     --color-fauna-rose: #e36c8e;
@@ -24,15 +24,15 @@
     }
 
     :root {
-        --primary: 8 47 73;
-        --accent: 56 189 248;
-        --primary-glow: rgba(8, 47, 73, 0.18);
+        --primary: 227 108 142;
+        --accent: 227 108 142;
+        --primary-glow: rgba(227, 108, 142, 0.18);
     }
 
     .dark {
         --primary: 15 23 42;
-        --accent: 56 189 248;
-        --primary-glow: rgba(8, 47, 73, 0.28);
+        --accent: 227 108 142;
+        --primary-glow: rgba(227, 108, 142, 0.28);
     }
 }
 
@@ -47,7 +47,7 @@
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb {
-        @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-sky-400 transition-all duration-300;
+        @apply bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-rose-400 transition-all duration-300;
     }
 
     .custom-scrollbar {

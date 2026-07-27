@@ -14,7 +14,7 @@
     </div>
 
     @if (session('status'))
-        <div class="mb-6 text-sm font-medium text-sky-500 bg-sky-500/10 p-3 rounded-xl border border-sky-500/20">
+        <div class="mb-6 text-sm font-medium text-rose-500 bg-rose-500/10 p-3 rounded-xl border border-rose-500/20">
             {{ session('status') }}
         </div>
     @endif
@@ -48,7 +48,7 @@
 
         <div class="text-center pt-4">
             <a href="{{ route('login') }}"
-                class="text-sm font-black tracking-widest text-slate-600 hover:text-sky-950 dark:hover:text-sky-400 transition-colors">
+                class="text-sm font-black tracking-widest text-slate-600 hover:text-rose-950 dark:hover:text-rose-400 transition-colors">
                 Return to Access
             </a>
         </div>

@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <h2 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight italic uppercase">
-                    FAQ <span class="text-sky-950 dark:text-sky-400">Management</span>
+                    FAQ <span class="text-rose-950 dark:text-rose-400">Management</span>
                 </h2>
                 <p class="mt-2 text-slate-600 dark:text-slate-400 font-medium tracking-wide">
                     Configure and maintain frequently asked questions for the platform.
@@ -31,14 +31,14 @@
             {{-- FAQ list --}}
             <div class="grid grid-cols-1 gap-6">
                 @forelse ($faqs as $faq)
-                    <div class="fauna-panel p-8 group hover:border-sky-400/30 transition-all duration-500">
+                    <div class="fauna-panel p-8 group hover:border-rose-400/30 transition-all duration-500">
                         <div class="flex justify-between items-start gap-6">
 
                             {{-- Content --}}
                             <div class="flex-1">
                                 <div class="flex items-center gap-4 mb-3">
                                     <span
-                                        class="px-3 py-1 rounded-full bg-sky-950/10 dark:bg-sky-400/10 text-sky-950 dark:text-sky-400 text-[10px] font-black uppercase tracking-widest border border-sky-950/20 dark:border-sky-400/20">
+                                        class="px-3 py-1 rounded-full bg-rose-950/10 dark:bg-rose-400/10 text-rose-950 dark:text-rose-400 text-[10px] font-black uppercase tracking-widest border border-rose-950/20 dark:border-rose-400/20">
                                         Order: {{ $faq->order ?? 0 }}
                                     </span>
                                 </div>
@@ -63,7 +63,7 @@
                                         order:    {{ $faq->order ?? 0 }}
                                     }
                                 })"
-                                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-sky-950 dark:hover:text-sky-400 transition-all border border-transparent hover:border-sky-950/20"
+                                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-rose-950 dark:hover:text-rose-400 transition-all border border-transparent hover:border-rose-950/20"
                                     title="Edit FAQ">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -160,14 +160,14 @@
         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @keydown.escape.window="close()">
-        <div class="w-full max-w-2xl fauna-panel p-6 sm:p-10 bg-white/95 dark:bg-[#0f172a]/95 border-sky-400/20 overflow-y-auto max-h-[90vh]"
+        <div class="w-full max-w-2xl fauna-panel p-6 sm:p-10 bg-white/95 dark:bg-[#0f172a]/95 border-rose-400/20 overflow-y-auto max-h-[90vh]"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100" @click.stop>
             {{-- Modal header --}}
             <div class="flex justify-between items-center mb-10">
                 <h3 class="text-3xl font-black text-slate-900 dark:text-white italic uppercase tracking-tighter">
                     <span x-text="faq ? 'Edit' : 'Create'"></span>
-                    <span class="text-sky-950 dark:text-sky-400">FAQ</span>
+                    <span class="text-rose-950 dark:text-rose-400">FAQ</span>
                 </h3>
                 <button @click="close()"
                     class="p-3 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-500 hover:text-rose-500 transition-colors">
@@ -184,9 +184,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-sky-950 dark:text-sky-400 uppercase tracking-[0.3em] block">Question</label>
+                        class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Question</label>
                     <input type="text" name="question" x-model="question"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-sky-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-sky-400 transition-all font-bold dark:text-white"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-bold dark:text-white"
                         placeholder="Enter the question..." />
                     @error('question')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -196,9 +196,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-sky-950 dark:text-sky-400 uppercase tracking-[0.3em] block">Answer</label>
+                        class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Answer</label>
                     <textarea name="answer" x-model="answer"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-sky-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-sky-400 transition-all font-medium dark:text-white min-h-[150px]"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-medium dark:text-white min-h-[150px]"
                         placeholder="Enter the answer..."></textarea>
                     @error('answer')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -208,10 +208,10 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-sky-950 dark:text-sky-400 uppercase tracking-[0.3em] block">Display
+                        class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Display
                         Order</label>
                     <input type="number" name="order" x-model="order"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-sky-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-sky-400 transition-all font-black dark:text-white" />
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-black dark:text-white" />
                 </div>
 
                 <div class="flex gap-4 pt-4">
@@ -240,9 +240,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-sky-950 dark:text-sky-400 uppercase tracking-[0.3em] block">Question</label>
+                        class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Question</label>
                     <input type="text" name="question" x-model="question"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-sky-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-sky-400 transition-all font-bold dark:text-white"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-bold dark:text-white"
                         placeholder="Enter the question..." />
                     @error('question')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -252,9 +252,9 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-sky-950 dark:text-sky-400 uppercase tracking-[0.3em] block">Answer</label>
+                        class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Answer</label>
                     <textarea name="answer" x-model="answer"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-sky-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-sky-400 transition-all font-medium dark:text-white min-h-[150px]"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-medium dark:text-white min-h-[150px]"
                         placeholder="Enter the answer..."></textarea>
                     @error('answer')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -264,10 +264,10 @@
 
                 <div class="space-y-3">
                     <label
-                        class="text-[10px] font-black text-sky-950 dark:text-sky-400 uppercase tracking-[0.3em] block">Display
+                        class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Display
                         Order</label>
                     <input type="number" name="order" x-model="order"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-sky-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-sky-400 transition-all font-black dark:text-white" />
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-black dark:text-white" />
                 </div>
 
                 <div class="flex gap-4 pt-4">
