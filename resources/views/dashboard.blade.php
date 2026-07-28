@@ -96,7 +96,7 @@
 
             <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-3 w-full sm:w-auto">
                 <select x-model="filters.status" @change="currentPage = 1"
-                    class="bg-white dark:bg-[#0f172a] border border-rose-950/10 dark:border-[#1e3a5f] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-rose-400 outline-none transition-all cursor-pointer">
+                    class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e3a5f] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-slate-400 outline-none transition-all cursor-pointer">
                     <option value="">All Statuses</option>
                     <option value="open">Open</option>
                     <option value="in-progress">In-Progress</option>
@@ -104,7 +104,7 @@
                 </select>
 
                 <select x-model="filters.priority" @change="currentPage = 1"
-                    class="bg-white dark:bg-[#0f172a] border border-rose-950/10 dark:border-[#1e3a5f] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-rose-400 outline-none transition-all cursor-pointer">
+                    class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e3a5f] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-slate-400 outline-none transition-all cursor-pointer">
                     <option value="">All Priorities</option>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -123,7 +123,7 @@
                 </div>
                 <input type="text" x-model.debounce.300ms="filters.search" @input="currentPage = 1"
                     placeholder="Search by ID, subject, or user..."
-                    class="block w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-rose-400 focus:border-transparent transition-all shadow-sm" />
+                    class="block w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-all shadow-sm" />
             </div>
 
             <button x-show="filters.status || filters.priority || filters.search" @click="clearFilters()"
@@ -1003,7 +1003,7 @@
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Category</label>
                             <select x-model="editData.category_id"
-                                class="w-full px-4 py-3 rounded-xl bg-rose-50/50 dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 outline-none transition-all">
+                                class="w-full px-4 py-3 rounded-xl bg-rose-50/50 dark:bg-[#1e293b] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-400 outline-none transition-all">
                                 <option value="" disabled>Select Category</option>
                                 @foreach ($categories as $cat)
                                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -1013,7 +1013,7 @@
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Priority</label>
                             <select x-model="editData.priority"
-                                class="w-full pl-4 pr-10 py-3 rounded-xl bg-rose-50/50 dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 outline-none transition-all">
+                                class="w-full pl-4 pr-10 py-3 rounded-xl bg-rose-50/50 dark:bg-[#1e293b] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-400 outline-none transition-all">
                                 <option value="low">⬇️ Low</option>
                                 <option value="medium">⚡ Medium</option>
                                 <option value="high">🚩 High</option>
@@ -1024,7 +1024,7 @@
                     <div class="space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Content</label>
                         <textarea x-model="editData.content" rows="4"
-                            class="w-full px-4 py-3 rounded-xl bg-rose-50/50 dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 outline-none transition-all resize-none"></textarea>
+                            class="w-full px-4 py-3 rounded-xl bg-rose-50/50 dark:bg-[#1e293b] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-400 outline-none transition-all resize-none"></textarea>
                     </div>
 
                     <div class="space-y-4">

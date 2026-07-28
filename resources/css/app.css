@@ -71,6 +71,14 @@
         @apply antialiased bg-sky-50 text-slate-900 dark:bg-[#020617] dark:text-slate-100;
     }
 
+    .hero-gradient {
+        background: linear-gradient(135deg, #4c0519 0%, #881337 40%, #500724 70%, #2d0a1e 100%);
+    }
+
+    .dark .hero-gradient {
+        background: #020617;
+    }
+
     .fauna-panel {
         @apply rounded-3xl border border-sky-950/10 dark:border-[#1e3a5f] bg-white shadow-md dark:bg-[#0f172a];
     }

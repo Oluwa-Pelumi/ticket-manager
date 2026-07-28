@@ -35,13 +35,13 @@ $ticketingSteps = [
 
     <div class="fauna-shell min-h-screen">
         {{-- Hero section — navigation and primary CTAs --}}
-        <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #4c0519 0%, #881337 40%, #500724 70%, #2d0a1e 100%);">
+        <section class="relative overflow-hidden hero-gradient">
             {{-- Gorgeous blurred background elements --}}
             <div class="absolute inset-0 z-0">
-                <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-rose-300/20 blur-[120px]"></div>
-                <div class="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-pink-400/15 blur-[120px]"></div>
-                <div class="absolute -bottom-[20%] left-[20%] w-[60%] h-[40%] rounded-full bg-rose-200/15 blur-[120px]"></div>
-                <div class="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
+                <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-rose-300/20 dark:bg-rose-900/10 blur-[120px]"></div>
+                <div class="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-pink-400/15 dark:bg-rose-900/10 blur-[120px]"></div>
+                <div class="absolute -bottom-[20%] left-[20%] w-[60%] h-[40%] rounded-full bg-rose-200/15 dark:bg-rose-900/10 blur-[120px]"></div>
+                <div class="absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-[1px]"></div>
             </div>
 
             <div class="container mx-auto px-4 relative z-10">

@@ -50,6 +50,14 @@
             color: rgb(241 245 249);
         }
 
+        .hero-gradient {
+            background: linear-gradient(135deg, #4c0519 0%, #881337 40%, #500724 70%, #2d0a1e 100%);
+        }
+
+        .dark .hero-gradient {
+            background: #020617;
+        }
+
         .fauna-panel {
             border-radius: 1.5rem;
             border: 1px solid rgba(8, 47, 73, 0.1);

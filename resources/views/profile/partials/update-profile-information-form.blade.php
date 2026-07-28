@@ -31,14 +31,12 @@
         </div>
 
         <div>
-            <x-input-label for="middle_name" value="Middle Name" />
+            <x-input-label for="middle_name" value="Middle Name (Optional)" />
             <x-text-input
                 id="middle_name"
                 name="middle_name"
                 class="mt-1 block w-full"
                 value="{{ old('middle_name', $user->middle_name) }}"
-                required
-                autofocus
                 autocomplete="middle_name"
             />
             <x-input-error class="mt-2" :messages="$errors->get('middle_name')" />

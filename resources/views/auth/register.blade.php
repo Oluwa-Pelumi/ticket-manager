@@ -14,23 +14,23 @@
     <div class="space-y-2">
         <label for="first_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">First Name</label>
         <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" required autofocus autocomplete="first_name"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('first_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
             placeholder="John">
         @error('first_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
     <div class="space-y-2">
-        <label for="middle_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Middle Name</label>
-        <input id="middle_name" type="text" name="middle_name" value="{{ old('middle_name') }}" required autofocus autocomplete="middle_name"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
-            placeholder="James">
+        <label for="middle_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Middle Name (Optional)</label>
+        <input id="middle_name" type="text" name="middle_name" value="{{ old('middle_name') }}" autocomplete="middle_name"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('middle_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+            placeholder="James (optional)">
         @error('middle_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
 
     <div class="space-y-2">
         <label for="last_name" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Last Name</label>
         <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" required autofocus autocomplete="last_name"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('last_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
             placeholder="Doe">
         @error('last_name')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -38,7 +38,7 @@
     <div class="space-y-2">
         <label for="email" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Email Address</label>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('email') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
             placeholder="john@example.com">
         @error('email')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -46,7 +46,7 @@
     <div class="space-y-2">
         <label for="email" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Matriculation Number</label>
         <input id="matric_no" type="number" name="matric_no" value="{{ old('matric_no') }}" required autocomplete="username"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('matric_no') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
             placeholder="192250">
         @error('matric_no')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -55,7 +55,7 @@
     <div class="space-y-2">
         <label for="programme_id" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Programme</label>
         <select id="programme_id" name="programme_id" required
-                        class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white">
+                        class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('programme_id') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror">
             <option value="" disabled {{ old('programme_id') ? '' : 'selected' }}>Select your programme…</option>
             @foreach ($programmes as $programme)
                 <option value="{{ $programme->id }}" {{ old('programme_id') == $programme->id ? 'selected' : '' }}>
@@ -69,7 +69,7 @@
     <div class="space-y-2">
         <label for="password" class="block text-sm font-black tracking-widest italic text-slate-700 dark:text-slate-300">Password</label>
         <input id="password" type="password" name="password" required autocomplete="new-password"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
             placeholder="••••••••">
         @error('password')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>
@@ -77,7 +77,7 @@
     <div class="space-y-2">
         <label for="password_confirmation" class="block text-sm font-black tracking-widest italic text-slate-700 dark:text-slate-300">Confirm Password</label>
         <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password_confirmation') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
             placeholder="••••••••">
         @error('password_confirmation')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
     </div>

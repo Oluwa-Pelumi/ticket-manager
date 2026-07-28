@@ -46,4 +46,27 @@ class RegistrationTest extends TestCase
             return $mail->user->email === 'test@example.com';
         });
     }
+
+    public function test_new_users_can_register_without_middle_name(): void
+    {
+        Mail::fake();
+
+        $programme = Programme::create([
+            'name' => 'Software Engineering',
+            'slug' => 'software-engineering',
+        ]);
+
+        $response = $this->post('/register', [
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => 'nomiddle@example.com',
+            'matric_no' => '654321',
+            'programme_id' => $programme->id,
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('dashboard', absolute: false));
+    }
 }

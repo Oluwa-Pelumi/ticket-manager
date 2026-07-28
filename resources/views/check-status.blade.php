@@ -48,7 +48,7 @@
                             type="text"
                             name="reference"
                             value="{{ old('reference', $searchedReference ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none font-mono"
+                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-mono @error('reference') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                             placeholder="Enter your ticket reference..."
                             required
                             maxlength="8"

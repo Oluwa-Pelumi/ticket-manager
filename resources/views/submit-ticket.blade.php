@@ -202,7 +202,7 @@
                                 name="first_name"
                                 type="text"
                                 value="{{ old('first_name', $user->first_name ?? '') }}"
-                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('first_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="First name"
                                 disabled
                             />
@@ -221,7 +221,7 @@
                                 name="middle_name"
                                 type="text"
                                 value="{{ old('middle_name', $user->middle_name ?? '') }}"
-                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('middle_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="Middle name"
                                 disabled
                             />
@@ -240,7 +240,7 @@
                                 name="last_name"
                                 type="text"
                                 value="{{ old('last_name', $user->last_name ?? '') }}"
-                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('last_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="Last name"
                                 disabled
                             />
@@ -260,7 +260,7 @@
                             name="email"
                             type="email"
                             value="{{ old('email', $user->email ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a]"
+                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('email') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                             placeholder="email@example.com"
                             disabled
                         />
@@ -274,8 +274,8 @@
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="phone">
                             Phone Contact
                         </label>
-                        <div class="flex rounded-2xl overflow-hidden border border-rose-950/10 dark:border-[#1e3a5f] shadow-sm @if($user->phone_number) opacity-50 bg-slate-100 dark:bg-[#0f172a] pointer-events-none @else bg-white dark:bg-[#1e293b] @endif transition-all">
-                            <span class="flex items-center px-4 @if($user->phone_number) bg-slate-100/50 dark:bg-[#0f172a]/50 @else bg-slate-50 dark:bg-[#1e293b]/50 @endif text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-rose-950/10 dark:border-[#1e3a5f] select-none shrink-0">
+                        <div class="flex rounded-2xl overflow-hidden border shadow-sm @if($user->phone_number) opacity-50 bg-slate-100 dark:bg-[#0f172a] pointer-events-none @else bg-white dark:bg-[#1e293b] @endif transition-all @error('phone_number') border-rose-500 dark:border-rose-500 @else border-slate-200 dark:border-[#1e3a5f] @enderror">
+                            <span class="flex items-center px-4 @if($user->phone_number) bg-slate-100/50 dark:bg-[#0f172a]/50 @else bg-slate-50 dark:bg-[#1e293b]/50 @endif text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-slate-200 dark:border-[#1e3a5f] select-none shrink-0">
                                 +234
                             </span>
                             <input
@@ -330,7 +330,7 @@
                                         'active' => 'bg-red-50 dark:bg-red-900/20 border-red-400 text-red-600 dark:text-red-400',
                                     ],
                                 ];
-                                $inactiveClasses = 'bg-white dark:bg-[#1e293b] border-rose-950/10 dark:border-[#1e3a5f] text-slate-400';
+                                $inactiveClasses = 'bg-white dark:bg-[#1e293b] border-slate-200 dark:border-[#1e3a5f] text-slate-400';
                             @endphp
                             @foreach($priorityOptions as $opt)
                                 <button
@@ -367,7 +367,7 @@
                             const opt = $event.target.selectedOptions[0];
                             category_id = opt.dataset.categoryId || '';
                         "
-                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none font-bold shadow-sm"
+                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-bold shadow-sm @error('subject') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         required
                     >
                         <option value="" disabled>
@@ -411,7 +411,7 @@
                         id="content"
                         name="content"
                         rows="6"
-                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 transition-all outline-none resize-none font-medium shadow-sm"
+                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none resize-none font-medium shadow-sm @error('content') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         placeholder="Describe the problem or inquiry with as much detail as possible..."
                         required
                     >{{ old('content') }}</textarea>

@@ -63,7 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Attribute::get(
             fn() =>
-            trim("{$this->first_name} {$this->middle_name} {$this->last_name}")
+            trim(preg_replace('/\s+/', ' ', "{$this->first_name} {$this->middle_name} {$this->last_name}"))
         );
     }
 

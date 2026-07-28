@@ -186,7 +186,7 @@
                     <label
                         class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Question</label>
                     <input type="text" name="question" x-model="question"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-bold dark:text-white"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border transition-all font-bold dark:text-white focus:ring-2 @error('question') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         placeholder="Enter the question..." />
                     @error('question')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -198,7 +198,7 @@
                     <label
                         class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Answer</label>
                     <textarea name="answer" x-model="answer"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-medium dark:text-white min-h-[150px]"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border transition-all font-medium dark:text-white min-h-[150px] focus:ring-2 @error('answer') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         placeholder="Enter the answer..."></textarea>
                     @error('answer')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -211,7 +211,7 @@
                         class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Display
                         Order</label>
                     <input type="number" name="order" x-model="order"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-black dark:text-white" />
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e3a5f] focus:ring-2 focus:ring-slate-400 transition-all font-black dark:text-white" />
                 </div>
 
                 <div class="flex gap-4 pt-4">
@@ -242,7 +242,7 @@
                     <label
                         class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Question</label>
                     <input type="text" name="question" x-model="question"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-bold dark:text-white"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border transition-all font-bold dark:text-white focus:ring-2 @error('question') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         placeholder="Enter the question..." />
                     @error('question')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -254,7 +254,7 @@
                     <label
                         class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Answer</label>
                     <textarea name="answer" x-model="answer"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-medium dark:text-white min-h-[150px]"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border transition-all font-medium dark:text-white min-h-[150px] focus:ring-2 @error('answer') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         placeholder="Enter the answer..."></textarea>
                     @error('answer')
                         <p class="text-rose-500 text-[10px] font-black uppercase mt-2 tracking-widest">{{ $message }}
@@ -267,7 +267,7 @@
                         class="text-[10px] font-black text-rose-950 dark:text-rose-400 uppercase tracking-[0.3em] block">Display
                         Order</label>
                     <input type="number" name="order" x-model="order"
-                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border-rose-950/10 dark:border-[#1e3a5f] focus:ring-2 focus:ring-rose-400 transition-all font-black dark:text-white" />
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e3a5f] focus:ring-2 focus:ring-slate-400 transition-all font-black dark:text-white" />
                 </div>
 
                 <div class="flex gap-4 pt-4">

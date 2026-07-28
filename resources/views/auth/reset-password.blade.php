@@ -18,7 +18,7 @@
                 Address</label>
             <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}" required
                 autocomplete="username"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white">
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('email') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror">
             @error('email')
                 <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
             @enderror
@@ -28,7 +28,7 @@
             <label for="password" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">New
                 Password</label>
             <input id="password" type="password" name="password" required autofocus autocomplete="new-password"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                 placeholder="••••••••">
             @error('password')
                 <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
@@ -40,7 +40,7 @@
                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Confirm New Password</label>
             <input id="password_confirmation" type="password" name="password_confirmation" required
                 autocomplete="new-password"
-                class="w-full rounded-full border-fauna-rose/20 px-4 py-3 shadow focus:border-fauna-rose focus:ring-fauna-rose dark:border-[#1e3a5f] dark:bg-[#1e293b] dark:text-white"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password_confirmation') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                 placeholder="••••••••">
             @error('password_confirmation')
                 <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>

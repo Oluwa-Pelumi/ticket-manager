@@ -331,7 +331,7 @@
                     <div class="space-y-3">
                         <div class="relative group/comment">
                             <textarea name="content" x-model="content" placeholder="Type your message..." rows="4" required {{ $commentBlocked ? 'disabled' : '' }}
-                                class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-rose-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-400 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#1e293b] disabled:cursor-not-allowed"></textarea>
+                                class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-400 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#1e293b] disabled:cursor-not-allowed"></textarea>
                         </div>
 
                         {{-- File previews --}}
