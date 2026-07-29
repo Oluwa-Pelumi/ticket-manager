@@ -369,7 +369,7 @@
                                                 class="fauna-select-chevron text-[10px] md:text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-rose-400 focus:outline-none cursor-pointer py-1 md:py-2 pl-2 pr-8 md:pl-4 md:pr-10 transition-all"
                                                 :class="{
                                                     'border-green-400 dark:border-green-500 text-green-600 dark:text-green-400': ticket.status === 'open',
-                                                    'border-rose-500 dark:border-rose-400 text-rose-600 dark:text-rose-400': ticket.status === 'in-progress',
+                                                    'border-sky-500 dark:border-sky-400 text-sky-600 dark:text-sky-400': ticket.status === 'in-progress',
                                                     'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
                                                 }">
                                                 <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="open"      :selected="ticket.status === 'open'">Open</option>
@@ -409,10 +409,10 @@
 
                                     {{-- Row actions --}}
                                     <td class="hidden lg:table-cell px-4 md:px-6 py-4 text-right">
-                                                 {{-- Edit (ticket owner or admin, if no support has replied and not closed) --}}
-                                            <template x-if="(authRole === 'admin' || authId === ticket.user_id) && !ticket.has_support_replied && ticket.status !== 'closed'">
+                                                 {{-- Edit (ticket owner only, if no support has replied and not closed) --}}
+                                            <template x-if="authId === ticket.user_id && !ticket.has_support_replied && ticket.status !== 'closed'">
                                                 <button @click.stop="openEditModal(ticket)"
-                                                    class="p-1.5 md:p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-sm"
+                                                    class="p-1.5 md:p-2 rounded-lg bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-600/20 shadow-sm"
                                                     title="Edit Ticket">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -424,7 +424,7 @@
                                             {{-- Expand toggle --}}
                                             <button @click.stop="toggleExpand(ticket.id)"
                                                 class="p-1.5 md:p-2 rounded-lg transition-all"
-                                                :class="expandedId === ticket.id ? 'bg-rose-950 text-white rotate-180' :
+                                                :class="expandedId === ticket.id ? 'bg-fauna-rose text-white rotate-180' :
                                                     'bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-300 hover:text-rose-950 dark:hover:text-rose-400'">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
@@ -487,7 +487,7 @@
                                                                             class="fauna-select-chevron w-full text-xs font-black tracking-widest rounded-xl border-2 bg-transparent focus:ring-2 focus:ring-rose-400 focus:outline-none cursor-pointer py-2 pl-3 pr-10 transition-all"
                                                                             :class="{
                                                                                 'border-green-400 dark:border-green-500 text-green-600 dark:text-green-400': ticket.status === 'open',
-                                                                                'border-rose-500 dark:border-rose-400 text-rose-600 dark:text-rose-400': ticket.status === 'in-progress',
+                                                                                'border-sky-500 dark:border-sky-400 text-sky-600 dark:text-sky-400': ticket.status === 'in-progress',
                                                                                 'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400': ticket.status === 'closed'
                                                                             }">
                                                                             <option class="bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white" value="open" :selected="ticket.status === 'open'">Open</option>
@@ -499,7 +499,7 @@
                                                                             class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold"
                                                                             :class="{
                                                                                 'bg-green-100 text-green-600 dark:bg-green-950/30 dark:text-green-400': ticket.status === 'open',
-                                                                                'bg-rose-100 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400': ticket.status === 'in-progress',
+                                                                                'bg-sky-100 text-sky-600 dark:bg-sky-950/30 dark:text-sky-400': ticket.status === 'in-progress',
                                                                                 'bg-slate-100 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400': ticket.status === 'closed'
                                                                             }"
                                                                             x-text="ticket.status.replace('-', ' ')"></span>
@@ -524,9 +524,9 @@
                                                                     <div>
                                                                         <div class="text-[10px] font-black text-rose-950 dark:text-rose-400 mb-2 tracking-[0.3em] uppercase">Actions</div>
                                                                         <div class="flex flex-wrap items-center gap-2">
-                                                                            <template x-if="(authRole === 'admin' || authId === ticket.user_id) && !ticket.has_support_replied && ticket.status !== 'closed'">
+                                                                            <template x-if="authId === ticket.user_id && !ticket.has_support_replied && ticket.status !== 'closed'">
                                                                                 <button @click.stop="openEditModal(ticket)"
-                                                                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-500/10 text-indigo-500 hover:bg-indigo-500 hover:text-white transition-all shadow-sm text-xs font-black tracking-widest">
+                                                                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-600/20 shadow-sm text-xs font-black tracking-widest">
                                                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -708,18 +708,24 @@
                                                                     </h4>
                                                                     <div class="flex flex-wrap gap-4">
                                                                         <template x-if="ticket.filename">
-                                                                            <a :href="'/storage/' + ticket.filename"
-                                                                                target="_blank"
-                                                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-
-                                                                                {{-- Image preview --}}
-                                                                                <template x-if="isImage(ticket.filename)">
+                                                                            <div class="contents">
+                                                                            {{-- Image: open lightbox --}}
+                                                                            <template x-if="isImage(ticket.filename)">
+                                                                                <button type="button"
+                                                                                    @click.stop="openLightbox('/storage/' + ticket.filename)"
+                                                                                    class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
                                                                                     <img :src="'/storage/' + ticket.filename" :alt="ticket.filename"
                                                                                         class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                                                </template>
-
-                                                                                {{-- Document icon --}}
-                                                                                <template x-if="!isImage(ticket.filename)">
+                                                                                    <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                                                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
+                                                                                    </div>
+                                                                                </button>
+                                                                            </template>
+                                                                            {{-- Document: open in new tab --}}
+                                                                            <template x-if="!isImage(ticket.filename)">
+                                                                                <a :href="'/storage/' + ticket.filename" target="_blank"
+                                                                                    class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                                                                     <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
                                                                                         <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -727,38 +733,32 @@
                                                                                         </svg>
                                                                                         <span class="text-[9px] font-black text-slate-500" x-text="fileExt(ticket.filename)"></span>
                                                                                     </div>
-                                                                                </template>
-
-                                                                                <div
-                                                                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                                                    <svg class="w-6 h-6 text-white"
-                                                                                        fill="none" stroke="currentColor"
-                                                                                        viewBox="0 0 24 24">
-                                                                                        <path stroke-linecap="round"
-                                                                                            stroke-linejoin="round"
-                                                                                            stroke-width="2"
-                                                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                                        <path stroke-linecap="round"
-                                                                                            stroke-linejoin="round"
-                                                                                            stroke-width="2"
-                                                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                                                    </svg>
-                                                                                </div>
-                                                                            </a>
+                                                                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </template>
+                                                                            </div>
                                                                         </template>
-                                                                        <template x-for="(img, i) in (ticket.attachments || [])"
-                                                                            :key="i">
-                                                                            <a :href="'/storage/' + img" target="_blank"
-                                                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-
-                                                                                {{-- Image preview --}}
-                                                                                <template x-if="isImage(img)">
+                                                                        <template x-for="(img, i) in (ticket.attachments || [])" :key="i">
+                                                                            <div class="contents">
+                                                                            {{-- Image: open lightbox --}}
+                                                                            <template x-if="isImage(img)">
+                                                                                <button type="button"
+                                                                                    @click.stop="openLightbox('/storage/' + img)"
+                                                                                    class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
                                                                                     <img :src="'/storage/' + img"
                                                                                         class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                                                </template>
-
-                                                                                {{-- Document icon --}}
-                                                                                <template x-if="!isImage(img)">
+                                                                                    <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                                                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
+                                                                                    </div>
+                                                                                </button>
+                                                                            </template>
+                                                                            {{-- Document: open in new tab --}}
+                                                                            <template x-if="!isImage(img)">
+                                                                                <a :href="'/storage/' + img" target="_blank"
+                                                                                    class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                                                                     <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
                                                                                         <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -766,24 +766,12 @@
                                                                                         </svg>
                                                                                         <span class="text-[9px] font-black text-slate-500" x-text="fileExt(img)"></span>
                                                                                     </div>
-                                                                                </template>
-
-                                                                                <div
-                                                                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                                                    <svg class="w-6 h-6 text-white"
-                                                                                        fill="none" stroke="currentColor"
-                                                                                        viewBox="0 0 24 24">
-                                                                                        <path stroke-linecap="round"
-                                                                                            stroke-linejoin="round"
-                                                                                            stroke-width="2"
-                                                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                                        <path stroke-linecap="round"
-                                                                                            stroke-linejoin="round"
-                                                                                            stroke-width="2"
-                                                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                                                    </svg>
-                                                                                </div>
-                                                                            </a>
+                                                                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </template>
+                                                                            </div>
                                                                         </template>
                                                                     </div>
                                                                 </div>
@@ -869,17 +857,24 @@
                                                                         <template x-if="comment.attachments && comment.attachments.length > 0">
                                                                             <div class="flex flex-wrap gap-2 mt-3">
                                                                                 <template x-for="(cimg, cii) in (comment.attachments || [])" :key="cii">
-                                                                                    <a :href="'/storage/' + cimg" target="_blank"
-                                                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-
-                                                                                        {{-- Image preview --}}
-                                                                                        <template x-if="isImage(cimg)">
+                                                                                    <div class="contents">
+                                                                                    {{-- Image: open lightbox --}}
+                                                                                    <template x-if="isImage(cimg)">
+                                                                                        <button type="button"
+                                                                                            @click.stop="openLightbox('/storage/' + cimg)"
+                                                                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
                                                                                             <img :src="'/storage/' + cimg"
                                                                                                 class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                                                        </template>
-
-                                                                                        {{-- Document icon --}}
-                                                                                        <template x-if="!isImage(cimg)">
+                                                                                            <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                                                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
+                                                                                            </div>
+                                                                                        </button>
+                                                                                    </template>
+                                                                                    {{-- Document: open in new tab --}}
+                                                                                    <template x-if="!isImage(cimg)">
+                                                                                        <a :href="'/storage/' + cimg" target="_blank"
+                                                                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                                                                             <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
                                                                                                 <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -887,24 +882,12 @@
                                                                                                 </svg>
                                                                                                 <span class="text-[9px] font-black text-slate-500" x-text="fileExt(cimg)"></span>
                                                                                             </div>
-                                                                                        </template>
-
-                                                                                        <div
-                                                                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                                                            <svg class="w-6 h-6 text-white"
-                                                                                                fill="none" stroke="currentColor"
-                                                                                                viewBox="0 0 24 24">
-                                                                                                <path stroke-linecap="round"
-                                                                                                    stroke-linejoin="round"
-                                                                                                    stroke-width="2"
-                                                                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                                                <path stroke-linecap="round"
-                                                                                                    stroke-linejoin="round"
-                                                                                                    stroke-width="2"
-                                                                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                                                            </svg>
-                                                                                        </div>
-                                                                                    </a>
+                                                                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </template>
+                                                                                    </div>
                                                                                 </template>
                                                                             </div>
                                                                         </template>
@@ -960,7 +943,7 @@
                                     <template x-if="page !== '...'">
                                         <button @click="currentPage = page"
                                             class="w-8 h-8 rounded-xl text-[10px] font-black transition-all"
-                                            :class="currentPage === page ? 'bg-rose-950 text-white shadow-lg shadow-rose-950/20' :
+                                            :class="currentPage === page ? 'bg-fauna-rose text-white shadow-lg shadow-fauna-rose/20' :
                                                 'text-slate-400 hover:text-rose-950 dark:hover:text-rose-400'"
                                             x-text="page"></button>
                                     </template>
@@ -978,6 +961,49 @@
                     </div>
                 </div>
             </template>
+        </div>
+
+        {{-- ── Lightbox modal ──────────────────────────────────────────────── --}}
+        <div
+            x-show="lightboxOpen"
+            x-cloak
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            @keydown.escape.window="closeLightbox()"
+            @click.self="closeLightbox()"
+            class="fixed inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+        >
+            <div class="relative max-w-5xl w-full max-h-[90vh] flex items-center justify-center">
+                {{-- Close --}}
+                <button
+                    @click="closeLightbox()"
+                    class="absolute -top-4 -right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-sm border border-white/20"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                {{-- Image --}}
+                <img :src="lightboxSrc" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" />
+
+                {{-- Open original --}}
+                <a
+                    :href="lightboxSrc"
+                    target="_blank"
+                    class="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-white text-xs font-bold backdrop-blur-sm border border-white/10 transition-all"
+                    title="Open original"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    Open original
+                </a>
+            </div>
         </div>
 
         {{-- ── Edit modal ─────────────────────────────────────────────────── --}}
@@ -1044,10 +1070,12 @@
                                 <template x-for="(img, i) in editExistingAttachments" :key="'existing-' + i">
                                     <div class="relative group/ep">
                                         <template x-if="isImage(img)">
-                                            <a :href="'/storage/' + img" target="_blank" class="block">
+                                            <button type="button" @click.stop="openLightbox('/storage/' + img)"
+                                                class="relative block w-20 h-20 rounded-xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-sm cursor-zoom-in focus:outline-none group/thumb">
                                                 <img :src="'/storage/' + img"
-                                                    class="w-20 h-20 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm hover:scale-105 transition-transform" />
-                                            </a>
+                                                    class="w-full h-full object-cover transition-transform group-hover/thumb:scale-105" />
+                                                <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5">PHOTO</span>
+                                            </button>
                                         </template>
                                         <template x-if="!isImage(img)">
                                             <a :href="'/storage/' + img" target="_blank"
@@ -1072,10 +1100,12 @@
                                 <template x-for="(file, i) in editNewPreviews" :key="'new-' + i">
                                     <div class="relative group/ep">
                                         <template x-if="file.isImage">
-                                            <a :href="file.url" target="_blank" class="block">
+                                            <button type="button" @click.stop="openLightbox(file.url)"
+                                                class="relative block w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-400 dark:border-emerald-500 shadow-sm cursor-zoom-in focus:outline-none group/thumb">
                                                 <img :src="file.url"
-                                                    class="w-20 h-20 rounded-xl object-cover border-2 border-emerald-400 dark:border-emerald-500 shadow-sm hover:scale-105 transition-transform" />
-                                            </a>
+                                                    class="w-full h-full object-cover transition-transform group-hover/thumb:scale-105" />
+                                                <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5">PHOTO</span>
+                                            </button>
                                         </template>
                                         <template x-if="!file.isImage">
                                             <a :href="file.url" target="_blank"
@@ -1155,6 +1185,10 @@
                     },
                     copiedId: null,
                     activatingId: null,
+
+                    // Lightbox
+                    lightboxOpen: false,
+                    lightboxSrc: '',
 
                     // Edit modal
                     editingTicket: null,
@@ -1593,6 +1627,18 @@
                             });
                         });
                     },
+
+                    // Lightbox
+                    openLightbox(src) {
+                        this.lightboxSrc = src;
+                        this.lightboxOpen = true;
+                        document.body.style.overflow = 'hidden';
+                    },
+                    closeLightbox() {
+                        this.lightboxOpen = false;
+                        this.lightboxSrc = '';
+                        document.body.style.overflow = '';
+                    },
                 };
             }
 
@@ -1624,6 +1670,12 @@
                     files: [],
                     previews: [],
                     submitting: false,
+                    previewLightboxSrc: '',
+                    previewLightboxOpen: false,
+                    openPreview(url) {
+                        this.previewLightboxSrc = url;
+                        this.previewLightboxOpen = true;
+                    },
                     handleAttachments(e) {
                         const newFiles = Array.from(e.target.files);
                         this.files = [...this.files, ...newFiles];

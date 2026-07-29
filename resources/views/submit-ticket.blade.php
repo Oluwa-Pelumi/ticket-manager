@@ -78,6 +78,12 @@
                     ticketRef: '',
                     submitError: '',
                     copiedRef: false,
+                    previewLightboxSrc: '',
+                    previewLightboxOpen: false,
+                    openPreview(url) {
+                        this.previewLightboxSrc = url;
+                        this.previewLightboxOpen = true;
+                    },
                     handleFiles(e) {
                         const newFiles = Array.from(e.target.files);
                         this.attachedFiles = [...this.attachedFiles, ...newFiles];
@@ -462,7 +468,11 @@
                             <template x-for="(file, idx) in previews" :key="idx">
                                 <div class="relative group/preview">
                                     <template x-if="file.isImage">
-                                        <img :src="file.url" class="w-28 h-28 object-cover rounded-2xl border-2 border-white dark:border-[#1e3a5f] shadow-2xl transition-transform group-hover/preview:scale-110" :alt="file.name">
+                                        <button type="button" @click="openPreview(file.url)"
+                                            class="relative block w-28 h-28 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-2xl cursor-zoom-in focus:outline-none">
+                                            <img :src="file.url" class="w-full h-full object-cover transition-transform group-hover/preview:scale-110" :alt="file.name" />
+                                            <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5">PHOTO</span>
+                                        </button>
                                     </template>
                                     <template x-if="!file.isImage">
                                         <div class="w-28 h-28 rounded-2xl border-2 border-white dark:border-[#1e3a5f] shadow-2xl bg-slate-100 dark:bg-[#1e293b] flex flex-col items-center justify-center gap-1 p-2">
@@ -513,6 +523,28 @@
                     </button>
                 </div>
                 </div>{{-- /x-show="!submitted" --}}
+
+                {{-- Pre-upload image preview lightbox --}}
+                <template x-if="previewLightboxOpen">
+                    <div
+                        @click.self="previewLightboxOpen = false"
+                        @keydown.escape.window="previewLightboxOpen = false"
+                        class="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+                    >
+                        <div class="relative max-w-4xl w-full max-h-[90vh] flex items-center justify-center">
+                            <button
+                                type="button"
+                                @click="previewLightboxOpen = false"
+                                class="absolute -top-4 -right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-sm border border-white/20"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                            <img :src="previewLightboxSrc" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" />
+                        </div>
+                    </div>
+                </template>
             </form>
         </div>
     </div>

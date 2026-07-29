@@ -166,6 +166,34 @@
             opacity: 0.7;
         }
 
+        .fauna-btn-action {
+            border: 1px solid #e36c8e;
+            background-color: #e36c8e;
+            color: #ffffff;
+            transition: all 0.2s;
+        }
+
+        .fauna-btn-action:hover {
+            border-color: #ca4d71;
+            background-color: #ca4d71;
+            color: #ffffff;
+        }
+
+        .fauna-btn-action:disabled,
+        .fauna-btn-action[disabled] {
+            cursor: not-allowed;
+            border-color: #e7b0be;
+            background-color: #e7b0be;
+            opacity: 0.5;
+        }
+
+        .fauna-btn-action:disabled:hover,
+        .fauna-btn-action[disabled]:hover {
+            border-color: #e7b0be;
+            background-color: #e7b0be;
+            color: #ffffff;
+        }
+
         .fauna-btn-secondary {
             display: inline-flex;
             align-items: center;
@@ -423,7 +451,7 @@
                         <a href="{{ route('login') }}"
                             class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200">Login</a>
                         <a href="{{ route('register') }}"
-                            class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-rose-950 text-white hover:bg-rose-800 hover:text-white shadow-md">Register</a>
+                            class="fauna-btn-primary flex-1 text-center !py-2.5 !rounded-xl !text-sm !font-bold shadow-md">Register</a>
                     </div>
                 @endauth
             </div>

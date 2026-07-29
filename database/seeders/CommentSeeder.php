@@ -37,8 +37,8 @@ class CommentSeeder extends Seeder
             }
         };
 
-        // ─── Ticket 1 – Transcript Request (Emeka / support1) ──────────────────
-        $t = Ticket::where('subject', 'Urgent Undergraduate Transcript Request')->first();
+        // ─── Ticket 1 – Transcript Request (Emeka / support1, in-progress) ──────────────────
+        $t = Ticket::where('subject', 'transcript-request')->where('user_id', $user1?->id)->where('status', 'in-progress')->first();
         if ($t) {
             $thread(
                 $t, $user1,
@@ -54,19 +54,19 @@ class CommentSeeder extends Seeder
             ]);
         }
 
-        // ─── Ticket 2 – Syllabus Copy (Emeka / support2) ─────────────────
-        $t = Ticket::where('subject', 'Syllabus Copy for Year 3 Courses')->first();
+        // ─── Ticket 2 – Transcript Request (Emeka / support2, closed) ─────────────────
+        $t = Ticket::where('subject', 'transcript-request')->where('user_id', $user1?->id)->where('status', 'closed')->first();
         if ($t) {
             $thread(
                 $t, $user1,
-                'Quick clarification: does the syllabus copy contain course descriptions for elective courses as well, or only core courses?',
+                'Quick clarification: does the transcript copy contain course descriptions for elective courses as well, or only core courses?',
                 $support2,
-                'Good question, Emeka. The syllabus booklet includes detailed descriptions, credit units, and outlines for all courses — both core and electives — offered during the 2024 session. Let us know if your transfer institution requires any additional accreditation details.'
+                'Good question, Emeka. The transcript includes detailed descriptions, credit units, and outlines for all courses — both core and electives — offered during the 2024 session. Let us know if your transfer institution requires any additional accreditation details.'
             );
         }
 
-        // ─── Ticket 3 – Dr. Adewale Recommendation (Emeka / unassigned, open) ───
-        $t = Ticket::where('subject', 'Recommendation Letter Request - Dr. Adewale')->first();
+        // ─── Ticket 3 – Letter of Recommendation Request (Emeka / support2, open) ───
+        $t = Ticket::where('subject', 'letter-of-recommendation-request')->where('user_id', $user1?->id)->where('status', 'open')->first();
         if ($t) {
             Comment::create([
                 'ticket_id' => $t->id,
@@ -75,8 +75,8 @@ class CommentSeeder extends Seeder
             ]);
         }
 
-        // ─── Ticket 4 – Certificate Collection (Emeka / support1) ──────────
-        $t = Ticket::where('subject', 'B.Sc. Degree Certificate Collection')->first();
+        // ─── Ticket 4 – Certificate Request (Emeka / support1, in-progress) ──────────
+        $t = Ticket::where('subject', 'certificate-request')->where('user_id', $user1?->id)->where('status', 'in-progress')->first();
         if ($t) {
             $thread(
                 $t, $user1,
@@ -86,8 +86,8 @@ class CommentSeeder extends Seeder
             );
         }
 
-        // ─── Ticket 5 – Statement of Result (Emeka / support2) ───────────────────
-        $t = Ticket::where('subject', 'Statement of Result Status Update')->first();
+        // ─── Ticket 5 – Statement of Result Request (Emeka / support2, closed) ───────────────────
+        $t = Ticket::where('subject', 'statement-of-result-request')->where('user_id', $user1?->id)->where('status', 'closed')->first();
         if ($t) {
             $thread(
                 $t, $user1,
@@ -102,8 +102,8 @@ class CommentSeeder extends Seeder
             ]);
         }
 
-        // ─── Ticket 6 – WES Transcript (Fatima / open) ──────────────────────────
-        $t = Ticket::where('subject', 'Official Transcript for WES Evaluation')->first();
+        // ─── Ticket 6 – Transcript Request (Fatima / support2, open) ──────────────────────────
+        $t = Ticket::where('subject', 'transcript-request')->where('user_id', $user2?->id)->where('status', 'open')->first();
         if ($t) {
             Comment::create([
                 'ticket_id' => $t->id,
@@ -112,8 +112,8 @@ class CommentSeeder extends Seeder
             ]);
         }
 
-        // ─── Ticket 7 – Bulk Certificates (Fatima / support1) ────────────────
-        $t = Ticket::where('subject', 'Bulk Certificate Requests for Alumni Group')->first();
+        // ─── Ticket 7 – Certificate Request (Fatima / support1, in-progress) ────────────────
+        $t = Ticket::where('subject', 'certificate-request')->where('user_id', $user2?->id)->where('status', 'in-progress')->first();
         if ($t) {
             $thread(
                 $t, $user2,
@@ -128,19 +128,19 @@ class CommentSeeder extends Seeder
             ]);
         }
 
-        // ─── Ticket 8 – Chemistry Syllabus (Fatima / support2) ─────────────────
-        $t = Ticket::where('subject', 'Detailed Syllabus for Chemistry Department')->first();
+        // ─── Ticket 8 – Transcript Request (Fatima / support2, closed) ─────────────────
+        $t = Ticket::where('subject', 'transcript-request')->where('user_id', $user2?->id)->where('status', 'closed')->first();
         if ($t) {
             $thread(
                 $t, $user2,
                 'I need this for the 2021 curriculum. Does it contain the signatures of the department board members?',
                 $support2,
-                'Hi Fatima, yes. The syllabus package we provide is the officially approved senate version, which includes the signed page by the Dean and HOD. It is fully certified for board certification purposes.'
+                'Hi Fatima, yes. The transcript package we provide is the officially approved senate version, which includes the signed page by the Dean and HOD. It is fully certified for board certification purposes.'
             );
         }
 
-        // ─── Ticket 9 – HOD Reference (Fatima / support1) ────
-        $t = Ticket::where('subject', 'Academic Reference Letter Status')->first();
+        // ─── Ticket 9 – Letter of Recommendation Request (Fatima / support1, in-progress) ────
+        $t = Ticket::where('subject', 'letter-of-recommendation-request')->where('user_id', $user2?->id)->where('status', 'in-progress')->first();
         if ($t) {
             $thread(
                 $t, $user2,
@@ -155,73 +155,13 @@ class CommentSeeder extends Seeder
             ]);
         }
 
-        // ─── Ticket 10 – Statement of Result Request (Fatima / open) ─────────────────────
-        $t = Ticket::where('subject', 'Statement of Result Copy Request')->first();
+        // ─── Ticket 10 – Statement of Result Request (Fatima / support2, open) ─────────────────────
+        $t = Ticket::where('subject', 'statement-of-result-request')->where('user_id', $user2?->id)->where('status', 'open')->first();
         if ($t) {
             Comment::create([
                 'ticket_id' => $t->id,
                 'user_id'   => $user2?->id,
                 'content'   => 'Is there any additional charge for extra copies of the Statement of Result? I might need three copies.',
-            ]);
-        }
-
-        // ─── Ticket 12 – Replacement Certificate (guest / support2) ─────────────────
-        $t = Ticket::where('subject', 'Replacement of Damaged Degree Certificate')->first();
-        if ($t) {
-            Comment::create([
-                'ticket_id' => $t->id,
-                'user_id'   => $support2?->id,
-                'content'   => 'Hello, we have received your request for a replacement certificate. Please upload a copy of the police report, the court affidavit, and proof of payment. Once verified, the printing will take 5 working days.',
-            ]);
-        }
-
-        // ─── Ticket 13 – Reference Study Abroad (guest / support1) ────────────────
-        $t = Ticket::where('subject', 'Reference for Postgrad Studies Abroad')->first();
-        if ($t) {
-            Comment::create([
-                'ticket_id' => $t->id,
-                'user_id'   => $support1?->id,
-                'content'   => 'Hello Bello, the system automatically dispatches reference requests to the designated lecturers\' university emails once you submit their details. Please ensure they check their spam folders if they have not received the links.',
-            ]);
-        }
-
-        // ─── Ticket 14 – Engineering Syllabus (guest / support2) ────────────
-        $t = Ticket::where('subject', 'Engineering Syllabus Accreditation Query')->first();
-        if ($t) {
-            Comment::create([
-                'ticket_id' => $t->id,
-                'user_id'   => $support2?->id,
-                'content'   => 'Hi Adaora, yes, the 2019 Civil Engineering syllabus contains the official NBA accreditation certificate and the COREN approval letter. This is sufficient for visa and credential evaluation purposes.',
-            ]);
-        }
-
-        // ─── Ticket 17 – Name Correction (guest / support2) ─────────────────
-        $t = Ticket::where('subject', 'Correction of Name on Portal')->first();
-        if ($t) {
-            Comment::create([
-                'ticket_id' => $t->id,
-                'user_id'   => $support2?->id,
-                'content'   => 'Hello Tunde, your name has been corrected on the portal to "Babatunde Fashola" as requested. This will reflect on any subsequent documents printed.',
-            ]);
-        }
-
-        // ─── Ticket 19 – VC Recommendation (guest / support1) ───────────────
-        $t = Ticket::where('subject', 'Recommendation from Vice Chancellor')->first();
-        if ($t) {
-            Comment::create([
-                'ticket_id' => $t->id,
-                'user_id'   => $support1?->id,
-                'content'   => 'Hello Obiageli, requests for the VC\'s recommendation should be directed to the VC\'s Principal Assistant. Please forward your CV, research proposal, and department recommendation letter to vc-office@university.edu.',
-            ]);
-        }
-
-        // ─── Ticket 20 – Course Description Booklet (guest / support2) ──────────
-        $t = Ticket::where('subject', 'Course Description Booklet Request')->first();
-        if ($t) {
-            Comment::create([
-                'ticket_id' => $t->id,
-                'user_id'   => $support2?->id,
-                'content'   => 'Hello Emmanuel, we have uploaded the digital PDF version of the 2015-2019 Business Administration course description booklet. You can download it directly from the link provided.',
             ]);
         }
     }

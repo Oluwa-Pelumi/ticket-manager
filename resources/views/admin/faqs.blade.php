@@ -63,7 +63,7 @@
                                         order:    {{ $faq->order ?? 0 }}
                                     }
                                 })"
-                                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-rose-950 dark:hover:text-rose-400 transition-all border border-transparent hover:border-rose-950/20"
+                                    class="p-3 rounded-2xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-600/20"
                                     title="Edit FAQ">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

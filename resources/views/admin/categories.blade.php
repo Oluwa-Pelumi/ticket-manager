@@ -133,7 +133,7 @@
                                             {{-- Edit: navigate to index with ?edit={id} --}}
                                             <a
                                                 href="{{ route('admin.categories.index', ['edit' => $category->id]) }}"
-                                                class="p-2 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all"
+                                                class="p-2 rounded-lg bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-600/20"
                                                 title="Edit"
                                             >
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

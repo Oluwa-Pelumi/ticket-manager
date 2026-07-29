@@ -27,7 +27,7 @@
 @endsection
 
 @section('content-body')
-<div class="max-w-9xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8">
+<div class="max-w-9xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8" x-data="lightbox()">
     <div class="flex items-center justify-between">
         <a href="{{ auth()->guest() ? route('check-status') : route('dashboard') }}" class="inline-flex items-center text-sm font-bold text-slate-600 hover:text-rose-950 dark:hover:text-rose-400 transition-colors">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -169,36 +169,52 @@
                             </h4>
                             <div class="flex flex-wrap gap-4">
                                 @if($ticket->filename)
-                                    <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                        @if($isImg($ticket->filename))
+                                    @if($isImg($ticket->filename))
+                                        <button type="button"
+                                            @click="openLightbox('/storage/{{ $ticket->filename }}', '{{ basename($ticket->filename) }}')"
+                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
                                             <img src="/storage/{{ $ticket->filename }}" alt="{{ $ticket->filename }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                        @else
+                                            <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
+                                            </div>
+                                        </button>
+                                    @else
+                                        <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                             <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
                                                 <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                                 <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($ticket->filename, PATHINFO_EXTENSION)) }}</span>
                                             </div>
-                                        @endif
-                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </div>
-                                    </a>
+                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                            </div>
+                                        </a>
+                                    @endif
                                 @endif
 
                                 @if($ticket->attachments)
                                     @foreach($ticket->attachments as $img)
-                                    <a href="/storage/{{ $img }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                        @if($isImg($img))
+                                    @if($isImg($img))
+                                        <button type="button"
+                                            @click="openLightbox('/storage/{{ $img }}')"
+                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
                                             <img src="/storage/{{ $img }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                        @else
+                                            <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
+                                            </div>
+                                        </button>
+                                    @else
+                                        <a href="/storage/{{ $img }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                             <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
                                                 <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                                 <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($img, PATHINFO_EXTENSION)) }}</span>
                                             </div>
-                                        @endif
-                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </div>
-                                    </a>
+                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                            </div>
+                                        </a>
+                                    @endif
                                     @endforeach
                                 @endif
                             </div>
@@ -282,19 +298,27 @@
                                     @if($comment->attachments && count($comment->attachments) > 0)
                                     <div class="flex flex-wrap gap-2 mt-3">
                                         @foreach($comment->attachments as $cimg)
-                                        <a href="/storage/{{ $cimg }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                            @if($isImg($cimg))
+                                        @if($isImg($cimg))
+                                            <button type="button"
+                                                @click="openLightbox('/storage/{{ $cimg }}')"
+                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
                                                 <img src="/storage/{{ $cimg }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                            @else
+                                                <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
+                                                </div>
+                                            </button>
+                                        @else
+                                            <a href="/storage/{{ $cimg }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
                                                 <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b]/70 gap-1">
                                                     <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                                     <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($cimg, PATHINFO_EXTENSION)) }}</span>
                                                 </div>
-                                            @endif
-                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                            </div>
-                                        </a>
+                                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                </div>
+                                            </a>
+                                        @endif
                                         @endforeach
                                     </div>
                                     @endif
@@ -340,7 +364,11 @@
                                 <template x-for="(file, i) in previews" :key="i">
                                     <div class="relative group/prev">
                                         <template x-if="file.isImage">
-                                            <img :src="file.url" class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1e3a5f] shadow-sm" />
+                                            <button type="button" @click="openPreview(file.url)"
+                                                class="relative block w-16 h-16 rounded-xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-sm cursor-zoom-in focus:outline-none">
+                                                <img :src="file.url" class="w-full h-full object-cover transition-transform group-hover/prev:scale-110" />
+                                                <span class="absolute bottom-0 inset-x-0 text-center text-[6px] font-black tracking-wider text-white bg-black/40 py-0.5">PHOTO</span>
+                                            </button>
                                         </template>
                                         <template x-if="!file.isImage">
                                             <div class="w-16 h-16 rounded-xl border-2 border-white dark:border-[#1e3a5f] shadow-sm bg-slate-100 dark:bg-[#1e293b] flex flex-col items-center justify-center gap-1">
@@ -361,6 +389,28 @@
                                         </button>
                                     </div>
                                 </template>
+                            </div>
+                        </template>
+
+                        {{-- Pre-upload image preview lightbox --}}
+                        <template x-if="previewLightboxOpen">
+                            <div
+                                @click.self="previewLightboxOpen = false"
+                                @keydown.escape.window="previewLightboxOpen = false"
+                                class="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+                            >
+                                <div class="relative max-w-4xl w-full max-h-[90vh] flex items-center justify-center">
+                                    <button
+                                        type="button"
+                                        @click="previewLightboxOpen = false"
+                                        class="absolute -top-4 -right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-sm border border-white/20"
+                                    >
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </button>
+                                    <img :src="previewLightboxSrc" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" />
+                                </div>
                             </div>
                         </template>
 
@@ -387,7 +437,7 @@
 
                             {{-- Submit --}}
                             <button type="submit" x-bind:disabled="processing || isPastAttendant || !content.trim()"
-                                class="flex items-center gap-2 px-5 py-2 rounded-xl bg-rose-950 text-white text-xs font-black tracking-widest shadow-md hover:bg-rose-800 hover:text-white active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-rose-950 disabled:hover:text-white disabled:active:scale-100">
+                                class="fauna-btn-action flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-black tracking-widest shadow-md active:scale-95 disabled:active:scale-100">
                                 <template x-if="!processing">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                                 </template>
@@ -407,9 +457,74 @@
             </div>
         </div>
     </div>
-</div>
+
+    {{-- ── Lightbox modal ───────────────────────────────────────────────────── --}}
+    <div
+        x-show="open"
+        x-cloak
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        @keydown.escape.window="close()"
+        @click.self="close()"
+        class="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+    >
+        <div class="relative max-w-5xl w-full max-h-[90vh] flex items-center justify-center">
+            {{-- Close button --}}
+            <button
+                @click="close()"
+                class="absolute -top-4 -right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-sm border border-white/20"
+            >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            {{-- Image --}}
+            <img
+                :src="src"
+                :alt="alt"
+                class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+            />
+
+            {{-- Open in new tab link --}}
+            <a
+                :href="src"
+                target="_blank"
+                class="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-white text-xs font-bold backdrop-blur-sm border border-white/10 transition-all"
+                title="Open original"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                Open original
+            </a>
+        </div>
+    </div>
+</div>{{-- /x-data="lightbox()" --}}
 
 <script>
+
+function lightbox() {
+    return {
+        open: false,
+        src: '',
+        alt: '',
+        openLightbox(src, alt = '') {
+            this.src = src;
+            this.alt = alt;
+            this.open = true;
+            document.body.style.overflow = 'hidden';
+        },
+        close() {
+            this.open = false;
+            document.body.style.overflow = '';
+        },
+    };
+}
 
 function commentForm(isPastAttendant, actionUrl) {
     return {
@@ -418,6 +533,12 @@ function commentForm(isPastAttendant, actionUrl) {
         content: '',
         files: [],
         previews: [],
+        previewLightboxSrc: '',
+        previewLightboxOpen: false,
+        openPreview(url) {
+            this.previewLightboxSrc = url;
+            this.previewLightboxOpen = true;
+        },
 
         handleFiles(e) {
             const newFiles = Array.from(e.target.files);

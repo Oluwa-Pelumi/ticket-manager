@@ -34,7 +34,7 @@
             <button
                 type="submit"
                 x-bind:disabled="processing"
-                class="w-full py-4 rounded-2xl bg-rose-950 text-white font-black text-lg shadow-xl hover:bg-rose-800 hover:text-white hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 transition-all tracking-widest flex items-center justify-center gap-2"
+                class="fauna-btn-primary w-full !py-4 text-lg disabled:opacity-50 flex items-center justify-center gap-2"
             >
                 <template x-if="processing">
                     <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

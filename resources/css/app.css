@@ -88,6 +88,10 @@
         @apply inline-flex items-center justify-center rounded-full border border-fauna-rose bg-fauna-rose px-6 py-3 text-sm font-medium text-white transition duration-200 hover:border-fauna-rose-hover hover:bg-fauna-rose-hover hover:text-white disabled:pointer-events-none disabled:border-fauna-rose-disabled disabled:bg-fauna-rose-disabled disabled:opacity-70;
     }
 
+    .fauna-btn-action {
+        @apply border border-fauna-rose bg-fauna-rose text-white transition-all hover:border-fauna-rose-hover hover:bg-fauna-rose-hover hover:text-white disabled:cursor-not-allowed disabled:border-fauna-rose-disabled disabled:bg-fauna-rose-disabled disabled:opacity-50 disabled:hover:border-fauna-rose-disabled disabled:hover:bg-fauna-rose-disabled disabled:hover:text-white;
+    }
+
     .fauna-btn-secondary {
         @apply inline-flex items-center justify-center rounded-full border border-sky-950 px-6 py-3 text-sm font-medium text-sky-950 transition duration-200 hover:bg-sky-950 hover:text-white dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800;
     }
