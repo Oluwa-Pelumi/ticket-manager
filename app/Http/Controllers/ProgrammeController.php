@@ -6,6 +6,9 @@ use App\Models\Programme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/**
+ * CRUD operations for academic programmes in the admin panel.
+ */
 class ProgrammeController extends Controller
 {
     /**

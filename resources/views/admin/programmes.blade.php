@@ -1,3 +1,7 @@
+{{--
+    Admin Programmes Management View
+    Provides academic programme management, enrollment counts, and inline creation/editing.
+--}}
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">

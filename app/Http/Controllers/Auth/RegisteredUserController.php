@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\Programme;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -41,10 +42,28 @@ class RegisteredUserController extends Controller
             'middle_name'  => 'nullable|string|max:255',
             'last_name'    => 'required|string|max:255',
             'password'     => ['required', 'confirmed', Rules\Password::defaults()],
-            'email'        => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'matric_no'    => 'required|numeric|unique:'.User::class,
+            'email'        => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                Rule::unique(User::class)->where(fn ($query) => $query->whereNotNull('email_verified_at')),
+            ],
+            'matric_no'    => [
+                'required',
+                'numeric',
+                Rule::unique(User::class)->where(fn ($query) => $query->whereNotNull('email_verified_at')),
+            ],
             'programme_id' => 'required|exists:programmes,id',
         ]);
+
+        // Remove any existing unverified user record matching the email or matric number
+        User::whereNull('email_verified_at')
+            ->where(function ($query) use ($request) {
+                $query->where('email', $request->email)
+                      ->orWhere('matric_no', $request->matric_no);
+            })->delete();
 
         $user = User::create([
             'first_name'   => $request->first_name,

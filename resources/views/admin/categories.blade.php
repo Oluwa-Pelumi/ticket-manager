@@ -1,3 +1,7 @@
+{{--
+    Admin Categories Management View
+    Provides category creation, editing, and listing with inline form feedback.
+--}}
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">

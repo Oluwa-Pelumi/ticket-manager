@@ -1,3 +1,7 @@
+{{--
+    Admin Users Management View
+    Provides user listing, role mutation (admin/support/user), and account deletion controls.
+--}}
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">

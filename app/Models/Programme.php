@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Academic or organizational programme model.
+ */
 class Programme extends Model
 {
     use HasFactory;
