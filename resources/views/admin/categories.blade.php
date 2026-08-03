@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-rose-950 flex items-center justify-center shadow-lg border border-white/20">
+            <div class="w-12 h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -80,7 +80,7 @@
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                                     </svg>
                                 </template>
-                                <span x-text="processing ? '{{ isset($editingCategory) ? 'Updating...' : 'Creating...' }}' : '{{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}'">
+                                <span x-text="processing ? '{{ isset($editingCategory) ? 'Updating Category...' : 'Creating Category...' }}' : '{{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}'">
                                     {{ isset($editingCategory) ? 'Update Category' : 'Create Category' }}
                                 </span>
                             </button>
@@ -101,7 +101,8 @@
             {{-- ── Categories list table ── --}}
             <div class="lg:col-span-2">
                 <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-rose-950/10 dark:border-[#1e3a5f] shadow-2xl">
-                    <table class="w-full text-left border-collapse">
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-rose-950/10 dark:border-[#1e3a5f]">
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">
@@ -149,11 +150,12 @@
                                                 x-data
                                                 @submit.prevent="
                                                     $dispatch('confirm', {
-                                                        type: 'danger',
-                                                        title: 'Delete Category',
-                                                        confirmText: 'Delete Category',
-                                                        message: 'Are you sure you want to delete \'{{ addslashes($category->name) }}\'? This will affect tickets linked to this category.',
-                                                        onConfirm: () => $el.submit()
+                                                        type:           'danger',
+                                                        title:          'Delete Category',
+                                                        confirmText:    'Delete Category',
+                                                        message:        'Are you sure you want to delete \'{{ addslashes($category->name) }}\'? This will affect tickets linked to this category.',
+                                                        successMessage: 'Category deleted successfully.',
+                                                        form:            $el
                                                     })
                                                 "
                                             >
@@ -184,6 +186,7 @@
                             @endforelse
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
 

@@ -3,7 +3,7 @@
         <div class="flex items-center gap-3 sm:gap-4" x-data="{ selectedCount: 0, totalSelected: 0 }"
             @selection-changed.window="selectedCount = $event.detail.filtered; totalSelected = $event.detail.total">
             <div
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-rose-950 flex items-center justify-center shadow-lg border border-white/20 shrink-0">
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20 shrink-0">
                 <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -183,8 +183,7 @@
             <div class="max-w-full overflow-x-auto custom-scrollbar">
                 <table class="w-full table-auto text-left border-collapse">
                     <thead>
-                            {{-- Select-all --}}
-                            <th class="w-12 md:w-16 px-2 sm:px-4 md:px-6 py-4">
+                            <th class="w-10 sm:w-12 md:w-16 px-1.5 sm:px-3 md:px-6 py-4">
                                 @if (in_array(auth()->user()->role, ['admin', 'support']))
                                     <label class="flex items-center px-1 cursor-pointer select-none group">
                                         <input type="checkbox"
@@ -193,7 +192,7 @@
                                             @change="toggleSelectAll()"
                                         />
                                         <span
-                                            class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                                            class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-all"
                                             :class="(filteredTickets.length > 0 && filteredTickets.every(t => selectedIds.includes(t.id))) ? 'bg-[#1e3a8a] border-[#1e3a8a]' : 'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'"
                                         >
                                             <svg x-show="filteredTickets.length > 0 && filteredTickets.every(t => selectedIds.includes(t.id))" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,46 +202,46 @@
                                     </label>
                                 @endif
                             </th>
-                            <th class="px-2 sm:px-4 md:px-6 py-4 min-w-[4rem]">
+                            <th class="px-1.5 sm:px-3 md:px-6 py-4">
                                 <button @click="requestSort('id')"
-                                    class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
-                                    Reference <span x-html="getSortIcon('id')" class="ml-1"></span>
+                                    class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group whitespace-nowrap">
+                                    Ref <span x-html="getSortIcon('id')" class="ml-0.5"></span>
                                 </button>
                             </th>
-                            <th class="px-2 sm:px-4 md:px-6 py-4 min-w-[120px]">
+                            <th class="px-2 sm:px-4 md:px-6 py-4">
                                 <button @click="requestSort('subject')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Info <span x-html="getSortIcon('subject')" class="ml-1"></span>
                                 </button>
                             </th>
                             @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                <th class="hidden lg:table-cell px-4 md:px-6 py-4 min-w-[100px]">
+                                <th class="hidden lg:table-cell px-4 md:px-6 py-4">
                                     <button @click="requestSort('user')"
                                         class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                         User <span x-html="getSortIcon('user')" class="ml-1"></span>
                                     </button>
                                 </th>
                             @endif
-                            <th class="px-2 sm:px-4 md:px-6 py-4 min-w-[80px]">
+                            <th class="px-1.5 sm:px-3 md:px-6 py-4">
                                 <button @click="requestSort('priority')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Priority <span x-html="getSortIcon('priority')" class="ml-1"></span>
                                 </button>
                             </th>
-                            <th class="hidden md:table-cell px-4 md:px-6 py-4 min-w-[100px]">
+                            <th class="hidden md:table-cell px-4 md:px-6 py-4">
                                 <button @click="requestSort('status')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Status <span x-html="getSortIcon('status')" class="ml-1"></span>
                                 </button>
                             </th>
-                            <th class="hidden lg:table-cell px-6 py-4 min-w-[100px]">
+                            <th class="hidden lg:table-cell px-6 py-4">
                                 <button @click="requestSort('attendant')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Attendant <span x-html="getSortIcon('attendant')" class="ml-1"></span>
                                 </button>
                             </th>
                             <th
-                                class="hidden lg:table-cell px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right min-w-[80px]">
+                                class="hidden lg:table-cell px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">
                                 Actions</th>
                         </tr>
                     </thead>
@@ -275,16 +274,16 @@
                                 :class="expandedId === ticket.id ? 'bg-rose-50/50/80 dark:bg-[#1e293b]/80' : ''"
                                 @click="toggleExpand(ticket.id)">
                                     {{-- Checkbox --}}
-                                    <td class="px-4 md:px-6 py-4" @click.stop>
+                                    <td class="px-1.5 sm:px-3 md:px-6 py-4" @click.stop>
                                         @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                            <label class="flex items-center px-1 cursor-pointer select-none group">
+                                            <label class="flex items-center px-0.5 cursor-pointer select-none group">
                                                 <input type="checkbox"
                                                     class="hidden"
                                                     :checked="selectedIds.includes(ticket.id)"
                                                     @change="toggleSelect(ticket.id)"
                                                 />
                                                 <span
-                                                    class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                                                    class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-all"
                                                     :class="selectedIds.includes(ticket.id) ? 'bg-[#1e3a8a] border-[#1e3a8a]' : 'border-slate-300 dark:border-[#1e3a5f] bg-white dark:bg-[#1e293b]'"
                                                 >
                                                     <svg x-show="selectedIds.includes(ticket.id)" class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,20 +295,20 @@
                                     </td>
 
                                     {{-- Reference --}}
-                                    <td class="px-4 md:px-6 py-4" @click.stop>
+                                    <td class="px-1.5 sm:px-3 md:px-6 py-4" @click.stop>
                                         <span
                                             class="text-[10px] md:text-sm font-bold text-slate-600 group-hover:text-rose-950 dark:group-hover:text-rose-400 transition-colors tracking-tight"
                                             x-text="'#' + ticket.hashid"></span>
                                     </td>
 
                                     {{-- Subject + snippet --}}
-                                    <td class="px-4 md:px-6 py-4">
+                                    <td class="px-2 sm:px-4 md:px-6 py-4">
                                         <div class="flex items-center justify-between gap-2">
                                             <div class="min-w-0 flex-1">
                                         <div class="text-[11px] md:text-sm font-bold text-slate-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300 line-clamp-1 overflow-hidden"
                                             x-text="ticket.category ? ticket.category.name : ticket.subject.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())">
                                         </div>
-                                        <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[150px] sm:max-w-[250px] md:max-w-[350px] overflow-hidden"
+                                        <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px] sm:max-w-[250px] md:max-w-[350px] overflow-hidden"
                                             x-text="ticket.content"></div>
                                             </div>
                                             <svg class="lg:hidden w-4 h-4 shrink-0 text-slate-400 transition-transform"
@@ -331,7 +330,7 @@
                                     @endif
 
                                     {{-- Priority --}}
-                                    <td class="px-4 md:px-6 py-4">
+                                    <td class="px-1.5 sm:px-3 md:px-6 py-4">
                                         <span
                                             class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider"
                                             :class="{
@@ -409,7 +408,8 @@
 
                                     {{-- Row actions --}}
                                     <td class="hidden lg:table-cell px-4 md:px-6 py-4 text-right">
-                                                 {{-- Edit (ticket owner only, if no support has replied and not closed) --}}
+                                        <div class="flex items-center justify-end gap-2 md:gap-3">
+                                             {{-- Edit (ticket owner only, if no support has replied and not closed) --}}
                                             <template x-if="authId === ticket.user_id && !ticket.has_support_replied && ticket.status !== 'closed'">
                                                 <button @click.stop="openEditModal(ticket)"
                                                     class="p-1.5 md:p-2 rounded-lg bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all border border-transparent hover:border-blue-600/20 shadow-sm"

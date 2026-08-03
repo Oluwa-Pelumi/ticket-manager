@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-rose-950 flex items-center justify-center shadow-lg border border-white/20">
+            <div class="w-12 h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -9,9 +9,9 @@
             </div>
             <div class="flex flex-col">
                 <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                    Users
+                    Users Management
                 </h2>
-                <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">User Management</span>
+                <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">Manage user accounts and roles across the platform.</span>
             </div>
         </div>
     </x-slot>
@@ -21,25 +21,20 @@
 
     <div class="max-w-[98%] xl:max-w-[1700px] mx-auto py-2 px-2 sm:px-4 lg:px-6 overflow-x-hidden">
 
-        <div class="mb-8">
-            <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Staff Management</h1>
-            <p class="text-sm text-slate-600 mt-1">Manage user accounts and roles across the platform.</p>
-        </div>
-
         <x-flash-handler />
 
         {{-- Users table --}}
         <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-rose-950/10 dark:border-[#1e3a5f] shadow-2xl">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-left">
                     <thead>
                         <tr class="border-b border-rose-950/10 dark:border-[#1e3a5f]">
-                            <th class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">ID</th>
-                            <th class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">User Information</th>
-                            <th class="hidden sm:table-cell px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Activity</th>
-                            <th class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Role</th>
+                            <th class="px-2 sm:px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">ID</th>
+                            <th class="px-2 sm:px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">User Information</th>
+                            <th class="hidden sm:table-cell px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Activity</th>
+                            <th class="px-2 sm:px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Role</th>
                             <th class="hidden lg:table-cell px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Member Since</th>
-                            <th class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">Actions</th>
+                            <th class="px-2 sm:px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
@@ -47,18 +42,18 @@
                             <tr class="hover:bg-rose-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
 
                                 {{-- ID --}}
-                                <td class="px-4 md:px-6 py-4 text-xs md:text-sm font-medium text-slate-900 dark:text-white">
+                                <td class="px-2 sm:px-4 md:px-6 py-4 text-xs md:text-sm font-medium text-slate-900 dark:text-white">
                                     #{{ $user->id }}
                                 </td>
 
                                 {{-- Name + email --}}
-                                <td class="px-4 md:px-6 py-4">
-                                    <div class="text-xs md:text-sm font-bold text-slate-900 dark:text-white line-clamp-1">{{ $user->name }}</div>
-                                    <div class="text-[10px] md:text-xs text-slate-600 dark:text-slate-400 line-clamp-1">{{ $user->email }}</div>
+                                <td class="px-2 sm:px-4 md:px-6 py-4">
+                                    <div class="text-xs md:text-sm font-bold text-slate-900 dark:text-white line-clamp-1 truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">{{ $user->name }}</div>
+                                    <div class="text-[10px] md:text-xs text-slate-600 dark:text-slate-400 line-clamp-1 truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">{{ $user->email }}</div>
                                 </td>
 
                                 {{-- Ticket count --}}
-                                <td class="hidden sm:table-cell px-6 py-4 font-medium">
+                                <td class="hidden sm:table-cell px-4 md:px-6 py-4 font-medium">
                                     <div class="flex items-center space-x-2">
                                         <span class="text-sm text-slate-900 dark:text-white">{{ $user->tickets_count }}</span>
                                         <span class="text-xs text-slate-600 dark:text-slate-400">Tickets</span>
@@ -66,7 +61,7 @@
                                 </td>
 
                                 {{-- Role badge --}}
-                                <td class="px-4 md:px-6 py-4">
+                                <td class="px-2 sm:px-4 md:px-6 py-4">
                                     @php
                                         $roleBadge = match($user->role) {
                                             'admin'   => 'bg-rose-400/10 text-rose-950 dark:text-rose-400 ring-4 ring-rose-400/10',
@@ -74,7 +69,7 @@
                                             default   => 'bg-slate-100 text-slate-600 dark:bg-[#1e293b]/60 dark:text-slate-400',
                                         };
                                     @endphp
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest {{ $roleBadge }}">
+                                    <span class="inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black tracking-widest {{ $roleBadge }}">
                                         {{ $user->role }}
                                     </span>
                                 </td>
@@ -85,8 +80,8 @@
                                 </td>
 
                                 {{-- Actions: role select + delete --}}
-                                <td class="px-4 md:px-6 py-4 text-right">
-                                    <div class="flex flex-col items-end gap-1 md:gap-2">
+                                <td class="px-2 sm:px-4 md:px-6 py-4 text-right">
+                                    <div class="flex flex-col items-end gap-3 md:gap-4">
                                         <div class="flex items-center space-x-1 md:space-x-2">
 
                                             {{-- Role select — submits via its own mini-form --}}
@@ -125,11 +120,12 @@
                                                 x-data
                                                 @submit.prevent="
                                                     $dispatch('confirm', {
-                                                        type:        'danger',
-                                                        title:       'Delete User',
-                                                        confirmText: 'Delete User',
-                                                        message:     'Are you sure you want to delete {{ addslashes($user->name) }}? This action cannot be undone.',
-                                                        onConfirm:   () => $el.submit()
+                                                        type:           'danger',
+                                                        title:          'Delete User',
+                                                        confirmText:    'Delete User',
+                                                        message:        'Are you sure you want to delete {{ addslashes($user->name) }}? This action cannot be undone.',
+                                                        successMessage: 'User deleted successfully.',
+                                                        form:            $el
                                                     })
                                                 "
                                             >

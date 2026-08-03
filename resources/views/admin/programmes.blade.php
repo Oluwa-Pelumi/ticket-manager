@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-rose-950 flex items-center justify-center shadow-lg border border-white/20">
+            <div class="w-12 h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
@@ -54,7 +54,9 @@
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                                     </svg>
                                 </template>
-                                {{ isset($editingProgramme) ? 'Update Programme' : 'Add Programme' }}
+                                <span x-text="processing ? '{{ isset($editingProgramme) ? 'Updating Programme...' : 'Adding Programme...' }}' : '{{ isset($editingProgramme) ? 'Update Programme' : 'Add Programme' }}'">
+                                    {{ isset($editingProgramme) ? 'Update Programme' : 'Add Programme' }}
+                                </span>
                             </button>
                             @if (isset($editingProgramme))
                                 <a href="{{ route('admin.programmes.index') }}"
@@ -70,7 +72,8 @@
             {{-- Programmes Table --}}
             <div class="lg:col-span-2">
                 <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-rose-950/10 dark:border-[#1e3a5f] shadow-2xl">
-                    <table class="w-full text-left border-collapse">
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-rose-950/10 dark:border-[#1e3a5f]">
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">Programme</th>
@@ -101,11 +104,12 @@
                                             <form method="POST" action="{{ route('admin.programmes.destroy', $programme->id) }}"
                                                 x-data
                                                 @submit.prevent="$dispatch('confirm', {
-                                                    type: 'danger',
-                                                    title: 'Delete Programme',
-                                                    confirmText: 'Delete Programme',
-                                                    message: 'Delete \'{{ addslashes($programme->name) }}\'?',
-                                                    onConfirm: () => $el.submit()
+                                                    type:           'danger',
+                                                    title:          'Delete Programme',
+                                                    confirmText:    'Delete Programme',
+                                                    message:        'Delete \'{{ addslashes($programme->name) }}\'?',
+                                                    successMessage: 'Programme deleted successfully.',
+                                                    form:            $el
                                                 })">
                                                 @csrf @method('DELETE')
                                                 <button type="submit"
@@ -127,6 +131,7 @@
                             @endforelse
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
 

@@ -487,29 +487,53 @@
     {{-- Used by: categories delete, faqs delete, dashboard bulk actions, etc.              --}}
     <div id="global-confirm-modal" x-data="{
         open: false,
+        deleting: false,
         type: 'danger',
         title: '',
         message: '',
         confirmText: 'Confirm',
+        successMessage: '',
         onConfirm: null,
+        form: null,
 
         init() {
             window.addEventListener('confirm', (e) => {
-                this.type = e.detail?.type ?? 'danger';
-                this.title = e.detail?.title ?? 'Are you sure?';
-                this.message = e.detail?.message ?? '';
-                this.confirmText = e.detail?.confirmText ?? 'Confirm';
-                this.onConfirm = e.detail?.onConfirm ?? null;
-                this.open = true;
+                this.type           = e.detail?.type          ?? 'danger';
+                this.title          = e.detail?.title         ?? 'Are you sure?';
+                this.message        = e.detail?.message       ?? '';
+                this.confirmText    = e.detail?.confirmText   ?? 'Confirm';
+                this.successMessage = e.detail?.successMessage ?? 'Done.';
+                this.onConfirm      = e.detail?.onConfirm     ?? null;
+                this.form           = e.detail?.form          ?? null;
+                this.deleting       = false;
+                this.open           = true;
             });
         },
 
-        confirm() {
+        async confirm() {
+            // Form-based delete: use fetch so we can control the UX
+            if (this.form) {
+                this.deleting = true;
+                const formEl = this.form;
+                const data   = new FormData(formEl);
+                try {
+                    await fetch(formEl.action, { method: 'POST', body: data });
+                } catch (_) {}
+                this.open     = false;
+                this.deleting = false;
+                await new Promise(r => setTimeout(r, 250)); // let modal close animate
+                window.showToast(this.successMessage || 'Deleted successfully.', 'success');
+                // Reload the list area (full page reload preserves server state)
+                window.location.reload();
+                return;
+            }
+            // Fallback: call onConfirm callback directly
             if (typeof this.onConfirm === 'function') this.onConfirm();
             this.open = false;
         },
 
         cancel() {
+            if (this.deleting) return; // block cancel while processing
             this.open = false;
         }
     }" x-show="open" x-cloak
@@ -531,37 +555,60 @@
                         'bg-amber-500/10 border border-amber-500/20': type === 'warning',
                         'bg-rose-500/10 border border-rose-500/20': type !== 'danger' && type !== 'warning',
                     }">
-                    <svg class="w-6 h-6"
-                        :class="{
-                            'text-rose-500': type === 'danger',
-                            'text-amber-500': type === 'warning',
-                            'text-rose-500': type !== 'danger' && type !== 'warning',
-                        }"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
+                    {{-- Spinner while deleting, icon otherwise --}}
+                    <template x-if="deleting">
+                        <svg class="w-6 h-6 animate-spin"
+                            :class="{
+                                'text-rose-500': type === 'danger',
+                                'text-amber-500': type === 'warning',
+                                'text-rose-500': type !== 'danger' && type !== 'warning',
+                            }"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                        </svg>
+                    </template>
+                    <template x-if="!deleting">
+                        <svg class="w-6 h-6"
+                            :class="{
+                                'text-rose-500': type === 'danger',
+                                'text-amber-500': type === 'warning',
+                                'text-rose-500': type !== 'danger' && type !== 'warning',
+                            }"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </template>
                 </div>
-                <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight" x-text="title"></h3>
+                <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight" x-text="deleting ? title.replace(/^(Delete|Remove)/, (m) => m === 'Delete' ? 'Deleting' : 'Removing') + '...' : title"></h3>
             </div>
 
             {{-- Message --}}
-            <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed" x-text="message"></p>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed"
+                x-text="deleting ? 'Please wait while the item is being removed…' : message"></p>
 
             {{-- Actions --}}
             <div class="flex gap-3 justify-end">
-                <button @click="cancel()"
-                    class="px-5 py-2.5 rounded-2xl text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-transparent">
+                <button @click="cancel()" x-bind:disabled="deleting"
+                    class="px-5 py-2.5 rounded-2xl text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-transparent disabled:opacity-40 disabled:cursor-not-allowed">
                     Cancel
                 </button>
-                <button @click="confirm()"
-                    class="px-5 py-2.5 rounded-2xl text-xs font-black tracking-widest text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
+                <button @click="confirm()" x-bind:disabled="deleting"
+                    class="px-5 py-2.5 rounded-2xl text-xs font-black tracking-widest text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:scale-100 flex items-center gap-2"
                     :class="{
                         'bg-rose-600 hover:bg-rose-700': type === 'danger',
                         'bg-amber-500 hover:bg-amber-600': type === 'warning',
                         'bg-rose-600 hover:bg-rose-800': type !== 'danger' && type !== 'warning',
-                    }"
-                    x-text="confirmText"></button>
+                    }">
+                    <template x-if="deleting">
+                        <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                        </svg>
+                    </template>
+                    <span x-text="deleting ? confirmText.replace(/^(Delete|Remove)(.*)?$/, (_, v, rest) => (v === 'Delete' ? 'Deleting' : 'Removing') + (rest || '') + '…') : confirmText"></span>
+                </button>
             </div>
         </div>
     </div>
