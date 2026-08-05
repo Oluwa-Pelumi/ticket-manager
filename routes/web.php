@@ -7,7 +7,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProgrammeController;
 
 Route::get('/', function () {
     return redirect()->route('home');
@@ -25,16 +24,14 @@ Route::get('/home', function () {
     ]);
 })->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/submit-ticket', function () {
-        return view('submit-ticket', [
-            'categories' => rescue(fn () => \App\Models\Category::all(), []),
-        ]);
-    })->name('submit-ticket');
+Route::get('/submit-ticket', function () {
+    return view('submit-ticket', [
+        'categories' => rescue(fn () => \App\Models\Category::all(), []),
+    ]);
+})->name('submit-ticket');
 
-    Route::post('submit-ticket', [TicketController::class, 'save'])
-        ->name('save-ticket');
-});
+Route::post('submit-ticket', [TicketController::class, 'save'])
+    ->name('save-ticket');
 
 Route::get('/check-status', function () {
     return view('check-status');
@@ -75,21 +72,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('tickets.destroy');
     Route::post('/tickets/{ticket}/comments', [TicketController::class, 'addComment'])
         ->name('tickets.add-comment');
-
-    // Lightweight polling endpoint — returns [{id, status}] for the user's visible tickets
-    Route::get('/tickets/statuses', [TicketController::class, 'ticketStatuses'])
-        ->name('tickets.statuses');
 });
 
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])
     ->name('add-comment');
 
-Route::middleware(['auth', 'verified', 'staff'])->group(function () {
+Route::middleware(['auth', 'staff'])->group(function () {
     Route::patch('bulk-update-ticket-status', [TicketController::class, 'bulkUpdateStatus'])
         ->name('bulk-update-ticket-status');
+
+    Route::patch('/tickets/{ticket}/activate-order', [TicketController::class, 'activateOrder'])
+    ->name('tickets.activate-order');
 });
 
-Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('delete-ticket', [TicketController::class, 'deleteTicket'])
         ->name('delete-ticket');
 
@@ -107,20 +103,12 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::patch('/admin/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
-    // Programme Management
-    Route::get('/admin/programmes', [ProgrammeController::class, 'index'])->name('admin.programmes.index');
-    Route::post('/admin/programmes', [ProgrammeController::class, 'store'])->name('admin.programmes.store');
-    Route::patch('/admin/programmes/{programme}', [ProgrammeController::class, 'update'])->name('admin.programmes.update');
-    Route::delete('/admin/programmes/{programme}', [ProgrammeController::class, 'destroy'])->name('admin.programmes.destroy');
-
     // FAQ Management
     Route::get('/admin/faqs', [\App\Http\Controllers\FaqController::class, 'index'])->name('admin.faqs.index');
     Route::post('/admin/faqs', [\App\Http\Controllers\FaqController::class, 'store'])->name('admin.faqs.store');
     Route::patch('/admin/faqs/{faq}', [\App\Http\Controllers\FaqController::class, 'update'])->name('admin.faqs.update');
     Route::delete('/admin/faqs/{faq}', [\App\Http\Controllers\FaqController::class, 'destroy'])->name('admin.faqs.destroy');
 });
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

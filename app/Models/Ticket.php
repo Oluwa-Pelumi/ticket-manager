@@ -11,20 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Ticket extends Model
 {
     use HasFactory;
-    protected $appends = ['hashid', 'attendant', 'attendants', 'has_support_replied'];
-
-    /** Check if any support/admin staff has replied to this ticket. */
-    public function getHasSupportRepliedAttribute()
-    {
-        if ($this->relationLoaded('comments')) {
-            return $this->comments->contains(function ($comment) {
-                return $comment->user && in_array($comment->user->role, ['admin', 'support']) && $comment->user_id !== $this->user_id;
-            });
-        }
-        return $this->comments()->whereHas('user', function ($q) {
-            $q->whereIn('role', ['admin', 'support']);
-        })->where('user_id', '!=', $this->user_id)->exists();
-    }
+    protected $appends = ['hashid', 'attendant', 'attendants'];
 
     /** Encode the ticket ID as a public-facing hashid. */
     public function getHashidAttribute()
@@ -85,15 +72,22 @@ class Ticket extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
+        'email',
         'status',
-        'attachments',
+        'images',
         'user_id',
         'subject',
         'content',
         'filename',
         'priority',
+        'order_type',
         'category_id',
         'attended_to_by',
+        'whatsapp_number',
+        'recurrence_period',
+        'order_activations',
+        'custom_recurrence_date',
     ];
 
     /**
@@ -102,7 +96,8 @@ class Ticket extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'attachments'            => 'array',
+        'images'            => 'array',
+        'order_activations' => 'array',
         'attended_to_by'    => 'array',
     ];
 

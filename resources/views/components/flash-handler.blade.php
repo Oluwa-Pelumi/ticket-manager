@@ -4,7 +4,7 @@
         @if(session($type))
         @php
             $styles = [
-                'success' => ['border' => '#3b82f6', 'icon_color' => '#3b82f6', 'label' => 'Success',
+                'success' => ['border' => '#10b981', 'icon_color' => '#10b981', 'label' => 'Success',
                     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>'],
                 'error'   => ['border' => '#f43f5e', 'icon_color' => '#f43f5e', 'label' => 'Error',
                     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>'],

@@ -43,7 +43,7 @@
                     window.addEventListener('open-delete-modal', this._openHandler);
                     window.addEventListener('close',             this._closeHandler);
                 },
-
+                
                 destroy() {
                     window.removeEventListener('open-delete-modal', this._openHandler);
                     window.removeEventListener('close',             this._closeHandler);
@@ -65,7 +65,7 @@
             {{-- Panel --}}
             <div class="flex min-h-full items-center justify-center p-4">
                 <div
-                    class="relative w-full max-w-lg bg-white dark:bg-[#0f172a] rounded-3xl shadow-2xl border border-slate-100 dark:border-[#1e3a5f] overflow-hidden"
+                    class="relative w-full max-w-lg bg-white dark:bg-[#102824] rounded-3xl shadow-2xl border border-slate-100 dark:border-[#1d3a34] overflow-hidden"
                     @click.stop
                 >
                     <form
@@ -99,7 +99,11 @@
                                 id="del-password"
                                 type="password"
                                 name="password"
+<<<<<<< HEAD
                                 class="mt-1 block w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-[#1e293b] border border-emerald-950/10 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500 transition-all outline-none"
+=======
+                                class="mt-1 block w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-rose-500 transition-all outline-none"
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                 placeholder="Enter your password to confirm"
                                 x-ref="password"
                             />
@@ -112,7 +116,11 @@
                             <button
                                 type="button"
                                 @click="open = false; processing = false"
+<<<<<<< HEAD
                                 class="inline-flex items-center justify-center rounded-2xl border border-emerald-950/20 dark:border-[#1e3a5f] px-5 py-2.5 text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-[#1e293b]"
+=======
+                                class="inline-flex items-center justify-center rounded-2xl border border-emerald-900/20 dark:border-[#1d3a34] px-5 py-2.5 text-xs font-black tracking-widest text-slate-700 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-[#18342f]"
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                             >
                                 Cancel
                             </button>

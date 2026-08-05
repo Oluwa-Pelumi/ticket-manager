@@ -13,18 +13,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('middle_name')->nullable();
-            $table->string('last_name');
+            $table->string('name');
             $table->string('role')->default('user');
-
             $table->string('email')->unique();
-
-            $table->string('matric_no')->nullable()->unique();
-            $table->string('phone_number')->nullable()->comment('Valid international phone number (e.g., +2348000000000)');
-
-            $table->foreignId('programme_id')->nullable()->constrained()->nullOnDelete();
-
+            $table->string('whatsapp_number')->nullable()->comment('Valid international phone number (e.g., +2348000000000)');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

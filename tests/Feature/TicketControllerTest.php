@@ -108,44 +108,44 @@ class TicketControllerTest extends TestCase
     // ─────────────────────────────────────────────
 
     /** @test */
-    // public function test_guest_can_submit_a_ticket(): void
-    // {
-    //     Notification::fake();
-    //     $category = Category::factory()->create(['slug' => 'general']);
+    public function test_guest_can_submit_a_ticket(): void
+    {
+        Notification::fake();
+        $category = Category::factory()->create(['slug' => 'general']);
 
-    //     $this->post(route('save-ticket'), [
-    //         'name'       => 'John Guest',
-    //         'email'      => 'guest@example.com',
-    //         'subject'    => 'general',
-    //         'content'    => 'I need help with my order.',
-    //         'priority'   => 'medium',
-    //         'category_id'=> $category->id,
-    //     ])->assertRedirect();
+        $this->post(route('save-ticket'), [
+            'name'       => 'John Guest',
+            'email'      => 'guest@example.com',
+            'subject'    => 'general',
+            'content'    => 'I need help with my order.',
+            'priority'   => 'medium',
+            'category_id'=> $category->id,
+        ])->assertRedirect();
 
-    //     $this->assertDatabaseHas('tickets', ['email' => 'guest@example.com']);
-    // }
+        $this->assertDatabaseHas('tickets', ['email' => 'guest@example.com']);
+    }
 
     /** @test */
-    // public function test_authenticated_user_can_submit_a_ticket(): void
-    // {
-    //     Notification::fake();
-    //     $user     = $this->regularUser();
-    //     $category = Category::factory()->create(['slug' => 'general']);
+    public function test_authenticated_user_can_submit_a_ticket(): void
+    {
+        Notification::fake();
+        $user     = $this->regularUser();
+        $category = Category::factory()->create(['slug' => 'general']);
 
-    //     $this->actingAs($user)->post(route('save-ticket'), [
-    //         'name'        => $user->name,
-    //         'email'       => $user->email,
-    //         'subject'     => 'general',
-    //         'content'     => 'Please assist.',
-    //         'priority'    => 'low',
-    //         'category_id' => $category->id,
-    //     ])->assertRedirect();
+        $this->actingAs($user)->post(route('save-ticket'), [
+            'name'        => $user->name,
+            'email'       => $user->email,
+            'subject'     => 'general',
+            'content'     => 'Please assist.',
+            'priority'    => 'low',
+            'category_id' => $category->id,
+        ])->assertRedirect();
 
-    //     $this->assertDatabaseHas('tickets', [
-    //         'user_id' => $user->id,
-    //         'email'   => $user->email,
-    //     ]);
-    // }
+        $this->assertDatabaseHas('tickets', [
+            'user_id' => $user->id,
+            'email'   => $user->email,
+        ]);
+    }
 
     /** @test */
     public function test_ticket_save_validates_required_fields(): void
@@ -209,49 +209,49 @@ class TicketControllerTest extends TestCase
     // ─────────────────────────────────────────────
 
     /** @test */
-    // public function test_ticket_owner_can_update_their_ticket(): void
-    // {
-    //     $user   = $this->regularUser();
-    //     $ticket = $this->makeTicket(['user' => $user]);
+    public function test_ticket_owner_can_update_their_ticket(): void
+    {
+        $user   = $this->regularUser();
+        $ticket = $this->makeTicket(['user' => $user]);
 
-    //     $this->actingAs($user)->patch(route('update-ticket', $ticket->hashid), [
-    //         'subject'  => 'Updated subject',
-    //         'content'  => 'Updated content',
-    //         'priority' => 'high',
-    //     ])->assertRedirect();
+        $this->actingAs($user)->patch(route('update-ticket', $ticket->hashid), [
+            'subject'  => 'Updated subject',
+            'content'  => 'Updated content',
+            'priority' => 'high',
+        ])->assertRedirect();
 
-    //     $this->assertDatabaseHas('tickets', [
-    //         'id'      => $ticket->id,
-    //         'subject' => 'Updated subject',
-    //     ]);
-    // }
-
-    /** @test */
-    // public function test_non_owner_cannot_update_another_users_ticket(): void
-    // {
-    //     $owner  = $this->regularUser();
-    //     $other  = $this->regularUser();
-    //     $ticket = $this->makeTicket(['user' => $owner]);
-
-    //     $this->actingAs($other)->patch(route('update-ticket', $ticket->hashid), [
-    //         'subject'  => 'Hacked',
-    //         'content'  => 'Hacked content',
-    //         'priority' => 'low',
-    //     ])->assertSessionHas('error');
-    // }
+        $this->assertDatabaseHas('tickets', [
+            'id'      => $ticket->id,
+            'subject' => 'Updated subject',
+        ]);
+    }
 
     /** @test */
-    // public function test_closed_ticket_cannot_be_updated(): void
-    // {
-    //     $user   = $this->regularUser();
-    //     $ticket = $this->makeTicket(['user' => $user, 'status' => 'closed']);
+    public function test_non_owner_cannot_update_another_users_ticket(): void
+    {
+        $owner  = $this->regularUser();
+        $other  = $this->regularUser();
+        $ticket = $this->makeTicket(['user' => $owner]);
 
-    //     $this->actingAs($user)->patch(route('update-ticket', $ticket->hashid), [
-    //         'subject'  => 'Trying again',
-    //         'content'  => 'Still need help',
-    //         'priority' => 'medium',
-    //     ])->assertSessionHas('error');
-    // }
+        $this->actingAs($other)->patch(route('update-ticket', $ticket->hashid), [
+            'subject'  => 'Hacked',
+            'content'  => 'Hacked content',
+            'priority' => 'low',
+        ])->assertSessionHas('error');
+    }
+
+    /** @test */
+    public function test_closed_ticket_cannot_be_updated(): void
+    {
+        $user   = $this->regularUser();
+        $ticket = $this->makeTicket(['user' => $user, 'status' => 'closed']);
+
+        $this->actingAs($user)->patch(route('update-ticket', $ticket->hashid), [
+            'subject'  => 'Trying again',
+            'content'  => 'Still need help',
+            'priority' => 'medium',
+        ])->assertSessionHas('error');
+    }
 
     // ─────────────────────────────────────────────
     // updateStatus (legacy PATCH route)
@@ -542,34 +542,33 @@ class TicketControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function test_comment_on_closed_ticket_reopens_and_assigns_support(): void
-    {
-        Notification::fake();
-        $support = $this->support();
-        $user    = $this->regularUser();
-        $ticket  = $this->makeTicket([
-            'user'           => $user,
-            'status'         => 'closed',
-            'attended_to_by' => [$support->id],
-        ]);
+    // ─────────────────────────────────────────────
+    // activateOrder
+    // ─────────────────────────────────────────────
 
-        $this->actingAs($user)
-            ->post(route('tickets.add-comment', $ticket->hashid), [
-                'content' => 'I still need help with this.',
-            ])
+    /** @test */
+    public function test_staff_can_activate_an_order(): void
+    {
+        $support = $this->support();
+        $ticket  = $this->makeTicket(['order_type' => 'recurrent']);
+
+        $this->actingAs($support)
+            ->patch(route('tickets.activate-order', $ticket->hashid))
             ->assertRedirect();
 
         $ticket->refresh();
+        $this->assertNotEmpty($ticket->order_activations);
+    }
 
-        $this->assertSame('open', $ticket->status);
-        $this->assertNotEmpty($ticket->attended_to_by);
-        $this->assertContains($ticket->attendant->id, $ticket->attended_to_by);
-        $this->assertDatabaseHas('comments', [
-            'ticket_id' => $ticket->id,
-            'user_id'   => $user->id,
-            'content'   => 'I still need help with this.',
-        ]);
+    /** @test */
+    public function test_regular_user_cannot_activate_order(): void
+    {
+        $user   = $this->regularUser();
+        $ticket = $this->makeTicket(['order_type' => 'recurrent']);
+
+        $this->actingAs($user)
+            ->patch(route('tickets.activate-order', $ticket->hashid))
+            ->assertSessionHas('error');
     }
 
     // ─────────────────────────────────────────────
@@ -607,6 +606,28 @@ class TicketControllerTest extends TestCase
             ->assertSessionHasErrors(['reference']);
     }
 
+    /** @test */
+    public function test_activate_order_assigns_support_and_sets_status_to_in_progress(): void
+    {
+        $support = $this->support();
+        $ticket  = Ticket::factory()->create([
+            'order_type' => 'recurrent',
+            'recurrence_period' => 'monthly',
+            'status' => 'open',
+            'attended_to_by' => null,
+        ]);
+
+        $response = $this->actingAs($support)
+            ->patch(route('tickets.activate-order', $ticket->id));
+
+        $ticket->refresh();
+        
+        $this->assertEquals('in-progress', $ticket->status);
+        $this->assertIsArray($ticket->attended_to_by);
+        $this->assertTrue(in_array($support->id, $ticket->attended_to_by));
+        $this->assertContains($support->id, $ticket->attended_to_by);
+        $this->assertCount(1, $ticket->order_activations);
+    }
 
     /** @test */
     public function test_past_support_cannot_reply_to_ticket(): void

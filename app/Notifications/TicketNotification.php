@@ -8,9 +8,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 /**
- * Queued notification for ticket lifecycle events via email.
+ * Queued notification for ticket lifecycle events via email and WhatsApp.
  */
-class TicketNotification extends Notification implements ShouldQueue
+class TicketNotification extends Notification
 {
     use Queueable;
 
@@ -34,7 +34,21 @@ class TicketNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        $channels = ['mail'];
+
+        $whatsappNumber = method_exists($notifiable, 'routeNotificationFor')
+            ? $notifiable->routeNotificationFor('whatsapp')
+            : null;
+
+        if (empty($whatsappNumber)) {
+            $whatsappNumber = $notifiable->whatsapp_number ?? null;
+        }
+
+        if (!empty($whatsappNumber)) {
+            $channels[] = 'whatsapp';
+        }
+
+        return $channels;
     }
 
     /**
@@ -42,16 +56,22 @@ class TicketNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $content = is_string($this->message) ? $this->message : (is_object($this->message) && method_exists($this->message, '__toString') ? (string) $this->message : 'Ticket notification');
+        $content = is_string($this->message) ? $this->message : $this->message->content;
         $name    = $this->recipientName ?? $notifiable->name ?? 'there';
 
         return (new MailMessage)
             ->subject($this->subject)
-            ->view('emails.ticket_notification', [
-                'notificationMessage' => $content,
-                'recipientName' => $name,
-                'subject' => $this->subject,
-                'ticketUrl' => $this->ticketUrl,
-            ]);
+            ->greeting('Hello ' . $name . '!')
+            ->line($content)
+            ->line('Thank you for using our platform!');
+    }
+
+    /** Build the plain-text body for the WhatsApp channel. */
+    public function toWhatsapp(object $notifiable): string
+    {
+        $content = is_string($this->message) ? $this->message : $this->message->content;
+        $name    = $this->recipientName ?? $notifiable->name ?? 'there';
+
+        return "Hello {$name}!\n\n{$content}";
     }
 }

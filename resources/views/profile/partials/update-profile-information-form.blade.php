@@ -17,43 +17,17 @@
         @method('patch')
 
         <div>
-            <x-input-label for="first_name" value="First Name" />
+            <x-input-label for="name" value="Name" />
             <x-text-input
-                id="first_name"
-                name="first_name"
+                id="name"
+                name="name"
                 class="mt-1 block w-full"
-                value="{{ old('first_name', $user->first_name) }}"
+                value="{{ old('name', $user->name) }}"
                 required
                 autofocus
-                autocomplete="first_name"
+                autocomplete="name"
             />
-            <x-input-error class="mt-2" :messages="$errors->get('first_name')" />
-        </div>
-
-        <div>
-            <x-input-label for="middle_name" value="Middle Name (Optional)" />
-            <x-text-input
-                id="middle_name"
-                name="middle_name"
-                class="mt-1 block w-full"
-                value="{{ old('middle_name', $user->middle_name) }}"
-                autocomplete="middle_name"
-            />
-            <x-input-error class="mt-2" :messages="$errors->get('middle_name')" />
-        </div>
-
-        <div>
-            <x-input-label for="last_name" value="Last Name" />
-            <x-text-input
-                id="last_name"
-                name="last_name"
-                class="mt-1 block w-full"
-                value="{{ old('last_name', $user->last_name) }}"
-                required
-                autofocus
-                autocomplete="last_name"
-            />
-            <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
@@ -70,29 +44,17 @@
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
 
-        @if (auth()->user()->role === 'user')
-        <div>
-            <x-input-label for="matric_no" value="Matriculation Number" />
-            <x-text-input
-                id="matric_no"
-                name="matric_no"
-                type="text"
-                class="mt-1 block w-full"
-                value="{{ old('matric_no', $user->matric_no) }}"
-                required
-                autocomplete="matric_no"
-            />
-            <x-input-error class="mt-2" :messages="$errors->get('matric_no')" />
-        </div>
-        @endif
-
         @if ($mustVerifyEmail && $user->email_verified_at === null)
             <div class="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 p-4">
                 <p class="text-sm text-amber-800 dark:text-amber-300">
                     Your email address is unverified.
                     <form method="POST" action="{{ route('verification.send') }}" class="inline">
                         @csrf
+<<<<<<< HEAD
                         <button type="submit" class="font-semibold underline hover:text-emerald-950 dark:hover:text-emerald-400 transition-colors focus:outline-none">
+=======
+                        <button type="submit" class="font-semibold underline hover:text-teal-900 dark:hover:text-lime-400 transition-colors focus:outline-none">
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                             Click here to re-send the verification email.
                         </button>
                     </form>
@@ -117,7 +79,7 @@
                 x-transition:enter-start="opacity-0 translate-y-1"
                 x-transition:leave="transition ease-in-out duration-300"
                 x-transition:leave-end="opacity-0"
-                class="flex items-center gap-1.5 text-sm font-semibold text-green-600 dark:text-green-400"
+                class="flex items-center gap-1.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400"
             >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />

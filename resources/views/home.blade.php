@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿@php
 // Static data â€” steps explaining the ticket lifecycle
 $ticketingSteps = [
@@ -26,6 +27,36 @@ $ticketingSteps = [
 'When your request is complete, the ticket is marked closed. You can still open past tickets from your dashboard or by status search with your email.',
 ],
 ];
+=======
+@php
+    // Static data — steps explaining the ticket lifecycle
+    $ticketingSteps = [
+        [
+            'step' => 1,
+            'title' => 'Submit',
+            'description' =>
+                'Create a ticket with the right category, your contact details, and what happened. Attach images if they help our team understand faster.',
+        ],
+        [
+            'step' => 2,
+            'title' => 'Review',
+            'description' =>
+                'Our team sees your ticket on the dashboard, filters by status or priority, and updates progress—including assigning someone when needed.',
+        ],
+        [
+            'step' => 3,
+            'title' => 'Reply in thread',
+            'description' =>
+                'Conversation stays on the ticket page: add comments or files anytime it is open. Check the same ticket for staff replies.',
+        ],
+        [
+            'step' => 4,
+            'title' => 'Closed',
+            'description' =>
+                'When your request is complete, the ticket is marked closed. You can still open past tickets from your dashboard or by status search with your email.',
+        ],
+    ];
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
 @endphp
 
 <x-app-layout :show-navbar="false">
@@ -34,6 +65,7 @@ $ticketingSteps = [
 
 
     <div class="fauna-shell min-h-screen">
+<<<<<<< HEAD
         {{-- Hero section â€” navigation and primary CTAs --}}
         <section class="relative overflow-hidden hero-gradient">
             {{-- Gorgeous blurred background elements --}}
@@ -67,24 +99,49 @@ $ticketingSteps = [
                                 @endif
                             </div>
                         </a>
+=======
+        {{-- Hero section — navigation and primary CTAs --}}
+        <section class="relative overflow-hidden bg-teal-900 dark:bg-[#102824]">
+            <div class="container mx-auto px-4">
+                {{-- Nav: always visible — shows Login+Register for guests, Dashboard for auth users --}}
+                <nav class="py-6">
+                    <div class="flex items-center justify-between">
+                        <div class="inline-flex items-center gap-3 text-white">
+                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-8 w-8">
+                            <span class="text-xl font-semibold tracking-tight">{{ config('app.name') }}</span>
+                        </div>
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
 
-                        <div class="flex items-center gap-3 sm:gap-4">
+                        <div class="flex items-center gap-2 sm:gap-3">
                             @guest
-                            <a href="{{ route('login') }}" class="block sm:hidden px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
-                            <a href="{{ route('login') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Login</a>
-                            <a href="{{ route('register') }}" class="hidden sm:block px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Register</a>
+                                <a href="{{ route('login') }}"
+                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                    Login
+                                </a>
+                                <a href="{{ route('register') }}"
+                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                    Register
+                                </a>
                             @else
-                            <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Dashboard</a>
+                                <a href="{{ route('dashboard') }}"
+                                    class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                    Dashboard
+                                </a>
                             @endauth
+<<<<<<< HEAD
                             <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all backdrop-blur-md hover:scale-110 active:scale-95" aria-label="Toggle Theme">
                                 <svg class="theme-icon-dark w-4 h-4 text-emerald-400 hidden" fill="currentColor"
+=======
+                            <button onclick="toggleTheme()"
+                                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 text-white transition hover:border-[#10b981] hover:text-[#10b981] dark:border-[#10b981]/40"
+                                aria-label="Toggle Theme">
+                                <svg id="theme-icon-dark" class="w-5 h-5 text-[#10b981] hidden" fill="currentColor"
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                     viewBox="0 0 20 20">
                                     <path
                                         d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
                                 </svg>
-
-                                <svg class="theme-icon-light w-4 h-4 text-amber-400 hidden" fill="currentColor"
-                                    viewBox="0 0 20 20">
+                                <svg id="theme-icon-light" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                                 </svg>
                             </button>
@@ -92,60 +149,47 @@ $ticketingSteps = [
                     </div>
                 </nav>
 
-                <div class="pb-24 sm:pb-32 pt-16 sm:pt-24 text-center">
-                    {{-- Badge --}}
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-8">
-                        Streamlined Institutional Requests
-                    </div>
-
-                    <h1 class="mx-auto mb-8 max-w-4xl text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter text-white drop-shadow-2xl leading-[1.1]" style="text-shadow: 0 2px 20px rgba(0,0,0,0.4);">
-                        Your Dedicated <br />
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-amber-200">Support System</span>
+                <div class="pb-16 sm:pb-20 pt-12 sm:pt-16 text-center">
+                    <h1
+                        class="mx-auto mb-6 sm:mb-8 max-w-3xl text-4xl sm:text-5xl md:text-7xl font-medium tracking-tight text-white">
+                        Your Dedicated Support System
                     </h1>
-
-                    <p class="mx-auto mb-12 max-w-2xl text-lg sm:text-xl text-white/90 font-medium leading-relaxed" style="text-shadow: 0 1px 8px rgba(0,0,0,0.5);">
-                        Providing a seamless process for students to request transcripts, certificates, letters of recommendation, and other official institutional documents.
+                    <p class="mx-auto mb-8 sm:mb-10 max-w-2xl text-base sm:text-lg text-white/80 px-2">
+                        Providing seamless assistance for prescriptions, refills, and all your medication concerns with
+                        professional care.
                     </p>
-
-                    <div class="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+                    <div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
                         <a href="{{ route('submit-ticket') }}"
-                             class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                            <span class="relative z-10">Create Ticket</span>
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            Create Ticket
                         </a>
 
-                        @if (auth()->user())
-                        <a href="{{ route('dashboard') }}"
-                            class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                            <span>Dashboard</span>
-                        </a>
-                        @endif
-
-                        <a href="{{ route('check-status') }}"
-                            class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                            <span>Check Ticket Status</span>
+                        <a href="{{ auth()->user() ? route('dashboard') : route('check-status') }}"
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            View Ticket
                         </a>
                     </div>
                 </div>
             </div>
-
         </section>
 
         {{-- Admin/support ticket stats --}}
         @if (auth()->user()?->role === 'admin' || auth()->user()?->role === 'support')
-        <section class="py-14">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
-                    @foreach ([['label' => 'Total Tickets', 'value' => $stats['totalTickets'] ?? 0], ['label' => 'Open Tickets', 'value' => $stats['openTickets'] ?? 0], ['label' => 'In Progress', 'value' => $stats['inProgressTickets'] ?? 0], ['label' => 'Resolved Tickets', 'value' => $stats['resolvedTickets'] ?? 0]] as $stat)
-                    <div class="fauna-panel p-8 dark:bg-[#0f172a] dark:border-[#1e3a5f]">
-                        <h3 class="text-3xl font-semibold">{{ $stat['value'] }}</h3>
-                        <p class="mt-2 text-slate-600 dark:text-slate-400">{{ $stat['label'] }}</p>
+            <section class="py-14">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-1 gap-8 text-center md:grid-cols-4">
+                        @foreach ([['label' => 'Total Tickets', 'value' => $stats['totalTickets'] ?? 0], ['label' => 'Open Tickets', 'value' => $stats['openTickets'] ?? 0], ['label' => 'In Progress', 'value' => $stats['inProgressTickets'] ?? 0], ['label' => 'closed Tickets', 'value' => $stats['closedTickets'] ?? 0]] as $stat)
+                            <div class="fauna-panel p-8 dark:bg-[#102824] dark:border-[#1d3a34]">
+                                <h3 class="text-3xl font-semibold">{{ $stat['value'] }}</h3>
+                                <p class="mt-2 text-slate-600 dark:text-slate-400">{{ $stat['label'] }}</p>
+                            </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
-            </div>
-        </section>
+            </section>
         @endif
 
+<<<<<<< HEAD
         {{-- How ticketing works â€” step-by-step guide --}}
         <section class="py-20 bg-slate-50/50 dark:bg-[#020617] relative overflow-hidden">
             {{-- Decorative background elements --}}
@@ -175,17 +219,37 @@ $ticketingSteps = [
                             {{-- Step number badge --}}
                             <div class="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30 flex items-center justify-center text-2xl font-black text-emerald-600 dark:text-emerald-400 mb-8 group-hover:scale-110 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/40 transition-all duration-300">
                                 {{ $item['step'] }}
+=======
+        {{-- How ticketing works — step-by-step guide --}}
+        <section class="p-4 bg-white dark:bg-[#0b1715]">
+            <div class="rounded-3xl bg-emerald-700 px-6 py-16 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
+                <div class="container mx-auto px-4">
+                    <h2 class="mb-4 text-4xl font-semibold text-white">How ticketing works</h2>
+                    <p class="mb-12 max-w-2xl text-white/80">
+                        From your first message to a closed ticket—here is what happens in {{ config('app.name') }}.
+                    </p>
+                    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+                        @foreach ($ticketingSteps as $item)
+                            <div class="rounded-2xl bg-white p-8 dark:bg-[#18342f] dark:border dark:border-[#28524a]">
+                                <span
+                                    class="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-teal-900 text-sm font-semibold text-white dark:bg-lime-500 dark:text-[#102824]">
+                                    {{ $item['step'] }}
+                                </span>
+                                <h3 class="text-2xl font-medium text-teal-900 dark:text-white">{{ $item['title'] }}
+                                </h3>
+                                <p class="mt-3 text-slate-600 dark:text-slate-300">{{ $item['description'] }}</p>
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                             </div>
-
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">{{ $item['title'] }}</h3>
-                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                                {{ $item['description'] }}
-                            </p>
-                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
-                </div>
+                    <div
+                        class="mt-12 flex flex-wrap items-center justify-center gap-4 border-t border-white/20 pt-10 dark:border-[#28524a]">
+                        <a href="{{ route('submit-ticket') }}"
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            Create ticket
+                        </a>
 
+<<<<<<< HEAD
                 <div class="flex flex-wrap items-center justify-center gap-4 pt-8">
                     <a href="{{ route('submit-ticket') }}"
                         class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-emerald-400 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-emerald-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
@@ -202,6 +266,19 @@ $ticketingSteps = [
                         Dashboard
                     </a>
                     @endauth
+=======
+                        <a href="{{ route('check-status') }}"
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            Check status
+                        </a>
+                        @auth
+                            <a href="{{ route('dashboard') }}"
+                                class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                                Dashboard
+                            </a>
+                        @endauth
+                    </div>
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                 </div>
             </div>
         </section>
@@ -209,7 +286,7 @@ $ticketingSteps = [
         <section class="py-16">
             <div class="container mx-auto px-4 text-center">
                 <h2 class="mx-auto mb-10 max-w-5xl text-4xl font-semibold">
-                    Need to request a transcript, certificate, or other official documents?
+                    Need help with a prescription, refill, or medication concern?
                 </h2>
             </div>
         </section>
@@ -224,42 +301,60 @@ $ticketingSteps = [
                 </div>
                 <div class="mx-auto max-w-4xl space-y-4">
                     @if (!empty($faqs) && count($faqs) > 0)
-                    @foreach ($faqs as $item)
-                    <details class="fauna-panel p-6 dark:bg-[#0f172a] dark:border-[#1e3a5f]">
-                        <summary class="cursor-pointer font-medium">{{ $item['question'] ?? $item->question }}
-                        </summary>
-                        <p class="mt-3 text-slate-600 dark:text-slate-400">
-                            {{ $item['answer'] ?? $item->answer }}
-                        </p>
-                    </details>
-                    @endforeach
+                        @foreach ($faqs as $item)
+                            <details class="fauna-panel p-6 dark:bg-[#102824] dark:border-[#1d3a34]">
+                                <summary class="cursor-pointer font-medium">{{ $item['question'] ?? $item->question }}
+                                </summary>
+                                <p class="mt-3 text-slate-600 dark:text-slate-400">
+                                    {{ $item['answer'] ?? $item->answer }}</p>
+                            </details>
+                        @endforeach
                     @else
-                    <div class="text-center p-8 fauna-panel dark:bg-[#0f172a] dark:border-[#1e3a5f]">
-                        <p class="text-slate-600 dark:text-slate-400">No frequently asked questions are available at
-                            this time.</p>
-                    </div>
+                        <div class="text-center p-8 fauna-panel dark:bg-[#102824] dark:border-[#1d3a34]">
+                            <p class="text-slate-600 dark:text-slate-400">No frequently asked questions are available at
+                                this time.</p>
+                        </div>
                     @endif
                 </div>
             </div>
         </section>
 
 
+<<<<<<< HEAD
         <section class="bg-emerald-50/50 py-16 dark:bg-[#020617]">
+=======
+        <section class="bg-orange-50 py-16 dark:bg-[#0b1715]">
+>>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
             <div class="container mx-auto px-4">
                 @if (session('success') || session('error') || session('status'))
-                <x-flash-handler />
+                    <x-flash-handler />
                 @endif
 
                 <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-4">
-
+                    <div>
+                        <div class="mb-4 inline-flex items-center gap-2">
+                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-6 w-6">
+                            <span
+                                class="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">{{ config('app.name') }}</span>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:col-span-2">
 
+                    </div>
+                    <div class="rounded-2xl bg-teal-900 p-6 dark:bg-[#102824] dark:border dark:border-[#1d3a34]">
+                        <h4 class="mb-3 text-xl font-medium text-white">Open a new support request</h4>
+                        <p class="mb-6 text-white/80">Use the ticket system to report issues, request updates, or ask
+                            for help.</p>
+                        <a href="{{ route('submit-ticket') }}"
+                            class="fauna-btn-secondary !border-white !text-white hover:!bg-white hover:!text-teal-900 dark:!border-[#10b981]/50 dark:hover:!bg-[#10b981] dark:hover:!text-[#064e3b] !px-3 !py-2 sm:!px-6 sm:!py-3 !text-xs sm:!text-sm">
+                            Create Ticket</a>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
+    @guest
     <script>
         function toggleTheme() {
             const html = document.documentElement;
@@ -276,10 +371,13 @@ $ticketingSteps = [
 
         function updateThemeIcons() {
             const isDark = document.documentElement.classList.contains('dark');
-            document.querySelectorAll('.theme-icon-dark').forEach(el => el.classList.toggle('hidden', !isDark));
-            document.querySelectorAll('.theme-icon-light').forEach(el => el.classList.toggle('hidden', isDark));
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const lightIcon = document.getElementById('theme-icon-light');
+            if (darkIcon) darkIcon.classList.toggle('hidden', !isDark);
+            if (lightIcon) lightIcon.classList.toggle('hidden', isDark);
         }
 
         document.addEventListener('DOMContentLoaded', updateThemeIcons);
     </script>
+    @endguest
 </x-app-layout>

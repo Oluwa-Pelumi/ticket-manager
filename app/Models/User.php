@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Authenticated user with role-based access (admin, support, user).
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -23,15 +22,11 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
+        'name',
         'role',
         'email',
         'password',
-        'phone_number',
-        'matric_no',
-        'programme_id',
+        'whatsapp_number',
     ];
 
     /**
@@ -55,16 +50,6 @@ class User extends Authenticatable implements MustVerifyEmail
             'password'          => 'hashed',
             'email_verified_at' => 'datetime',
         ];
-    }
-
-    protected $appends = ['name'];
-
-    public function name(): Attribute
-    {
-        return Attribute::get(
-            fn() =>
-            trim(preg_replace('/\s+/', ' ', "{$this->first_name} {$this->middle_name} {$this->last_name}"))
-        );
     }
 
     /** Check whether the user has the admin role. */
@@ -102,10 +87,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return Ticket::whereJsonContains('attended_to_by', $this->id)->get();
     }
 
-    /** The programme this user belongs to. */
-    public function programme()
+    /** Route WhatsApp notifications to the user's stored number. */
+    public function routeNotificationForWhatsapp(): ?string
     {
-        return $this->belongsTo(Programme::class);
+        return $this->whatsapp_number;
     }
-
 }

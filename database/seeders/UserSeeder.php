@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Programme;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,74 +12,58 @@ class UserSeeder extends Seeder
     {
         // ── Admin ────────────────────────────────────────────────────────────
         User::updateOrCreate(
-            ['email' => 'admin@laradocs.test'],
+            ['email' => 'admin@laradrug.test'],
             [
-                'first_name'        => 'Admin',
-                'middle_name'       => '',
-                'last_name'         => 'User',
-                'role'               => 'admin',
-                'password'           => Hash::make('password'),
-                'phone_number'       => '+2348000000001',
+                'name'             => 'Admin User',
+                'role'             => 'admin',
+                'password'         => Hash::make('password'),
+                'whatsapp_number'  => '+2348000000001',
                 'email_verified_at' => now(),
             ]
         );
 
         // ── Support staff ────────────────────────────────────────────────────
         User::updateOrCreate(
-            ['email' => 'support1@laradocs.test'],
+            ['email' => 'support1@laradrug.test'],
             [
-                'first_name'        => 'Sarah',
-                'middle_name'       => '',
-                'last_name'         => 'Okonkwo',
-                'role'               => 'support',
-                'password'           => Hash::make('password'),
-                'phone_number'       => '+2348000000002',
+                'name'             => 'Sarah Okonkwo',
+                'role'             => 'support',
+                'password'         => Hash::make('password'),
+                'whatsapp_number'  => '+2348000000002',
                 'email_verified_at' => now(),
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'support2@laradocs.test'],
+            ['email' => 'support2@laradrug.test'],
             [
-                'first_name'        => 'Daniel',
-                'middle_name'       => '',
-                'last_name'         => 'Eze',
-                'role'               => 'support',
-                'password'           => Hash::make('password'),
-                'phone_number'       => '+2348000000003',
+                'name'             => 'Daniel Eze',
+                'role'             => 'support',
+                'password'         => Hash::make('password'),
+                'whatsapp_number'  => '+2348000000003',
                 'email_verified_at' => now(),
             ]
         );
 
         // ── Regular users ────────────────────────────────────────────────────
-        $prog1 = Programme::inRandomOrder()->first();
         User::updateOrCreate(
-            ['email' => 'user1@laradocs.test'],
+            ['email' => 'user1@laradrug.test'],
             [
-                'first_name'        => 'Emeka',
-                'middle_name'       => '',
-                'last_name'         => 'Nwosu',
-                'matric_no'         => 192211,
-                'role'               => 'user',
-                'password'           => Hash::make('password'),
-                'phone_number'       => '+2348000000004',
-                'programme_id'      => $prog1 ? $prog1->id : null,
+                'name'             => 'Emeka Nwosu',
+                'role'             => 'user',
+                'password'         => Hash::make('password'),
+                'whatsapp_number'  => '+2348000000004',
                 'email_verified_at' => now(),
             ]
         );
 
-        $prog2 = Programme::inRandomOrder()->first();
         User::updateOrCreate(
-            ['email' => 'user2@laradocs.test'],
+            ['email' => 'user2@laradrug.test'],
             [
-                'first_name'        => 'Fatima',
-                'middle_name'       => '',
-                'last_name'         => 'Aliyu',
-                'matric_no'         => 192210,
-                'role'               => 'user',
-                'password'           => Hash::make('password'),
-                'phone_number'       => '+2348000000005',
-                'programme_id'      => $prog2 ? $prog2->id : null,
+                'name'             => 'Fatima Aliyu',
+                'role'             => 'user',
+                'password'         => Hash::make('password'),
+                'whatsapp_number'  => '+2348000000005',
                 'email_verified_at' => now(),
             ]
         );
