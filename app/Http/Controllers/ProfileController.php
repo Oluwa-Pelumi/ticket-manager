@@ -23,6 +23,8 @@ class ProfileController extends Controller
             'user'            => $request->user(),
             'status'          => session('status'),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'emailInvalid'    => $request->user()->email_invalid ?? false,
+            'emailInvalidReason' => $request->user()->email_invalid_reason ?? null,
         ]);
     }
 
@@ -35,6 +37,9 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+            // Reset email invalid flag when email is updated
+            $request->user()->email_invalid = false;
+            $request->user()->email_invalid_reason = null;
         }
 
         $request->user()->save();
@@ -52,6 +57,10 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        if ($user->isAdmin() && \App\Models\User::where('role', 'admin')->count() === 1) {
+            return back()->with('error', 'You are the only admin. Promote another user to admin before deleting your account.');
+        }
 
         Auth::logout();
 

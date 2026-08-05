@@ -12,7 +12,7 @@ class Comment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'images',
+        'attachments',
         'user_id',
         'content',
         'ticket_id',
@@ -24,7 +24,7 @@ class Comment extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'images' => 'array',
+        'attachments' => 'array',
     ];
 
     /** The ticket this comment belongs to. */

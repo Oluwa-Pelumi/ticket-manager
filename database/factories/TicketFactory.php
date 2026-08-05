@@ -19,19 +19,15 @@ class TicketFactory extends Factory
         return [
             'name'                   => fake()->name(),
             'email'                  => fake()->safeEmail(),
-            'subject'                => fake()->randomElement(['consultation', 'enquiry', 'order']),
+            'subject'                => fake()->randomElement(['transcript-request', 'certificate-request', 'letter-of-recommendation-request', 'statement-of-result-request', 'other']),
             'content'                => fake()->paragraph(),
             'status'                 => fake()->randomElement(['open', 'in-progress', 'closed']),
             'priority'               => fake()->randomElement(['low', 'medium', 'high']),
             'user_id'                => null,
             'attended_to_by'         => null,
             'category_id'            => null,
-            'images'                 => [],
-            'whatsapp_number'        => null,
-            'order_type'             => null,
-            'recurrence_period'      => null,
-            'custom_recurrence_date' => null,
-            'order_activations'      => null,
+            'attachments'            => [],
+            'phone_number'           => null,
             'filename'               => null,
         ];
     }

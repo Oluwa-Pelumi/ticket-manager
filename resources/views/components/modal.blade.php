@@ -33,7 +33,7 @@ $maxWidthClass = match ($maxWidth) {
     {{-- Panel --}}
     <div class="flex min-h-full items-center justify-center p-4">
         <div
-            class="relative w-full {{ $maxWidthClass }} bg-white dark:bg-[#102824] rounded-3xl shadow-2xl border border-slate-100 dark:border-[#1d3a34] overflow-hidden transform transition-all"
+            class="relative w-full {{ $maxWidthClass }} bg-white dark:bg-[#0f172a] rounded-3xl shadow-2xl border border-slate-100 dark:border-[#1e3a5f] overflow-hidden transform transition-all"
             @click.stop
         >
             {{ $slot }}

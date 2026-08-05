@@ -20,7 +20,7 @@ class CommentFactory extends Factory
             'ticket_id' => Ticket::factory(),
             'user_id'   => null,
             'content'   => fake()->paragraph(),
-            'images'    => [],
+            'attachments'    => [],
         ];
     }
 
