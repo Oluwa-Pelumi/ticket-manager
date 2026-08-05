@@ -301,11 +301,11 @@
                             <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo"
                                 class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 transition-transform group-hover:scale-105 shrink-0">
                             <div class="flex flex-col leading-none min-w-0">
-                                <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
+                                <span class="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400 truncate mt-0.5">
                                     {{ $mainName }}
                                 </span>
-                                @if($subName)
-                                    <span class="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400 truncate mt-0.5">
+                                @if ($subName)
+                                    <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
                                         {{ $subName }}
                                     </span>
                                 @endif
@@ -330,7 +330,8 @@
                             @auth
                                 @if (auth()->user()->role === 'admin')
                                     <a href="{{ route('admin.users') }}"
-                                        class="nav-link {{ request()->routeIs('admin.users') ? 'nav-link-active' : '' }}">Users<span class="hidden lg:inline ml-1">Management</span></a>
+                                        class="nav-link {{ request()->routeIs('admin.users') ? 'nav-link-active' : '' }}">Users<span
+                                            class="hidden lg:inline ml-1">Management</span></a>
                                 @endif
                             @endauth
                         </div>
@@ -347,7 +348,12 @@
                                     </div>
                                     <span
                                         class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[80px] lg:max-w-[140px]">{{ auth()->user()->name }}</span>
-                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform"
+                                        :class="{ 'rotate-180': open }" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </button>
                                 <div x-show="open" @click.outside="open = false" x-cloak
                                     class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-rose-950/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
@@ -374,7 +380,9 @@
                             </div>
                         @endauth
 
-                        <button onclick="toggleTheme()" class="inline-flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all" aria-label="Toggle Theme">
+                        <button onclick="toggleTheme()"
+                            class="inline-flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all"
+                            aria-label="Toggle Theme">
                             <svg class="theme-icon-dark w-4 h-4 text-rose-400 hidden" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path
@@ -390,7 +398,9 @@
 
                     {{-- Mobile menu button --}}
                     <div class="flex md:hidden items-center gap-2">
-                        <button onclick="toggleTheme()" class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all" aria-label="Toggle Theme">
+                        <button onclick="toggleTheme()"
+                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all"
+                            aria-label="Toggle Theme">
                             <svg class="theme-icon-dark w-4 h-4 text-rose-400 hidden" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path
@@ -508,15 +518,15 @@
 
         init() {
             window.addEventListener('confirm', (e) => {
-                this.type           = e.detail?.type          ?? 'danger';
-                this.title          = e.detail?.title         ?? 'Are you sure?';
-                this.message        = e.detail?.message       ?? '';
-                this.confirmText    = e.detail?.confirmText   ?? 'Confirm';
+                this.type = e.detail?.type ?? 'danger';
+                this.title = e.detail?.title ?? 'Are you sure?';
+                this.message = e.detail?.message ?? '';
+                this.confirmText = e.detail?.confirmText ?? 'Confirm';
                 this.successMessage = e.detail?.successMessage ?? 'Done.';
-                this.onConfirm      = e.detail?.onConfirm     ?? null;
-                this.form           = e.detail?.form          ?? null;
-                this.deleting       = false;
-                this.open           = true;
+                this.onConfirm = e.detail?.onConfirm ?? null;
+                this.form = e.detail?.form ?? null;
+                this.deleting = false;
+                this.open = true;
             });
         },
 
@@ -525,11 +535,11 @@
             if (this.form) {
                 this.deleting = true;
                 const formEl = this.form;
-                const data   = new FormData(formEl);
+                const data = new FormData(formEl);
                 try {
                     await fetch(formEl.action, { method: 'POST', body: data });
                 } catch (_) {}
-                this.open     = false;
+                this.open = false;
                 this.deleting = false;
                 await new Promise(r => setTimeout(r, 250)); // let modal close animate
                 window.showToast(this.successMessage || 'Deleted successfully.', 'success');
@@ -574,8 +584,10 @@
                                 'text-rose-500': type !== 'danger' && type !== 'warning',
                             }"
                             fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4" />
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                         </svg>
                     </template>
                     <template x-if="!deleting">
@@ -591,7 +603,9 @@
                         </svg>
                     </template>
                 </div>
-                <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight" x-text="deleting ? title.replace(/^(Delete|Remove)/, (m) => m === 'Delete' ? 'Deleting' : 'Removing') + '...' : title"></h3>
+                <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight"
+                    x-text="deleting ? title.replace(/^(Delete|Remove)/, (m) => m === 'Delete' ? 'Deleting' : 'Removing') + '...' : title">
+                </h3>
             </div>
 
             {{-- Message --}}
@@ -613,11 +627,14 @@
                     }">
                     <template x-if="deleting">
                         <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4" />
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                         </svg>
                     </template>
-                    <span x-text="deleting ? confirmText.replace(/^(Delete|Remove)(.*)?$/, (_, v, rest) => (v === 'Delete' ? 'Deleting' : 'Removing') + (rest || '') + '…') : confirmText"></span>
+                    <span
+                        x-text="deleting ? confirmText.replace(/^(Delete|Remove)(.*)?$/, (_, v, rest) => (v === 'Delete' ? 'Deleting' : 'Removing') + (rest || '') + '…') : confirmText"></span>
                 </button>
             </div>
         </div>
