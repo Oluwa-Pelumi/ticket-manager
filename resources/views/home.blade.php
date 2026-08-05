@@ -1,5 +1,5 @@
-@php
-// Static data — steps explaining the ticket lifecycle
+﻿@php
+// Static data â€” steps explaining the ticket lifecycle
 $ticketingSteps = [
 [
 'step' => 1,
@@ -11,7 +11,7 @@ $ticketingSteps = [
 'step' => 2,
 'title' => 'Review',
 'description' =>
-'Our team sees your ticket on the dashboard, filters by status or priority, and updates progress—including assigning someone when needed.',
+'Our team sees your ticket on the dashboard, filters by status or priority, and updates progressâ€”including assigning someone when needed.',
 ],
 [
 'step' => 3,
@@ -34,13 +34,13 @@ $ticketingSteps = [
 
 
     <div class="fauna-shell min-h-screen">
-        {{-- Hero section — navigation and primary CTAs --}}
+        {{-- Hero section â€” navigation and primary CTAs --}}
         <section class="relative overflow-hidden hero-gradient">
             {{-- Gorgeous blurred background elements --}}
             <div class="absolute inset-0 z-0">
-                <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-rose-300/20 dark:bg-rose-900/10 blur-[120px]"></div>
-                <div class="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-pink-400/15 dark:bg-rose-900/10 blur-[120px]"></div>
-                <div class="absolute -bottom-[20%] left-[20%] w-[60%] h-[40%] rounded-full bg-rose-200/15 dark:bg-rose-900/10 blur-[120px]"></div>
+                <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-emerald-300/20 dark:bg-emerald-900/10 blur-[120px]"></div>
+                <div class="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-pink-400/15 dark:bg-emerald-900/10 blur-[120px]"></div>
+                <div class="absolute -bottom-[20%] left-[20%] w-[60%] h-[40%] rounded-full bg-emerald-200/15 dark:bg-emerald-900/10 blur-[120px]"></div>
                 <div class="absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-[1px]"></div>
             </div>
 
@@ -77,7 +77,7 @@ $ticketingSteps = [
                             <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs sm:text-sm font-bold backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-lg">Dashboard</a>
                             @endauth
                             <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all backdrop-blur-md hover:scale-110 active:scale-95" aria-label="Toggle Theme">
-                                <svg class="theme-icon-dark w-4 h-4 text-rose-400 hidden" fill="currentColor"
+                                <svg class="theme-icon-dark w-4 h-4 text-emerald-400 hidden" fill="currentColor"
                                     viewBox="0 0 20 20">
                                     <path
                                         d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
@@ -146,34 +146,34 @@ $ticketingSteps = [
         </section>
         @endif
 
-        {{-- How ticketing works — step-by-step guide --}}
+        {{-- How ticketing works â€” step-by-step guide --}}
         <section class="py-20 bg-slate-50/50 dark:bg-[#020617] relative overflow-hidden">
             {{-- Decorative background elements --}}
             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none">
-                <div class="absolute top-20 right-10 w-96 h-96 bg-rose-400/5 dark:bg-rose-400/10 rounded-full blur-3xl"></div>
+                <div class="absolute top-20 right-10 w-96 h-96 bg-emerald-400/5 dark:bg-emerald-400/10 rounded-full blur-3xl"></div>
                 <div class="absolute bottom-10 left-10 w-72 h-72 bg-indigo-400/5 dark:bg-indigo-400/10 rounded-full blur-3xl"></div>
             </div>
 
             <div class="container mx-auto px-4 relative z-10">
                 <div class="text-center max-w-3xl mx-auto mb-16">
-                    <span class="text-sm font-black tracking-widest text-rose-600 dark:text-rose-400 uppercase mb-3 block">Process overview</span>
+                    <span class="text-sm font-black tracking-widest text-emerald-600 dark:text-emerald-400 uppercase mb-3 block">Process overview</span>
                     <h2 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-6">How ticketing works</h2>
                     <p class="text-lg text-slate-600 dark:text-slate-400 font-medium">
-                        From your first message to a closed ticket—here is what happens.
+                        From your first message to a closed ticketâ€”here is what happens.
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16 relative">
                     {{-- Connecting line for desktop --}}
-                    <div class="hidden lg:block absolute top-[2.5rem] left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-rose-100 via-rose-200 to-rose-100 dark:from-rose-900/50 dark:via-rose-800/50 dark:to-rose-900/50 z-0"></div>
+                    <div class="hidden lg:block absolute top-[2.5rem] left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-emerald-100 via-emerald-200 to-emerald-100 dark:from-emerald-900/50 dark:via-emerald-800/50 dark:to-emerald-900/50 z-0"></div>
 
                     @foreach ($ticketingSteps as $index => $item)
                     <div class="group relative z-10">
                         {{-- Step card --}}
-                        <div class="h-full p-8 rounded-[2rem] bg-white dark:bg-[#0f172a] border border-rose-100 dark:border-[#1e3a5f] shadow-xl shadow-rose-900/5 dark:shadow-none hover:-translate-y-2 hover:shadow-2xl hover:shadow-rose-900/10 dark:hover:border-rose-400/30 transition-all duration-300">
+                        <div class="h-full p-8 rounded-[2rem] bg-white dark:bg-[#0f172a] border border-emerald-100 dark:border-[#1e3a5f] shadow-xl shadow-emerald-900/5 dark:shadow-none hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-900/10 dark:hover:border-emerald-400/30 transition-all duration-300">
 
                             {{-- Step number badge --}}
-                            <div class="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-800/30 flex items-center justify-center text-2xl font-black text-rose-600 dark:text-rose-400 mb-8 group-hover:scale-110 group-hover:bg-rose-100 dark:group-hover:bg-rose-900/40 transition-all duration-300">
+                            <div class="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30 flex items-center justify-center text-2xl font-black text-emerald-600 dark:text-emerald-400 mb-8 group-hover:scale-110 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/40 transition-all duration-300">
                                 {{ $item['step'] }}
                             </div>
 
@@ -188,17 +188,17 @@ $ticketingSteps = [
 
                 <div class="flex flex-wrap items-center justify-center gap-4 pt-8">
                     <a href="{{ route('submit-ticket') }}"
-                        class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-rose-400 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-rose-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
+                        class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-emerald-400 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-emerald-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
                        Create ticket
                     </a>
 
                     <a href="{{ route('check-status') }}"
-                        class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-rose-400 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-rose-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
+                        class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-emerald-400 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-emerald-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
                         Check status
                     </a>
                     @auth
                     <a href="{{ route('dashboard') }}"
-                        class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-rose-400 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-rose-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
+                        class="px-8 py-4 bg-white dark:bg-[#1e293b] text-slate-700 dark:text-slate-300 border border-emerald-400 dark:border-[#1e3a5f] rounded-[2rem] font-black text-sm tracking-widest uppercase hover:bg-slate-50 dark:hover:bg-[#0f172a] hover:text-emerald-950 dark:hover:text-white transition-all inline-flex items-center gap-3">
                         Dashboard
                     </a>
                     @endauth
@@ -244,7 +244,7 @@ $ticketingSteps = [
         </section>
 
 
-        <section class="bg-rose-50/50 py-16 dark:bg-[#020617]">
+        <section class="bg-emerald-50/50 py-16 dark:bg-[#020617]">
             <div class="container mx-auto px-4">
                 @if (session('success') || session('error') || session('status'))
                 <x-flash-handler />

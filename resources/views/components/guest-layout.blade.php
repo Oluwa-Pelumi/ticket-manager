@@ -1,4 +1,4 @@
-{{--
+﻿{{--
     Guest layout component.
     Used by auth views that do: <x-guest-layout>
     Renders through <x-app-layout> but without the @auth navbar (guests are not authenticated).
@@ -9,7 +9,7 @@
     <div class="container mx-auto px-4 py-10">
         {{-- Guest nav bar --}}
         <nav
-            class="mb-12 relative flex items-center justify-center border-b border-rose-950/10 py-6 dark:border-[#1e3a5f]">
+            class="mb-12 relative flex items-center justify-center border-b border-emerald-950/10 py-6 dark:border-[#1e3a5f]">
             @php
                 $appName = rtrim(config('app.name'), ' .');
                 $nameParts = explode(',', $appName, 2);
@@ -31,8 +31,8 @@
             </a>
 
             <div class="absolute right-0 flex items-center">
-                <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all" aria-label="Toggle Theme">
-                    <svg class="theme-icon-dark w-4 h-4 text-rose-400 hidden" fill="currentColor"
+                <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-emerald-950/10 dark:border-[#1e3a5f]/50 hover:border-emerald-400/50 transition-all" aria-label="Toggle Theme">
+                    <svg class="theme-icon-dark w-4 h-4 text-emerald-400 hidden" fill="currentColor"
                         viewBox="0 0 20 20">
                         <path
                             d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />

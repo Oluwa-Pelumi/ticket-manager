@@ -1,4 +1,4 @@
-<x-guest-layout>
+﻿<x-guest-layout>
     <x-slot name="title">Login</x-slot>
 
     <div class="mb-10 text-center">
@@ -8,7 +8,7 @@
 
     @if (session('status'))
         <div
-            class="mb-6 text-sm font-bold text-rose-500 bg-rose-500/10 p-4 rounded-2xl border border-rose-500/20 backdrop-blur-md">
+            class="mb-6 text-sm font-bold text-emerald-500 bg-emerald-500/10 p-4 rounded-2xl border border-red-500/20 backdrop-blur-md">
             {{ session('status') }}
         </div>
     @endif
@@ -21,10 +21,10 @@
                 class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300 pl-4">Email</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
                 autocomplete="username"
-                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('email') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('email') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                 placeholder="your@email.com">
             @error('email')
-                <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
+                <p class="text-xs font-bold text-emerald-500 mt-2">{{ $message }}</p>
             @enderror
         </div>
 
@@ -34,14 +34,14 @@
                     class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300 pl-3">Password</label>
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}"
-                        class="text-sm font-medium underline hover:text-rose-500 transition-colors">Forgot password?</a>
+                        class="text-sm font-medium underline hover:text-emerald-500 transition-colors">Forgot password?</a>
                 @endif
             </div>
             <input id="password" type="password" name="password" required autocomplete="current-password"
-                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
-                placeholder="••••••••">
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
             @error('password')
-                <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
+                <p class="text-xs font-bold text-emerald-500 mt-2">{{ $message }}</p>
             @enderror
         </div>
 
@@ -79,7 +79,7 @@
             <p class="text-sm text-slate-600 dark:text-slate-400">
                 Don't have an account?
                 <a href="{{ route('register') }}"
-                    class="font-bold text-rose-950 dark:text-rose-400 hover:underline">Register</a>
+                    class="font-bold text-emerald-950 dark:text-emerald-400 hover:underline">Register</a>
             </p>
         </div>
     </form>

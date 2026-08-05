@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ isset($title) && trim($title) ? trim($title) . ' — ' . config('app.name') : config('app.name') }}</title>
+    <title>{{ isset($title) && trim($title) ? trim($title) . ' â€” ' . config('app.name') : config('app.name') }}</title>
     <link rel="icon" href="{{ asset('favicon.svg') }}?v=3" type="image/svg+xml">
     <link rel="icon" href="{{ asset('favicon.ico') }}?v=3" sizes="any">
     <link rel="icon" href="{{ asset('favicon.png') }}?v=3" type="image/png" sizes="32x32">
@@ -102,14 +102,14 @@
         .nav-link:hover,
         .nav-link-active {
             background-color: #ffffff;
-            color: rgb(8 47 73);
+            color: rgb(2 44 34);
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
         }
 
         .dark .nav-link:hover,
         .dark .nav-link-active {
             background-color: #1e293b;
-            color: rgb(56 189 248);
+            color: rgb(52 211 153);
         }
 
         .dropdown-link {
@@ -128,13 +128,13 @@
 
         .dropdown-link:hover {
             background-color: rgb(241 245 249);
-            color: rgb(8 47 73);
+            color: rgb(2 44 34);
             padding-left: 1.25rem;
         }
 
         .dark .dropdown-link:hover {
             background-color: #1e293b;
-            color: rgb(56 189 248);
+            color: rgb(52 211 153);
         }
 
         .fauna-btn-primary {
@@ -142,8 +142,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 9999px;
-            border: 1px solid #e36c8e;
-            background-color: #e36c8e;
+            border: 1px solid #065f46;
+            background-color: #065f46;
             padding: 0.75rem 1.5rem;
             font-size: 0.875rem;
             font-weight: 500;
@@ -153,44 +153,44 @@
         }
 
         .fauna-btn-primary:hover {
-            border-color: #ca4d71;
-            background-color: #ca4d71;
+            border-color: #047857;
+            background-color: #047857;
             color: #ffffff;
         }
 
         .fauna-btn-primary:disabled,
         .fauna-btn-primary[disabled] {
             pointer-events: none;
-            border-color: #e7b0be;
-            background-color: #e7b0be;
+            border-color: #a7f3d0;
+            background-color: #a7f3d0;
             opacity: 0.7;
         }
 
         .fauna-btn-action {
-            border: 1px solid #e36c8e;
-            background-color: #e36c8e;
+            border: 1px solid #065f46;
+            background-color: #065f46;
             color: #ffffff;
             transition: all 0.2s;
         }
 
         .fauna-btn-action:hover {
-            border-color: #ca4d71;
-            background-color: #ca4d71;
+            border-color: #047857;
+            background-color: #047857;
             color: #ffffff;
         }
 
         .fauna-btn-action:disabled,
         .fauna-btn-action[disabled] {
             cursor: not-allowed;
-            border-color: #e7b0be;
-            background-color: #e7b0be;
+            border-color: #a7f3d0;
+            background-color: #a7f3d0;
             opacity: 0.5;
         }
 
         .fauna-btn-action:disabled:hover,
         .fauna-btn-action[disabled]:hover {
-            border-color: #e7b0be;
-            background-color: #e7b0be;
+            border-color: #a7f3d0;
+            background-color: #a7f3d0;
             color: #ffffff;
         }
 
@@ -224,18 +224,18 @@
 
         .mesh-gradient {
             background-image:
-                radial-gradient(at 0% 0%, rgba(8, 47, 73, .16) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(56, 189, 248, .14) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(8, 47, 73, .08) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, rgba(56, 189, 248, .1) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(2, 44, 34, .16) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(163, 230, 53, .14) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(2, 44, 34, .08) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(163, 230, 53, .1) 0px, transparent 50%);
         }
 
         .dark .mesh-gradient {
             background-image:
-                radial-gradient(at 0% 0%, rgba(8, 47, 73, .2) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(56, 189, 248, .1) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(8, 47, 73, .12) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, rgba(56, 189, 248, .08) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(2, 44, 34, .2) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(132, 204, 22, .1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(2, 44, 34, .12) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(132, 204, 22, .08) 0px, transparent 50%);
         }
 
         .custom-scrollbar::-webkit-scrollbar {
@@ -254,7 +254,7 @@
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgb(56 189 248);
+            background: rgb(52 211 153);
         }
 
         .dark .custom-scrollbar::-webkit-scrollbar-track {
@@ -284,9 +284,9 @@
 
     @include('components.flash-handler')
 
-    {{-- ── Global navbar ── --}}
+    {{-- â”€â”€ Global navbar â”€â”€ --}}
     @if ($showNavbar ?? true)
-        <nav class="relative z-50 border-b border-rose-950/10 bg-white shadow-md dark:border-[#1e3a5f] dark:bg-[#0f172a]"
+        <nav class="relative z-50 border-b border-emerald-950/10 bg-white shadow-md dark:border-[#1d3a34] dark:bg-[#102824]"
             x-data="{ showingMobileMenu: false }">
             <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                 <div class="flex h-16 md:h-20 justify-between items-center">
@@ -313,7 +313,7 @@
                         </a>
 
                         <div
-                            class="hidden md:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#0f172a]/70 rounded-2xl border border-rose-950/10 dark:border-[#1e3a5f] backdrop-blur-md">
+                            class="hidden md:flex items-center gap-1 p-1 bg-slate-200/40 dark:bg-[#102824]/70 rounded-2xl border border-emerald-950/10 dark:border-[#1d3a34] backdrop-blur-md">
                             <a href="{{ route('home') }}"
                                 class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Home</a>
                             @auth
@@ -341,9 +341,9 @@
                         @auth
                             <div class="relative" x-data="{ open: false }">
                                 <button @click="open = !open" type="button"
-                                    class="flex items-center gap-2.5 p-1.5 pr-3 md:pr-4 rounded-2xl glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all">
+                                    class="flex items-center gap-2.5 p-1.5 pr-3 md:pr-4 rounded-2xl glass-card border border-emerald-950/10 dark:border-[#1d3a34]/50 hover:border-emerald-400/50 transition-all">
                                     <div
-                                        class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-rose-950 to-rose-800 flex items-center justify-center text-white text-[10px] font-black shadow-lg shrink-0">
+                                        class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-emerald-950 to-emerald-800 flex items-center justify-center text-white text-[10px] font-black shadow-lg shrink-0">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     </div>
                                     <span
@@ -356,7 +356,7 @@
                                     </svg>
                                 </button>
                                 <div x-show="open" @click.outside="open = false" x-cloak
-                                    class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl border border-rose-950/10 dark:border-[#1e3a5f] py-1 z-50 shadow-xl">
+                                    class="absolute right-0 mt-2 w-48 rounded-2xl overflow-hidden bg-white/95 dark:bg-[#102824]/95 backdrop-blur-xl border border-emerald-950/10 dark:border-[#1d3a34] py-1 z-50 shadow-xl">
                                     <a href="{{ route('profile.edit') }}" class="dropdown-link">Profile Settings</a>
                                     @if (auth()->user()->role === 'admin')
                                         <a href="{{ route('admin.categories.index') }}" class="dropdown-link">Manage
@@ -374,16 +374,16 @@
                         @else
                             <div class="flex items-center gap-2">
                                 <a href="{{ route('login') }}"
-                                    class="nav-link bg-slate-200/40 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200 hover:text-rose-950 border border-rose-950/10 dark:border-[#1e3a5f]">Login</a>
+                                    class="nav-link bg-slate-200/40 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200 hover:text-emerald-950 border border-emerald-950/10 dark:border-[#1d3a34]">Login</a>
                                 <a href="{{ route('register') }}"
-                                    class="nav-link bg-slate-200/40 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200 hover:text-rose-950 border border-rose-950/10 dark:border-[#1e3a5f]">Register</a>
+                                    class="nav-link bg-slate-200/40 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200 hover:text-emerald-950 border border-emerald-950/10 dark:border-[#1d3a34]">Register</a>
                             </div>
                         @endauth
 
                         <button onclick="toggleTheme()"
-                            class="inline-flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all"
+                            class="inline-flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full glass-card border border-emerald-950/10 dark:border-[#1d3a34]/50 hover:border-emerald-400/50 transition-all"
                             aria-label="Toggle Theme">
-                            <svg class="theme-icon-dark w-4 h-4 text-rose-400 hidden" fill="currentColor"
+                            <svg class="theme-icon-dark w-4 h-4 text-emerald-400 hidden" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path
                                     d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
@@ -399,9 +399,9 @@
                     {{-- Mobile menu button --}}
                     <div class="flex md:hidden items-center gap-2">
                         <button onclick="toggleTheme()"
-                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full glass-card border border-rose-950/10 dark:border-[#1e3a5f]/50 hover:border-rose-400/50 transition-all"
+                            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full glass-card border border-emerald-950/10 dark:border-[#1e3a5f]/50 hover:border-emerald-400/50 transition-all"
                             aria-label="Toggle Theme">
-                            <svg class="theme-icon-dark w-4 h-4 text-rose-400 hidden" fill="currentColor"
+                            <svg class="theme-icon-dark w-4 h-4 text-emerald-400 hidden" fill="currentColor"
                                 viewBox="0 0 20 20">
                                 <path
                                     d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
@@ -414,7 +414,7 @@
                         </button>
 
                         <button @click="showingMobileMenu = !showingMobileMenu"
-                            class="w-9 h-9 rounded-xl flex items-center justify-center border border-rose-950/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
+                            class="w-9 h-9 rounded-xl flex items-center justify-center border border-emerald-950/10 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400">
                             <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                 <path :class="{ 'hidden': showingMobileMenu, 'inline-flex': !showingMobileMenu }"
                                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -430,24 +430,24 @@
 
             {{-- Mobile Dropdown Menu --}}
             <div x-show="showingMobileMenu" x-cloak
-                class="md:hidden border-t border-rose-950/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] px-4 py-4 space-y-3 shadow-2xl">
+                class="md:hidden border-t border-emerald-950/10 dark:border-[#1e3a5f] bg-white dark:bg-[#0f172a] px-4 py-4 space-y-3 shadow-2xl">
                 <a href="{{ route('home') }}"
-                    class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('home') ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' : '' }}">Home</a>
+                    class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('home') ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : '' }}">Home</a>
                 @auth
                     <a href="{{ route('dashboard') }}"
-                        class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('dashboard') ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' : '' }}">Dashboard</a>
+                        class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('dashboard') ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : '' }}">Dashboard</a>
                 @else
                     <a href="{{ route('submit-ticket') }}"
-                        class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('submit-ticket') ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' : '' }}">Submit
+                        class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('submit-ticket') ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : '' }}">Submit
                         Ticket</a>
                 @endauth
                 <a href="{{ route('check-status') }}"
-                    class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status', 'search-tickets') ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' : '' }}">Check
+                    class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('check-status', 'search-tickets') ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : '' }}">Check
                     Status</a>
                 @auth
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ route('admin.users') }}"
-                            class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' : '' }}">Users
+                            class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 {{ request()->routeIs('admin.users') ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : '' }}">Users
                             Management</a>
                         <a href="{{ route('admin.categories.index') }}"
                             class="block px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200">Manage
@@ -465,11 +465,11 @@
                     <form method="POST" action="{{ route('logout') }}" class="block">
                         @csrf
                         <button type="submit"
-                            class="w-full text-left px-3 py-2 rounded-xl text-sm font-bold text-rose-500 hover:bg-rose-500/10">Sign
+                            class="w-full text-left px-3 py-2 rounded-xl text-sm font-bold text-emerald-500 hover:bg-emerald-500/10">Sign
                             Out</button>
                     </form>
                 @else
-                    <div class="pt-2 border-t border-rose-950/10 dark:border-[#1e3a5f] flex gap-2">
+                    <div class="pt-2 border-t border-emerald-950/10 dark:border-[#1e3a5f] flex gap-2">
                         <a href="{{ route('login') }}"
                             class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#1e293b] text-slate-700 dark:text-slate-200">Login</a>
                         <a href="{{ route('register') }}"
@@ -480,13 +480,13 @@
         </nav>
     @endif
 
-    {{-- ── Page header slot (used by views that set <x-slot name="header">) ── --}}
+    {{-- â”€â”€ Page header slot (used by views that set <x-slot name="header">) â”€â”€ --}}
     @if (isset($header))
         <header class="relative z-10 py-3 sm:py-4 md:py-8">
             <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                 <div class="fauna-panel relative overflow-hidden p-4 sm:p-6 md:p-8">
                     <div
-                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-40">
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-40">
                     </div>
                     {{ $header }}
                 </div>
@@ -494,7 +494,7 @@
         </header>
     @endif
 
-    {{-- ── Slot content ── --}}
+    {{-- â”€â”€ Slot content â”€â”€ --}}
     {{-- Slot content rendered inside main body wrapper --}}
     <div class="flex-1">
         {{ $slot ?? '' }}
@@ -502,7 +502,7 @@
 
     @include('components.footer')
 
-    {{-- ── Global Confirm Modal ──────────────────────────────────────────────── --}}
+    {{-- â”€â”€ Global Confirm Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
     {{-- Listens for: $dispatch('confirm', { type, title, message, confirmText, onConfirm }) --}}
     {{-- Used by: categories delete, faqs delete, dashboard bulk actions, etc.              --}}
     <div id="global-confirm-modal" x-data="{
@@ -571,17 +571,17 @@
             <div class="flex items-center gap-4 mb-5">
                 <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                     :class="{
-                        'bg-rose-500/10 border border-rose-500/20': type === 'danger',
+                        'bg-emerald-500/10 border border-red-500/20': type === 'danger',
                         'bg-amber-500/10 border border-amber-500/20': type === 'warning',
-                        'bg-rose-500/10 border border-rose-500/20': type !== 'danger' && type !== 'warning',
+                        'bg-emerald-500/10 border border-red-500/20': type !== 'danger' && type !== 'warning',
                     }">
                     {{-- Spinner while deleting, icon otherwise --}}
                     <template x-if="deleting">
                         <svg class="w-6 h-6 animate-spin"
                             :class="{
-                                'text-rose-500': type === 'danger',
+                                'text-emerald-500': type === 'danger',
                                 'text-amber-500': type === 'warning',
-                                'text-rose-500': type !== 'danger' && type !== 'warning',
+                                'text-emerald-500': type !== 'danger' && type !== 'warning',
                             }"
                             fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -593,9 +593,9 @@
                     <template x-if="!deleting">
                         <svg class="w-6 h-6"
                             :class="{
-                                'text-rose-500': type === 'danger',
+                                'text-emerald-500': type === 'danger',
                                 'text-amber-500': type === 'warning',
-                                'text-rose-500': type !== 'danger' && type !== 'warning',
+                                'text-emerald-500': type !== 'danger' && type !== 'warning',
                             }"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -610,7 +610,7 @@
 
             {{-- Message --}}
             <p class="text-sm text-slate-600 dark:text-slate-400 mb-8 leading-relaxed"
-                x-text="deleting ? 'Please wait while the item is being removed…' : message"></p>
+                x-text="deleting ? 'Please wait while the item is being removedâ€¦' : message"></p>
 
             {{-- Actions --}}
             <div class="flex gap-3 justify-end">
@@ -621,9 +621,9 @@
                 <button @click="confirm()" x-bind:disabled="deleting"
                     class="px-5 py-2.5 rounded-2xl text-xs font-black tracking-widest text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:scale-100 flex items-center gap-2"
                     :class="{
-                        'bg-rose-600 hover:bg-rose-700': type === 'danger',
+                        'bg-emerald-600 hover:bg-emerald-700': type === 'danger',
                         'bg-amber-500 hover:bg-amber-600': type === 'warning',
-                        'bg-rose-600 hover:bg-rose-800': type !== 'danger' && type !== 'warning',
+                        'bg-emerald-600 hover:bg-emerald-800': type !== 'danger' && type !== 'warning',
                     }">
                     <template x-if="deleting">
                         <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -634,12 +634,12 @@
                         </svg>
                     </template>
                     <span
-                        x-text="deleting ? confirmText.replace(/^(Delete|Remove)(.*)?$/, (_, v, rest) => (v === 'Delete' ? 'Deleting' : 'Removing') + (rest || '') + '…') : confirmText"></span>
+                        x-text="deleting ? confirmText.replace(/^(Delete|Remove)(.*)?$/, (_, v, rest) => (v === 'Delete' ? 'Deleting' : 'Removing') + (rest || '') + 'â€¦') : confirmText"></span>
                 </button>
             </div>
         </div>
     </div>
-    {{-- ──────────────────────────────────────────────────────────────────────── --}}
+    {{-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
 
     @stack('scripts')
 
@@ -740,7 +740,7 @@
                 const isW3 = icon.classList.contains('w-3');
                 const sizeClass = isW3 ? 'w-3 h-3' : 'w-4 h-4';
                 icon.outerHTML =
-                    `<svg class="${sizeClass} text-rose-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
+                    `<svg class="${sizeClass} text-emerald-500 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`;
                 setTimeout(() => {
                     const currentIcon = btn.querySelector('.copy-icon') || btn;
                     currentIcon.outerHTML = originalHtml;

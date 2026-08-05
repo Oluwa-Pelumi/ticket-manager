@@ -1,4 +1,4 @@
-@php
+﻿@php
     $orderType = [
         ['id' => 'one-time', 'label' => 'One Time'],
         ['id' => 'recurrent', 'label' => 'Recurrent Order'],
@@ -20,7 +20,7 @@
 
     <x-slot name="title">Submit Ticket</x-slot>
 
-    <div class="fauna-shell relative min-h-screen flex flex-col items-center overflow-x-hidden transition-colors duration-500 selection:bg-rose-400 selection:text-rose-950">
+    <div class="fauna-shell relative min-h-screen flex flex-col items-center overflow-x-hidden transition-colors duration-500 selection:bg-emerald-400 selection:text-emerald-950">
 
         {{-- Background Layer --}}
         <div class="fixed inset-0 mesh-gradient pointer-events-none opacity-20 dark:opacity-10"></div>
@@ -29,9 +29,9 @@
 
             {{-- Header --}}
             <div class="fauna-panel mb-6 sm:mb-10 p-4 sm:p-6 md:p-10 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-40"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-40"></div>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg border border-white/20">
                         <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                         </svg>
@@ -48,7 +48,7 @@
             </div>
 
             <div class="text-center mb-10">
-                <a href="{{ route('home') }}" class="inline-flex items-center text-xs md:text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-rose-950 transition-colors mb-4 tracking-widest">
+                <a href="{{ route('home') }}" class="inline-flex items-center text-xs md:text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-emerald-950 transition-colors mb-4 tracking-widest">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
@@ -140,9 +140,9 @@
                 @submit.prevent="submitTicket()"
             >
                 @csrf
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-40"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-40"></div>
 
-                {{-- ✅ Success state --}}
+                {{-- âœ… Success state --}}
                 <div x-show="submitted" x-cloak class="py-12 flex flex-col items-center text-center space-y-6">
                     <div class="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center ring-4 ring-emerald-200 dark:ring-emerald-800/40">
                         <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,10 +153,10 @@
                         <h2 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Ticket Submitted!</h2>
                         <p class="text-slate-500 dark:text-slate-400 text-sm">Your support request has been received.</p>
                     </div>
-                    <div class="px-6 py-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 space-y-1">
-                        <div class="text-[10px] font-black tracking-widest text-rose-950 dark:text-rose-400 uppercase">Reference Code</div>
+                    <div class="px-6 py-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 space-y-1">
+                        <div class="text-[10px] font-black tracking-widest text-emerald-950 dark:text-emerald-400 uppercase">Reference Code</div>
                         <div class="flex items-center justify-center gap-2">
-                            <div class="text-2xl font-black tracking-widest text-rose-950 dark:text-white" x-text="ticketRef"></div>
+                            <div class="text-2xl font-black tracking-widest text-emerald-950 dark:text-white" x-text="ticketRef"></div>
                             <button type="button" @click="
                                 (navigator.clipboard?.writeText(ticketRef) ?? Promise.reject())
                                 .catch(() => {
@@ -168,7 +168,7 @@
                                 });
                                 copiedRef = true;
                                 setTimeout(() => copiedRef = false, 2000);
-                            " class="p-2 rounded-lg bg-rose-200 dark:bg-rose-800/50 text-rose-700 dark:text-rose-300 hover:bg-rose-300 dark:hover:bg-rose-700 transition-all" title="Copy Reference Code">
+                            " class="p-2 rounded-lg bg-emerald-200 dark:bg-emerald-800/50 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-300 dark:hover:bg-emerald-700 transition-all" title="Copy Reference Code">
                                 <svg x-show="!copiedRef" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                 </svg>
@@ -187,7 +187,7 @@
                         </a>
                         <button type="button"
                             @click="submitted = false; ticketRef = ''; submitError = ''; processing = false; phone = ''; subject = ''; content = ''; previews = []; attachedFiles = []; copiedRef = false;"
-                            class="flex-1 px-5 py-3 rounded-2xl border border-rose-950/20 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400 font-black text-sm hover:bg-slate-50 dark:hover:bg-[#1e293b] transition-all">
+                            class="flex-1 px-5 py-3 rounded-2xl border border-emerald-950/20 dark:border-[#1e3a5f] text-slate-600 dark:text-slate-400 font-black text-sm hover:bg-slate-50 dark:hover:bg-[#1e293b] transition-all">
                             Submit Another
                         </button>
                     </div>
@@ -208,7 +208,7 @@
                                 name="first_name"
                                 type="text"
                                 value="{{ old('first_name', $user->first_name ?? '') }}"
-                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('first_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('first_name') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="First name"
                                 disabled
                             />
@@ -227,7 +227,7 @@
                                 name="middle_name"
                                 type="text"
                                 value="{{ old('middle_name', $user->middle_name ?? '') }}"
-                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('middle_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('middle_name') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="Middle name"
                                 disabled
                             />
@@ -246,7 +246,7 @@
                                 name="last_name"
                                 type="text"
                                 value="{{ old('last_name', $user->last_name ?? '') }}"
-                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('last_name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('last_name') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="Last name"
                                 disabled
                             />
@@ -266,7 +266,7 @@
                             name="email"
                             type="email"
                             value="{{ old('email', $user->email ?? '') }}"
-                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('email') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                            class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium shadow-sm disabled:opacity-50 disabled:bg-slate-100 disabled:dark:bg-[#0f172a] @error('email') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                             placeholder="email@example.com"
                             disabled
                         />
@@ -280,7 +280,7 @@
                         <label class="text-xs font-bold tracking-widest text-slate-600 dark:text-slate-400 ml-1" for="phone">
                             Phone Contact
                         </label>
-                        <div class="flex rounded-2xl overflow-hidden border shadow-sm @if($user->phone_number) opacity-50 bg-slate-100 dark:bg-[#0f172a] pointer-events-none @else bg-white dark:bg-[#1e293b] @endif transition-all @error('phone_number') border-rose-500 dark:border-rose-500 @else border-slate-200 dark:border-[#1e3a5f] @enderror">
+                        <div class="flex rounded-2xl overflow-hidden border shadow-sm @if($user->phone_number) opacity-50 bg-slate-100 dark:bg-[#0f172a] pointer-events-none @else bg-white dark:bg-[#1e293b] @endif transition-all @error('phone_number') border-red-500 dark:border-red-500 @else border-slate-200 dark:border-[#1e3a5f] @enderror">
                             <span class="flex items-center px-4 @if($user->phone_number) bg-slate-100/50 dark:bg-[#0f172a]/50 @else bg-slate-50 dark:bg-[#1e293b]/50 @endif text-slate-600 dark:text-slate-400 font-bold text-sm border-r border-slate-200 dark:border-[#1e3a5f] select-none shrink-0">
                                 +234
                             </span>
@@ -321,7 +321,7 @@
                                         'value' => 'low',
                                         'label' => 'Low',
                                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />',
-                                        'active' => 'bg-rose-50 dark:bg-rose-950/20 border-rose-400 text-rose-600 dark:text-rose-400',
+                                        'active' => 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-400 text-emerald-600 dark:text-emerald-400',
                                     ],
                                     [
                                         'value' => 'medium',
@@ -373,7 +373,7 @@
                             const opt = $event.target.selectedOptions[0];
                             category_id = opt.dataset.categoryId || '';
                         "
-                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-bold shadow-sm @error('subject') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-bold shadow-sm @error('subject') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         required
                     >
                         <option value="" disabled>
@@ -417,7 +417,7 @@
                         id="content"
                         name="content"
                         rows="6"
-                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none resize-none font-medium shadow-sm @error('content') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none resize-none font-medium shadow-sm @error('content') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                         placeholder="Describe the problem or inquiry with as much detail as possible..."
                         required
                     >{{ old('content') }}</textarea>
@@ -443,9 +443,9 @@
                         />
                         <label
                             for="file-upload"
-                            class="flex flex-col items-center justify-center border-2 border-dashed border-rose-950/20 dark:border-[#1e3a5f] rounded-3xl p-10 hover:border-rose-950 dark:hover:border-rose-400 hover:bg-rose-400/5 transition-all cursor-pointer group"
+                            class="flex flex-col items-center justify-center border-2 border-dashed border-emerald-950/20 dark:border-[#1e3a5f] rounded-3xl p-10 hover:border-emerald-950 dark:hover:border-emerald-400 hover:bg-emerald-400/5 transition-all cursor-pointer group"
                         >
-                            <div class="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-[#1e293b] flex items-center justify-center text-slate-400 group-hover:bg-rose-950 group-hover:text-white transition-all shadow-sm">
+                            <div class="w-12 h-12 mb-4 rounded-2xl bg-slate-100 dark:bg-[#1e293b] flex items-center justify-center text-slate-400 group-hover:bg-emerald-950 group-hover:text-white transition-all shadow-sm">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
@@ -461,7 +461,7 @@
 
                     {{-- Previews --}}
                     <div x-show="previews.length > 0" x-cloak class="mt-6">
-                        <div class="text-[10px] font-black text-rose-950 dark:text-rose-400 mb-4 tracking-[0.2em]">
+                        <div class="text-[10px] font-black text-emerald-950 dark:text-emerald-400 mb-4 tracking-[0.2em]">
                             Ready for Ticket (<span x-text="previews.length"></span>)
                         </div>
                         <div class="flex flex-wrap gap-4">

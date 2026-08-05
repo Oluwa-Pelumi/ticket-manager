@@ -1,10 +1,10 @@
-@props(['disabled' => false, 'error' => false])
+﻿@props(['disabled' => false, 'error' => false])
 
 @php
     $name = $attributes->get('name');
     $hasError = $error || ($name && isset($errors) && $errors->has($name));
     $borderClasses = $hasError
-        ? 'border-rose-500 dark:border-rose-500 focus:ring-rose-500 focus:border-rose-500'
+        ? 'border-red-500 dark:border-red-500 focus:ring-red-500 focus:border-red-500'
         : 'border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 focus:border-transparent';
 @endphp
 

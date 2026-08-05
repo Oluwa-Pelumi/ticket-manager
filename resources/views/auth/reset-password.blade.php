@@ -1,4 +1,4 @@
-<x-guest-layout>
+﻿<x-guest-layout>
     <x-slot name="title">New Password</x-slot>
 
     <div class="text-center mb-8">
@@ -16,9 +16,9 @@
                 Address</label>
             <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}" required
                 autocomplete="username"
-                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('email') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror">
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('email') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror">
             @error('email')
-                <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
+                <p class="text-xs font-bold text-emerald-500 mt-2">{{ $message }}</p>
             @enderror
         </div>
 
@@ -26,10 +26,10 @@
             <label for="password" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">New
                 Password</label>
             <input id="password" type="password" name="password" required autofocus autocomplete="new-password"
-                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
-                placeholder="••••••••">
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
             @error('password')
-                <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
+                <p class="text-xs font-bold text-emerald-500 mt-2">{{ $message }}</p>
             @enderror
         </div>
 
@@ -38,10 +38,10 @@
                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Confirm New Password</label>
             <input id="password_confirmation" type="password" name="password_confirmation" required
                 autocomplete="new-password"
-                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password_confirmation') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
-                placeholder="••••••••">
+                class="w-full rounded-full border px-4 py-3 shadow focus:ring-2 outline-none dark:bg-[#1e293b] dark:text-white transition-all @error('password_confirmation') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
             @error('password_confirmation')
-                <p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>
+                <p class="text-xs font-bold text-emerald-500 mt-2">{{ $message }}</p>
             @enderror
         </div>
 

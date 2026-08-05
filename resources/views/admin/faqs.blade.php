@@ -1,11 +1,11 @@
-{{--
+﻿{{--
     Admin FAQ Management View
     Provides frequently asked creation creation/editing.
 --}}
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -51,7 +51,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
-            {{-- ── Create / Edit Form ── --}}
+            {{-- â”€â”€ Create / Edit Form â”€â”€ --}}
             <div class="lg:col-span-1" id="faq-form-panel">
                 <div class="fauna-panel p-6 sm:p-8 lg:sticky lg:top-24">
 
@@ -69,22 +69,22 @@
                         <div class="space-y-2">
                             <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400">Question</label>
                             <textarea name="question" rows="3"
-                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('question') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('question') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="e.g. How do I submit a ticket?"
                                 required>{{ old('question') }}</textarea>
                             @error('question')
-                                <p class="text-rose-500 text-[10px] font-bold">{{ $message }}</p>
+                                <p class="text-emerald-500 text-[10px] font-bold">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="space-y-2">
                             <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400">Answer</label>
                             <textarea name="answer" rows="5"
-                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('answer') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('answer') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="Enter a clear, helpful answer..."
                                 required>{{ old('answer') }}</textarea>
                             @error('answer')
-                                <p class="text-rose-500 text-[10px] font-bold">{{ $message }}</p>
+                                <p class="text-emerald-500 text-[10px] font-bold">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -148,7 +148,7 @@
                             </button>
 
                             <button type="button" @click="cancelEdit()"
-                                class="w-full py-3 rounded-xl border border-rose-950/10 dark:border-[#1e3a5f] text-slate-600 font-black text-[10px] tracking-widest hover:bg-rose-50/50 dark:hover:bg-slate-800 transition-all text-center">
+                                class="w-full py-3 rounded-xl border border-emerald-950/10 dark:border-[#1e3a5f] text-slate-600 font-black text-[10px] tracking-widest hover:bg-emerald-50/50 dark:hover:bg-slate-800 transition-all text-center">
                                 Cancel Edit
                             </button>
                         </div>
@@ -157,13 +157,13 @@
                 </div>
             </div>
 
-            {{-- ── FAQ List ── --}}
+            {{-- â”€â”€ FAQ List â”€â”€ --}}
             <div class="lg:col-span-2">
-                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-rose-950/10 dark:border-[#1e3a5f] shadow-2xl">
+                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-emerald-950/10 dark:border-[#1e3a5f] shadow-2xl">
                     <div class="overflow-x-auto custom-scrollbar">
                         <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-rose-950/10 dark:border-[#1e3a5f]">
+                            <tr class="border-b border-emerald-950/10 dark:border-[#1e3a5f]">
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">
                                     Question &amp; Answer
                                 </th>
@@ -177,7 +177,7 @@
                         </thead>
                         <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                             @forelse ($faqs as $faq)
-                                <tr class="hover:bg-rose-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
+                                <tr class="hover:bg-emerald-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
 
                                     {{-- Question + Answer preview --}}
                                     <td class="px-6 py-5">
@@ -191,7 +191,7 @@
 
                                     {{-- Order badge --}}
                                     <td class="px-6 py-5 text-center">
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
                                             {{ $faq->order ?? 0 }}
                                         </span>
                                     </td>
@@ -230,7 +230,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="p-2 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all"
+                                                    class="p-2 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-lg transition-all"
                                                     title="Delete">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"

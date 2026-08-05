@@ -1,4 +1,4 @@
-<x-guest-layout>
+﻿<x-guest-layout>
     <x-slot name="title">Email Verification</x-slot>
 
     <div class="text-center mb-8">
@@ -53,7 +53,7 @@
     <div class="text-center mt-6" x-data="{ signingOut: false }">
         <form method="POST" action="{{ route('logout') }}" @submit="signingOut = true">
             @csrf
-            <button type="submit" x-bind:disabled="signingOut" class="inline-flex items-center justify-center gap-2 text-sm font-black tracking-widest text-slate-600 hover:text-rose-950 dark:hover:text-rose-400 transition-colors disabled:opacity-50">
+            <button type="submit" x-bind:disabled="signingOut" class="inline-flex items-center justify-center gap-2 text-sm font-black tracking-widest text-slate-600 hover:text-emerald-950 dark:hover:text-emerald-400 transition-colors disabled:opacity-50">
                 <template x-if="signingOut">
                     <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

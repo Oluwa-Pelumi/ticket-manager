@@ -1,4 +1,4 @@
-<section x-data="{
+﻿<section x-data="{
     processing: false,
     recentlySuccessful: {{ session('status') === 'profile-updated' ? 'true' : 'false' }}
 }">
@@ -92,14 +92,14 @@
                     Your email address is unverified.
                     <form method="POST" action="{{ route('verification.send') }}" class="inline">
                         @csrf
-                        <button type="submit" class="font-semibold underline hover:text-rose-950 dark:hover:text-rose-400 transition-colors focus:outline-none">
+                        <button type="submit" class="font-semibold underline hover:text-emerald-950 dark:hover:text-emerald-400 transition-colors focus:outline-none">
                             Click here to re-send the verification email.
                         </button>
                     </form>
                 </p>
 
                 @if (session('status') === 'verification-link-sent')
-                    <div class="mt-2 text-sm font-medium text-rose-600 dark:text-rose-400">
+                    <div class="mt-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         A new verification link has been sent to your email address.
                     </div>
                 @endif

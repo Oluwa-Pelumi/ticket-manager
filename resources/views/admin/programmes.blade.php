@@ -1,11 +1,11 @@
-{{--
+﻿{{--
     Admin Programmes Management View
     Provides academic programme management, enrollment counts, and inline creation/editing.
 --}}
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg border border-white/20">
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
@@ -44,9 +44,9 @@
                             <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400">Programme Name</label>
                             <input type="text" name="name"
                                 value="{{ old('name', $editingProgramme->name ?? '') }}"
-                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
+                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('name') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
                                 placeholder="e.g. Computer Science" required />
-                            @error('name')<p class="text-rose-500 text-[10px] font-bold">{{ $message }}</p>@enderror
+                            @error('name')<p class="text-emerald-500 text-[10px] font-bold">{{ $message }}</p>@enderror
                         </div>
 
                         <div class="flex flex-col gap-3">
@@ -64,7 +64,7 @@
                             </button>
                             @if (isset($editingProgramme))
                                 <a href="{{ route('admin.programmes.index') }}"
-                                    class="w-full py-3 rounded-xl border border-rose-950/10 dark:border-[#1e3a5f] text-slate-600 font-black text-[10px] tracking-widest hover:bg-rose-50/50 dark:hover:bg-slate-800 transition-all text-center">
+                                    class="w-full py-3 rounded-xl border border-emerald-950/10 dark:border-[#1e3a5f] text-slate-600 font-black text-[10px] tracking-widest hover:bg-emerald-50/50 dark:hover:bg-slate-800 transition-all text-center">
                                     Cancel Edit
                                 </a>
                             @endif
@@ -75,11 +75,11 @@
 
             {{-- Programmes Table --}}
             <div class="lg:col-span-2">
-                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-rose-950/10 dark:border-[#1e3a5f] shadow-2xl">
+                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-emerald-950/10 dark:border-[#1e3a5f] shadow-2xl">
                     <div class="overflow-x-auto custom-scrollbar">
                         <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-rose-950/10 dark:border-[#1e3a5f]">
+                            <tr class="border-b border-emerald-950/10 dark:border-[#1e3a5f]">
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">Programme</th>
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400 text-center">Enrolled Users</th>
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400 text-right">Actions</th>
@@ -87,13 +87,13 @@
                         </thead>
                         <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                             @forelse ($programmes as $programme)
-                                <tr class="hover:bg-rose-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
+                                <tr class="hover:bg-emerald-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
                                     <td class="px-6 py-5">
                                         <div class="text-sm font-bold text-slate-900 dark:text-white">{{ $programme->name }}</div>
                                         <div class="text-[10px] font-mono text-slate-400 tracking-tighter">{{ $programme->slug }}</div>
                                     </td>
                                     <td class="px-6 py-5 text-center">
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
                                             {{ $programme->users_count }}
                                         </span>
                                     </td>
@@ -117,7 +117,7 @@
                                                 })">
                                                 @csrf @method('DELETE')
                                                 <button type="submit"
-                                                    class="p-2 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all" title="Delete">
+                                                    class="p-2 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-lg transition-all" title="Delete">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
