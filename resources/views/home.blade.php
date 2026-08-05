@@ -49,7 +49,7 @@ $ticketingSteps = [
                 <nav class="py-6">
                     <div class="flex items-center justify-between">
                         <div class="inline-flex items-center gap-3 text-white">
-                            <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-12 w-12 drop-shadow-lg">
+                            <img src="{{ asset('logo.svg') }}?v=3" alt="{{ config('app.name') }} logo" class="h-12 w-12 drop-shadow-lg">
                             <span class="text-xl font-black tracking-tight text-white drop-shadow-md">{{ config('app.name') }}</span>
                         </div>
 

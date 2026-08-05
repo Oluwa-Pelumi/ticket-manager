@@ -1,8 +1,6 @@
-@extends('layouts.guest')
+<x-guest-layout>
+    <x-slot name="title">Login</x-slot>
 
-@section('title', 'Login')
-
-@section('guest-content')
     <div class="mb-10 text-center">
         <h1 class="text-4xl font-medium text-slate-900 dark:text-white">Login</h1>
         <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">Use your support account credentials to continue.</p>
@@ -85,4 +83,4 @@
             </p>
         </div>
     </form>
-@endsection
+</x-guest-layout>

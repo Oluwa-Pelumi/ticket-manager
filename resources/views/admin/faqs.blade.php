@@ -1,3 +1,7 @@
+{{--
+    Admin FAQ Management View
+    Provides frequently asked creation creation/editing.
+--}}
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">

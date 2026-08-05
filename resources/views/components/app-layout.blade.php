@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) && trim($title) ? trim($title) . ' — ' . config('app.name') : config('app.name') }}</title>
-    <link rel="icon" href="{{ asset('favicon.svg') }}?v=2" type="image/svg+xml">
-    <link rel="icon" href="{{ asset('favicon.ico') }}?v=2" sizes="any">
-    <link rel="icon" href="{{ asset('favicon.png') }}?v=2" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=2">
+    <link rel="icon" href="{{ asset('favicon.svg') }}?v=3" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=3" sizes="any">
+    <link rel="icon" href="{{ asset('favicon.png') }}?v=3" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=3">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
@@ -155,7 +155,7 @@
         .fauna-btn-primary:hover {
             border-color: #ca4d71;
             background-color: #ca4d71;
-            color: #ffffff; 
+            color: #ffffff;
         }
 
         .fauna-btn-primary:disabled,
@@ -290,14 +290,26 @@
             x-data="{ showingMobileMenu: false }">
             <div class="mx-auto max-w-[98%] xl:max-w-[1700px] px-2 sm:px-4 lg:px-6">
                 <div class="flex h-16 md:h-20 justify-between items-center">
-                    <div class="flex items-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-w-0">
-                        <a href="/" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-                            <img src="{{ asset('logo.svg') }}?v=2" alt="{{ config('app.name') }} logo"
-                                class="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 transition-transform group-hover:scale-105">
-                            <span
-                                class="hidden md:block text-lg lg:text-xl font-black tracking-tight text-slate-900 dark:text-white">
-                                {{ config('app.name') }}<span class="text-rose-400">.</span>
-                            </span>
+                    <div class="flex items-center gap-2.5 sm:gap-4 md:gap-6 lg:gap-8 min-w-0">
+                        @php
+                            $appName = rtrim(config('app.name'), ' .');
+                            $nameParts = explode(',', $appName, 2);
+                            $mainName = trim($nameParts[0]);
+                            $subName = isset($nameParts[1]) ? trim($nameParts[1]) : '';
+                        @endphp
+                        <a href="{{ route('home') }}" class="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0">
+                            <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo"
+                                class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 transition-transform group-hover:scale-105 shrink-0">
+                            <div class="flex flex-col leading-none min-w-0">
+                                <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
+                                    {{ $mainName }}
+                                </span>
+                                @if($subName)
+                                    <span class="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400 truncate mt-0.5">
+                                        {{ $subName }}
+                                    </span>
+                                @endif
+                            </div>
                         </a>
 
                         <div
@@ -473,9 +485,7 @@
     @endif
 
     {{-- ── Slot content ── --}}
-    {{-- For direct component use (e.g. dashboard), $slot is the page content.        --}}
-    {{-- For @extends('layouts.authenticated'), $slot is the full layout HTML from    --}}
-    {{-- authenticated.blade.php which already includes its own header/main wrappers. --}}
+    {{-- Slot content rendered inside main body wrapper --}}
     <div class="flex-1">
         {{ $slot ?? '' }}
     </div>

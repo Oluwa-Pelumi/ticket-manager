@@ -1,8 +1,6 @@
-@extends('layouts.guest')
+<x-guest-layout>
+    <x-slot name="title">Recover Password</x-slot>
 
-@section('title', 'Recover Password')
-
-@section('guest-content')
     <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Recover Password</h1>
         <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">We'll send you a recovery link</p>
@@ -53,4 +51,4 @@
             </a>
         </div>
     </form>
-@endsection
+</x-guest-layout>

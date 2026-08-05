@@ -1,8 +1,8 @@
-@extends('layouts.authenticated')
+<x-authenticated-layout>
 
-@section('title', 'Ticket #' . $ticket->hashid)
+<x-slot name="title">Ticket #{{ $ticket->hashid }}</x-slot>
 
-@section('header')
+<x-slot name="header">
 <div class="flex items-center justify-between w-full">
     <div class="flex items-center gap-4">
         <div class="w-12 h-12 rounded-2xl bg-rose-700 flex items-center justify-center shadow-lg border border-white/20">
@@ -24,9 +24,9 @@
         {{ str_replace('-', ' ', $ticket->status) }}
     </span>
 </div>
-@endsection
+</x-slot>
 
-@section('content-body')
+
 <div class="max-w-9xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8" x-data="lightbox()">
     <div class="flex items-center justify-between">
         <a href="{{ auth()->guest() ? route('check-status') : route('dashboard') }}" class="inline-flex items-center text-sm font-bold text-slate-600 hover:text-rose-950 dark:hover:text-rose-400 transition-colors">
@@ -506,6 +506,7 @@
     </div>
 </div>{{-- /x-data="lightbox()" --}}
 
+@push('scripts')
 <script>
 
 function lightbox() {
@@ -588,9 +589,7 @@ function commentForm(isPastAttendant, actionUrl) {
     };
 }
 
-function toggleTheme() {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-}
 </script>
-@endsection
+@endpush
+
+</x-authenticated-layout>

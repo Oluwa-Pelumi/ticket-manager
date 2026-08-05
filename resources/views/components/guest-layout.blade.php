@@ -10,10 +10,24 @@
         {{-- Guest nav bar --}}
         <nav
             class="mb-12 relative flex items-center justify-center border-b border-rose-950/10 py-6 dark:border-[#1e3a5f]">
-            <a href="{{ route('home') }}" class="inline-flex items-center gap-3">
-                <img src="{{ asset('logo.svg') }}?v=2" alt="{{ config('app.name') }} logo" class="h-12 w-12">
-                <span
-                    class="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ config('app.name') }}</span>
+            @php
+                $appName = rtrim(config('app.name'), ' .');
+                $nameParts = explode(',', $appName, 2);
+                $mainName = trim($nameParts[0]);
+                $subName = isset($nameParts[1]) ? trim($nameParts[1]) : '';
+            @endphp
+            <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0 max-w-[70vw] sm:max-w-none">
+                <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo" class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105 shrink-0">
+                <div class="flex flex-col leading-none min-w-0 text-left">
+                    <span class="text-sm sm:text-base md:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
+                        {{ $mainName }}
+                    </span>
+                    @if($subName)
+                        <span class="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400 truncate mt-0.5">
+                            {{ $subName }}
+                        </span>
+                    @endif
+                </div>
             </a>
 
             <div class="absolute right-0 flex items-center">

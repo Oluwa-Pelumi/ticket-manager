@@ -24,7 +24,6 @@
 
     <x-slot name="title">Manage Categories</x-slot>
 
-
     <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6">
 
         {{-- Flash messages --}}
