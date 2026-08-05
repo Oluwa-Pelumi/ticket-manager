@@ -301,11 +301,11 @@
                             <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo"
                                 class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 transition-transform group-hover:scale-105 shrink-0">
                             <div class="flex flex-col leading-none min-w-0">
-                                <span class="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400 truncate mt-0.5">
+                                <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
                                     {{ $mainName }}
                                 </span>
                                 @if ($subName)
-                                    <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
+                                    <span class="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-wider uppercase text-emerald-600 dark:text-emerald-400 truncate mt-0.5">
                                         {{ $subName }}
                                     </span>
                                 @endif

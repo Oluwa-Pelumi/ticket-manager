@@ -23,7 +23,7 @@
                         {{ $mainName }}
                     </span>
                     @if($subName)
-                        <span class="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400 truncate mt-0.5">
+                        <span class="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-emerald-600 dark:text-emerald-400 truncate mt-0.5">
                             {{ $subName }}
                         </span>
                     @endif
