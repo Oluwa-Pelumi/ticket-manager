@@ -48,10 +48,25 @@ $ticketingSteps = [
                 {{-- Nav: always visible --}}
                 <nav class="py-6">
                     <div class="flex items-center justify-between">
-                        <div class="inline-flex items-center gap-3 text-white">
-                            <img src="{{ asset('logo.svg') }}?v=3" alt="{{ config('app.name') }} logo" class="h-12 w-12 drop-shadow-lg">
-                            <span class="text-xl font-black tracking-tight text-white drop-shadow-md">{{ config('app.name') }}</span>
-                        </div>
+                        @php
+                            $appName = rtrim(config('app.name'), ' .');
+                            $nameParts = explode(',', $appName, 2);
+                            $mainName = trim($nameParts[0]);
+                            $subName = isset($nameParts[1]) ? trim($nameParts[1]) : '';
+                        @endphp
+                        <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 sm:gap-3 text-white group shrink-0 min-w-0">
+                            <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo" class="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-lg transition-transform group-hover:scale-105 shrink-0">
+                            <div class="flex flex-col leading-none min-w-0">
+                                <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-white drop-shadow-md truncate">
+                                    {{ $mainName }}
+                                </span>
+                                @if($subName)
+                                    <span class="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-wider uppercase text-rose-200 drop-shadow-md truncate mt-0.5">
+                                        {{ $subName }}
+                                    </span>
+                                @endif
+                            </div>
+                        </a>
 
                         <div class="flex items-center gap-3 sm:gap-4">
                             @guest
