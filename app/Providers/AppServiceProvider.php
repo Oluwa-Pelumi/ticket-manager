@@ -48,6 +48,14 @@ class AppServiceProvider extends ServiceProvider
                             $activations = $ticket->order_activations;
                             if (empty($activations)) return false;
                             $last = \Illuminate\Support\Carbon::parse(collect($activations)->last());
+
+                            // Custom recurrence: use the stored date to calculate next due
+                            if (strtolower(trim($ticket->recurrence_period ?? '')) === 'custom') {
+                                if (!$ticket->custom_recurrence_date) return false;
+                                $nextDue = \Illuminate\Support\Carbon::parse($ticket->custom_recurrence_date);
+                                return \Illuminate\Support\Carbon::now()->gte($nextDue->subDay());
+                            }
+
                             $days = match(strtolower(trim($ticket->recurrence_period))) {
                                 'daily'       => 1,
                                 'one-week', 'weekly'     => 7,
@@ -69,8 +77,10 @@ class AppServiceProvider extends ServiceProvider
                                 'hashid'          => $ticket->hashid,
                                 'subject'         => $ticket->subject,
                                 'content'         => $ticket->content,
+                                'period'          => $ticket->recurrence_period === 'custom'
+                                    ? 'Custom: ' . ($ticket->custom_recurrence_date ?? '—')
+                                    : $ticket->recurrence_period,
                                 'last_activation' => collect($activations)->last(),
-                                'period'          => $ticket->recurrence_period,
                             ];
                         })->values()->all();
                 }, []);

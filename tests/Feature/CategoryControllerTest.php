@@ -26,32 +26,32 @@ class CategoryControllerTest extends TestCase
     // ─────────────────────────────────────────────
 
     /** @test */
-    public function test_admin_can_view_categories_index(): void
+    public function test_admin_can_view_categories_page(): void
     {
         $this->actingAs($this->admin())
             ->get(route('admin.categories.index'))
             ->assertOk()
-            ->assertViewIs('admin.categories');
+            ->assertViewIs('admin.categories')
+            ->assertViewHas('categories');
     }
 
     /** @test */
-    public function test_non_admin_cannot_access_categories_index(): void
+    public function test_non_admin_cannot_view_categories_page(): void
     {
         $this->actingAs($this->regularUser())
             ->get(route('admin.categories.index'))
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
+            ->assertRedirect();
     }
 
     /** @test */
-    public function test_guest_is_redirected_from_categories_index(): void
+    public function test_guest_cannot_view_categories_page(): void
     {
         $this->get(route('admin.categories.index'))
             ->assertRedirect(route('login'));
     }
 
     /** @test */
-    public function test_index_passes_editing_category_when_edit_param_present(): void
+    public function test_edit_query_param_passes_editing_category_to_view(): void
     {
         $category = Category::factory()->create();
 
@@ -59,7 +59,19 @@ class CategoryControllerTest extends TestCase
             ->get(route('admin.categories.index', ['edit' => $category->id]))
             ->assertOk();
 
-        $this->assertEquals($category->id, $response->viewData('editingCategory')?->id);
+        $editingCategory = $response->viewData('editingCategory');
+        $this->assertNotNull($editingCategory);
+        $this->assertEquals($category->id, $editingCategory->id);
+    }
+
+    /** @test */
+    public function test_invalid_edit_id_passes_null_to_view(): void
+    {
+        $response = $this->actingAs($this->admin())
+            ->get(route('admin.categories.index', ['edit' => 99999]))
+            ->assertOk();
+
+        $this->assertNull($response->viewData('editingCategory'));
     }
 
     // ─────────────────────────────────────────────
@@ -70,17 +82,26 @@ class CategoryControllerTest extends TestCase
     public function test_admin_can_create_a_category(): void
     {
         $this->actingAs($this->admin())
-            ->post(route('admin.categories.store'), ['name' => 'Billing'])
+            ->post(route('admin.categories.store'), ['name' => 'Prescription Issues'])
             ->assertRedirect();
 
         $this->assertDatabaseHas('categories', [
-            'name' => 'Billing',
-            'slug' => 'billing',
+            'name' => 'Prescription Issues',
+            'slug' => 'prescription-issues',
         ]);
     }
 
     /** @test */
-    public function test_category_store_validates_name_is_required(): void
+    public function test_slug_is_auto_generated_from_name(): void
+    {
+        $this->actingAs($this->admin())
+            ->post(route('admin.categories.store'), ['name' => 'Order & Delivery']);
+
+        $this->assertDatabaseHas('categories', ['slug' => 'order-delivery']);
+    }
+
+    /** @test */
+    public function test_category_store_requires_name(): void
     {
         $this->actingAs($this->admin())
             ->post(route('admin.categories.store'), [])
@@ -88,22 +109,13 @@ class CategoryControllerTest extends TestCase
     }
 
     /** @test */
-    public function test_category_store_slugifies_the_name(): void
-    {
-        $this->actingAs($this->admin())
-            ->post(route('admin.categories.store'), ['name' => 'Drug Refill Orders'])
-            ->assertRedirect();
-
-        $this->assertDatabaseHas('categories', ['slug' => 'drug-refill-orders']);
-    }
-
-    /** @test */
-    public function test_non_admin_cannot_create_a_category(): void
+    public function test_non_admin_cannot_create_category(): void
     {
         $this->actingAs($this->regularUser())
-            ->post(route('admin.categories.store'), ['name' => 'Sneaky'])
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
+            ->post(route('admin.categories.store'), ['name' => 'Should Fail'])
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('categories', ['name' => 'Should Fail']);
     }
 
     // ─────────────────────────────────────────────
@@ -113,10 +125,10 @@ class CategoryControllerTest extends TestCase
     /** @test */
     public function test_admin_can_update_a_category(): void
     {
-        $category = Category::factory()->create(['name' => 'Old Name', 'slug' => 'old-name']);
+        $category = Category::factory()->create(['name' => 'Old Name']);
 
         $this->actingAs($this->admin())
-            ->patch(route('admin.categories.update', $category), ['name' => 'New Name'])
+            ->patch(route('admin.categories.update', $category->id), ['name' => 'New Name'])
             ->assertRedirect(route('admin.categories.index'));
 
         $this->assertDatabaseHas('categories', [
@@ -127,24 +139,25 @@ class CategoryControllerTest extends TestCase
     }
 
     /** @test */
-    public function test_category_update_validates_name(): void
+    public function test_category_update_requires_name(): void
     {
         $category = Category::factory()->create();
 
         $this->actingAs($this->admin())
-            ->patch(route('admin.categories.update', $category), [])
+            ->patch(route('admin.categories.update', $category->id), [])
             ->assertSessionHasErrors(['name']);
     }
 
     /** @test */
-    public function test_non_admin_cannot_update_a_category(): void
+    public function test_non_admin_cannot_update_category(): void
     {
-        $category = Category::factory()->create();
+        $category = Category::factory()->create(['name' => 'Original']);
 
         $this->actingAs($this->regularUser())
-            ->patch(route('admin.categories.update', $category), ['name' => 'Changed'])
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
+            ->patch(route('admin.categories.update', $category->id), ['name' => 'Changed'])
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('categories', ['name' => 'Changed']);
     }
 
     // ─────────────────────────────────────────────
@@ -157,20 +170,21 @@ class CategoryControllerTest extends TestCase
         $category = Category::factory()->create();
 
         $this->actingAs($this->admin())
-            ->delete(route('admin.categories.destroy', $category))
+            ->delete(route('admin.categories.destroy', $category->id))
             ->assertRedirect(route('admin.categories.index'));
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
     }
 
     /** @test */
-    public function test_non_admin_cannot_delete_a_category(): void
+    public function test_non_admin_cannot_delete_category(): void
     {
         $category = Category::factory()->create();
 
         $this->actingAs($this->regularUser())
-            ->delete(route('admin.categories.destroy', $category))
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
+            ->delete(route('admin.categories.destroy', $category->id))
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
     }
 }

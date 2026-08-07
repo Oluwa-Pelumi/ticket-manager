@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\Faq;
 use App\Models\User;
 use App\Models\Ticket;
 use App\Models\Category;
@@ -73,7 +72,7 @@ class TicketControllerTest extends TestCase
     /** @test */
     public function test_support_sees_only_assigned_tickets(): void
     {
-        $support = $this->support();
+        $support  = $this->support();
         $assigned = Ticket::factory()->create(['attended_to_by' => $support->id]);
         $other    = Ticket::factory()->create(['attended_to_by' => null]);
 
@@ -94,9 +93,7 @@ class TicketControllerTest extends TestCase
         $mine  = Ticket::factory()->create(['user_id' => $user->id]);
         $other = Ticket::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->get(route('dashboard'))
-            ->assertOk();
+        $response = $this->actingAs($user)->get(route('dashboard'))->assertOk();
 
         $tickets = $response->viewData('tickets');
         $this->assertTrue($tickets->contains($mine));
@@ -114,12 +111,12 @@ class TicketControllerTest extends TestCase
         $category = Category::factory()->create(['slug' => 'general']);
 
         $this->post(route('save-ticket'), [
-            'name'       => 'John Guest',
-            'email'      => 'guest@example.com',
-            'subject'    => 'general',
-            'content'    => 'I need help with my order.',
-            'priority'   => 'medium',
-            'category_id'=> $category->id,
+            'name'        => 'John Guest',
+            'email'       => 'guest@example.com',
+            'subject'     => 'general',
+            'content'     => 'I need help with my order.',
+            'priority'    => 'medium',
+            'category_id' => $category->id,
         ])->assertRedirect();
 
         $this->assertDatabaseHas('tickets', ['email' => 'guest@example.com']);
@@ -167,7 +164,7 @@ class TicketControllerTest extends TestCase
     }
 
     /** @test */
-    public function test_ticket_save_with_image_uploads_stores_files(): void
+    public function test_ticket_save_with_attachments_stores_files(): void
     {
         Notification::fake();
         Storage::fake('public');
@@ -178,15 +175,40 @@ class TicketControllerTest extends TestCase
             'name'        => $user->name,
             'email'       => $user->email,
             'subject'     => 'general',
-            'content'     => 'Issue with images',
+            'content'     => 'Issue with attachments',
             'priority'    => 'high',
             'category_id' => $category->id,
-            'images'      => [UploadedFile::fake()->image('screenshot.png')],
+            'attachments' => [UploadedFile::fake()->image('screenshot.png')],
         ])->assertRedirect();
 
         $ticket = Ticket::where('user_id', $user->id)->first();
-        $this->assertNotEmpty($ticket->images);
-        Storage::disk('public')->assertExists($ticket->images[0]);
+        $this->assertNotEmpty($ticket->attachments);
+        Storage::disk('public')->assertExists($ticket->attachments[0]);
+    }
+
+    /** @test */
+    public function test_whatsapp_number_is_synced_to_user_profile_on_ticket_save(): void
+    {
+        Notification::fake();
+        $user     = $this->regularUser();
+        $category = Category::factory()->create(['slug' => 'general']);
+
+        $this->assertNull($user->whatsapp_number);
+
+        $this->actingAs($user)->post(route('save-ticket'), [
+            'name'            => $user->name,
+            'email'           => $user->email,
+            'subject'         => 'general',
+            'content'         => 'Need help.',
+            'priority'        => 'medium',
+            'category_id'     => $category->id,
+            'whatsapp_number' => '+2348012345678',
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('users', [
+            'id'              => $user->id,
+            'whatsapp_number' => '+2348012345678',
+        ]);
     }
 
     // ─────────────────────────────────────────────
@@ -253,6 +275,50 @@ class TicketControllerTest extends TestCase
         ])->assertSessionHas('error');
     }
 
+    /** @test */
+    public function test_ticket_update_with_file_attachments(): void
+    {
+        Storage::fake('public');
+        $user   = $this->regularUser();
+        $ticket = $this->makeTicket(['user' => $user]);
+
+        $this->actingAs($user)
+            ->patch(route('update-ticket', $ticket->hashid), [
+                'subject'     => $ticket->subject,
+                'content'     => $ticket->content,
+                'priority'    => 'medium',
+                'attachments' => [UploadedFile::fake()->image('update.png')],
+            ])
+            ->assertRedirect();
+
+        $ticket->refresh();
+        $this->assertNotEmpty($ticket->attachments);
+        Storage::disk('public')->assertExists($ticket->attachments[0]);
+    }
+
+    /** @test */
+    public function test_ticket_update_retains_existing_attachments(): void
+    {
+        Storage::fake('public');
+        $user   = $this->regularUser();
+        $ticket = $this->makeTicket(['user' => $user]);
+
+        Storage::disk('public')->put('tickets/existing.png', 'content');
+        $ticket->update(['attachments' => ['tickets/existing.png']]);
+
+        $this->actingAs($user)
+            ->patch(route('update-ticket', $ticket->hashid), [
+                'subject'              => $ticket->subject,
+                'content'              => $ticket->content,
+                'priority'             => 'medium',
+                'existing_attachments' => ['tickets/existing.png'],
+            ])
+            ->assertRedirect();
+
+        $ticket->refresh();
+        $this->assertContains('tickets/existing.png', $ticket->attachments);
+    }
+
     // ─────────────────────────────────────────────
     // updateStatus (legacy PATCH route)
     // ─────────────────────────────────────────────
@@ -268,10 +334,7 @@ class TicketControllerTest extends TestCase
             'status' => 'in-progress',
         ])->assertRedirect();
 
-        $this->assertDatabaseHas('tickets', [
-            'id'     => $ticket->id,
-            'status' => 'in-progress',
-        ]);
+        $this->assertDatabaseHas('tickets', ['id' => $ticket->id, 'status' => 'in-progress']);
     }
 
     /** @test */
@@ -286,8 +349,32 @@ class TicketControllerTest extends TestCase
         ])->assertSessionHas('error');
     }
 
+    /** @test */
+    public function test_ticket_reassigns_when_reopened_from_closed(): void
+    {
+        $admin            = $this->admin();
+        $pastSupport      = $this->support();
+        $availableSupport = User::factory()->create(['role' => 'support']);
+
+        Ticket::factory()->create(['status' => 'open', 'attended_to_by' => [$pastSupport->id]]);
+
+        $ticket = Ticket::factory()->create([
+            'status'         => 'closed',
+            'attended_to_by' => [$pastSupport->id],
+        ]);
+
+        $this->actingAs($admin)
+            ->patch(route('update-ticket-status'), ['id' => $ticket->id, 'status' => 'open'])
+            ->assertRedirect();
+
+        $ticket->refresh();
+        $this->assertEquals('open', $ticket->status);
+        $this->assertContains($availableSupport->id, $ticket->attended_to_by);
+        $this->assertEquals($availableSupport->id, end($ticket->attended_to_by));
+    }
+
     // ─────────────────────────────────────────────
-    // RESTful updateTicketStatus (PATCH /tickets/{ticket}/status/{status})
+    // RESTful updateTicketStatus
     // ─────────────────────────────────────────────
 
     /** @test */
@@ -326,6 +413,22 @@ class TicketControllerTest extends TestCase
     }
 
     // ─────────────────────────────────────────────
+    // ticketStatuses polling
+    // ─────────────────────────────────────────────
+
+    /** @test */
+    public function test_ticket_statuses_endpoint_returns_json(): void
+    {
+        $admin = $this->admin();
+        Ticket::factory()->count(2)->create();
+
+        $this->actingAs($admin)
+            ->getJson(route('tickets.statuses'))
+            ->assertOk()
+            ->assertJsonStructure([['id', 'status']]);
+    }
+
+    // ─────────────────────────────────────────────
     // destroyTicket (DELETE /tickets/{ticket})
     // ─────────────────────────────────────────────
 
@@ -355,7 +458,7 @@ class TicketControllerTest extends TestCase
     }
 
     // ─────────────────────────────────────────────
-    // bulkDelete (legacy DELETE route)
+    // bulkDelete (legacy)
     // ─────────────────────────────────────────────
 
     /** @test */
@@ -365,9 +468,7 @@ class TicketControllerTest extends TestCase
         $tickets = Ticket::factory()->count(3)->create();
         $ids     = $tickets->pluck('id')->toArray();
 
-        $this->actingAs($admin)->delete(route('bulk-delete-tickets'), [
-            'ids' => $ids,
-        ])->assertRedirect();
+        $this->actingAs($admin)->delete(route('bulk-delete-tickets'), ['ids' => $ids])->assertRedirect();
 
         foreach ($ids as $id) {
             $this->assertDatabaseMissing('tickets', ['id' => $id]);
@@ -380,13 +481,13 @@ class TicketControllerTest extends TestCase
         $user    = $this->regularUser();
         $tickets = Ticket::factory()->count(2)->create();
 
-        $this->actingAs($user)->delete(route('bulk-delete-tickets'), [
-            'ids' => $tickets->pluck('id')->toArray(),
-        ])->assertSessionHas('error');
+        $this->actingAs($user)
+            ->delete(route('bulk-delete-tickets'), ['ids' => $tickets->pluck('id')->toArray()])
+            ->assertSessionHas('error');
     }
 
     // ─────────────────────────────────────────────
-    // bulkDestroyTickets (RESTful DELETE /tickets/bulk-delete)
+    // bulkDestroyTickets (RESTful)
     // ─────────────────────────────────────────────
 
     /** @test */
@@ -406,7 +507,7 @@ class TicketControllerTest extends TestCase
     }
 
     // ─────────────────────────────────────────────
-    // bulkUpdateStatus / bulkUpdateTicketStatus
+    // bulkUpdateStatus
     // ─────────────────────────────────────────────
 
     /** @test */
@@ -434,10 +535,7 @@ class TicketControllerTest extends TestCase
         $ids     = $tickets->pluck('id')->toArray();
 
         $this->actingAs($admin)
-            ->patch(route('tickets.bulk-status'), [
-                'ids'    => $ids,
-                'status' => 'in-progress',
-            ])
+            ->patch(route('tickets.bulk-status'), ['ids' => $ids, 'status' => 'in-progress'])
             ->assertJson(['success' => true, 'status' => 'in-progress']);
     }
 
@@ -484,9 +582,7 @@ class TicketControllerTest extends TestCase
         $ticket = $this->makeTicket();
 
         $this->actingAs($user)
-            ->post(route('tickets.add-comment', $ticket->hashid), [
-                'content' => 'This is my comment.',
-            ])
+            ->post(route('tickets.add-comment', $ticket->hashid), ['content' => 'This is my comment.'])
             ->assertRedirect();
 
         $this->assertDatabaseHas('comments', [
@@ -501,9 +597,8 @@ class TicketControllerTest extends TestCase
     {
         $ticket = $this->makeTicket();
 
-        $this->post(route('add-comment', $ticket->hashid), [
-            'content' => 'Guest comment here.',
-        ])->assertRedirect();
+        $this->post(route('add-comment', $ticket->hashid), ['content' => 'Guest comment here.'])
+            ->assertRedirect();
 
         $this->assertDatabaseHas('comments', [
             'ticket_id' => $ticket->id,
@@ -531,15 +626,79 @@ class TicketControllerTest extends TestCase
         $ticket  = $this->makeTicket(['user' => $user, 'status' => 'open']);
 
         $this->actingAs($support)
+            ->post(route('tickets.add-comment', $ticket->hashid), ['content' => 'Support reply.'])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('tickets', ['id' => $ticket->id, 'status' => 'in-progress']);
+    }
+
+    /** @test */
+    public function test_comment_with_attachments_stores_files(): void
+    {
+        Notification::fake();
+        Storage::fake('public');
+        $user   = $this->regularUser();
+        $ticket = $this->makeTicket(['user' => $user]);
+
+        $this->actingAs($user)
             ->post(route('tickets.add-comment', $ticket->hashid), [
-                'content' => 'Support reply.',
+                'content'     => 'Comment with file.',
+                'attachments' => [UploadedFile::fake()->image('proof.png')],
             ])
             ->assertRedirect();
 
-        $this->assertDatabaseHas('tickets', [
-            'id'     => $ticket->id,
-            'status' => 'in-progress',
+        $comment = $ticket->comments()->latest()->first();
+        $this->assertNotEmpty($comment->attachments);
+        Storage::disk('public')->assertExists($comment->attachments[0]);
+    }
+
+    /** @test */
+    public function test_comment_on_closed_ticket_reopens_it(): void
+    {
+        Notification::fake();
+        $user   = $this->regularUser();
+        $ticket = $this->makeTicket(['user' => $user, 'status' => 'closed']);
+
+        $this->actingAs($user)
+            ->post(route('tickets.add-comment', $ticket->hashid), ['content' => 'I need this reopened.'])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('tickets', ['id' => $ticket->id, 'status' => 'open']);
+    }
+
+    /** @test */
+    public function test_support_comment_assigns_attendant_to_ticket(): void
+    {
+        Notification::fake();
+        $support = $this->support();
+        $ticket  = $this->makeTicket(['status' => 'open', 'attended_to_by' => null]);
+
+        $this->actingAs($support)
+            ->post(route('tickets.add-comment', $ticket->hashid), ['content' => 'Support is handling this.'])
+            ->assertRedirect();
+
+        $ticket->refresh();
+        $this->assertContains($support->id, $ticket->attended_to_by);
+    }
+
+    /** @test */
+    public function test_past_support_cannot_reply_to_ticket(): void
+    {
+        $pastSupport    = $this->support();
+        $currentSupport = User::factory()->create(['role' => 'support']);
+
+        $ticket = Ticket::factory()->create([
+            'status'         => 'open',
+            'attended_to_by' => [$pastSupport->id, $currentSupport->id],
         ]);
+
+        $this->actingAs($pastSupport)
+            ->post(route('add-comment', ['ticket' => $ticket->id]), [
+                'content' => 'Trying to reply as past support',
+            ])
+            ->assertSessionHas('error', 'You are not the currently assigned support for this ticket and cannot reply.');
+
+        $this->assertDatabaseMissing('comments', ['content' => 'Trying to reply as past support']);
     }
 
     // ─────────────────────────────────────────────
@@ -571,6 +730,27 @@ class TicketControllerTest extends TestCase
             ->assertSessionHas('error');
     }
 
+    /** @test */
+    public function test_activate_order_assigns_support_and_sets_status_to_in_progress(): void
+    {
+        $support = $this->support();
+        $ticket  = Ticket::factory()->create([
+            'order_type'        => 'recurrent',
+            'recurrence_period' => 'monthly',
+            'status'            => 'open',
+            'attended_to_by'    => null,
+        ]);
+
+        $this->actingAs($support)
+            ->patch(route('tickets.activate-order', $ticket->id));
+
+        $ticket->refresh();
+        $this->assertEquals('in-progress', $ticket->status);
+        $this->assertIsArray($ticket->attended_to_by);
+        $this->assertContains($support->id, $ticket->attended_to_by);
+        $this->assertCount(1, $ticket->order_activations);
+    }
+
     // ─────────────────────────────────────────────
     // searchTicketsByReference
     // ─────────────────────────────────────────────
@@ -580,23 +760,17 @@ class TicketControllerTest extends TestCase
     {
         $ticket = $this->makeTicket();
 
-        $this->post(route('search-tickets'), [
-            'reference' => $ticket->hashid,
-        ])
-        ->assertOk()
-        ->assertViewIs('check-status')
-        ->assertViewHas('tickets');
+        $this->post(route('search-tickets'), ['reference' => $ticket->hashid])
+            ->assertOk()
+            ->assertViewIs('check-status')
+            ->assertViewHas('tickets');
     }
 
     /** @test */
     public function test_search_with_invalid_reference_returns_empty_results(): void
     {
-        $response = $this->post(route('search-tickets'), [
-            'reference' => 'INVALID12',
-        ])->assertOk();
-
-        $tickets = $response->viewData('tickets');
-        $this->assertTrue($tickets->isEmpty());
+        $response = $this->post(route('search-tickets'), ['reference' => 'INVALID12'])->assertOk();
+        $this->assertTrue($response->viewData('tickets')->isEmpty());
     }
 
     /** @test */
@@ -604,82 +778,5 @@ class TicketControllerTest extends TestCase
     {
         $this->post(route('search-tickets'), ['reference' => 'abc'])
             ->assertSessionHasErrors(['reference']);
-    }
-
-    /** @test */
-    public function test_activate_order_assigns_support_and_sets_status_to_in_progress(): void
-    {
-        $support = $this->support();
-        $ticket  = Ticket::factory()->create([
-            'order_type' => 'recurrent',
-            'recurrence_period' => 'monthly',
-            'status' => 'open',
-            'attended_to_by' => null,
-        ]);
-
-        $response = $this->actingAs($support)
-            ->patch(route('tickets.activate-order', $ticket->id));
-
-        $ticket->refresh();
-        
-        $this->assertEquals('in-progress', $ticket->status);
-        $this->assertIsArray($ticket->attended_to_by);
-        $this->assertTrue(in_array($support->id, $ticket->attended_to_by));
-        $this->assertContains($support->id, $ticket->attended_to_by);
-        $this->assertCount(1, $ticket->order_activations);
-    }
-
-    /** @test */
-    public function test_past_support_cannot_reply_to_ticket(): void
-    {
-        $pastSupport = $this->support();
-        $currentSupport = User::factory()->create(['role' => 'support']);
-        
-        $ticket = Ticket::factory()->create([
-            'status' => 'open',
-            'attended_to_by' => [$pastSupport->id, $currentSupport->id]
-        ]);
-
-        $response = $this->actingAs($pastSupport)
-            ->post(route('add-comment', ['ticket' => $ticket->id]), [
-                'content' => 'Trying to reply as past support'
-            ]);
-
-        $response->assertSessionHas('error', 'You are not the currently assigned support for this ticket and cannot reply.');
-        $this->assertDatabaseMissing('comments', ['content' => 'Trying to reply as past support']);
-    }
-
-    /** @test */
-    public function test_ticket_reassigns_when_reopened_from_closed(): void
-    {
-        $admin = $this->admin();
-        $pastSupport = $this->support();
-        $availableSupport = User::factory()->create(['role' => 'support']);
-
-        // Give pastSupport an existing active ticket so they're "busier"
-        // than availableSupport — removes the tie in assignToLeastBusySupport().
-        Ticket::factory()->create([
-            'status' => 'open',
-            'attended_to_by' => [$pastSupport->id],
-        ]);
-
-        $ticket = Ticket::factory()->create([
-            'status' => 'closed',
-            'attended_to_by' => [$pastSupport->id]
-        ]);
-
-        $response = $this->actingAs($admin)
-            ->patch(route('update-ticket-status'), [
-                'id'     => $ticket->id,
-                'status' => 'open',
-            ])
-            ->assertRedirect();
-
-        $ticket->refresh();
-        $this->assertEquals('open', $ticket->status);
-        $this->assertContains($availableSupport->id, $ticket->attended_to_by);
-
-        $attendedTo = $ticket->attended_to_by;
-        $this->assertEquals($availableSupport->id, end($attendedTo));
     }
 }

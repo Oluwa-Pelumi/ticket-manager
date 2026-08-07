@@ -20,7 +20,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $user    = Auth::user();
+        $user = Auth::user();
         $tickets = $user->role === 'admin'
             ? Ticket::with(['user', 'comments', 'category'])->latest()->get()
             : ($user->role === 'support'
@@ -41,8 +41,6 @@ class TicketController extends Controller
         // --- Validate submission ---
         $validated = $request->validate([
             'custom_recurrence_date' => 'nullable|date',
-            'images'                 => 'nullable|array',
-            'images.*'               => 'image|max:5120',
             'content'                => 'required|string',
             'recurrence_period'      => 'nullable|string',
             'email'                  => 'required|email|max:255',
@@ -52,6 +50,7 @@ class TicketController extends Controller
             'priority'               => 'required|string|in:low,medium,high',
             'order_type'             => 'nullable|string|in:one-time,recurrent',
             'whatsapp_number'        => ['nullable', 'string', 'regex:/^\+?[1-9]\d{1,14}$/'],
+            'attachments.*'          => ['nullable','file','max:5120',    'extensions:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt'],
         ], [
             'whatsapp_number.regex'  => 'The WhatsApp number must be a valid international phone number (e.g., +2348000000000).'
         ]);
@@ -80,35 +79,34 @@ class TicketController extends Controller
             'content'                => $validated['content'],
             'subject'                => $validated['subject'],
             'priority'               => $validated['priority'],
-            'whatsapp_number'        => $validated['whatsapp_number'] ?? null,
             'order_type'             => $validated['order_type'] ?? null,
+            'whatsapp_number'        => $validated['whatsapp_number'] ?? null,
             'recurrence_period'      => $validated['recurrence_period'] ?? null,
             'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
             'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
         ]);
 
-        // --- Upload attached images ---
-        $imagePaths = [];
-        if ($request->hasFile('images')) {
-            $username  = Str::slug($validated['name'], '_');
-            $folder    = $username . '-' . ($user ? $user->id : 'guest');
+        // --- Upload attached files ---
+        $attachmentPaths = [];
+        if ($request->hasFile('attachments')) {
+            $username = Str::slug($user ? $user->name : $validated['name'], '_');
+            $folder   = $user ? ($username . '-' . $user->id) : ('guest-' . $username);
 
-            foreach ($request->file('images') as $index => $file) {
-                $extension    = $file->getClientOriginalExtension();
-                $filename     = $ticket->id . '_' . $index . '_' . time() . '.' . $extension;
-                $filepath     = $file->storeAs('tickets/' . $folder, $filename, 'public');
-                $imagePaths[] = $filepath;
+            foreach ($request->file('attachments') as $index => $file) {
+                $extension         = $file->getClientOriginalExtension();
+                $filename          = $ticket->id . '_' . $index . '_' . time() . '.' . $extension;
+                $filepath          = $file->storeAs('tickets/' . $folder, $filename, 'public');
+                $attachmentPaths[] = $filepath;
             }
         }
 
         $ticket->update([
-            'images' => $imagePaths
+            'attachments' => $attachmentPaths ?: null,
         ]);
 
         // --- Notify submitter via mail and WhatsApp ---
         $notificationMessage = "Your ticket (Reference: {$ticket->hashid}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->hashid);
-
-        $ticketSubject = ucwords(str_replace('_', ' ', $validated['subject']));
+        $ticketSubject       = ucwords(str_replace('_', ' ', $validated['subject']));
 
         if ($user) {
             $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
@@ -118,65 +116,106 @@ class TicketController extends Controller
                 ->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $validated['name']));
         }
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success'  => true,
+                'hashid'   => $ticket->hashid,
+                'redirect' => route('ticket.show', $ticket->hashid),
+                'message'  => "Ticket submitted! Your reference is {$ticket->hashid}.",
+            ]);
+        }
+
         return redirect()->route('ticket.show', $ticket->hashid)->with('success', "Ticket submitted successfully. Your reference code is {$ticket->hashid}. You can bookmark this page to track your ticket.");
     }
 
     /**
-     * Update ticket details and optionally append new images.
+     * Update ticket details (only allowed if no support has replied yet and ticket is open/in-progress).
      */
-    // public function update(Request $request, Ticket $ticket)
-    // {
-    //     // --- Authorization and status checks ---
-    //     if ($ticket->user_id !== Auth::id()) {
-    //         return back()->with('error', 'Unauthorized action.');
-    //     }
+    public function update(Request $request, Ticket $ticket)
+    {
+        $user    = Auth::user();
+        $isOwner = $user && ($user->id === $ticket->user_id);
+        $isAdmin = $user && $user->isAdmin();
 
-    //     if ($ticket->status === 'closed') {
-    //         return back()->with('error', 'Closed tickets cannot be edited.');
-    //     }
+        if (!$isOwner && !$isAdmin) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => 'Unauthorized action.'], 403);
+            }
+            return back()->with('error', 'Unauthorized action.');
+        }
 
-    //     $validated = $request->validate([
-    //         'custom_recurrence_date' => 'nullable|date',
-    //         'images'                 => 'nullable|array',
-    //         'images.*'               => 'image|max:5120',
-    //         'content'                => 'required|string',
-    //         'recurrence_period'      => 'nullable|string',
-    //         'subject'                => 'required|string|max:255',
-    //         'category_id'            => 'nullable|exists:categories,id',
-    //         'priority'               => 'required|string|in:low,medium,high',
-    //         'order_type'             => 'nullable|string|in:one-time,recurrent',
-    //     ]);
+        if ($ticket->status === 'closed') {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => 'Closed tickets cannot be edited.'], 422);
+            }
+            return back()->with('error', 'Closed tickets cannot be edited.');
+        }
 
-    //     $updateData = [
-    //         'subject'                => $validated['subject'],
-    //         'content'                => $validated['content'],
-    //         'priority'               => $validated['priority'],
-    //         'order_type'             => $validated['order_type'] ?? null,
-    //         'recurrence_period'      => $validated['recurrence_period'] ?? null,
-    //         'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
-    //         'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
-    //     ];
+        if ($ticket->has_support_replied) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => 'Ticket cannot be edited once support has responded.'], 422);
+            }
+            return back()->with('error', 'Ticket cannot be edited once support has responded.');
+        }
 
-    //     // --- Merge new image uploads with existing paths ---
-    //     if ($request->hasFile('images')) {
-    //         $user       = Auth::user();
-    //         $username   = Str::slug($user->name, '_');
-    //         $folder     = $username . '-' . $user->id;
-    //         $imagePaths = $ticket->images ?? [];
+        $validated = $request->validate([
+            'custom_recurrence_date' => 'nullable|date',
+            'content'                => 'required|string',
+            'recurrence_period'      => 'nullable|string',
+            'subject'                => 'required|string|max:255',
+            'category_id'            => 'nullable|exists:categories,id',
+            'priority'               => 'required|string|in:low,medium,high',
+            'order_type'             => 'nullable|string|in:one-time,recurrent',
+            'attachments.*'          => [ 'nullable', 'file', 'max:5120', 'extensions:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt'],
+        ]);
 
-    //         foreach ($request->file('images') as $index => $file) {
-    //             $extension    = $file->getClientOriginalExtension();
-    //             $filename     = $username . '_' . time() . '_' . $index . '.' . $extension;
-    //             $filepath     = $file->storeAs('tickets/'. $folder, $filename, 'public');
-    //             $imagePaths[] = $filepath;
-    //         }
-    //         $updateData['images'] = $imagePaths;
-    //     }
+        $updateData = [
+            'subject'                => $validated['subject'],
+            'content'                => $validated['content'],
+            'priority'               => $validated['priority'],
+            'order_type'             => $validated['order_type'] ?? null,
+            'recurrence_period'      => $validated['recurrence_period'] ?? null,
+            'custom_recurrence_date' => $validated['custom_recurrence_date'] ?? null,
+            'category_id'            => $validated['category_id'] ?? Category::where('slug', $validated['subject'])->first()?->id,
+        ];
 
-    //     $ticket->update($updateData);
+        if ($request->has('category_id') && !empty($validated['category_id'])) {
+            $updateData['category_id'] = $validated['category_id'];
+        }
 
-    //     return back()->with('success', 'Ticket updated successfully.');
-    // }
+        $attachmentPaths = $request->has('existing_attachments')
+            ? (array) $request->input('existing_attachments')
+            : [];
+
+        if ($request->hasFile('attachments')) {
+            $username = Str::slug($user->name, '_');
+            $folder   = $username . '-' . $user->id;
+
+            foreach ($request->file('attachments') as $index => $file) {
+                $extension         = $file->getClientOriginalExtension();
+                $filename          = $ticket->id . '_' . time() . '_' . $index . '.' . $extension;
+                $filepath          = $file->storeAs('tickets/' . $folder, $filename, 'public');
+                $attachmentPaths[] = $filepath;
+            }
+        }
+
+        $updateData['attachments'] = array_values($attachmentPaths);
+
+        $ticket->update($updateData);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            $ticket->refresh();
+            $ticket->load(['category', 'user', 'comments.user']);
+            return response()->json([
+                'success' => true,
+                'ticket'  => $ticket,
+                'message' => 'Ticket updated successfully.',
+            ]);
+        }
+
+        return back()->with('success', 'Ticket updated successfully.');
+    }
+
 
     /**
      * Update a single ticket's status and optionally reassign support staff.
@@ -209,10 +248,10 @@ class TicketController extends Controller
 
         // --- Re-assign if transitioning from closed to open ---
         if ($oldStatus === 'closed' && in_array($validated['status'], ['open', 'in-progress']) && !$request->has('attended_to_by')) {
-             $newSupportId = $this->assignToLeastBusySupport();
-             if ($newSupportId) {
-                 $ticket->addAttendant($newSupportId);
-             }
+            $newSupportId = $this->assignToLeastBusySupport();
+            if ($newSupportId) {
+                $ticket->addAttendant($newSupportId);
+            }
         }
 
         $ticket->update(['status' => $validated['status']]);
@@ -220,7 +259,8 @@ class TicketController extends Controller
         // --- Notify ticket owner when closed ---
         if ($oldStatus !== 'closed' && $validated['status'] === 'closed' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             if ($ticket->user) {
                 $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
@@ -228,6 +268,21 @@ class TicketController extends Controller
                 \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
                     ->route('whatsapp', $ticket->whatsapp_number)
                     ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
+            }
+        }
+
+        // --- Notify ticket owner when status changes to in progress ---
+        if ($oldStatus !== 'in_progress' && $validated['status'] === 'in_progress' && $ticket->user_id !== Auth::id()) {
+            $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+            } else if ($ticket->email) {
+                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                    ->route('whatsapp', $ticket->whatsapp_number)
+                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_in_progress'));
             }
         }
 
@@ -248,7 +303,7 @@ class TicketController extends Controller
             'ids.*' => 'exists:tickets,id',
         ]);
 
-        $tickets = Ticket::query()->whereIn('id', $validated['ids'], 'and', false)->get();
+        $tickets = Ticket::whereIn('id', $validated['ids'])->get();
 
         foreach ($tickets as $ticket) {
             if ($ticket->filename) {
@@ -302,7 +357,8 @@ class TicketController extends Controller
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
                     $notificationMsg = "Your ticket (ID: {$ticket->id}) has been closed.\nView here: " . route('ticket.show', $ticket->id);
-                    $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+                    $category        = $ticket->category;
+                    $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
                     if ($ticket->user) {
                         $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
@@ -310,6 +366,25 @@ class TicketController extends Controller
                         \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
                             ->route('whatsapp', $ticket->whatsapp_number)
                             ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_closed'));
+                    }
+                }
+            }
+        }
+
+        // --- Notify owners of tickets moved to in progress ---
+        if ($validated['status'] === 'in_progress') {
+            foreach ($tickets as $ticket) {
+                if ($ticket->status !== 'in_progress' && $ticket->user_id !== Auth::id()) {
+                    $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->id);
+                    $category        = $ticket->category;
+                    $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_in_progress'));
+                    } else if ($ticket->email) {
+                        \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                            ->route('whatsapp', $ticket->whatsapp_number)
+                            ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->name, 'ticket_in_progress'));
                     }
                 }
             }
@@ -343,45 +418,47 @@ class TicketController extends Controller
      */
     public function addComment(Request $request, Ticket $ticket)
     {
+        $wasClosed = $ticket->status === 'closed';
+
         // --- Authorization for Supports ---
-        if (Auth::user() && Auth::user()->isSupport() && !Auth::user()->isAdmin()) {
+        if (!$wasClosed && Auth::user() && Auth::user()->isSupport() && !Auth::user()->isAdmin()) {
             if ($ticket->attendant && Auth::id() !== $ticket->attendant->id) {
                 return back()->with('error', 'You are not the currently assigned support for this ticket and cannot reply.');
             }
         }
 
         $validated = $request->validate([
-            'images'   => 'nullable|array',
-            'images.*' => 'image|max:5120',
-            'content'  => 'required|string',
+            'content'       => 'required|string',
+            'attachments.*' => ['nullable',    'file',    'max:5120',    'extensions:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,txt',],
         ]);
 
-        // --- Upload comment images ---
-        $imagePaths = [];
-        if ($request->hasFile('images')) {
-            $user      = Auth::user();
-            $username  = $user ? Str::slug($user->name, '_') : 'guest';
-            $folder    = 'comments/' . $username . '-' . ($user ? $user->id : 'guest');
+        // --- Upload comment attachments ---
+        $attachmentPaths = [];
+        if ($request->hasFile('attachments')) {
+            $user     = Auth::user();
+            $username = Str::slug($user->name, '_');
+            $folder   = 'comments/' . $username . '-' . $user->id;
 
-            foreach ($request->file('images') as $index => $file) {
-                            $extension = $file->getClientOriginalExtension();
-                            $filename  = time() . '_' . $index . '.' . $extension;
-                            $filepath  = $file->storeAs($folder, $filename, 'public');
-                $imagePaths[]          = $filepath;
+            foreach ($request->file('attachments') as $index => $file) {
+                $extension         = $file->getClientOriginalExtension();
+                $filename          = time() . '_' . $index . '.' . $extension;
+                $filepath          = $file->storeAs($folder, $filename, 'public');
+                $attachmentPaths[] = $filepath;
             }
         }
 
         $comment = $ticket->comments()->create([
-            'user_id' => Auth::id(),
-            'images'  => $imagePaths,
-            'content' => $validated['content'],
+            'user_id'     => Auth::id(),
+            'attachments' => $attachmentPaths,
+            'content'     => $validated['content'],
         ]);
 
         // --- Notify ticket owner when staff replies ---
         if (Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport()) && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Subject: {$ticket->subject}\nView here: " . route('ticket.show', $ticket->id);
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
 
             if ($ticket->user) {
                 $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
@@ -392,13 +469,60 @@ class TicketController extends Controller
             }
         }
 
+        // --- Reopen closed tickets and assign a new support staff member ---
+        if ($wasClosed) {
+            $newSupportId = $this->assignToLeastBusySupport();
+            if ($newSupportId) {
+                $ticket->addAttendant($newSupportId);
+            }
+            $ticket->update(['status' => 'open']);
+            $ticket->refresh();
+        }
+
         // --- Auto-transition open tickets to in-progress on staff reply ---
         if ($ticket->status === 'open' && Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport())) {
             $ticket->addAttendant(Auth::id());
             $ticket->update(['status' => 'in-progress']);
         }
 
+        if ($request->ajax() || $request->wantsJson()) {
+            $comment->load('user');
+            $ticket->refresh();
+            return response()->json([
+                'success'      => true,
+                'ticketStatus' => $ticket->status,
+                'comment'      => [
+                    'id'          => $comment->id,
+                    'content'     => $comment->content,
+                    'attachments' => $comment->attachments ?? [],
+                    'created_at'  => $comment->created_at->toISOString(),
+                    'user'        => $comment->user ? [
+                        'id'   => $comment->user->id,
+                        'name' => $comment->user->name,
+                        'role' => $comment->user->role,
+                    ] : null,
+                ],
+            ]);
+        }
+
         return back()->with('success', 'Comment added successfully.');
+    }
+
+    /**
+     * Polling endpoint â€” returns minimal [{id, status}] data for the visible tickets.
+     * Called by the dashboard every 30 s to keep status badges in sync across sessions.
+     */
+    public function ticketStatuses()
+    {
+        $user = Auth::user();
+
+        $tickets = $user->role === 'admin'
+            ? Ticket::select('id', 'status')->latest()->get()
+            : ($user->role === 'support'
+                ? Ticket::select('id', 'status')->whereJsonContains('attended_to_by', $user->id)->latest()->get()
+                : Ticket::select('id', 'status')->where('user_id', $user->id)->latest()->get());
+
+        return response()->json($tickets);
     }
 
     /** Search for a ticket by its public hashid reference. */
@@ -453,16 +577,16 @@ class TicketController extends Controller
         $ticket->addAttendant(Auth::id());
 
         $ticket->update([
+            'status'            => 'in-progress',
             'order_activations' => $activations,
-            'status'            => 'in-progress'
         ]);
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
-                'success' => true,
-                'status'  => 'in-progress',
+                'success'    => true,
+                'status'     => 'in-progress',
+                'attendant'  => $ticket->attendant,
                 'attendants' => $ticket->attendants,
-                'attendant' => $ticket->attendant
             ]);
         }
 
@@ -492,10 +616,10 @@ class TicketController extends Controller
 
         // --- Re-assign if transitioning from closed to open ---
         if ($oldStatus === 'closed' && in_array($status, ['open', 'in-progress'])) {
-             $newSupportId = $this->assignToLeastBusySupport();
-             if ($newSupportId) {
-                 $ticket->addAttendant($newSupportId);
-             }
+            $newSupportId = $this->assignToLeastBusySupport();
+            if ($newSupportId) {
+                $ticket->addAttendant($newSupportId);
+            }
         }
 
         $ticket->update(['status' => $status]);
@@ -503,7 +627,8 @@ class TicketController extends Controller
         // Notify owner when closed
         if ($oldStatus !== 'closed' && $status === 'closed' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-            $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             if ($ticket->user) {
                 $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
@@ -511,6 +636,21 @@ class TicketController extends Controller
                 \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
                     ->route('whatsapp', $ticket->whatsapp_number)
                     ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
+            }
+        }
+
+        // Notify owner when status changes to in progress
+        if ($oldStatus !== 'in_progress' && $status === 'in_progress' && $ticket->user_id !== Auth::id()) {
+            $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+            } elseif ($ticket->email) {
+                \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                    ->route('whatsapp', $ticket->whatsapp_number)
+                    ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_in_progress'));
             }
         }
 
@@ -530,8 +670,8 @@ class TicketController extends Controller
         if ($ticket->filename) {
             Storage::disk('public')->delete($ticket->filename);
         }
-        if (!empty($ticket->images)) {
-            foreach ($ticket->images as $img) {
+        if (!empty($ticket->attachments)) {
+            foreach ($ticket->attachments as $img) {
                 Storage::disk('public')->delete($img);
             }
         }
@@ -562,8 +702,8 @@ class TicketController extends Controller
             if ($ticket->filename) {
                 Storage::disk('public')->delete($ticket->filename);
             }
-            if (!empty($ticket->images)) {
-                foreach ($ticket->images as $img) {
+            if (!empty($ticket->attachments)) {
+                foreach ($ticket->attachments as $img) {
                     Storage::disk('public')->delete($img);
                 }
             }
@@ -613,7 +753,8 @@ class TicketController extends Controller
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
                     $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-                    $ticketSubject = ucwords(str_replace('_', ' ', $ticket->subject));
+                    $category        = $ticket->category;
+                    $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
                     if ($ticket->user) {
                         $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
@@ -621,6 +762,25 @@ class TicketController extends Controller
                         \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
                             ->route('whatsapp', $ticket->whatsapp_number)
                             ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_closed'));
+                    }
+                }
+            }
+        }
+
+        // Notify owners of tickets moved to in progress
+        if ($validated['status'] === 'in_progress') {
+            foreach ($tickets as $ticket) {
+                if ($ticket->status !== 'in_progress' && $ticket->user_id !== Auth::id()) {
+                    $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
+                    $category        = $ticket->category;
+                    $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+                    } elseif ($ticket->email) {
+                        \Illuminate\Support\Facades\Notification::route('mail', $ticket->email)
+                            ->route('whatsapp', $ticket->whatsapp_number)
+                            ->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->name, 'ticket_in_progress'));
                     }
                 }
             }

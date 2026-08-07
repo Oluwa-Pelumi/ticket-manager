@@ -1,112 +1,46 @@
-<<<<<<< HEAD
-﻿<x-authenticated-layout>
-=======
-@extends('layouts.authenticated')
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
+<x-authenticated-layout>
 
-@section('title', 'Ticket #' . $ticket->hashid)
+    <x-slot name="title">Ticket #{{ $ticket->hashid }}</x-slot>
 
-<<<<<<< HEAD
-<x-slot name="header">
-<div class="flex items-center justify-between w-full">
-    <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg border border-white/20">
-            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-        </div>
-        <div class="flex flex-col">
-            <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Ticket</h2>
-            <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">Details</span>
-        </div>
-    </div>
-    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm
-        @if($ticket->status === 'open') bg-emerald-100 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900
-        @elseif($ticket->status === 'in-progress') bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800
-        @else bg-slate-100 text-slate-600 dark:bg-[#1e293b] dark:text-slate-400 border border-emerald-950/10 dark:border-[#1e3a5f]
-        @endif">
-        {{ str_replace('-', ' ', $ticket->status) }}
-    </span>
-</div>
-</x-slot>
-
-
-<div class="max-w-9xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8" x-data="lightbox()">
-    <div class="flex items-center justify-between">
-        <a href="{{ auth()->guest() ? route('check-status') : route('dashboard') }}" class="inline-flex items-center text-sm font-bold text-slate-600 hover:text-emerald-950 dark:hover:text-emerald-400 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-            {{ auth()->guest() ? 'Back to Status Search' : 'Back to Dashboard' }}
-        </a>
-=======
-@section('header')
-    <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
-                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
+    <x-slot name="header">
+        <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
+                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Ticket</h2>
+                    <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">Details</span>
+                </div>
             </div>
-            <div class="flex flex-col">
-                <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Ticket</h2>
-                <span class="text-[10px] font-black tracking-[0.3em] text-slate-400">Details</span>
-            </div>
-        </div>
-        <span
-            class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm
+            <span
+                class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm
         @if ($ticket->status === 'open') bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800
         @elseif($ticket->status === 'in-progress') bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800
         @else bg-slate-100 text-slate-600 dark:bg-[#18342f] dark:text-slate-400 border border-emerald-900/10 dark:border-[#1d3a34] @endif">
-            {{ str_replace('-', ' ', $ticket->status) }}
-        </span>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
-    </div>
-@endsection
+                {{ str_replace('-', ' ', $ticket->status) }}
+            </span>
+        </div>
+    </x-slot>
 
-@section('content-body')
-    <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8">
+    <div class="max-w-9xl mx-auto py-2 px-4 sm:px-6 space-y-6 sm:space-y-8" x-data="lightbox()">
         <div class="flex items-center justify-between">
             <a href="{{ auth()->guest() ? route('check-status') : route('dashboard') }}"
                 class="inline-flex items-center text-sm font-bold text-slate-600 hover:text-teal-900 dark:hover:text-lime-400 transition-colors">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 {{ auth()->guest() ? 'Back to Status Search' : 'Back to Dashboard' }}
             </a>
         </div>
 
-<<<<<<< HEAD
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {{-- Left column: ticket details and attachments --}}
-        <div class="space-y-8">
-            <div>
-                <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                    <svg class="w-5 h-5 mr-3 text-emerald-950 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Specifications
-                </h4>
-
-                <div class="fauna-panel p-6 md:p-8 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-40"></div>
-
-                    <div class="text-[10px] font-black text-emerald-950 dark:text-emerald-400 mb-2 tracking-[0.2em] uppercase">Creator Information</div>
-                    <div class="mt-2 mb-6">
-                        @if($ticket->user?->name)
-                            <div class="space-y-1.5">
-                                <div
-                                    class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-=======
         @php
             $isTicketOwner = auth()->id() === $ticket->user_id || !$ticket->user_id;
             $isAdmin = auth()->check() && auth()->user()->role === 'admin';
@@ -114,13 +48,15 @@
             $isCurrentAttendant = $isSupport && auth()->id() === $ticket->attendant?->id;
             $isPastAttendant =
                 $isSupport && !$isCurrentAttendant && in_array(auth()->id(), $ticket->attended_to_by ?? []);
+            $commentBlocked = $isPastAttendant && $ticket->status !== 'closed';
         @endphp
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {{-- Left column: ticket details and attachments --}}
             <div class="space-y-8">
                 <div>
-                    <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
+                    <h4
+                        class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
                         <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -133,7 +69,6 @@
                         <div
                             class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40">
                         </div>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
 
                         <div
                             class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
@@ -142,8 +77,8 @@
                             @if ($ticket->name || $ticket->user?->name)
                                 <div class="space-y-1.5">
                                     <div
-                                        class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                        <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0" fill="none"
+                                        class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                        <svg class="w-6 h-6  text-teal-600 dark:text-lime-500 shrink-0" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -152,137 +87,28 @@
                                         <span>{{ $ticket->name ?? $ticket->user?->name }}</span>
                                     </div>
                                 </div>
-<<<<<<< HEAD
-                            </div>
-                        @endif
-
-                        @if($ticket->user?->email)
-                            <div class="space-y-1.5">
-                                <div
-                                    class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
-
-                                    <span>{{ $ticket->user?->email }}</span>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($ticket->user?->phone_number)
-                            <div class="space-y-1.5">
-                                <div
-                                    class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                    <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                    </svg>
-
-                                    <span>{{ $ticket->user?->phone_number }}</span>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-
-                    <div class="text-[10px] font-black text-emerald-950 dark:text-emerald-400 mb-2 tracking-[0.2em] uppercase">Reference</div>
-                    <div class="flex items-center gap-3 mb-8 group/id">
-                        <div class="text-xl md:text-2xl text-slate-900 dark:text-white font-black tracking-tight break-all">{{ $ticket->hashid }}</div>
-                        <button type="button" onclick="copyToClipboard('{{ $ticket->hashid }}', this)"
-                            class="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 hover:text-emerald-950 dark:hover:text-emerald-400 transition-all border border-transparent hover:border-emerald-950/20"
-                            title="Copy Reference">
-                            <svg class="w-4 h-4 copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-                        </button>
-                    </div>
-
-                    <div class="text-[10px] font-black text-emerald-950 dark:text-emerald-400 mb-2 tracking-[0.2em] uppercase">Subject</div>
-                    <div class="text-lg md:text-xl text-slate-900 dark:text-white font-bold mb-6">
-                        {{ $ticket->category->name ?? str_replace('_', ' ', $ticket->subject) }}
-                    </div>
-
-                    <div class="text-[10px] font-black text-emerald-950 dark:text-emerald-400 mb-2 tracking-[0.2em] uppercase">Priority</div>
-                    <div class="mb-6">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-xs font-black tracking-wider
-                            @if($ticket->priority === 'high') bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400
-                            @elseif($ticket->priority === 'medium') bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400
-                            @else bg-emerald-100 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400
-                            @endif">
-                            @if($ticket->priority === 'high')
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-                            @elseif($ticket->priority === 'medium')
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14"/></svg>
-                            @else
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-=======
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                             @endif
 
-<<<<<<< HEAD
-                    <div class="text-[10px] font-black text-emerald-950 dark:text-emerald-400 mb-2 tracking-[0.2em] uppercase">Description</div>
-                    <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[14px] md:text-md mb-8">{{ $ticket->content }}</div>
-=======
                             @if ($ticket->email || $ticket->user?->email)
                                 <div class="space-y-1.5">
                                     <div
-                                        class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                        <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0" fill="none"
+                                        class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                        <svg class="w-6 h-6  text-teal-600 dark:text-lime-500 shrink-0" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
 
                                         <span>{{ $ticket->email ?? $ticket->user?->email }}</span>
                                     </div>
                                 </div>
                             @endif
 
-<<<<<<< HEAD
-                    @if(($ticket->attachments && count($ticket->attachments) > 0) || $ticket->filename)
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center">
-                                <svg class="w-4 h-4 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
-                                Attachments
-                            </h4>
-                            <div class="flex flex-wrap gap-4">
-                                @if($ticket->filename)
-                                    @if($isImg($ticket->filename))
-                                        <button type="button"
-                                            @click="openLightbox('/storage/{{ $ticket->filename }}', '{{ basename($ticket->filename) }}')"
-                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
-                                            <img src="/storage/{{ $ticket->filename }}" alt="{{ $ticket->filename }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                            <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
-                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
-                                            </div>
-                                        </button>
-                                    @else
-                                        <a href="/storage/{{ $ticket->filename }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                            <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b] gap-1">
-                                                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                                                <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($ticket->filename, PATHINFO_EXTENSION)) }}</span>
-                                            </div>
-                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-=======
                             @if ($ticket->whatsapp_number || $ticket->user?->whatsapp_number)
                                 <div class="space-y-1.5">
                                     <div
-                                        class="text-[11px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                        <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0" fill="none"
+                                        class="text-[14px] font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                        <svg class="w-6 h-6  text-teal-600 dark:text-lime-500 shrink-0" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 5a2 2 0 012-2h2.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-1.687.845a11.042 11.042 0 005.516 5.516l.845-1.687a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -352,10 +178,14 @@
                             class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
                             Description</div>
                         <div
-                            class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[13px] md:text-sm mb-8">
-                            {{ $ticket->content }}</div>
+                            class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[14px] md:text-md mb-8">{{ trim($ticket->content) }}</div>
 
-                        @if (($ticket->images && count($ticket->images) > 0) || $ticket->filename)
+                        @php
+                            $imgExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
+                            $isImg = fn($p) => in_array(strtolower(pathinfo($p, PATHINFO_EXTENSION)), $imgExts);
+                        @endphp
+
+                        @if (($ticket->attachments && count($ticket->attachments) > 0) || $ticket->filename)
                             <div>
                                 <h4
                                     class="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-widest flex items-center uppercase">
@@ -366,55 +196,110 @@
                                     </svg>
                                     Attachments
                                 </h4>
+
                                 <div class="flex flex-wrap gap-4">
                                     @if ($ticket->filename)
-                                        <a href="/storage/{{ $ticket->filename }}" target="_blank"
-                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
-                                            <img src="/storage/{{ $ticket->filename }}"
-                                                class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                            <div
-                                                class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
-                                            </div>
-                                        </a>
-                                    @endif
-                                    @if ($ticket->images)
-                                        @foreach ($ticket->images as $img)
-                                            <a href="/storage/{{ $img }}" target="_blank"
-                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
-                                                <img src="/storage/{{ $img }}"
+                                        @if ($isImg($ticket->filename))
+                                            <button type="button"
+                                                @click="openLightbox('/storage/{{ $ticket->filename }}', '{{ basename($ticket->filename) }}')"
+                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#18342f]">
+                                                <img src="/storage/{{ $ticket->filename }}"
+                                                    alt="{{ $ticket->filename }}"
                                                     class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                <span
+                                                    class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
                                                 <div
                                                     class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <svg class="w-6 h-6 text-white" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                            d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M11 8v6m-3-3h6" />
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        @else
+                                            <a href="/storage/{{ $ticket->filename }}" target="_blank"
+                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                                                <div
+                                                    class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#18342f] gap-1">
+                                                    <svg class="w-8 h-8 text-slate-400" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="1.5"
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    <span
+                                                        class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($ticket->filename, PATHINFO_EXTENSION)) }}</span>
+                                                </div>
+                                                <div
+                                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-white" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                                     </svg>
                                                 </div>
                                             </a>
+                                        @endif
+                                    @endif
+
+                                    @if ($ticket->attachments)
+                                        @foreach ($ticket->attachments as $img)
+                                            @if ($isImg($img))
+                                                <button type="button"
+                                                    @click="openLightbox('/storage/{{ $img }}')"
+                                                    class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#18342f]">
+                                                    <img src="/storage/{{ $img }}"
+                                                        class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                    <span
+                                                        class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                                    <div
+                                                        class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <svg class="w-6 h-6 text-white" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01" />
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M11 8v6m-3-3h6" />
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            @else
+                                                <a href="/storage/{{ $img }}" target="_blank"
+                                                    class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                                                    <div
+                                                        class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#18342f] gap-1">
+                                                        <svg class="w-8 h-8 text-slate-400" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="1.5"
+                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                        <span
+                                                            class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($img, PATHINFO_EXTENSION)) }}</span>
+                                                    </div>
+                                                    <div
+                                                        class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <svg class="w-6 h-6 text-white" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                        </svg>
+                                                    </div>
+                                                </a>
+                                            @endif
                                         @endforeach
                                     @endif
                                 </div>
                             </div>
                         @endif
 
-<<<<<<< HEAD
-                    <div class="mt-8 pt-8 border-t border-slate-100 dark:border-[#1e3a5f]/50">
-                        <div class="text-[10px] font-black text-emerald-950 dark:text-emerald-400 mb-2 tracking-[0.3em] uppercase">
-                            Attending Support Staff
-                        </div>
-=======
                         @if ($ticket->order_type)
                             <div class="pt-8 border-t border-slate-100 dark:border-[#1d3a34]/50">
                                 <div
@@ -422,7 +307,8 @@
                                     Order Information</div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
-                                        <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                        <div
+                                            class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
                                             Frequency</div>
                                         <div class="text-sm text-slate-900 dark:text-white capitalize">
                                             {{ str_replace('-', ' ', $ticket->order_type) }}
@@ -439,7 +325,6 @@
                                 </div>
                             </div>
                         @endif
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
 
                         @if ($ticket->order_type)
                             <div class="mt-6">
@@ -454,14 +339,16 @@
                                                 </div>
                                                 <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
                                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</span>
 
                                                 <svg class="w-3 h-3 text-teal-600 dark:text-lime-500 shrink-0"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
                                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
                                                 <span>{{ \Carbon\Carbon::parse($date)->format('H:i') }}</span>
@@ -478,36 +365,31 @@
                                 Attending Support Staff
                             </div>
 
-                            <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
-                                Past
-                            </div>
+                            @php
+                                $pastAttendants = $ticket->attendants
+                                    ? $ticket->attendants->filter(fn($att) => $att->id !== $ticket->attendant?->id)
+                                    : collect();
+                            @endphp
 
-<<<<<<< HEAD
-                            <div class="flex flex-wrap gap-3 mb-4">
-                                @foreach($pastAttendants as $att)
-                                    <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#0f172a] px-3 py-1.5 rounded-xl border border-emerald-950/10 dark:border-[#1e3a5f]">
-                                        <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-200">
-                                            {{ $att->name ? Str::upper(Str::substr($att->name, 0, 1)) : '?' }}
-=======
-                            <div class="flex flex-wrap gap-3">
-                                @if ($ticket->attendants && count($ticket->attendants) > 0)
-                                    @foreach ($ticket->attendants as $att)
-                                        @if ($att->id !== $ticket->attendant?->id)
+                            @if ($pastAttendants->isNotEmpty())
+                                <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">
+                                    Past
+                                </div>
+
+                                <div class="flex flex-wrap gap-3 mb-4">
+                                    @foreach ($pastAttendants as $att)
+                                        <div
+                                            class="flex items-center space-x-2 bg-slate-100 dark:bg-[#0b1f1c] px-3 py-1.5 rounded-xl border border-rose-950/10 dark:border-[#1d3a34]">
                                             <div
-                                                class="flex items-center space-x-2 bg-slate-100 dark:bg-[#18342f] px-3 py-1.5 rounded-xl border border-emerald-900/10 dark:border-[#28524a]">
-                                                <div
-                                                    class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
-                                                    {{ $att->name ? Str::upper(Str::substr($att->name, 0, 1)) : '?' }}
-                                                </div>
-                                                <span
-                                                    class="text-xs font-bold text-slate-900 dark:text-white">{{ $att->name }}</span>
+                                                class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-200">
+                                                {{ $att->name ? Str::upper(Str::substr($att->name, 0, 1)) : '?' }}
                                             </div>
-                                        @endif
+                                            <span
+                                                class="text-xs font-bold text-slate-900 dark:text-white">{{ $att->name }}</span>
+                                        </div>
                                     @endforeach
-                                @else
-                                    <span class="text-xs italic text-slate-400">No past support staff.</span>
-                                @endif
-                            </div>
+                                </div>
+                            @endif
 
                             <div class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest mt-4">
                                 Current
@@ -520,13 +402,14 @@
                                         <div
                                             class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600">
                                             {{ $ticket->attendant->name ? Str::upper(Str::substr($ticket->attendant->name, 0, 1)) : '?' }}
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                         </div>
                                         <span
                                             class="text-xs font-bold text-slate-900 dark:text-white">{{ $ticket->attendant->name }}</span>
                                     </div>
                                 @else
-                                    <span class="text-xs italic text-slate-400">No current support staff assigned yet.</span>
+                                    <span class="text-xs italic text-slate-400">No current support staff
+                                        assigned
+                                        yet.</span>
                                 @endif
                             </div>
                         </div>
@@ -537,9 +420,10 @@
             {{-- Right column: conversation --}}
             <div class="space-y-8">
                 <div>
-                    <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                        <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
+                    <h4
+                        class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
+                        <svg class="w-5 h-5 mr-3 text-teal-900 dark:text-lime-400" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                         </svg>
@@ -547,7 +431,7 @@
                     </h4>
 
                     <div
-                        class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
+                        class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto overflow-x-hidden pr-1 md:pr-2 custom-scrollbar relative space-y-4">
                         <div
                             class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40">
                         </div>
@@ -559,7 +443,7 @@
                                 @endphp
                                 <div class="flex flex-col {{ $isSelf ? 'items-end' : 'items-start' }}">
                                     <div
-                                        class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isSelf ? 'bg-sky-950 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white rounded-bl-sm border border-sky-950/10 dark:border-[#1e3a5f] shadow-sm' }}">
+                                        class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isSelf ? 'bg-sky-950 text-white rounded-br-sm shadow-xl' : 'bg-white dark:bg-[#18342f] text-slate-900 dark:text-white rounded-bl-sm border border-sky-950/10 dark:border-[#1d3a34] shadow-sm' }}">
                                         <div class="flex items-center space-x-2 mb-2">
                                             <span
                                                 class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
@@ -571,29 +455,57 @@
                                                 class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->diffForHumans() }}
                                                 · {{ $comment->created_at->format('g:i A') }}</span>
                                         </div>
-                                        <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ $comment->content }}
-                                        </div>
+                                        <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ trim($comment->content) }}</div>
 
-                                        @if ($comment->images && count($comment->images) > 0)
+                                        @if ($comment->attachments && count($comment->attachments) > 0)
                                             <div class="flex flex-wrap gap-2 mt-3">
-                                                @foreach ($comment->images as $cimg)
-                                                    <a href="/storage/{{ $cimg }}" target="_blank"
-                                                        class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                                        <img src="/storage/{{ $cimg }}"
-                                                            class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                        <div
-                                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                            <svg class="w-6 h-6 text-white" fill="none"
-                                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2"
-                                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                            </svg>
-                                                        </div>
-                                                    </a>
+                                                @foreach ($comment->attachments as $cimg)
+                                                    @if ($isImg($cimg))
+                                                        <button type="button"
+                                                            @click="openLightbox('/storage/{{ $cimg }}')"
+                                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#18342f]">
+                                                            <img src="/storage/{{ $cimg }}"
+                                                                class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
+                                                            <span
+                                                                class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
+                                                            <div
+                                                                class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                <svg class="w-6 h-6 text-white" fill="none"
+                                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01" />
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M11 8v6m-3-3h6" />
+                                                                </svg>
+                                                            </div>
+                                                        </button>
+                                                    @else
+                                                        <a href="/storage/{{ $cimg }}" target="_blank"
+                                                            class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-md">
+                                                            <div
+                                                                class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#18342f]/70 gap-1">
+                                                                <svg class="w-7 h-7 text-slate-400" fill="none"
+                                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="1.5"
+                                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                </svg>
+                                                                <span
+                                                                    class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($cimg, PATHINFO_EXTENSION)) }}</span>
+                                                            </div>
+                                                            <div
+                                                                class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                                                <svg class="w-6 h-6 text-white" fill="none"
+                                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                                </svg>
+                                                            </div>
+                                                        </a>
+                                                    @endif
                                                 @endforeach
                                             </div>
                                         @endif
@@ -612,157 +524,65 @@
                         @endif
                     </div>
 
-                    @if (($isTicketOwner || $isAdmin || $isSupport) && $ticket->status !== 'closed')
-                        @if ($isPastAttendant)
+                    @if ($isTicketOwner || $isAdmin || $isSupport)
+                        @if ($commentBlocked)
                             <div
-                                class="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-2xl text-sm font-medium text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50 mb-4">
-                                This ticket is currently assigned to {{ $ticket->attendant->name ?? 'another support' }}.
+                                class="p-4 bg-blue-50 dark:bg-emerald-900/30 rounded-2xl text-sm font-medium text-blue-800 dark:text-emerald-300 border border-blue-200 dark:border-emerald-800/50 mb-4">
+                                This ticket is currently assigned to
+                                {{ $ticket->attendant->name ?? 'another support' }}.
                                 You are viewing it as a past attendant and cannot reply.
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('add-comment', ['ticket' => $ticket->id]) }}"
-                            enctype="multipart/form-data"
-                            class="space-y-4 {{ $isPastAttendant ? 'opacity-60 pointer-events-none' : '' }}"
-                            x-data="commentForm({{ $isPastAttendant ? 'true' : 'false' }})" @submit="processing = true">
+                        @if ($ticket->status === 'closed')
+                            <div
+                                class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl text-sm font-medium text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50 mb-4">
+                                This ticket is closed. Adding a comment will reopen it and assign it to a support staff
+                                member.
+                            </div>
+                        @endif
+
+                        <form enctype="multipart/form-data"
+                            class="space-y-4 {{ $commentBlocked ? 'opacity-60 pointer-events-none' : '' }}"
+                            x-data="commentForm({{ $commentBlocked ? 'true' : 'false' }}, '{{ route('add-comment', ['ticket' => $ticket->id]) }}')" @submit.prevent="submit()">
                             @csrf
 
-<<<<<<< HEAD
-                        <div class="flex flex-wrap gap-3">
-                            @if($ticket->attendant)
-                                <div class="flex items-center space-x-2 bg-slate-100 dark:bg-[#0f172a] px-3 py-1.5 rounded-xl border border-emerald-950/10 dark:border-[#1e3a5f]">
-                                    <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-200">
-                                        {{ $ticket->attendant->name ? Str::upper(Str::substr($ticket->attendant->name, 0, 1)) : '?' }}
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 dark:text-white">{{ $ticket->attendant->name }}</span>
-=======
                             <div class="space-y-3">
                                 <div class="relative group/comment">
                                     <textarea name="content" x-model="content" placeholder="Type your message..." rows="4" required
-                                        {{ $isPastAttendant ? 'disabled' : '' }}
+                                        {{ $commentBlocked ? 'disabled' : '' }}
                                         class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#102824] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#18342f] disabled:cursor-not-allowed"></textarea>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                 </div>
 
-<<<<<<< HEAD
-        {{-- Right column: conversation --}}
-        <div class="space-y-8">
-            <div>
-                <h4 class="text-sm font-black text-slate-900 dark:text-white mb-6 flex items-center tracking-[0.2em]">
-                    <svg class="w-5 h-5 mr-3 text-emerald-950 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                    Conversation
-                </h4>
-
-                <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-40"></div>
-
-                    @if($ticket->comments && $ticket->comments->count() > 0)
-                        @foreach ($ticket->comments->sortBy('created_at') as $comment)
-                            @php
-                                $isSelf = $comment->user_id === auth()->id();
-                            @endphp
-                            <div class="flex flex-col {{ $isSelf ? 'items-end' : 'items-start' }}">
-                                <div class="max-w-[90%] md:max-w-[85%] p-4 md:p-6 rounded-[2rem] {{ $isSelf ? 'bg-emerald-950 text-white rounded-br-none shadow-xl' : 'bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white rounded-bl-none border border-emerald-950/10 dark:border-[#1e3a5f] shadow-sm' }}">
-                                    <div class="flex items-center space-x-2 mb-2">
-                                        <span class="text-[9px] md:text-[10px] font-black opacity-70">{{ $comment->user->name ?? 'Guest' }}</span>
-                                        @if($comment->user && ($comment->user->role === 'support' || $comment->user->role === 'admin'))
-                                            <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded {{ $isSelf ? 'bg-white/20 text-white' : 'bg-emerald-500/20 text-emerald-900 dark:bg-emerald-400/20 dark:text-emerald-400' }}">Support</span>
-                                        @endif
-                                        <span class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->diffForHumans() }} Â· {{ $comment->created_at->format('g:i A') }}</span>
-                                    </div>
-                                    <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ $comment->content }}</div>
-
-                                    @if($comment->attachments && count($comment->attachments) > 0)
-                                    <div class="flex flex-wrap gap-2 mt-3">
-                                        @foreach($comment->attachments as $cimg)
-                                        @if($isImg($cimg))
-                                            <button type="button"
-                                                @click="openLightbox('/storage/{{ $cimg }}')"
-                                                class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md cursor-zoom-in bg-slate-100 dark:bg-[#1e293b]">
-                                                <img src="/storage/{{ $cimg }}" class="w-full h-full object-cover transition-transform group-hover/img:scale-110" />
-                                                <span class="absolute bottom-0 inset-x-0 text-center text-[7px] font-black tracking-wider text-white bg-black/40 py-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">PHOTO</span>
-                                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zm0 0v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8v6m-3-3h6"/></svg>
-                                                </div>
-                                            </button>
-                                        @else
-                                            <a href="/storage/{{ $cimg }}" target="_blank" class="group/img relative w-24 h-24 rounded-2xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-md">
-                                                <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-[#1e293b]/70 gap-1">
-                                                    <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                                                    <span class="text-[9px] font-black text-slate-500">{{ strtoupper(pathinfo($cimg, PATHINFO_EXTENSION)) }}</span>
-                                                </div>
-                                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                                </div>
-                                            </a>
-                                        @endif
-                                        @endforeach
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                    <div class="text-center py-2 opacity-40">
-                        <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                        <div class="italic text-sm">No comments yet. Start the conversation.</div>
-                    </div>
-                    @endif
-                </div>
-
-                @if($isTicketOwner || $isAdmin || $isSupport)
-                    @if($commentBlocked)
-                        <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl text-sm font-medium text-emerald-900 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/50 mb-4">
-                            This ticket is currently assigned to {{ $ticket->attendant->name ?? 'another support' }}. You are viewing it as a past attendant and cannot reply.
-                        </div>
-                    @endif
-
-                    @if($ticket->status === 'closed')
-                        <div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl text-sm font-medium text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50 mb-4">
-                            This ticket is closed. Adding a comment will reopen it and assign it to a support staff member.
-                        </div>
-                    @endif
-
-                <form enctype="multipart/form-data"
-                    class="space-y-4 {{ $commentBlocked ? 'opacity-60 pointer-events-none' : '' }}"
-                    x-data="commentForm({{ $commentBlocked ? 'true' : 'false' }}, '{{ route('add-comment', ['ticket' => $ticket->id]) }}')"
-                    @submit.prevent="submit()">
-                    @csrf
-
-                    <div class="space-y-3">
-                        <div class="relative group/comment">
-                            <textarea name="content" x-model="content" placeholder="Type your message..." rows="4" required {{ $commentBlocked ? 'disabled' : '' }}
-                                class="w-full px-6 py-5 rounded-[2.5rem] bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-400 outline-none transition-all resize-none shadow-xl text-sm md:text-base disabled:bg-slate-50 disabled:dark:bg-[#1e293b] disabled:cursor-not-allowed"></textarea>
-                        </div>
-
-                        {{-- File previews --}}
-                        <template x-if="previews.length > 0">
-                            <div class="flex flex-wrap gap-2 p-3 rounded-xl bg-emerald-50/50 dark:bg-[#1e3a5f]/50 border border-emerald-950/10 dark:border-[#1e3a5f]">
-                                <template x-for="(file, i) in previews" :key="i">
-                                    <div class="relative group/prev">
-                                        <template x-if="file.isImage">
-                                            <button type="button" @click="openPreview(file.url)"
-                                                class="relative block w-16 h-16 rounded-xl overflow-hidden border-2 border-white dark:border-[#1e3a5f] shadow-sm cursor-zoom-in focus:outline-none">
-                                                <img :src="file.url" class="w-full h-full object-cover transition-transform group-hover/prev:scale-110" />
-                                                <span class="absolute bottom-0 inset-x-0 text-center text-[6px] font-black tracking-wider text-white bg-black/40 py-0.5">PHOTO</span>
-                                            </button>
-                                        </template>
-                                        <template x-if="!file.isImage">
-                                            <div class="w-16 h-16 rounded-xl border-2 border-white dark:border-[#1e3a5f] shadow-sm bg-slate-100 dark:bg-[#1e293b] flex flex-col items-center justify-center gap-1">
-                                                <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                </svg>
-                                                <span class="text-[8px] font-bold text-slate-500 truncate" x-text="file.name.split('.').pop().toUpperCase()"></span>
-=======
-                                {{-- Image previews --}}
+                                {{-- File previews --}}
                                 <template x-if="previews.length > 0">
                                     <div
-                                        class="flex flex-wrap gap-2 p-3 rounded-xl bg-emerald-50/50 dark:bg-[#18342f]/50 border border-emerald-900/10 dark:border-[#1d3a34]">
-                                        <template x-for="(url, i) in previews" :key="i">
+                                        class="flex flex-wrap gap-2 p-3 rounded-xl bg-emerald-50/50 dark:bg-[#1e3a5f]/50 border border-emerald-950/10 dark:border-[#1d3a34]">
+                                        <template x-for="(file, i) in previews" :key="i">
                                             <div class="relative group/prev">
-                                                <img :src="url"
-                                                    class="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-[#1d3a34] shadow-sm" />
-                                                <button type="button" @click="removeImage(i)"
+                                                <template x-if="file.isImage">
+                                                    <button type="button" @click="openPreview(file.url)"
+                                                        class="relative block w-16 h-16 rounded-xl overflow-hidden border-2 border-white dark:border-[#1d3a34] shadow-sm cursor-zoom-in focus:outline-none">
+                                                        <img :src="file.url"
+                                                            class="w-full h-full object-cover transition-transform group-hover/prev:scale-110" />
+                                                        <span
+                                                            class="absolute bottom-0 inset-x-0 text-center text-[6px] font-black tracking-wider text-white bg-black/40 py-0.5">PHOTO</span>
+                                                    </button>
+                                                </template>
+                                                <template x-if="!file.isImage">
+                                                    <div
+                                                        class="w-16 h-16 rounded-xl border-2 border-white dark:border-[#1d3a34] shadow-sm bg-slate-100 dark:bg-[#18342f] flex flex-col items-center justify-center gap-1">
+                                                        <svg class="w-6 h-6 text-slate-400" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="1.5"
+                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                        <span class="text-[8px] font-bold text-slate-500 truncate"
+                                                            x-text="file.name.split('.').pop().toUpperCase()"></span>
+                                                    </div>
+                                                </template>
+                                                <button type="button" @click="removeFile(i)"
                                                     class="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center bg-red-500 text-white rounded-full opacity-0 group-hover/prev:opacity-100 transition-opacity shadow-md">
                                                     <svg class="w-3 h-3" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -770,25 +590,49 @@
                                                             stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                                                     </svg>
                                                 </button>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                             </div>
                                         </template>
                                     </div>
                                 </template>
 
+
+                                {{-- Pre-upload image preview lightbox --}}
+                                <template x-if="previewLightboxOpen">
+                                    <div @click.self="previewLightboxOpen = false"
+                                        @keydown.escape.window="previewLightboxOpen = false"
+                                        class="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                                        <div
+                                            class="relative max-w-4xl w-full max-h-[90vh] flex items-center justify-center">
+                                            <button type="button" @click="previewLightboxOpen = false"
+                                                class="absolute -top-4 -right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-sm border border-white/20">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                            <img :src="previewLightboxSrc"
+                                                class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" />
+                                        </div>
+                                    </div>
+                                </template>
+
                                 <div class="flex items-center justify-between gap-3">
-                                    {{-- Attach images --}}
+                                    {{-- Attach files --}}
                                     <label
                                         class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-500 dark:text-slate-400 hover:text-teal-900 dark:hover:text-lime-400 cursor-pointer transition-all text-xs font-bold">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                         </svg>
-                                        <span>Image</span>
+                                        <span>Attachment</span>
 
-                                        <input type="file" name="images[]" id="comment-images" x-ref="fileInput"
-                                            multiple accept="image/*" @change="handleFiles($event)" class="hidden"
-                                            {{ $isPastAttendant ? 'disabled' : '' }} />
+                                        <input type="file" name="attachments[]" id="comment-attachments"
+                                            x-ref="fileInput" multiple
+                                            accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                            @change="handleFiles($event)" class="hidden"
+                                            {{ $commentBlocked ? 'disabled' : '' }} />
                                     </label>
 
                                     {{-- Submit --}}
@@ -817,118 +661,125 @@
                             </div>
                         </form>
                     @endif
-
-<<<<<<< HEAD
-                        <div class="flex items-center justify-between gap-3">
-                            {{-- Attach files --}}
-                            <label class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#1e293b] border border-emerald-950/10 dark:border-[#1e3a5f] text-slate-500 dark:text-slate-400 hover:text-emerald-950 dark:hover:text-emerald-400 cursor-pointer transition-all text-xs font-bold">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
-                                </svg>
-                                <span>Attachment</span>
-
-                                <input
-                                    type="file"
-                                    name="attachments[]"
-                                    id="comment-attachments"
-                                    x-ref="fileInput"
-                                    multiple
-                                    accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                    @change="handleFiles($event)"
-                                    class="hidden"
-                                    {{ $commentBlocked ? 'disabled' : '' }}
-                                />
-                            </label>
-
-                            {{-- Submit --}}
-                            <button type="submit" x-bind:disabled="processing || isPastAttendant || !content.trim()"
-                                class="fauna-btn-action flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-black tracking-widest shadow-md active:scale-95 disabled:active:scale-100">
-                                <template x-if="!processing">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-                                </template>
-
-                                <template x-if="processing">
-                                    <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                                    </svg>
-                                </template>
-                                <span x-text="processing ? 'Sendingâ€¦' : 'Send'"></span>
-                            </button>
-=======
-                    @if ($ticket->status === 'closed')
-                        <div
-                            class="p-4 bg-slate-100 dark:bg-[#18342f]/50 rounded-2xl text-center text-sm font-medium text-slate-600 border border-emerald-900/10 dark:border-[#1d3a34]">
-                            This ticket is closed. No further comments can be added.
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
-    </div>
 
-<<<<<<< HEAD
-    {{-- â”€â”€ Lightbox modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ --}}
-    <div
-        x-show="open"
-        x-cloak
-        x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        @keydown.escape.window="close()"
-        @click.self="close()"
-        class="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-    >
-        <div class="relative max-w-5xl w-full max-h-[90vh] flex items-center justify-center">
-            {{-- Close button --}}
-            <button
-                @click="close()"
-                class="absolute -top-4 -right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-sm border border-white/20"
-            >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-=======
-    <script>
-        function commentForm(isPastAttendant) {
-            return {
-                isPastAttendant,
-                processing: false,
-                content: '',
-                files: [],
-                previews: [],
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
+        {{--  Lightbox modal --}}
+        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0" @keydown.escape.window="close()" @click.self="close()"
+            class="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div class="relative max-w-5xl w-full max-h-[90vh] flex items-center justify-center">
+                {{-- Close button --}}
+                <button @click="close()"
+                    class="absolute -top-4 -right-4 z-10 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-sm border border-white/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
 
-                handleFiles(e) {
-                    const newFiles = Array.from(e.target.files);
-                    this.files = [...this.files, ...newFiles];
-                    this.previews = [...this.previews, ...newFiles.map(file => URL.createObjectURL(file))];
-                    this.syncInput();
-                },
+                {{-- Image --}}
+                <img :src="src" :alt="alt"
+                    class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" />
 
-                removeImage(index) {
-                    URL.revokeObjectURL(this.previews[index]);
-                    this.files.splice(index, 1);
-                    this.previews.splice(index, 1);
-                    this.syncInput();
-                },
+                {{-- Open in new tab link --}}
+                <a :href="src" target="_blank"
+                    class="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-white text-xs font-bold backdrop-blur-sm border border-white/10 transition-all"
+                    title="Open original">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Open original
+                </a>
+            </div>
+        </div>
+    </div>{{-- /x-data="lightbox()" --}}
 
-                syncInput() {
-                    const dataTransfer = new DataTransfer();
-                    this.files.forEach(file => dataTransfer.items.add(file));
-                    this.$refs.fileInput.files = dataTransfer.files;
-                },
-            };
-        }
+    @push('scripts')
+        <script>
+            function lightbox() {
+                return {
+                    open: false,
+                    src: '',
+                    alt: '',
+                    openLightbox(src, alt = '') {
+                        this.src = src;
+                        this.alt = alt;
+                        this.open = true;
+                        document.body.style.overflow = 'hidden';
+                    },
+                    close() {
+                        this.open = false;
+                        document.body.style.overflow = '';
+                    },
+                };
+            }
 
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        }
-    </script>
-@endsection
+            function commentForm(isPastAttendant, actionUrl) {
+                return {
+                    isPastAttendant,
+                    processing: false,
+                    content: '',
+                    files: [],
+                    previews: [],
+                    previewLightboxSrc: '',
+                    previewLightboxOpen: false,
+                    openPreview(url) {
+                        this.previewLightboxSrc = url;
+                        this.previewLightboxOpen = true;
+                    },
+
+                    handleFiles(e) {
+                        const newFiles = Array.from(e.target.files);
+                        this.files = [...this.files, ...newFiles];
+                        this.previews = [...this.previews, ...newFiles.map(file => ({
+                            url: URL.createObjectURL(file),
+                            name: file.name,
+                            isImage: file.type.startsWith('image/')
+                        }))];
+                        this.syncInput();
+                    },
+
+                    removeFile(index) {
+                        URL.revokeObjectURL(this.previews[index].url);
+                        this.files.splice(index, 1);
+                        this.previews.splice(index, 1);
+                        this.syncInput();
+                    },
+
+                    syncInput() {
+                        const dataTransfer = new DataTransfer();
+                        this.files.forEach(file => dataTransfer.items.add(file));
+                        this.$refs.fileInput.files = dataTransfer.files;
+                    },
+
+                    async submit() {
+                        if (!this.content.trim() || this.isPastAttendant || this.processing) return;
+                        this.processing = true;
+                        try {
+                            const form = new FormData();
+                            form.append('_token', document.querySelector('meta[name=csrf-token]').content);
+                            form.append('content', this.content);
+                            this.files.forEach(f => form.append('attachments[]', f));
+                            const r = await fetch(actionUrl, {
+                                method: 'POST',
+                                body: form,
+                                redirect: 'manual'
+                            });
+                            if (r.ok || r.type === 'opaqueredirect') {
+                                window.location.reload();
+                            }
+                        } catch (err) {
+                            console.error('Comment submission failed:', err);
+                            this.processing = false;
+                        }
+                    },
+                };
+            }
+        </script>
+    @endpush
+</x-authenticated-layout>

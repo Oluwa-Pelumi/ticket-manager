@@ -23,7 +23,7 @@ class CommentSeeder extends Seeder
                 'ticket_id' => $ticket->id,
                 'user_id'   => $poster?->id,
                 'content'   => $posterMsg,
-                'images'    => null,
+                'attachments' => null,
             ]);
 
             // Follow-up reply from the assigned support staff (if any)
@@ -32,7 +32,7 @@ class CommentSeeder extends Seeder
                     'ticket_id'  => $ticket->id,
                     'user_id'    => $staff->id,
                     'content'    => $staffMsg,
-                    'images'     => null,
+                    'attachments' => null,
                 ]);
             }
         };

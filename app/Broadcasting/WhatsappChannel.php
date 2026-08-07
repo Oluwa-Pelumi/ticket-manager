@@ -31,7 +31,9 @@ class WhatsappChannel
             return;
         }
 
-        $to   = preg_replace('/\D/', '', $whatsappNumber);              // Ensure digits only
+        // Normalise to E.164 digits-only (strip spaces, dashes, parentheses, leading +)
+        // Ensures numbers stored as "+2348012345678" or "2348012345678" both work.
+        $to = preg_replace('/\D/', '', $whatsappNumber);
         $name = $notification->recipientName ?? $notifiable->name ?? 'there';
 
         // --- Load Meta API credentials ---

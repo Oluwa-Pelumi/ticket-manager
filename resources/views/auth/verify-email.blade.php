@@ -1,4 +1,4 @@
-﻿<x-guest-layout>
+<x-guest-layout>
     <x-slot name="title">Email Verification</x-slot>
 
     <div class="text-center mb-8">
@@ -40,23 +40,6 @@
             </button>
         </div>
 
-<<<<<<< HEAD
-    <div class="text-center mt-6" x-data="{ signingOut: false }">
-        <form method="POST" action="{{ route('logout') }}" @submit="signingOut = true">
-            @csrf
-            <button type="submit" x-bind:disabled="signingOut" class="inline-flex items-center justify-center gap-2 text-sm font-black tracking-widest text-slate-600 hover:text-emerald-950 dark:hover:text-emerald-400 transition-colors disabled:opacity-50">
-                <template x-if="signingOut">
-                    <svg class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                    </svg>
-                </template>
-                <span x-text="signingOut ? 'Signing Out...' : 'Sign Out'"></span>
-            </button>
-        </form>
-    </div>
-</x-guest-layout>
-=======
         <div class="text-center">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -67,4 +50,3 @@
         </div>
     </form>
 </x-guest-layout>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)

@@ -11,10 +11,13 @@ use Illuminate\Http\Request;
 class FaqController extends Controller
 {
     /** Display all FAQs ordered by sort position. */
-    public function index()
+    public function index(Request $request)
     {
         return view('admin.faqs', [
-            'faqs' => Faq::orderBy('order')->get()
+            'faqs'       => Faq::orderBy('order')->get(),
+            'editingFaq' => $request->filled('edit')
+                ? Faq::find($request->edit)
+                : null,
         ]);
     }
 
@@ -43,7 +46,7 @@ class FaqController extends Controller
 
         $faq->update($validated);
 
-        return back()->with('success', 'FAQ updated successfully.');
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ updated successfully.');
     }
 
     /** Delete an FAQ entry. */

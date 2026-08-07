@@ -103,11 +103,11 @@ class ModelTest extends TestCase
     }
 
     /** @test */
-    public function ticket_images_are_cast_to_array(): void
+    public function ticket_attachments_are_cast_to_array(): void
     {
-        $ticket = Ticket::factory()->create(['images' => ['a.jpg', 'b.jpg']]);
-        $this->assertIsArray($ticket->fresh()->images);
-        $this->assertContains('a.jpg', $ticket->fresh()->images);
+        $ticket = Ticket::factory()->create(['attachments' => ['a.jpg', 'b.jpg']]);
+        $this->assertIsArray($ticket->fresh()->attachments);
+        $this->assertContains('a.jpg', $ticket->fresh()->attachments);
     }
 
     /** @test */
@@ -211,10 +211,10 @@ class ModelTest extends TestCase
     }
 
     /** @test */
-    public function comment_images_are_cast_to_array(): void
+    public function comment_attachments_are_cast_to_array(): void
     {
-        $comment = Comment::factory()->create(['images' => ['img1.jpg']]);
-        $this->assertIsArray($comment->fresh()->images);
+        $comment = Comment::factory()->create(['attachments' => ['img1.jpg']]);
+        $this->assertIsArray($comment->fresh()->attachments);
     }
 
     /** @test */

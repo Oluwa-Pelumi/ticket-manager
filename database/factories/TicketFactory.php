@@ -26,7 +26,7 @@ class TicketFactory extends Factory
             'user_id'                => null,
             'attended_to_by'         => null,
             'category_id'            => null,
-            'images'                 => [],
+            'attachments'            => [],
             'whatsapp_number'        => null,
             'order_type'             => null,
             'recurrence_period'      => null,

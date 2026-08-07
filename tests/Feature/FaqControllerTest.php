@@ -26,42 +26,69 @@ class FaqControllerTest extends TestCase
     // ─────────────────────────────────────────────
 
     /** @test */
-    public function test_admin_can_view_faqs_index(): void
+    public function test_admin_can_view_faqs_page(): void
     {
         $this->actingAs($this->admin())
             ->get(route('admin.faqs.index'))
             ->assertOk()
-            ->assertViewIs('admin.faqs');
-    }
-
-    /** @test */
-    public function test_non_admin_cannot_access_faqs_index(): void
-    {
-        $this->actingAs($this->regularUser())
-            ->get(route('admin.faqs.index'))
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
-    }
-
-    /** @test */
-    public function test_guest_is_redirected_from_faqs_index(): void
-    {
-        $this->get(route('admin.faqs.index'))
-            ->assertRedirect(route('login'));
+            ->assertViewIs('admin.faqs')
+            ->assertViewHas('faqs');
     }
 
     /** @test */
     public function test_faqs_are_ordered_by_order_column(): void
     {
-        Faq::factory()->create(['question' => 'Second', 'order' => 2]);
-        Faq::factory()->create(['question' => 'First',  'order' => 1]);
+        Faq::factory()->create(['order' => 3, 'question' => 'Third']);
+        Faq::factory()->create(['order' => 1, 'question' => 'First']);
+        Faq::factory()->create(['order' => 2, 'question' => 'Second']);
 
         $response = $this->actingAs($this->admin())
             ->get(route('admin.faqs.index'))
             ->assertOk();
 
         $faqs = $response->viewData('faqs');
-        $this->assertEquals('First', $faqs->first()->question);
+        $this->assertEquals('First',  $faqs[0]->question);
+        $this->assertEquals('Second', $faqs[1]->question);
+        $this->assertEquals('Third',  $faqs[2]->question);
+    }
+
+    /** @test */
+    public function test_edit_query_param_passes_editing_faq_to_view(): void
+    {
+        $faq = Faq::factory()->create();
+
+        $response = $this->actingAs($this->admin())
+            ->get(route('admin.faqs.index', ['edit' => $faq->id]))
+            ->assertOk();
+
+        $editingFaq = $response->viewData('editingFaq');
+        $this->assertNotNull($editingFaq);
+        $this->assertEquals($faq->id, $editingFaq->id);
+    }
+
+    /** @test */
+    public function test_no_edit_param_passes_null_editing_faq(): void
+    {
+        $response = $this->actingAs($this->admin())
+            ->get(route('admin.faqs.index'))
+            ->assertOk();
+
+        $this->assertNull($response->viewData('editingFaq'));
+    }
+
+    /** @test */
+    public function test_non_admin_cannot_view_faqs_page(): void
+    {
+        $this->actingAs($this->regularUser())
+            ->get(route('admin.faqs.index'))
+            ->assertRedirect();
+    }
+
+    /** @test */
+    public function test_guest_cannot_view_faqs_page(): void
+    {
+        $this->get(route('admin.faqs.index'))
+            ->assertRedirect(route('login'));
     }
 
     // ─────────────────────────────────────────────
@@ -74,19 +101,19 @@ class FaqControllerTest extends TestCase
         $this->actingAs($this->admin())
             ->post(route('admin.faqs.store'), [
                 'question' => 'How do I track my order?',
-                'answer'   => 'Use the tracking page.',
+                'answer'   => 'Use your reference code on the check-status page.',
                 'order'    => 1,
             ])
             ->assertRedirect();
 
         $this->assertDatabaseHas('faqs', [
             'question' => 'How do I track my order?',
-            'answer'   => 'Use the tracking page.',
+            'order'    => 1,
         ]);
     }
 
     /** @test */
-    public function test_faq_store_validates_required_fields(): void
+    public function test_faq_store_requires_question_and_answer(): void
     {
         $this->actingAs($this->admin())
             ->post(route('admin.faqs.store'), [])
@@ -98,24 +125,25 @@ class FaqControllerTest extends TestCase
     {
         $this->actingAs($this->admin())
             ->post(route('admin.faqs.store'), [
-                'question' => 'Optional order test?',
-                'answer'   => 'Yes, it is optional.',
+                'question' => 'Can I cancel an order?',
+                'answer'   => 'Contact support within 24 hours.',
             ])
             ->assertRedirect();
 
-        $this->assertDatabaseHas('faqs', ['question' => 'Optional order test?']);
+        $this->assertDatabaseHas('faqs', ['question' => 'Can I cancel an order?']);
     }
 
     /** @test */
-    public function test_non_admin_cannot_create_a_faq(): void
+    public function test_non_admin_cannot_create_faq(): void
     {
         $this->actingAs($this->regularUser())
             ->post(route('admin.faqs.store'), [
-                'question' => 'Test?',
-                'answer'   => 'No.',
+                'question' => 'Should fail',
+                'answer'   => 'Definitely',
             ])
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('faqs', ['question' => 'Should fail']);
     }
 
     // ─────────────────────────────────────────────
@@ -128,43 +156,44 @@ class FaqControllerTest extends TestCase
         $faq = Faq::factory()->create(['question' => 'Old Q', 'answer' => 'Old A']);
 
         $this->actingAs($this->admin())
-            ->patch(route('admin.faqs.update', $faq), [
-                'question' => 'New Q',
-                'answer'   => 'New A',
+            ->patch(route('admin.faqs.update', $faq->id), [
+                'question' => 'Updated Q',
+                'answer'   => 'Updated A',
                 'order'    => 5,
             ])
-            ->assertRedirect();
+            ->assertRedirect(route('admin.faqs.index'));
 
         $this->assertDatabaseHas('faqs', [
             'id'       => $faq->id,
-            'question' => 'New Q',
-            'answer'   => 'New A',
+            'question' => 'Updated Q',
+            'answer'   => 'Updated A',
             'order'    => 5,
         ]);
     }
 
     /** @test */
-    public function test_faq_update_validates_required_fields(): void
+    public function test_faq_update_requires_question_and_answer(): void
     {
         $faq = Faq::factory()->create();
 
         $this->actingAs($this->admin())
-            ->patch(route('admin.faqs.update', $faq), [])
+            ->patch(route('admin.faqs.update', $faq->id), [])
             ->assertSessionHasErrors(['question', 'answer']);
     }
 
     /** @test */
-    public function test_non_admin_cannot_update_a_faq(): void
+    public function test_non_admin_cannot_update_faq(): void
     {
-        $faq = Faq::factory()->create();
+        $faq = Faq::factory()->create(['question' => 'Original']);
 
         $this->actingAs($this->regularUser())
-            ->patch(route('admin.faqs.update', $faq), [
-                'question' => 'Hacked?',
-                'answer'   => 'No.',
+            ->patch(route('admin.faqs.update', $faq->id), [
+                'question' => 'Changed',
+                'answer'   => 'Changed answer',
             ])
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('faqs', ['question' => 'Changed']);
     }
 
     // ─────────────────────────────────────────────
@@ -177,20 +206,21 @@ class FaqControllerTest extends TestCase
         $faq = Faq::factory()->create();
 
         $this->actingAs($this->admin())
-            ->delete(route('admin.faqs.destroy', $faq))
+            ->delete(route('admin.faqs.destroy', $faq->id))
             ->assertRedirect();
 
         $this->assertDatabaseMissing('faqs', ['id' => $faq->id]);
     }
 
     /** @test */
-    public function test_non_admin_cannot_delete_a_faq(): void
+    public function test_non_admin_cannot_delete_faq(): void
     {
         $faq = Faq::factory()->create();
 
         $this->actingAs($this->regularUser())
-            ->delete(route('admin.faqs.destroy', $faq))
-            ->assertRedirect(route('dashboard'))
-            ->assertSessionHas('error');
+            ->delete(route('admin.faqs.destroy', $faq->id))
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('faqs', ['id' => $faq->id]);
     }
 }

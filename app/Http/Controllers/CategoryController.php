@@ -21,8 +21,8 @@
          }
 
          return view('admin.categories', [
-             'categories' => rescue(fn() => Category::all(), []),
              'editingCategory' => $editingCategory,
+             'categories'      => rescue(fn() => Category::all(), []),
          ]);
      }
 

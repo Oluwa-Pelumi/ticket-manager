@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Ticket extends Model
 {
     use HasFactory;
-    protected $appends = ['hashid', 'attendant', 'attendants'];
+    protected $appends = ['hashid', 'attendant', 'attendants', 'has_support_replied'];
 
     /** Encode the ticket ID as a public-facing hashid. */
     public function getHashidAttribute()
@@ -75,13 +75,13 @@ class Ticket extends Model
         'name',
         'email',
         'status',
-        'images',
         'user_id',
         'subject',
         'content',
         'filename',
         'priority',
         'order_type',
+        'attachments',
         'category_id',
         'attended_to_by',
         'whatsapp_number',
@@ -96,7 +96,7 @@ class Ticket extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'images'            => 'array',
+        'attachments'       => 'array',
         'order_activations' => 'array',
         'attended_to_by'    => 'array',
     ];
@@ -122,6 +122,17 @@ class Ticket extends Model
             'ticket_id',
             'id'
         )->with('user')->latest();
+    }
+
+    /**
+     * Returns true if any comment on this ticket was posted by a support or admin user.
+     * Used to block the ticket owner from editing once staff has replied.
+     */
+    public function getHasSupportRepliedAttribute(): bool
+    {
+        return $this->comments()
+            ->whereHas('user', fn ($q) => $q->whereIn('role', ['support', 'admin']))
+            ->exists();
     }
 
     /** The user who submitted this ticket. */

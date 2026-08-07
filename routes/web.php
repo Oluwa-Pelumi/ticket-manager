@@ -34,7 +34,9 @@ Route::post('submit-ticket', [TicketController::class, 'save'])
     ->name('save-ticket');
 
 Route::get('/check-status', function () {
-    return view('check-status');
+    return view('check-status', [
+        'categories' => rescue(fn () => \App\Models\Category::all(), []),
+    ]);
 })->name('check-status');
 
 Route::post('/search-tickets', [TicketController::class, 'searchTicketsByReference'])
@@ -44,6 +46,7 @@ Route::get('/ticket/{ticket}', [TicketController::class, 'show'])
     ->name('ticket.show');
 
 Route::patch('update-ticket-status', [TicketController::class, 'updateStatus'])
+    ->middleware(['auth', 'verified'])
     ->name('update-ticket-status');
 
 Route::get('/dashboard', [TicketController::class, 'index'])
@@ -72,9 +75,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('tickets.destroy');
     Route::post('/tickets/{ticket}/comments', [TicketController::class, 'addComment'])
         ->name('tickets.add-comment');
+
+        Route::get('/tickets/statuses', [TicketController::class, 'ticketStatuses'])
+        ->name('tickets.statuses');
 });
 
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])
+    ->middleware('throttle:15,1')
     ->name('add-comment');
 
 Route::middleware(['auth', 'staff'])->group(function () {

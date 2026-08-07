@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-﻿{{--
+{{--
     Admin Categories Management View
-    Provides category creation, editing, and listing with inline form feedback.
 --}}
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg border border-white/20">
-=======
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -31,7 +23,6 @@
 
     <x-slot name="title">Manage Categories</x-slot>
 
-
     <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6">
 
         {{-- Flash messages --}}
@@ -39,7 +30,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
-            {{-- â”€â”€ Create / Edit form â”€â”€ --}}
+            {{-- ── Create / Edit form ── --}}
             <div class="lg:col-span-1">
                 <div class="fauna-panel p-6 sm:p-8 lg:sticky lg:top-24">
 
@@ -69,17 +60,12 @@
                                 type="text"
                                 name="name"
                                 value="{{ old('name', $editingCategory->name ?? '') }}"
-<<<<<<< HEAD
-                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('name') border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
-                                placeholder="e.g. Transcript Request"
-=======
                                 class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium"
                                 placeholder="e.g. Prescription Issues"
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                 required
                             />
                             @error('name')
-                                <p class="text-emerald-500 text-[10px] font-bold">{{ $message }}</p>
+                                <p class="text-rose-500 text-[10px] font-bold">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -104,11 +90,7 @@
                             @if (isset($editingCategory))
                                 <a
                                     href="{{ route('admin.categories.index') }}"
-<<<<<<< HEAD
-                                    class="w-full py-3 rounded-xl border border-emerald-950/10 dark:border-[#1e3a5f] text-slate-600 font-black text-[10px] tracking-widest hover:bg-emerald-50/50 dark:hover:bg-slate-800 transition-all text-center"
-=======
                                     class="w-full py-3 rounded-xl border border-emerald-900/10 dark:border-[#1d3a34] text-slate-600 font-black text-[10px] tracking-widest hover:bg-emerald-50/50 dark:hover:bg-slate-800 transition-all text-center"
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                 >
                                     Cancel Edit
                                 </a>
@@ -118,20 +100,12 @@
                 </div>
             </div>
 
-            {{-- â”€â”€ Categories list table â”€â”€ --}}
+            {{-- ── Categories list table ── --}}
             <div class="lg:col-span-2">
-<<<<<<< HEAD
-                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-emerald-950/10 dark:border-[#1e3a5f] shadow-2xl">
-                    <div class="overflow-x-auto custom-scrollbar">
-                        <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-emerald-950/10 dark:border-[#1e3a5f]">
-=======
-                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10/50 dark:border-[#1d3a34] shadow-2xl">
+                <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10 dark:border-[#1d3a34] shadow-2xl">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-emerald-900/10 dark:border-[#1d3a34]">
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                 <th class="px-6 py-4 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-400">
                                     Category Details
                                 </th>
@@ -142,11 +116,7 @@
                         </thead>
                         <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                             @forelse ($categories as $category)
-<<<<<<< HEAD
-                                <tr class="hover:bg-emerald-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
-=======
                                 <tr class="hover:bg-emerald-50/50 dark:hover:bg-[#18342f]/70 transition-colors">
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
 
                                     {{-- Name + slug --}}
                                     <td class="px-6 py-5">
@@ -193,7 +163,7 @@
                                                 @method('DELETE')
                                                 <button
                                                     type="submit"
-                                                    class="p-2 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-lg transition-all"
+                                                    class="p-2 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all"
                                                     title="Delete"
                                                 >
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

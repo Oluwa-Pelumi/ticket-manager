@@ -1,4 +1,4 @@
-﻿{{--
+{{--
     Guest layout component.
     Used by auth views that do: <x-guest-layout>
     Renders through <x-app-layout> but without the @auth navbar (guests are not authenticated).
@@ -8,23 +8,26 @@
 
     <div class="container mx-auto px-4 py-10">
         {{-- Guest nav bar --}}
-<<<<<<< HEAD
-        <nav
-            class="mb-12 relative flex items-center justify-center border-b border-emerald-950/10 py-6 dark:border-[#1e3a5f]">
+        <nav class="mb-12 flex items-center justify-center border-b border-emerald-900/10 py-6 dark:border-[#1d3a34]">
             @php
                 $appName = rtrim(config('app.name'), ' .');
                 $nameParts = explode(',', $appName, 2);
                 $mainName = trim($nameParts[0]);
                 $subName = isset($nameParts[1]) ? trim($nameParts[1]) : '';
             @endphp
-            <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0 max-w-[70vw] sm:max-w-none">
-                <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo" class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105 shrink-0">
+
+            <a href="{{ route('home') }}"
+                class="inline-flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0 max-w-[70vw] sm:max-w-none">
+                <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo"
+                    class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105 shrink-0">
                 <div class="flex flex-col leading-none min-w-0 text-left">
-                    <span class="text-sm sm:text-base md:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate">
+                    <span
+                        class="text-sm sm:text-base md:text-lg font-black tracking-tight text-rose-400 dark:text-rose-400 truncate">
                         {{ $mainName }}
                     </span>
-                    @if($subName)
-                        <span class="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-emerald-600 dark:text-emerald-400 truncate mt-0.5">
+                    @if ($subName)
+                        <span
+                            class="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-state-200 dark:text-state-400 truncate mt-0.5">
                             {{ $subName }}
                         </span>
                     @endif
@@ -32,7 +35,9 @@
             </a>
 
             <div class="absolute right-0 flex items-center">
-                <button onclick="toggleTheme()" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-emerald-950/10 dark:border-[#1e3a5f]/50 hover:border-emerald-400/50 transition-all" aria-label="Toggle Theme">
+                <button onclick="toggleTheme()"
+                    class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full glass-card border border-emerald-900/20 text-slate-700 hover:border-teal-900 hover:text-teal-900 dark:border-slate-600 dark:text-slate-200 transition-all"
+                    aria-label="Toggle Theme">
                     <svg class="theme-icon-dark w-4 h-4 text-emerald-400 hidden" fill="currentColor"
                         viewBox="0 0 20 20">
                         <path
@@ -43,18 +48,6 @@
                         viewBox="0 0 20 20">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                     </svg>
-=======
-        <nav class="mb-12 flex items-center justify-between border-b border-emerald-900/10 py-6 dark:border-[#1d3a34]">
-            <a href="{{ route('home') }}" class="inline-flex items-center gap-3">
-                <img src="{{ asset('logo.svg') }}" alt="{{ config('app.name') }} logo" class="h-8 w-8">
-                <span class="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ config('app.name') }}</span>
-            </a>
-
-            <div class="flex items-center gap-3">
-                <a href="{{ route('home') }}" class="fauna-btn-secondary !px-4 !py-2">Home</a>
-                <button onclick="toggleTheme()" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-emerald-900/20 text-slate-700 transition hover:border-teal-900 hover:text-teal-900 dark:border-slate-600 dark:text-slate-200" aria-label="Toggle Theme">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                 </button>
             </div>
         </nav>

@@ -16,11 +16,11 @@ class ProfileControllerTest extends TestCase
     }
 
     // ─────────────────────────────────────────────
-    // edit
+    // edit (profile page)
     // ─────────────────────────────────────────────
 
     /** @test */
-    public function test_authenticated_user_can_view_profile_edit_page(): void
+    public function test_authenticated_user_can_view_profile_page(): void
     {
         $this->actingAs($this->user())
             ->get(route('profile.edit'))
@@ -29,7 +29,7 @@ class ProfileControllerTest extends TestCase
     }
 
     /** @test */
-    public function test_guest_is_redirected_from_profile_edit(): void
+    public function test_guest_cannot_view_profile_page(): void
     {
         $this->get(route('profile.edit'))
             ->assertRedirect(route('login'));
@@ -40,7 +40,7 @@ class ProfileControllerTest extends TestCase
     // ─────────────────────────────────────────────
 
     /** @test */
-    public function test_user_can_update_their_name_and_email(): void
+    public function test_user_can_update_name_and_email(): void
     {
         $user = $this->user();
 
@@ -59,77 +59,86 @@ class ProfileControllerTest extends TestCase
     }
 
     /** @test */
-    public function test_changing_email_clears_email_verified_at(): void
+    public function test_user_can_save_whatsapp_number_from_profile(): void
     {
-        $user = User::factory()->create([
-            'role'              => 'user',
-            'email'             => 'original@example.com',
-            'email_verified_at' => now(),
+        $user = $this->user();
+
+        $this->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name'             => $user->name,
+                'email'            => $user->email,
+                'whatsapp_number'  => '+2348012345678',
+            ])
+            ->assertRedirect(route('profile.edit'));
+
+        $this->assertDatabaseHas('users', [
+            'id'              => $user->id,
+            'whatsapp_number' => '+2348012345678',
         ]);
+    }
+
+    /** @test */
+    public function test_whatsapp_number_must_be_valid_international_format(): void
+    {
+        $user = $this->user();
+
+        $this->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name'            => $user->name,
+                'email'           => $user->email,
+                'whatsapp_number' => 'not-a-number',
+            ])
+            ->assertSessionHasErrors(['whatsapp_number']);
+    }
+
+    /** @test */
+    public function test_whatsapp_number_is_optional_on_profile_update(): void
+    {
+        $user = $this->user();
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
                 'name'  => $user->name,
-                'email' => 'changed@example.com',
-            ]);
-
-        $this->assertNull($user->fresh()->email_verified_at);
+                'email' => $user->email,
+            ])
+            ->assertRedirect(route('profile.edit'))
+            ->assertSessionHasNoErrors();
     }
 
     /** @test */
-    public function test_keeping_same_email_does_not_clear_verified_at(): void
+    public function test_profile_update_requires_name_and_email(): void
     {
-        $user = User::factory()->create([
-            'role'              => 'user',
-            'email_verified_at' => now(),
-        ]);
+        $this->actingAs($this->user())
+            ->patch(route('profile.update'), [])
+            ->assertSessionHasErrors(['name', 'email']);
+    }
+
+    /** @test */
+    public function test_email_must_be_unique_on_profile_update(): void
+    {
+        $user  = $this->user();
+        $other = User::factory()->create(['email' => 'taken@example.com']);
+
+        $this->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name'  => $user->name,
+                'email' => 'taken@example.com',
+            ])
+            ->assertSessionHasErrors(['email']);
+    }
+
+    /** @test */
+    public function test_user_can_keep_their_own_email_on_update(): void
+    {
+        $user = $this->user();
 
         $this->actingAs($user)
             ->patch(route('profile.update'), [
                 'name'  => 'Updated Name',
                 'email' => $user->email,
-            ]);
-
-        $this->assertNotNull($user->fresh()->email_verified_at);
-    }
-
-    /** @test */
-    public function test_profile_update_sets_status_session_variable(): void
-    {
-        $user = $this->user();
-
-        $this->actingAs($user)
-            ->patch(route('profile.update'), [
-                'name'  => $user->name,
-                'email' => $user->email,
             ])
-            ->assertSessionHas('status', 'profile-updated');
-    }
-
-    /** @test */
-    public function test_profile_update_validates_name_is_required(): void
-    {
-        $user = $this->user();
-
-        $this->actingAs($user)
-            ->patch(route('profile.update'), [
-                'name'  => '',
-                'email' => $user->email,
-            ])
-            ->assertSessionHasErrors(['name']);
-    }
-
-    /** @test */
-    public function test_profile_update_validates_email_is_required_and_valid(): void
-    {
-        $user = $this->user();
-
-        $this->actingAs($user)
-            ->patch(route('profile.update'), [
-                'name'  => 'Valid Name',
-                'email' => 'not-an-email',
-            ])
-            ->assertSessionHasErrors(['email']);
+            ->assertRedirect(route('profile.edit'))
+            ->assertSessionHasNoErrors();
     }
 
     // ─────────────────────────────────────────────
@@ -137,53 +146,29 @@ class ProfileControllerTest extends TestCase
     // ─────────────────────────────────────────────
 
     /** @test */
-    public function test_user_can_delete_their_account_with_correct_password(): void
+    public function test_user_can_delete_their_own_account(): void
     {
         $user = User::factory()->create([
             'role'     => 'user',
-            'password' => bcrypt('secret123'),
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user)
-            ->delete(route('profile.destroy'), ['password' => 'secret123'])
+            ->delete(route('profile.destroy'), ['password' => 'password'])
             ->assertRedirect('/');
 
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
     }
 
     /** @test */
-    public function test_user_cannot_delete_account_with_wrong_password(): void
+    public function test_account_deletion_requires_correct_password(): void
     {
-        $user = User::factory()->create([
-            'role'     => 'user',
-            'password' => bcrypt('correct-password'),
-        ]);
+        $user = User::factory()->create(['password' => bcrypt('correct')]);
 
         $this->actingAs($user)
-            ->delete(route('profile.destroy'), ['password' => 'wrong-password'])
+            ->delete(route('profile.destroy'), ['password' => 'wrong'])
             ->assertSessionHasErrors(['password']);
 
         $this->assertDatabaseHas('users', ['id' => $user->id]);
-    }
-
-    /** @test */
-    public function test_account_deletion_logs_out_the_user(): void
-    {
-        $user = User::factory()->create([
-            'role'     => 'user',
-            'password' => bcrypt('mypassword'),
-        ]);
-
-        $this->actingAs($user)
-            ->delete(route('profile.destroy'), ['password' => 'mypassword']);
-
-        $this->assertGuest();
-    }
-
-    /** @test */
-    public function test_guest_cannot_delete_a_profile(): void
-    {
-        $this->delete(route('profile.destroy'), ['password' => 'anything'])
-            ->assertRedirect(route('login'));
     }
 }

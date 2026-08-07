@@ -1,18 +1,7 @@
-<<<<<<< HEAD
-﻿{{--
-    Admin Users Management View
-    Provides user listing, role mutation (admin/support/user), and account deletion controls.
---}}
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg border border-white/20">
-=======
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-teal-900 flex items-center justify-center shadow-lg border border-white/20">
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                 <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -40,18 +29,7 @@
         <x-flash-handler />
 
         {{-- Users table --}}
-<<<<<<< HEAD
-        <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#0f172a]/70 backdrop-blur-md border border-emerald-950/10 dark:border-[#1e3a5f] shadow-2xl">
-            <div class="overflow-x-auto custom-scrollbar">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="border-b border-emerald-950/10 dark:border-[#1e3a5f]">
-                            <th class="px-2 sm:px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">ID</th>
-                            <th class="px-2 sm:px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">User Information</th>
-                            <th class="hidden sm:table-cell px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Activity</th>
-                            <th class="px-2 sm:px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Role</th>
-=======
-        <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10/50 dark:border-[#1d3a34] shadow-2xl">
+        <div class="overflow-hidden rounded-[2.5rem] bg-white/50 dark:bg-[#102824]/70 backdrop-blur-md border border-emerald-900/10 dark:border-[#1d3a34] shadow-2xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
@@ -60,18 +38,13 @@
                             <th class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">User Information</th>
                             <th class="hidden sm:table-cell px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Activity</th>
                             <th class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Role</th>
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                             <th class="hidden lg:table-cell px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400">Member Since</th>
                             <th class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
                         @foreach ($users as $user)
-<<<<<<< HEAD
-                            <tr class="hover:bg-emerald-50/50 dark:hover:bg-[#1e293b]/70 transition-colors">
-=======
                             <tr class="hover:bg-emerald-50/50 dark:hover:bg-[#18342f]/70 transition-colors">
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
 
                                 {{-- ID --}}
                                 <td class="px-4 md:px-6 py-4 text-xs md:text-sm font-medium text-slate-900 dark:text-white">
@@ -96,15 +69,9 @@
                                 <td class="px-4 md:px-6 py-4">
                                     @php
                                         $roleBadge = match($user->role) {
-<<<<<<< HEAD
-                                            'admin'   => 'bg-emerald-400/10 text-emerald-950 dark:text-emerald-400 ring-4 ring-emerald-400/10',
-                                            'support' => 'bg-yellow-500/10 text-emerald-950 dark:text-emerald-400 ring-4 ring-yellow-500/10',
-                                            default   => 'bg-slate-100 text-slate-600 dark:bg-[#1e293b]/60 dark:text-slate-400',
-=======
                                             'admin'   => 'bg-lime-500/10 text-teal-900 dark:text-lime-400 ring-4 ring-lime-500/10',
                                             'support' => 'bg-yellow-500/10 text-teal-900 dark:text-lime-400 ring-4 ring-yellow-500/10',
                                             default   => 'bg-slate-100 text-slate-600 dark:bg-[#18342f]/60 dark:text-slate-400',
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                         };
                                     @endphp
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest {{ $roleBadge }}">
@@ -122,7 +89,7 @@
                                     <div class="flex flex-col items-end gap-1 md:gap-2">
                                         <div class="flex items-center space-x-1 md:space-x-2">
 
-                                            {{-- Role select â€” submits via its own mini-form --}}
+                                            {{-- Role select — submits via its own mini-form --}}
                                             <form
                                                 method="POST"
                                                 action="{{ route('admin.users.update-role', $user->id) }}"
@@ -143,11 +110,7 @@
                                                     name="role"
                                                     @change="$el.closest('form').dispatchEvent(new Event('submit'))"
                                                     {{ $user->id === auth()->id() ? 'disabled' : '' }}
-<<<<<<< HEAD
-                                                    class="text-[10px] md:text-xs font-black bg-white dark:bg-[#0f172a] border-emerald-950/10 dark:border-[#1e3a5f] rounded-xl focus:ring-2 focus:ring-emerald-400 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
-=======
                                                     class="text-[10px] md:text-xs font-black bg-white dark:bg-[#18342f] border-emerald-900/10 dark:border-[#28524a] rounded-xl focus:ring-2 focus:ring-lime-500 disabled:opacity-50 transition-all cursor-pointer py-1 md:py-1.5 pl-2 pr-8 md:pl-3 md:pr-10 tracking-widest"
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
                                                 >
                                                     <option value="user"    {{ $user->role === 'user'    ? 'selected' : '' }}>User</option>
                                                     <option value="support" {{ $user->role === 'support' ? 'selected' : '' }}>Support</option>
@@ -175,7 +138,7 @@
                                                 <button
                                                     type="submit"
                                                     {{ $user->id === auth()->id() ? 'disabled' : '' }}
-                                                    class="p-1.5 md:p-2 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-lg transition-all disabled:opacity-50 shadow-sm"
+                                                    class="p-1.5 md:p-2 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-lg transition-all disabled:opacity-50 shadow-sm"
                                                     title="Delete User"
                                                 >
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

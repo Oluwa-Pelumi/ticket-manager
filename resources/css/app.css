@@ -1,8 +1,14 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+    --color-primary: #064e3b;
+    --color-accent: #10b981;
+}
+
 
 @layer base {
     html, body {
@@ -51,17 +57,6 @@
 
     .fauna-shell {
         @apply antialiased bg-orange-50 text-slate-900 dark:bg-[#0b1715] dark:text-slate-100;
-<<<<<<< HEAD
-    }
-
-    .hero-gradient {
-        background: linear-gradient(135deg, #022c22 0%, #064e3b 40%, #065f46 70%, #022c22 100%);
-    }
-
-    .dark .hero-gradient {
-        background: #0b1715;
-=======
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
     }
 
     .fauna-panel {
@@ -69,15 +64,7 @@
     }
 
     .fauna-btn-primary {
-<<<<<<< HEAD
-        @apply inline-flex items-center justify-center rounded-full border border-emerald-900 bg-emerald-900 px-6 py-3 text-sm font-medium text-white transition duration-200 hover:border-emerald-500 hover:bg-emerald-500 hover:text-emerald-900 disabled:pointer-events-none disabled:border-emerald-900/50 disabled:bg-emerald-900/50 disabled:opacity-70;
-    }
-
-    .fauna-btn-action {
-        @apply border border-emerald-900 bg-emerald-900 text-white transition-all hover:border-emerald-500 hover:bg-emerald-500 hover:text-emerald-900 disabled:cursor-not-allowed disabled:border-emerald-900/50 disabled:bg-emerald-900/50 disabled:opacity-50;
-=======
         @apply inline-flex items-center justify-center rounded-full border border-emerald-900 bg-emerald-900 px-6 py-3 text-sm font-medium text-white transition duration-200 hover:border-emerald-500 hover:bg-emerald-500 hover:text-emerald-900;
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
     }
 
     .fauna-btn-secondary {
@@ -85,11 +72,7 @@
     }
 
     .mesh-gradient {
-<<<<<<< HEAD
-        background-image:
-=======
         background-image: 
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
             radial-gradient(at 0% 0%, rgba(2, 44, 34, 0.16) 0px, transparent 50%),
             radial-gradient(at 100% 0%, rgba(163, 230, 53, 0.14) 0px, transparent 50%),
             radial-gradient(at 100% 100%, rgba(2, 44, 34, 0.08) 0px, transparent 50%),
@@ -97,11 +80,7 @@
     }
 
     .dark .mesh-gradient {
-<<<<<<< HEAD
-        background-image:
-=======
         background-image: 
->>>>>>> parent of bab08b9 (Merge branch 'laradocs' into main)
             radial-gradient(at 0% 0%, rgba(2, 44, 34, 0.2) 0px, transparent 50%),
             radial-gradient(at 100% 0%, rgba(132, 204, 22, 0.1) 0px, transparent 50%),
             radial-gradient(at 100% 100%, rgba(2, 44, 34, 0.12) 0px, transparent 50%),

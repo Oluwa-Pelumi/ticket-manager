@@ -21,20 +21,17 @@ return new class extends Migration
             $table->date('custom_recurrence_date')->nullable();
             $table->json('order_activations')->nullable();
 
-
             $table->json('attended_to_by')->nullable();
             $table->string('subject');
             $table->text('content');
             $table->string('filename')->nullable();
-            $table->json('images')->nullable();
+            $table->json('attachments')->nullable();
             $table->string('priority')->default('medium');
             $table->string('status')->default('open');
-            $table->timestamps();
-
-            $table->foreignId('user_id')->nullable()->change();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('whatsapp_number')->nullable();
+            $table->timestamps();
         });
     }
 
