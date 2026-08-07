@@ -8,23 +8,31 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->renameColumn('images', 'attachments');
-        });
+        if (Schema::hasColumn('tickets', 'images')) {
+            Schema::table('tickets', function (Blueprint $table) {
+                $table->renameColumn('images', 'attachments');
+            });
+        }
 
-        Schema::table('comments', function (Blueprint $table) {
-            $table->renameColumn('images', 'attachments');
-        });
+        if (Schema::hasColumn('comments', 'images')) {
+            Schema::table('comments', function (Blueprint $table) {
+                $table->renameColumn('images', 'attachments');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->renameColumn('attachments', 'images');
-        });
+        if (Schema::hasColumn('tickets', 'attachments')) {
+            Schema::table('tickets', function (Blueprint $table) {
+                $table->renameColumn('attachments', 'images');
+            });
+        }
 
-        Schema::table('comments', function (Blueprint $table) {
-            $table->renameColumn('attachments', 'images');
-        });
+        if (Schema::hasColumn('comments', 'attachments')) {
+            Schema::table('comments', function (Blueprint $table) {
+                $table->renameColumn('attachments', 'images');
+            });
+        }
     }
 };

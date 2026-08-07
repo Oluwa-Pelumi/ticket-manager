@@ -370,7 +370,8 @@ class TicketControllerTest extends TestCase
         $ticket->refresh();
         $this->assertEquals('open', $ticket->status);
         $this->assertContains($availableSupport->id, $ticket->attended_to_by);
-        $this->assertEquals($availableSupport->id, end($ticket->attended_to_by));
+        $attendedTo = $ticket->attended_to_by;
+        $this->assertEquals($availableSupport->id, end($attendedTo));
     }
 
     // ─────────────────────────────────────────────

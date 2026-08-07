@@ -155,6 +155,9 @@ class AuthTest extends TestCase
     /** @test */
     public function test_new_registered_user_gets_user_role_by_default(): void
     {
+        // Ensure the DB is not empty so the "first user = admin" logic doesn't fire
+        User::factory()->create(['role' => 'admin']);
+
         $this->post(route('register'), [
             'name'                  => 'Role Check',
             'email'                 => 'rolecheck@example.com',

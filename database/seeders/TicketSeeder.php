@@ -41,7 +41,7 @@ class TicketSeeder extends Seeder
                 'priority'        => 'high',
                 'status'          => 'in-progress',
                 'attended_to_by'  => [$support1?->id, $support2?->id],
-                'order_type'      => 'recurring',
+                'order_type'      => 'order',
                 'recurrence_period' => 'monthly',
             ],
             [
@@ -75,11 +75,11 @@ class TicketSeeder extends Seeder
                 'whatsapp_number' => '+2348000000004',
                 'category_id'     => $order?->id,
                 'subject'         => 'order',
-                'content'         => 'Please set up a recurring weekly order for Amlodipine 5mg tablets. I have been prescribed this for long-term blood pressure management.',
+                'content'         => 'Please set up a order weekly order for Amlodipine 5mg tablets. I have been prescribed this for long-term blood pressure management.',
                 'priority'        => 'medium',
                 'status'          => 'in-progress',
                 'attended_to_by'  => $support1?->id,
-                'order_type'      => 'recurring',
+                'order_type'      => 'order',
                 'recurrence_period' => 'weekly',
             ],
             [
@@ -119,7 +119,7 @@ class TicketSeeder extends Seeder
                 'priority'        => 'low',
                 'status'          => 'in-progress',
                 'attended_to_by'  => $support1?->id,
-                'order_type'      => 'recurring',
+                'order_type'      => 'order',
                 'recurrence_period' => 'monthly',
             ],
             [
@@ -153,11 +153,11 @@ class TicketSeeder extends Seeder
                 'whatsapp_number' => '+2348000000005',
                 'category_id'     => $order?->id,
                 'subject'         => 'order',
-                'content'         => 'My doctor prescribed ferrous sulphate 200mg for anaemia. I need a steady supply. Please set up a two-week recurring order for me.',
+                'content'         => 'My doctor prescribed ferrous sulphate 200mg for anaemia. I need a steady supply. Please set up a two-week order order for me.',
                 'priority'        => 'medium',
                 'status'          => 'open',
                 'attended_to_by'  => $support2?->id,
-                'order_type'      => 'recurring',
+                'order_type'      => 'order',
                 'recurrence_period' => 'two-weeks',
             ],
 
@@ -221,7 +221,7 @@ class TicketSeeder extends Seeder
                 'priority'        => 'low',
                 'status'          => 'in-progress',
                 'attended_to_by'  => $support1?->id,
-                'order_type'      => 'recurring',
+                'order_type'      => 'order',
                 'recurrence_period' => 'quarterly',
             ],
             [
@@ -259,7 +259,7 @@ class TicketSeeder extends Seeder
                 'priority'        => 'medium',
                 'status'          => 'open',
                 'attended_to_by'  => $support2?->id,
-                'order_type'      => 'recurring',
+                'order_type'      => 'order',
                 'recurrence_period' => 'monthly',
             ],
             [
