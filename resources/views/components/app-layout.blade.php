@@ -7,10 +7,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) && trim($title) ? trim($title) . ' — ' . config('app.name') : config('app.name') }}
     </title>
-    <link rel="icon" href="{{ asset('favicon.svg') }}?v=3" type="image/svg+xml">
-    <link rel="icon" href="{{ asset('favicon.ico') }}?v=3" sizes="any">
-    <link rel="icon" href="{{ asset('favicon.png') }}?v=3" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=3">
+    <link rel="icon" href="{{ asset('favicon.svg') }}?v=4" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=4" sizes="any">
+    <link rel="icon" href="{{ asset('favicon.png') }}?v=4" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}?v=4">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
@@ -264,7 +264,7 @@
                         @endphp
 
                         <a href="{{ route('home') }}" class="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0">
-                            <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo"
+                            <img src="{{ asset('logo.svg') }}?v=4" alt="{{ $appName }} logo"
                                 class="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 transition-transform group-hover:scale-105 shrink-0">
                             <div class="flex flex-col leading-none min-w-0">
                                 <span

@@ -62,7 +62,7 @@
                         @endphp
 
                         <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 sm:gap-3 text-white group shrink-0 min-w-0">
-                            <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo" class="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-lg transition-transform group-hover:scale-105 shrink-0">
+                            <img src="{{ asset('logo.svg') }}?v=4" alt="{{ $appName }} logo" class="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-lg transition-transform group-hover:scale-105 shrink-0">
                             <div class="flex flex-col leading-none min-w-0">
                                 <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-rose-400 drop-shadow-md truncate">
                                     {{ $mainName }}
