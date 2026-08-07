@@ -436,7 +436,7 @@
                             <a href="{{ route('login') }}"
                                 class="nav-link bg-slate-200/40 dark:bg-[#18342f] text-slate-700 dark:text-slate-200 hover:text-teal-900 border border-emerald-900/10 dark:border-[#1d3a34]">Login</a>
                             <a href="{{ route('register') }}"
-                                class="nav-link bg-teal-900 text-white hover:bg-[#10b981] hover:text-[#064e3b] shadow-md">Register</a>
+                                class="nav-link bg-slate-200/40 dark:bg-[#18342f] text-slate-700 dark:text-slate-200 hover:text-teal-900 border border-emerald-900/10 dark:border-[#1d3a34]">Register</a>
                         </div>
                     @endauth
 
@@ -624,7 +624,7 @@
                         <a href="{{ route('login') }}"
                             class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#18342f] text-slate-700 dark:text-slate-200">Login</a>
                         <a href="{{ route('register') }}"
-                            class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-teal-900 text-white hover:bg-[#10b981] hover:text-[#064e3b] shadow-md">Register</a>
+                            class="flex-1 text-center py-2.5 rounded-xl text-sm font-bold bg-slate-100 dark:bg-[#18342f] text-slate-700 dark:text-slate-200">Register</a>
                     </div>
                 @endauth
             </div>
