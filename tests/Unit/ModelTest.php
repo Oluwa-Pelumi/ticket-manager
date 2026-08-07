@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Ticket;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Models\Programme;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -50,10 +51,32 @@ class ModelTest extends TestCase
     }
 
     /** @test */
+    public function user_name_accessor_combines_first_middle_last(): void
+    {
+        $user = User::factory()->make([
+            'first_name'  => 'Ada',
+            'middle_name' => 'Grace',
+            'last_name'   => 'Smith',
+        ]);
+        $this->assertEquals('Ada Grace Smith', $user->name);
+    }
+
+    /** @test */
+    public function user_name_accessor_skips_null_middle_name(): void
+    {
+        $user = User::factory()->make([
+            'first_name'  => 'Ada',
+            'middle_name' => null,
+            'last_name'   => 'Smith',
+        ]);
+        $this->assertEquals('Ada Smith', $user->name);
+    }
+
+    /** @test */
     public function user_has_many_tickets(): void
     {
-        $user    = User::factory()->create(['role' => 'user']);
-        $tickets = Ticket::factory()->count(3)->create(['user_id' => $user->id]);
+        $user = User::factory()->create(['role' => 'user']);
+        Ticket::factory()->count(3)->create(['user_id' => $user->id]);
 
         $this->assertCount(3, $user->tickets);
         $this->assertInstanceOf(Ticket::class, $user->tickets->first());
@@ -66,6 +89,16 @@ class ModelTest extends TestCase
         Ticket::factory()->count(2)->create(['attended_to_by' => $support->id]);
 
         $this->assertCount(2, $support->assignedTickets);
+    }
+
+    /** @test */
+    public function user_belongs_to_programme(): void
+    {
+        $programme = Programme::factory()->create();
+        $user      = User::factory()->create(['role' => 'user', 'programme_id' => $programme->id]);
+
+        $this->assertInstanceOf(Programme::class, $user->programme);
+        $this->assertEquals($programme->id, $user->programme->id);
     }
 
     // ─────────────────────────────────────────────
@@ -89,20 +122,11 @@ class ModelTest extends TestCase
     }
 
     /** @test */
-    public function ticket_images_are_cast_to_array(): void
+    public function ticket_attachments_are_cast_to_array(): void
     {
-        $ticket = Ticket::factory()->create(['images' => ['a.jpg', 'b.jpg']]);
-        $this->assertIsArray($ticket->fresh()->images);
-        $this->assertContains('a.jpg', $ticket->fresh()->images);
-    }
-
-    /** @test */
-    public function ticket_order_activations_are_cast_to_array(): void
-    {
-        $ticket = Ticket::factory()->create([
-            'order_activations' => ['2024-01-01 00:00:00'],
-        ]);
-        $this->assertIsArray($ticket->fresh()->order_activations);
+        $ticket = Ticket::factory()->create(['attachments' => ['a.jpg', 'b.jpg']]);
+        $this->assertIsArray($ticket->fresh()->attachments);
+        $this->assertContains('a.jpg', $ticket->fresh()->attachments);
     }
 
     /** @test */
@@ -130,15 +154,13 @@ class ModelTest extends TestCase
     {
         $support1 = User::factory()->create(['role' => 'support']);
         $support2 = User::factory()->create(['role' => 'support']);
-        
+
         $ticket = Ticket::factory()->create(['attended_to_by' => $support1->id]);
         $ticket->addAttendant($support2->id);
 
         $this->assertCount(2, $ticket->attendants);
         $this->assertEquals($support1->id, $ticket->attendants[0]->id);
         $this->assertEquals($support2->id, $ticket->attendants[1]->id);
-        
-        // The most recent attendant is support2
         $this->assertEquals($support2->id, $ticket->attendant->id);
     }
 
@@ -165,11 +187,36 @@ class ModelTest extends TestCase
     /** @test */
     public function ticket_resolves_route_binding_by_hashid(): void
     {
-        $ticket  = Ticket::factory()->create();
-        $hashid  = $ticket->hashid;
-        $resolved = (new Ticket())->resolveRouteBinding($hashid);
-
+        $ticket   = Ticket::factory()->create();
+        $resolved = (new Ticket())->resolveRouteBinding($ticket->hashid);
         $this->assertEquals($ticket->id, $resolved->id);
+    }
+
+    /** @test */
+    public function ticket_has_support_replied_is_false_with_no_comments(): void
+    {
+        $ticket = Ticket::factory()->create();
+        $this->assertFalse($ticket->has_support_replied);
+    }
+
+    /** @test */
+    public function ticket_has_support_replied_is_true_when_support_commented(): void
+    {
+        $support = User::factory()->create(['role' => 'support']);
+        $ticket  = Ticket::factory()->create();
+        Comment::factory()->create(['ticket_id' => $ticket->id, 'user_id' => $support->id]);
+
+        $this->assertTrue($ticket->fresh()->has_support_replied);
+    }
+
+    /** @test */
+    public function ticket_has_support_replied_is_false_when_only_user_commented(): void
+    {
+        $user    = User::factory()->create(['role' => 'user']);
+        $ticket  = Ticket::factory()->create(['user_id' => $user->id]);
+        Comment::factory()->create(['ticket_id' => $ticket->id, 'user_id' => $user->id]);
+
+        $this->assertFalse($ticket->fresh()->has_support_replied);
     }
 
     // ─────────────────────────────────────────────
@@ -197,10 +244,11 @@ class ModelTest extends TestCase
     }
 
     /** @test */
-    public function comment_images_are_cast_to_array(): void
+    public function comment_attachments_are_cast_to_array(): void
     {
-        $comment = Comment::factory()->create(['images' => ['img1.jpg']]);
-        $this->assertIsArray($comment->fresh()->images);
+        $comment = Comment::factory()->create(['attachments' => ['img1.jpg']]);
+        $this->assertIsArray($comment->fresh()->attachments);
+        $this->assertContains('img1.jpg', $comment->fresh()->attachments);
     }
 
     /** @test */
@@ -239,16 +287,36 @@ class ModelTest extends TestCase
     /** @test */
     public function faq_can_be_created_with_fillable_attributes(): void
     {
-        $faq = Faq::factory()->create([
-            'question' => 'What is laradrug?',
-            'answer'   => 'A pharmacy service.',
+        Faq::factory()->create([
+            'question' => 'How do I submit a ticket?',
+            'answer'   => 'Use the Submit Ticket page.',
             'order'    => 1,
         ]);
 
         $this->assertDatabaseHas('faqs', [
-            'question' => 'What is laradrug?',
-            'answer'   => 'A pharmacy service.',
+            'question' => 'How do I submit a ticket?',
             'order'    => 1,
         ]);
+    }
+
+    // ─────────────────────────────────────────────
+    // Programme model
+    // ─────────────────────────────────────────────
+
+    /** @test */
+    public function programme_can_be_created_with_name_and_slug(): void
+    {
+        $programme = Programme::factory()->create(['name' => 'Computer Science', 'slug' => 'computer-science']);
+        $this->assertDatabaseHas('programmes', ['name' => 'Computer Science', 'slug' => 'computer-science']);
+    }
+
+    /** @test */
+    public function programme_has_many_users(): void
+    {
+        $programme = Programme::factory()->create();
+        User::factory()->count(3)->create(['role' => 'user', 'programme_id' => $programme->id]);
+
+        $this->assertCount(3, $programme->users);
+        $this->assertInstanceOf(User::class, $programme->users->first());
     }
 }

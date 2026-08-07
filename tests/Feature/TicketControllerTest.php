@@ -150,43 +150,43 @@ class TicketControllerTest extends TestCase
     /** @test */
     public function test_ticket_save_validates_required_fields(): void
     {
-        $this->post(route('save-ticket'), [])
-            ->assertSessionHasErrors(['name', 'email', 'subject', 'content', 'priority']);
+        $user = $this->regularUser();
+
+        $this->actingAs($user)->post(route('save-ticket'), [])
+            ->assertSessionHasErrors(['subject', 'content', 'priority']);
     }
 
     /** @test */
     public function test_ticket_save_rejects_invalid_priority(): void
     {
-        $this->post(route('save-ticket'), [
-            'name'     => 'Test',
-            'email'    => 'test@test.com',
-            'subject'  => 'general',
+        $user = $this->regularUser();
+
+        $this->actingAs($user)->post(route('save-ticket'), [
+            'subject'  => 'transcript-request',
             'content'  => 'Help',
             'priority' => 'super-urgent',
         ])->assertSessionHasErrors(['priority']);
     }
 
     /** @test */
-    public function test_ticket_save_with_image_uploads_stores_files(): void
+    public function test_ticket_save_with_attachment_uploads_stores_files(): void
     {
-        Notification::fake();
-        Storage::fake('public');
+        \Illuminate\Support\Facades\Notification::fake();
+        \Illuminate\Support\Facades\Storage::fake('public');
         $user     = $this->regularUser();
-        $category = Category::factory()->create(['slug' => 'general']);
+        $category = Category::factory()->create(['slug' => 'transcript-request']);
 
         $this->actingAs($user)->post(route('save-ticket'), [
-            'name'        => $user->name,
-            'email'       => $user->email,
-            'subject'     => 'general',
-            'content'     => 'Issue with images',
+            'subject'     => 'transcript-request',
+            'content'     => 'Please issue my transcript.',
             'priority'    => 'high',
             'category_id' => $category->id,
-            'images'      => [UploadedFile::fake()->image('screenshot.png')],
+            'attachments' => [\Illuminate\Http\UploadedFile::fake()->image('screenshot.png')],
         ])->assertRedirect();
 
-        $ticket = Ticket::where('user_id', $user->id)->first();
-        $this->assertNotEmpty($ticket->images);
-        Storage::disk('public')->assertExists($ticket->images[0]);
+        $ticket = \App\Models\Ticket::where('user_id', $user->id)->first();
+        $this->assertNotEmpty($ticket->attachments);
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($ticket->attachments[0]);
     }
 
     // ─────────────────────────────────────────────

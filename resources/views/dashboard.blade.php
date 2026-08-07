@@ -179,10 +179,11 @@
 
         {{-- ── Tickets table ──────────────────────────────────────────────── --}}
         <div
-            class="relative group rounded-2xl fauna-panel transition-all duration-500 hover:shadow-rose-400/10 overflow-hidden max-w-full">
+            class="relative group rounded-2xl fauna-panel transition-all duration-500 hover:shadow-rose-400/10 max-w-full">
             <div class="max-w-full overflow-x-auto custom-scrollbar">
-                <table class="w-full table-auto text-left border-collapse">
+                <table class="w-full table-auto text-left border-collapse min-w-[320px]">
                     <thead>
+                        <tr>
                             <th class="w-10 sm:w-12 md:w-16 px-1.5 sm:px-3 md:px-6 py-4">
                                 @if (in_array(auth()->user()->role, ['admin', 'support']))
                                     <label class="flex items-center px-1 cursor-pointer select-none group">
@@ -215,7 +216,7 @@
                                 </button>
                             </th>
                             @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                <th class="hidden lg:table-cell px-4 md:px-6 py-4">
+                                <th class="hidden md:table-cell px-4 md:px-6 py-4">
                                     <button @click="requestSort('user')"
                                         class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                         User <span x-html="getSortIcon('user')" class="ml-1"></span>
@@ -228,7 +229,7 @@
                                     Priority <span x-html="getSortIcon('priority')" class="ml-1"></span>
                                 </button>
                             </th>
-                            <th class="hidden md:table-cell px-4 md:px-6 py-4">
+                            <th class="hidden sm:table-cell px-4 md:px-6 py-4">
                                 <button @click="requestSort('status')"
                                     class="flex items-center text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 group">
                                     Status <span x-html="getSortIcon('status')" class="ml-1"></span>
@@ -241,7 +242,7 @@
                                 </button>
                             </th>
                             <th
-                                class="hidden lg:table-cell px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">
+                                class="px-4 md:px-6 py-4 text-[10px] font-black tracking-wider text-slate-600 dark:text-slate-400 text-right">
                                 Actions</th>
                         </tr>
                     </thead>
@@ -321,7 +322,7 @@
 
                                     {{-- User (admin/support) --}}
                                     @if (in_array(auth()->user()->role, ['admin', 'support']))
-                                        <td class="hidden lg:table-cell px-4 md:px-6 py-4">
+                                        <td class="hidden md:table-cell px-4 md:px-6 py-4">
                                             <div class="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[120px]"
                                                 x-text="ticket.user?.name"></div>
                                             <div class="text-[10px] text-slate-600 dark:text-slate-400 truncate max-w-[120px]"
@@ -361,7 +362,7 @@
                                     </td>
 
                                     {{-- Status --}}
-                                    <td class="hidden md:table-cell px-4 md:px-6 py-4" @click.stop>
+                                    <td class="hidden sm:table-cell px-4 md:px-6 py-4" @click.stop>
                                         @if (in_array(auth()->user()->role, ['admin', 'support']))
                                             <select
                                                 @change="statusUpdate(ticket.id, $event.target.value)"
@@ -407,7 +408,7 @@
                                     </td>
 
                                     {{-- Row actions --}}
-                                    <td class="hidden lg:table-cell px-4 md:px-6 py-4 text-right">
+                                    <td class="px-2 md:px-4 lg:px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2 md:gap-3">
                                              {{-- Edit (ticket owner only, if no support has replied and not closed) --}}
                                             <template x-if="authId === ticket.user_id && !ticket.has_support_replied && ticket.status !== 'closed'">
@@ -477,7 +478,7 @@
                                                             </div>
 
                                                             {{-- Mobile-only controls when table columns are hidden --}}
-                                                            <div class="md:hidden lg:hidden mb-6 pb-6 border-b border-slate-100 dark:border-[#1e3a5f]/50 space-y-4">
+                                                            <div class="sm:hidden mb-6 pb-6 border-b border-slate-100 dark:border-[#1e3a5f]/50 space-y-4">
                                                                 <div>
                                                                     <div class="text-[10px] font-black text-rose-950 dark:text-rose-400 mb-2 tracking-[0.3em] uppercase">Status</div>
                                                                     @if (in_array(auth()->user()->role, ['admin', 'support']))
@@ -547,8 +548,8 @@
                                                                 @endif
                                                             </div>
 
-                                                            {{-- Tablet: actions/attendant when only actions column is hidden --}}
-                                                            <div class="hidden md:block lg:hidden mb-6 pb-6 border-b border-slate-100 dark:border-[#1e3a5f]/50 space-y-4">
+                                                            {{-- Tablet: attendant when only attendant/actions columns are hidden (sm-lg) --}}
+                                                            <div class="hidden sm:block lg:hidden mb-6 pb-6 border-b border-slate-100 dark:border-[#1e3a5f]/50 space-y-4">
                                                                 <div>
                                                                     <div class="text-[10px] font-black text-rose-950 dark:text-rose-400 mb-2 tracking-[0.3em] uppercase">Attendant</div>
                                                                     <template x-if="ticket.attendant">

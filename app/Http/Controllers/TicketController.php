@@ -272,7 +272,7 @@ class TicketController extends Controller
             'ids.*' => 'exists:tickets,id',
         ]);
 
-        $tickets = Ticket::query()->whereIn('id', $validated['ids'], 'and', false)->get();
+        $tickets = Ticket::whereIn('id', $validated['ids'])->get();
 
         foreach ($tickets as $ticket) {
             if ($ticket->filename) {

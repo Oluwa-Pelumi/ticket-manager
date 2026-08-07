@@ -17,8 +17,6 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'                   => fake()->name(),
-            'email'                  => fake()->safeEmail(),
             'subject'                => fake()->randomElement(['transcript-request', 'certificate-request', 'letter-of-recommendation-request', 'statement-of-result-request', 'other']),
             'content'                => fake()->paragraph(),
             'status'                 => fake()->randomElement(['open', 'in-progress', 'closed']),
@@ -27,7 +25,6 @@ class TicketFactory extends Factory
             'attended_to_by'         => null,
             'category_id'            => null,
             'attachments'            => [],
-            'phone_number'           => null,
             'filename'               => null,
         ];
     }

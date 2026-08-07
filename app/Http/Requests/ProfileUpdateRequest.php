@@ -36,6 +36,7 @@ class ProfileUpdateRequest extends FormRequest
                 'numeric',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'phone_number' => ['nullable', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
         ];
     }
 }

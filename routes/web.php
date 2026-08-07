@@ -37,7 +37,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/check-status', function () {
-    return view('check-status');
+    return view('check-status', [
+        'categories' => rescue(fn () => \App\Models\Category::all(), []),
+    ]);
 })->name('check-status');
 
 Route::post('/search-tickets', [TicketController::class, 'searchTicketsByReference'])
@@ -47,6 +49,7 @@ Route::get('/ticket/{ticket}', [TicketController::class, 'show'])
     ->name('ticket.show');
 
 Route::patch('update-ticket-status', [TicketController::class, 'updateStatus'])
+    ->middleware(['auth', 'verified'])
     ->name('update-ticket-status');
 
 Route::get('/dashboard', [TicketController::class, 'index'])
@@ -82,6 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::post('/tickets/{ticket}/comment', [TicketController::class, 'addComment'])
+    ->middleware('throttle:15,1')
     ->name('add-comment');
 
 Route::middleware(['auth', 'verified', 'staff'])->group(function () {

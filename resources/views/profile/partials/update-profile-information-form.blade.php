@@ -86,6 +86,54 @@
         </div>
         @endif
 
+        {{-- Phone Number with country code --}}
+        <div x-data="{
+            countryCode: '{{ preg_match('/^(\+\d+)(\d+)$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[1] : '+234' }}',
+            localPhone: '{{ preg_match('/^(\+\d+)(\d+)$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[2] : '' }}',
+            countryCodes: [
+                { code: '+1',   name: 'US/CA +1' }, { code: '+7',   name: 'RU +7' },
+                { code: '+20',  name: 'EG +20' },   { code: '+27',  name: 'ZA +27' },
+                { code: '+33',  name: 'FR +33' },   { code: '+34',  name: 'ES +34' },
+                { code: '+39',  name: 'IT +39' },   { code: '+44',  name: 'GB +44' },
+                { code: '+49',  name: 'DE +49' },   { code: '+55',  name: 'BR +55' },
+                { code: '+61',  name: 'AU +61' },   { code: '+62',  name: 'ID +62' },
+                { code: '+81',  name: 'JP +81' },   { code: '+86',  name: 'CN +86' },
+                { code: '+91',  name: 'IN +91' },   { code: '+92',  name: 'PK +92' },
+                { code: '+212', name: 'MA +212' },  { code: '+213', name: 'DZ +213' },
+                { code: '+220', name: 'GM +220' },  { code: '+221', name: 'SN +221' },
+                { code: '+223', name: 'ML +223' },  { code: '+224', name: 'GN +224' },
+                { code: '+225', name: 'CI +225' },  { code: '+233', name: 'GH +233' },
+                { code: '+234', name: 'NG +234' },  { code: '+237', name: 'CM +237' },
+                { code: '+250', name: 'RW +250' },  { code: '+251', name: 'ET +251' },
+                { code: '+254', name: 'KE +254' },  { code: '+255', name: 'TZ +255' },
+                { code: '+256', name: 'UG +256' },  { code: '+260', name: 'ZM +260' },
+                { code: '+263', name: 'ZW +263' },  { code: '+966', name: 'SA +966' },
+                { code: '+971', name: 'AE +971' },
+            ]
+        }">
+            <x-input-label for="phone_local" value="Phone Number (Optional)" />
+            <div class="mt-1 flex rounded-xl overflow-hidden border border-slate-200 dark:border-[#1e3a5f] focus-within:ring-2 focus-within:ring-rose-400 transition-all shadow-sm">
+                <select x-model="countryCode"
+                    class="shrink-0 px-3 py-2.5 bg-slate-100 dark:bg-[#1e293b]/50 text-slate-600 dark:text-slate-400 font-bold text-sm border-0 border-r border-slate-200 dark:border-[#1e3a5f] outline-none cursor-pointer"
+                    style="appearance:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E&quot;); background-repeat:no-repeat; background-position:right 6px center; background-size:14px; padding-right:2rem;">
+                    <template x-for="c in countryCodes" :key="c.code + c.name">
+                        <option :value="c.code" x-text="c.name" :selected="c.code === countryCode"></option>
+                    </template>
+                </select>
+                <input
+                    id="phone_local"
+                    type="tel"
+                    x-model="localPhone"
+                    @input="localPhone = localPhone.replace(/\D/g, '')"
+                    class="flex-1 px-4 py-2.5 bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white outline-none border-0 font-medium min-w-0"
+                    placeholder="8012345678"
+                    autocomplete="tel-national"
+                />
+            </div>
+            <input type="hidden" name="phone_number" :value="localPhone ? countryCode + localPhone : ''">
+            <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
+        </div>
+
         @if ($mustVerifyEmail && $user->email_verified_at === null)
             <div class="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 p-4">
                 <p class="text-sm text-amber-800 dark:text-amber-300">
