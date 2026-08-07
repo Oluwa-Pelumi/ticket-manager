@@ -112,7 +112,7 @@
             ]
         }">
             <x-input-label for="phone_local" value="Phone Number (Optional)" />
-            <div class="mt-1 flex rounded-xl overflow-hidden border border-slate-200 dark:border-[#1e3a5f] focus-within:ring-2 focus-within:ring-rose-400 transition-all shadow-sm">
+            <div class="mt-1 flex rounded-xl overflow-hidden border border-slate-200 dark:border-[#1e3a5f] focus-within:ring-2 focus-within:ring-slate-400 transition-all shadow-sm">
                 <select x-model="countryCode"
                     class="shrink-0 px-3 py-2.5 bg-slate-100 dark:bg-[#1e293b]/50 text-slate-600 dark:text-slate-400 font-bold text-sm border-0 border-r border-slate-200 dark:border-[#1e3a5f] outline-none cursor-pointer"
                     style="appearance:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E&quot;); background-repeat:no-repeat; background-position:right 6px center; background-size:14px; padding-right:2rem;">
