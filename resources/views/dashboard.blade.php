@@ -440,7 +440,7 @@
                                             <option value="open" :selected="ticket.status === 'open'">Open
                                             </option>
                                             <option value="in-progress" :selected="ticket.status === 'in-progress'">
-                                                Processing</option>
+                                                In Progress</option>
                                             <option value="closed" :selected="ticket.status === 'closed'">
                                                 Closed
                                             </option>

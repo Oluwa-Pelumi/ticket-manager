@@ -178,7 +178,8 @@
                             class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
                             Description</div>
                         <div
-                            class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[14px] md:text-md mb-8">{{ trim($ticket->content) }}</div>
+                            class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[14px] md:text-md mb-8">
+                            {{ trim($ticket->content) }}</div>
 
                         @php
                             $imgExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
@@ -455,7 +456,8 @@
                                                 class="text-[9px] md:text-[10px] opacity-50">{{ $comment->created_at->diffForHumans() }}
                                                 · {{ $comment->created_at->format('g:i A') }}</span>
                                         </div>
-                                        <div class="text-[13px] md:text-sm whitespace-pre-wrap">{{ trim($comment->content) }}</div>
+                                        <div class="text-[13px] md:text-sm whitespace-pre-wrap">
+                                            {{ trim($comment->content) }}</div>
 
                                         @if ($comment->attachments && count($comment->attachments) > 0)
                                             <div class="flex flex-wrap gap-2 mt-3">
