@@ -12,9 +12,19 @@ use Illuminate\Foundation\Http\FormRequest;
 class ProfileUpdateRequest extends FormRequest
 {
     /**
+     * Normalize empty strings to null before validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->input('whatsapp_number') === '') {
+            $this->merge(['whatsapp_number' => null]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>|string>
      */
     public function rules(): array
     {
