@@ -488,6 +488,7 @@
                             <input
                                 id="phone"
                                 type="tel"
+                                maxlength="10"
                                 x-model="phone"
                                 @input="phone = phone.replace(/\D/g, '')"
                                 class="flex-1 px-5 py-4 border-0 focus:ring-0 bg-transparent text-slate-900 dark:text-white outline-none font-medium min-w-0"

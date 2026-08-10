@@ -124,6 +124,7 @@
                     id="phone_local"
                     type="tel"
                     x-model="phone"
+                    maxlength="10"
                     @input="phone = phone.replace(/\D/g, '')"
                     class="flex-1 px-4 py-2.5 bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white outline-none border-0 font-medium min-w-0"
                     placeholder="8012345678"
