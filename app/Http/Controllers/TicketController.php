@@ -20,7 +20,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $user    = Auth::user();
         $tickets = $user->role === 'admin'
             ? Ticket::with(['user', 'comments', 'category'])->latest()->get()
             : ($user->role === 'support'

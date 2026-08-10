@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function index()
     {
         // Fetch all users with their ticket count
-        $users = User::withCount('tickets')->latest()->get();
+        $users = User::withCount('tickets')->orderByDesc('id')->get();
 
         return view('admin.users', [
             'users' => $users,

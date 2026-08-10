@@ -22,7 +22,7 @@ class ProfileController extends Controller
         return view('profile.edit', [
             'user'            => $request->user(),
             'status'          => session('status'),
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, //TODO: make users verify email
         ]);
     }
 
