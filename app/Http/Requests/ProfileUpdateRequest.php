@@ -13,6 +13,16 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class ProfileUpdateRequest extends FormRequest
 {
     /**
+     * Normalize empty strings to null before validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->input('phone_number') === '') {
+            $this->merge(['phone_number' => null]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
@@ -36,7 +46,8 @@ class ProfileUpdateRequest extends FormRequest
                 'numeric',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'phone_number' => ['nullable', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
+            'phone_number' => ['nullable', 'string', 'regex:/^\+[1-9]\d{6,14}$/'],
         ];
     }
 }
+
