@@ -382,7 +382,7 @@
                                                 :class="{
                                                     'bg-green-100 text-green-600 dark:bg-green-950/30 dark:text-green-400 ring-4 ring-green-500/10': ticket
                                                         .status === 'open',
-                                                    'bg-rose-100 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400 ring-4 ring-rose-500/10': ticket
+                                                    'bg-sky-100 text-sky-600 dark:bg-sky-950/30 dark:text-sky-400 ring-4 ring-sky-500/10': ticket
                                                         .status === 'in-progress',
                                                     'bg-slate-100 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400': ticket
                                                         .status === 'closed'

@@ -89,7 +89,7 @@
         {{-- Phone Number with country code --}}
         <div x-data="{
             countryCode: '{{ preg_match('/^(\+\d+)(\d+)$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[1] : '+234' }}',
-            localPhone: '{{ preg_match('/^(\+\d+)(\d+)$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[2] : '' }}',
+            phone: '{{ preg_match('/^(\+\d+)(\d+)$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[2] : '' }}'.replace(/^\+\d{1,3}/, ''),
             countryCodes: [
                 { code: '+1',   name: 'US/CA +1' }, { code: '+7',   name: 'RU +7' },
                 { code: '+20',  name: 'EG +20' },   { code: '+27',  name: 'ZA +27' },
@@ -123,14 +123,14 @@
                 <input
                     id="phone_local"
                     type="tel"
-                    x-model="localPhone"
-                    @input="localPhone = localPhone.replace(/\D/g, '')"
+                    x-model="phone"
+                    @input="phone = phone.replace(/\D/g, '')"
                     class="flex-1 px-4 py-2.5 bg-white dark:bg-[#1e293b] text-slate-900 dark:text-white outline-none border-0 font-medium min-w-0"
                     placeholder="8012345678"
                     autocomplete="tel-national"
                 />
             </div>
-            <input type="hidden" name="phone_number" :value="localPhone ? countryCode + localPhone : ''">
+            <input type="hidden" name="phone_number" :value="phone ? countryCode + phone : ''">
             <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
         </div>
 

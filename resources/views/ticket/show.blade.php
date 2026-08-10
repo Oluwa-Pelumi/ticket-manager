@@ -18,7 +18,7 @@
     </div>
     <span class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm
         @if($ticket->status === 'open') bg-rose-100 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400 border border-rose-200 dark:border-rose-900
-        @elseif($ticket->status === 'in-progress') bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800
+        @elseif($ticket->status === 'in-progress') bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400 border border-sky-200 dark:border-sky-800
         @else bg-slate-100 text-slate-600 dark:bg-[#1e293b] dark:text-slate-400 border border-rose-950/10 dark:border-[#1e3a5f]
         @endif">
         {{ str_replace('-', ' ', $ticket->status) }}
