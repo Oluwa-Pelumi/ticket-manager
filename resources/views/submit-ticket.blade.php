@@ -459,7 +459,7 @@
                                         <option :value="c.code" x-text="c.name" :selected="c.code === countryCode && c.name.startsWith('NG')"></option>
                                     </template>
                                 </select>
-                                <input id="whatsapp" type="tel" x-model="whatsapp"
+                                <input maxlength="10" id="whatsapp" type="tel" x-model="whatsapp"
                                     class="flex-1 px-5 py-4 bg-white dark:bg-[#18342f] text-slate-900 dark:text-white outline-none border-0 font-medium min-w-0"
                                     placeholder="8012345678" />
                             </div>

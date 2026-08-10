@@ -94,7 +94,7 @@
                 </select>
                 <input id="whatsapp_local" type="tel" x-model="localNumber"
                     class="flex-1 px-4 py-2.5 bg-white dark:bg-[#18342f] text-slate-900 dark:text-white outline-none border-0 font-medium min-w-0"
-                    placeholder="8012345678" autocomplete="tel-national" />
+                    placeholder="8012345678" maxlength="10" autocomplete="tel-national" />
             </div>
             {{-- Hidden field sends the combined value --}}
             <input type="hidden" name="whatsapp_number" :value="localNumber ? countryCode + localNumber : ''">
