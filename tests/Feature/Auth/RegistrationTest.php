@@ -24,7 +24,7 @@ class RegistrationTest extends TestCase
         Mail::fake();
 
         $programme = Programme::create([
-            'name' => 'Computer Science',
+            'name' => 'Dentistry',
             'slug' => 'computer-science',
         ]);
 

@@ -67,14 +67,14 @@ class ProgrammeControllerTest extends TestCase
     public function test_programmes_are_ordered_by_name(): void
     {
         Programme::factory()->create(['name' => 'Zoology',          'slug' => 'zoology']);
-        Programme::factory()->create(['name' => 'Computer Science', 'slug' => 'computer-science']);
+        Programme::factory()->create(['name' => 'Dentistry', 'slug' => 'computer-science']);
 
         $response = $this->actingAs($this->admin())
             ->get(route('admin.programmes.index'))
             ->assertOk();
 
         $programmes = $response->viewData('programmes');
-        $this->assertEquals('Computer Science', $programmes->first()->name);
+        $this->assertEquals('Dentistry', $programmes->first()->name);
     }
 
     // ─────────────────────────────────────────────

@@ -37,7 +37,7 @@ class TicketSeeder extends Seeder
                 'user_id'        => $user1?->id,
                 'category_id'    => $transcript?->id,
                 'subject'        => 'transcript-request',
-                'content'        => 'I am applying for a credit transfer and need the official transcript copy for all my third-year Computer Science courses from the 2024 academic session.',
+                'content'        => 'I am applying for a credit transfer and need the official transcript copy for all my third-year Dentistry courses from the 2024 academic session.',
                 'priority'       => 'medium',
                 'status'         => 'closed',
                 'attended_to_by' => [$support2?->id],

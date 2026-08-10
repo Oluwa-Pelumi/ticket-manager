@@ -306,8 +306,8 @@ class ModelTest extends TestCase
     /** @test */
     public function programme_can_be_created_with_name_and_slug(): void
     {
-        $programme = Programme::factory()->create(['name' => 'Computer Science', 'slug' => 'computer-science']);
-        $this->assertDatabaseHas('programmes', ['name' => 'Computer Science', 'slug' => 'computer-science']);
+        $programme = Programme::factory()->create(['name' => 'Dentistry', 'slug' => 'computer-science']);
+        $this->assertDatabaseHas('programmes', ['name' => 'Dentistry', 'slug' => 'computer-science']);
     }
 
     /** @test */

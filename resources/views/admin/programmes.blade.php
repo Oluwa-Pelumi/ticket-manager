@@ -45,7 +45,7 @@
                             <input type="text" name="name"
                                 value="{{ old('name', $editingProgramme->name ?? '') }}"
                                 class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border text-slate-900 dark:text-white focus:ring-2 transition-all outline-none font-medium @error('name') border-rose-500 dark:border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-200 dark:border-[#1e3a5f] focus:ring-slate-400 @enderror"
-                                placeholder="e.g. Computer Science" required />
+                                placeholder="e.g. Dentistry" required />
                             @error('name')<p class="text-rose-500 text-[10px] font-bold">{{ $message }}</p>@enderror
                         </div>
 

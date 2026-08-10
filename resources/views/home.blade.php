@@ -104,7 +104,7 @@ $ticketingSteps = [
                     </h1>
 
                     <p class="mx-auto mb-12 max-w-2xl text-lg sm:text-xl text-white/90 font-medium leading-relaxed" style="text-shadow: 0 1px 8px rgba(0,0,0,0.5);">
-                        Providing a seamless process for students to request transcripts, certificates, letters of recommendation, and other official institutional documents.
+                        Providing a seamless process for students to request academic related documents, and other official institutional documents.
                     </p>
 
                     <div class="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
