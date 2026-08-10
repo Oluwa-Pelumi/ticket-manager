@@ -88,8 +88,8 @@
 
         {{-- Phone Number with country code --}}
         <div x-data="{
-            countryCode: '{{ preg_match('/^(\+\d+)(\d+)$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[1] : '+234' }}',
-            phone: '{{ preg_match('/^(\+\d+)(\d+)$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[2] : '' }}'.replace(/^\+\d{1,3}/, ''),
+            countryCode: '{{ preg_match('/^(\+\d+?)(\d{7,10})$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[1] : '+234' }}',
+            phone: '{{ preg_match('/^(\+\d+?)(\d{7,10})$/', old('phone_number', $user->phone_number ?? ''), $m) ? $m[2] : '' }}',
             countryCodes: [
                 { code: '+1',   name: 'US/CA +1' }, { code: '+7',   name: 'RU +7' },
                 { code: '+20',  name: 'EG +20' },   { code: '+27',  name: 'ZA +27' },
