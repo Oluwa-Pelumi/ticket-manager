@@ -19,7 +19,7 @@
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0 max-w-[70vw] sm:max-w-none">
                 <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo" class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105 shrink-0">
                 <div class="flex flex-col leading-none min-w-0 text-left">
-                    <span class="text-sm sm:text-base md:text-lg font-black tracking-tight text-rose-600 dark:text-rose-400  truncate">
+                    <span class="text-sm sm:text-base md:text-lg font-black tracking-tight text-fuchsia-600 dark:text-fuchsia-400 truncate">
                         {{ $mainName }}
                     </span>
                     @if($subName)

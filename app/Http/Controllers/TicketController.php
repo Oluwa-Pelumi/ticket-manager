@@ -52,7 +52,7 @@ class TicketController extends Controller
             'subject'                => 'required|string|max:255',
             'category_id'            => 'nullable|exists:categories,id',
             'priority'               => 'required|string|in:low,medium,high',
-            'phone_number'           => ['nullable', 'string', 'regex:/^(\+234)?\d{1,10}$/'],
+            'phone_number'           => ['nullable', 'string', 'regex:/^(\+234)?\d{1,10}$/'], //TODO: make it allow more than 234
         ], [
             'phone_number.regex'  => 'The phone number must not exceed 10 digits.'
         ]);
@@ -83,9 +83,9 @@ class TicketController extends Controller
             $folder    = $username . '-' . $user->id;
 
             foreach ($request->file('attachments') as $index => $file) {
-                $extension    = $file->getClientOriginalExtension();
-                $filename     = $ticket->id . '_' . $index . '_' . time() . '.' . $extension;
-                $filepath     = $file->storeAs('tickets/' . $folder, $filename, 'public');
+                $extension         = $file->getClientOriginalExtension();
+                $filename          = $ticket->id . '_' . $index . '_' . time() . '.' . $extension;
+                $filepath          = $file->storeAs('tickets/' . $folder, $filename, 'public');
                 $attachmentPaths[] = $filepath;
             }
         }
@@ -97,7 +97,7 @@ class TicketController extends Controller
         // --- Notify submitter via mail ---
         $notificationMessage = "Your ticket (Reference: {$ticket->hashid}) has been submitted successfully. Track it here: " . route('ticket.show', $ticket->hashid);
 
-        $category = $ticket->category;
+        $category      = $ticket->category;
         $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $validated['subject']));
 
         $user->notify(new TicketNotification($ticketSubject, $notificationMessage, route('ticket.show', $ticket->hashid), $user->name));
@@ -105,9 +105,9 @@ class TicketController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success'  => true,
-                'message'  => "Ticket submitted! Your reference is {$ticket->hashid}.",
-                'redirect' => route('ticket.show', $ticket->hashid),
                 'hashid'   => $ticket->hashid,
+                'redirect' => route('ticket.show', $ticket->hashid),
+                'message'  => "Ticket submitted! Your reference is {$ticket->hashid}.",
             ]);
         }
 
@@ -119,7 +119,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        $user = Auth::user();
+        $user    = Auth::user();
         $isOwner = $user && ($user->id === $ticket->user_id);
         $isAdmin = $user && $user->isAdmin();
 
@@ -157,8 +157,8 @@ class TicketController extends Controller
         ]);
 
         $updateData = [
-            'content'     => $validated['content'],
-            'priority'    => $validated['priority'],
+            'content'  => $validated['content'],
+            'priority' => $validated['priority'],
         ];
 
         if ($request->has('category_id') && !empty($validated['category_id'])) {
@@ -170,8 +170,8 @@ class TicketController extends Controller
             : [];
 
         if ($request->hasFile('attachments')) {
-            $username  = Str::slug($user->name, '_');
-            $folder    = $username . '-' . $user->id;
+            $username = Str::slug($user->name, '_');
+            $folder   = $username . '-' . $user->id;
 
             foreach ($request->file('attachments') as $index => $file) {
                 $extension         = $file->getClientOriginalExtension();
@@ -190,8 +190,8 @@ class TicketController extends Controller
             $ticket->load(['category', 'user', 'comments.user']);
             return response()->json([
                 'success' => true,
+                'ticket'  => $ticket,
                 'message' => 'Ticket updated successfully.',
-                'ticket'  => $ticket
             ]);
         }
 
@@ -240,8 +240,8 @@ class TicketController extends Controller
         // --- Notify ticket owner when closed ---
         if ($oldStatus !== 'closed' && $validated['status'] === 'closed' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-            $category = $ticket->category;
-            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
         }
@@ -249,8 +249,8 @@ class TicketController extends Controller
         // --- Notify ticket owner when status changes to in progress ---
         if ($oldStatus !== 'in_progress' && $validated['status'] === 'in_progress' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
-            $category = $ticket->category;
-            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
         }
@@ -326,8 +326,8 @@ class TicketController extends Controller
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
                     $notificationMsg = "Your ticket (ID: {$ticket->id}) has been closed.\nView here: " . route('ticket.show', $ticket->id);
-                    $category = $ticket->category;
-                    $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+                    $category        = $ticket->category;
+                    $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
                     $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
                 }
@@ -339,8 +339,8 @@ class TicketController extends Controller
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'in_progress' && $ticket->user_id !== Auth::id()) {
                     $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->id);
-                    $category = $ticket->category;
-                    $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+                    $category        = $ticket->category;
+                    $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
                     $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_in_progress'));
                 }
@@ -402,24 +402,24 @@ class TicketController extends Controller
             $folder    = 'comments/' . $username . '-' . $user->id;
 
             foreach ($request->file('attachments') as $index => $file) {
-                            $extension = $file->getClientOriginalExtension();
-                            $filename  = time() . '_' . $index . '.' . $extension;
-                            $filepath  = $file->storeAs($folder, $filename, 'public');
-                $attachmentPaths[]          = $filepath;
+                $extension         = $file->getClientOriginalExtension();
+                $filename          = time() . '_' . $index . '.' . $extension;
+                $filepath          = $file->storeAs($folder, $filename, 'public');
+                $attachmentPaths[] = $filepath;
             }
         }
 
         $comment = $ticket->comments()->create([
-            'user_id' => Auth::id(),
-            'attachments'  => $attachmentPaths,
-            'content' => $validated['content'],
+            'user_id'     => Auth::id(),
+            'attachments' => $attachmentPaths,
+            'content'     => $validated['content'],
         ]);
 
         // --- Notify ticket owner when staff replies ---
         if (Auth::user() && (Auth::user()->isAdmin() || Auth::user()->isSupport()) && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Subject: {$ticket->subject}\nView here: " . route('ticket.show', $ticket->id);
-            $category = $ticket->category;
-            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
         }
@@ -444,9 +444,9 @@ class TicketController extends Controller
             $comment->load('user');
             $ticket->refresh();
             return response()->json([
-                'success'       => true,
-                'ticketStatus'  => $ticket->status,
-                'comment' => [
+                'success'      => true,
+                'ticketStatus' => $ticket->status,
+                'comment'      => [
                     'id'          => $comment->id,
                     'content'     => $comment->content,
                     'attachments' => $comment->attachments ?? [],
@@ -469,8 +469,7 @@ class TicketController extends Controller
      */
     public function ticketStatuses()
     {
-        $user = Auth::user();
-
+        $user    = Auth::user();
         $tickets = $user->role === 'admin'
             ? Ticket::select('id', 'status')->latest()->get()
             : ($user->role === 'support'
@@ -549,8 +548,8 @@ class TicketController extends Controller
         // Notify owner when closed
         if ($oldStatus !== 'closed' && $status === 'closed' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-            $category = $ticket->category;
-            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
         }
@@ -558,8 +557,8 @@ class TicketController extends Controller
         // Notify owner when status changes to in progress
         if ($oldStatus !== 'in_progress' && $status === 'in_progress' && $ticket->user_id !== Auth::id()) {
             $notificationMsg = "Your ticket with (Reference: {$ticket->hashid}) is now in progress.\nView here: " . route('ticket.show', $ticket->hashid);
-            $category = $ticket->category;
-            $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+            $category        = $ticket->category;
+            $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
             $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
         }
@@ -663,8 +662,8 @@ class TicketController extends Controller
             foreach ($tickets as $ticket) {
                 if ($ticket->status !== 'closed' && $ticket->user_id !== Auth::id()) {
                     $notificationMsg = "Your ticket (Reference: {$ticket->hashid}) has been closed.\nView here: " . route('ticket.show', $ticket->hashid);
-                    $category = $ticket->category;
-                    $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
+                    $category        = $ticket->category;
+                    $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
                     $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
                 }

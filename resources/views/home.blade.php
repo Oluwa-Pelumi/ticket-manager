@@ -57,7 +57,7 @@ $ticketingSteps = [
                         <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 sm:gap-3 text-white group shrink-0 min-w-0">
                             <img src="{{ asset('logo.svg') }}?v=3" alt="{{ $appName }} logo" class="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-lg transition-transform group-hover:scale-105 shrink-0">
                             <div class="flex flex-col leading-none min-w-0">
-                                <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-rose-200 drop-shadow-md truncate">
+                                <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-fuchsia-300 drop-shadow-md truncate">
                                     {{ $mainName }}
                                 </span>
                                 @if($subName)
@@ -92,38 +92,94 @@ $ticketingSteps = [
                     </div>
                 </nav>
 
-                <div class="pb-24 sm:pb-32 pt-16 sm:pt-24 text-center">
-                    {{-- Badge --}}
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-8">
-                        Streamlined Institutional Requests
-                    </div>
+                <div class="pb-20 sm:pb-28 pt-12 sm:pt-20">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                        {{-- Left Column: Text & CTAs --}}
+                        <div class="lg:col-span-7 text-center lg:text-left">
+                            {{-- Badge --}}
+                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/90 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-6 shadow-sm">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Streamlined Institutional Requests
+                            </div>
 
-                    <h1 class="mx-auto mb-8 max-w-4xl text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter text-white drop-shadow-2xl leading-[1.1]" style="text-shadow: 0 2px 20px rgba(0,0,0,0.4);">
-                        Your Dedicated <br />
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-amber-200">Support System</span>
-                    </h1>
+                            <h1 class="mb-6 max-w-2xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white drop-shadow-2xl leading-[1.1]" style="text-shadow: 0 2px 20px rgba(0,0,0,0.4);">
+                                Your Dedicated <br />
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-amber-200">Support System</span>
+                            </h1>
 
-                    <p class="mx-auto mb-12 max-w-2xl text-lg sm:text-xl text-white/90 font-medium leading-relaxed" style="text-shadow: 0 1px 8px rgba(0,0,0,0.5);">
-                        Providing a seamless process for students to request academic related documents, and other official institutional documents.
-                    </p>
+                            <p class="mb-8 max-w-xl text-base sm:text-lg lg:text-xl text-white/90 font-medium leading-relaxed" style="text-shadow: 0 1px 8px rgba(0,0,0,0.5);">
+                                Providing a seamless process for students to request academic related documents and other official institutional documents with real-time tracking.
+                            </p>
 
-                    <div class="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-                        <a href="{{ route('submit-ticket') }}"
-                             class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                            <span class="relative z-10">Create Ticket</span>
-                        </a>
+                            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
+                                <a href="{{ route('submit-ticket') }}"
+                                     class="group px-7 py-3.5 bg-white/15 text-white border border-white/25 rounded-full font-black text-xs sm:text-sm tracking-widest uppercase hover:bg-white/25 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-xl flex items-center justify-center gap-2.5 w-full sm:w-auto">
+                                    <svg class="w-4 h-4 text-pink-200 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                    <span>Create Ticket</span>
+                                </a>
 
-                        @if (auth()->user())
-                        <a href="{{ route('dashboard') }}"
-                            class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                            <span>Dashboard</span>
-                        </a>
-                        @endif
+                                @if (auth()->user())
+                                <a href="{{ route('dashboard') }}"
+                                    class="group px-7 py-3.5 bg-white/15 text-white border border-white/25 rounded-full font-black text-xs sm:text-sm tracking-widest uppercase hover:bg-white/25 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-xl flex items-center justify-center gap-2.5 w-full sm:w-auto">
+                                    <svg class="w-4 h-4 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                    </svg>
+                                    <span>Dashboard</span>
+                                </a>
+                                @endif
 
-                        <a href="{{ route('check-status') }}"
-                            class="group px-8 py-4 bg-white/10 text-white border border-white/20 rounded-full font-black text-sm tracking-widest hover:bg-white/20 hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-3 w-full sm:w-auto">
-                            <span>Check Ticket Status</span>
-                        </a>
+                                <a href="{{ route('check-status') }}"
+                                    class="group px-7 py-3.5 bg-white/10 text-white/90 border border-white/15 rounded-full font-bold text-xs sm:text-sm tracking-widest uppercase hover:bg-white/20 hover:text-white hover:scale-105 active:scale-95 transition-all backdrop-blur-md shadow-lg flex items-center justify-center gap-2.5 w-full sm:w-auto">
+                                    <svg class="w-4 h-4 text-sky-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                    <span>Check Status</span>
+                                </a>
+                            </div>
+
+                            {{-- Trust / Highlight badges --}}
+                            <div class="pt-6 border-t border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs sm:text-sm font-semibold text-white/80">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span>Instant Tracking</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-rose-300">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    </div>
+                                    <span>Secure Requests</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-5 h-5 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    </div>
+                                    <span>Fast Resolution</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Right Column: Static Support Illustration --}}
+                        <div class="lg:col-span-5 relative flex justify-center items-center mt-6 lg:mt-0">
+                            {{-- Multi-layered ambient radial lighting (Hidden in dark mode) --}}
+                            <div class="absolute -inset-6 bg-gradient-to-tr from-rose-500/30 via-pink-400/20 to-amber-300/30 rounded-full blur-3xl pointer-events-none dark:hidden"></div>
+
+                            {{-- Static Illustration (Seamlessly blended, static layout) --}}
+                            <div class="relative z-10 w-full max-w-lg">
+                                <img src="{{ asset('hero-illustration.png') }}?v=2"
+                                     alt="Support System Illustration"
+                                     class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] dark:drop-shadow-none" />
+
+                                {{-- Micro Badge 1 (Top Right) --}}
+                                <div class="absolute -top-2 -right-2 sm:-right-4 px-4 py-2.5 rounded-2xl bg-white/10 border border-white/20 text-white shadow-2xl backdrop-blur-xl flex items-center gap-2.5 text-xs sm:text-sm font-bold">
+                                    <span class="text-base">✨</span>
+                                    <span>24/7 Support Desk</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

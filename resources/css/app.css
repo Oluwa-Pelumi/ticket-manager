@@ -111,4 +111,22 @@
             radial-gradient(at 100% 100%, rgba(8, 47, 73, 0.12) 0px, transparent 50%),
             radial-gradient(at 0% 100%, rgba(56, 189, 248, 0.08) 0px, transparent 50%);
     }
+
+    @keyframes floatSlow {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(0.5deg); }
+    }
+
+    @keyframes floatDelayed {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(8px) rotate(-0.5deg); }
+    }
+
+    .animate-float-slow {
+        animation: floatSlow 5s ease-in-out infinite;
+    }
+
+    .animate-float-delayed {
+        animation: floatDelayed 6s ease-in-out infinite 1s;
+    }
 }
