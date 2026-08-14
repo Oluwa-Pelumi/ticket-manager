@@ -98,7 +98,6 @@ $ticketingSteps = [
                         <div class="lg:col-span-7 text-center lg:text-left">
                             {{-- Badge --}}
                             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/90 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-6 shadow-sm">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                                 Streamlined Institutional Requests
                             </div>
 
@@ -169,7 +168,7 @@ $ticketingSteps = [
 
                             {{-- Static Illustration (Seamlessly blended, static layout) --}}
                             <div class="relative z-10 w-full max-w-lg">
-                                <img src="{{ asset('hero-illustration.png') }}?v=2"
+                                <img src="{{ asset('hero-illustration-1.png') }}?v=2"
                                      alt="Support System Illustration"
                                      class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] dark:drop-shadow-none" />
 
