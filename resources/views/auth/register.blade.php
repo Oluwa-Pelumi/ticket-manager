@@ -3,7 +3,7 @@
 
     <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Create Account</h1>
-        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Join us to start managing your tickets</p>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Register now to start managing your tickets</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-5" x-data="{ processing: false }" @submit="processing = true">
