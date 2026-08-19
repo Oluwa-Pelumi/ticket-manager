@@ -21,9 +21,9 @@
                 <img src="{{ asset('logo.svg') }}?v=4" alt="{{ $appName }} logo"
                     class="w-10 h-10 sm:w-12 sm:h-12 transition-transform group-hover:scale-105 shrink-0">
                 <div class="flex flex-col leading-none min-w-0 text-left">
-                    <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-fuchsia-300 drop-shadow-md truncate">
-                        {{ $mainName }}
-                    </span>
+                    <span class="text-xs sm:text-sm md:text-base lg:text-lg font-black tracking-tight text-fuchsia-600 dark:text-fuchsia-400 truncate">
+                                    {{ $mainName }}
+                                </span>
                     @if ($subName)
                         <span
                             class="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-state-200 dark:text-state-400 truncate mt-0.5">
