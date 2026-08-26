@@ -109,10 +109,10 @@
                 <div class="pb-24 sm:pb-32 pt-16 sm:pt-24 text-center">
                     <h1 class="mx-auto mb-8 max-w-4xl text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter text-white drop-shadow-2xl leading-[1.1]"
                         style="text-shadow: 0 2px 20px rgba(0,0,0,0.4);">
-                        Your Dedicated <br />
+                        Dedicated <br />
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-100 to-lime-200">Support
-                            System</span>
+                            Center</span>
                     </h1>
 
                     <p class="mx-auto mb-12 max-w-2xl text-lg sm:text-xl text-white/90 font-medium leading-relaxed"
