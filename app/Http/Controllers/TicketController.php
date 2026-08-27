@@ -380,6 +380,9 @@ class TicketController extends Controller
         // --- Authorization for Supports (skip for closed tickets — they will be reassigned) ---
         if (!$wasClosed && Auth::user() && Auth::user()->isSupport() && !Auth::user()->isAdmin()) {
             if ($ticket->attendant && Auth::id() !== $ticket->attendant->id) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['error' => 'You are not the currently assigned support for this ticket and cannot reply.'], 403);
+                }
                 return back()->with('error', 'You are not the currently assigned support for this ticket and cannot reply.');
             }
         }
@@ -448,6 +451,7 @@ class TicketController extends Controller
                 'ticketStatus' => $ticket->status,
                 'comment'      => [
                     'id'          => $comment->id,
+                    'user_id'     => $comment->user_id,
                     'content'     => $comment->content,
                     'attachments' => $comment->attachments ?? [],
                     'created_at'  => $comment->created_at->toISOString(),

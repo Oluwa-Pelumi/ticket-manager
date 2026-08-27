@@ -106,9 +106,9 @@
                 <select x-model="filters.priority" @change="currentPage = 1"
                     class="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-[#1e3a5f] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-slate-400 outline-none transition-all cursor-pointer">
                     <option value="">All Priorities</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+                    <option value="low">⬇️ Low</option>
+                    <option value="medium">⚡ Medium</option>
+                    <option value="high">🚩 High</option>
                 </select>
             </div>
 
@@ -339,25 +339,13 @@
                                                     .priority === 'high',
                                                 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400': ticket
                                                     .priority === 'medium',
-                                                'bg-rose-100 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400': ticket
+                                                'bg-green-100 text-green-600 dark:bg-green-950/30 dark:text-green-400': ticket
                                                     .priority === 'low'
                                             }">
-                                            <svg x-show="ticket.priority === 'high'" class="w-3 h-3" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                            </svg>
-                                            <svg x-show="ticket.priority === 'medium'" class="w-3 h-3" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                    d="M5 12h14" />
-                                            </svg>
-                                            <svg x-show="ticket.priority === 'low'" class="w-3 h-3" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                    d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                            </svg>
-                                            <span class="hidden md:inline" x-text="ticket.priority"></span>
+                                            <span x-show="ticket.priority === 'high'">🚩</span>
+                                            <span x-show="ticket.priority === 'medium'">⚡</span>
+                                            <span x-show="ticket.priority === 'low'">⬇️</span>
+                                            <span class="hidden md:inline capitalize" x-text="ticket.priority"></span>
                                         </span>
                                     </td>
 
@@ -829,7 +817,7 @@
                                                             Conversation
                                                         </h4>
 
-                                                        <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto overflow-x-hidden pr-1 md:pr-2 custom-scrollbar relative space-y-4 min-w-0">
+                                                        <div :id="'comments-container-' + ticket.id" class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto overflow-x-hidden pr-1 md:pr-2 custom-scrollbar relative space-y-4 min-w-0">
                                                             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-40"></div>
                                                             <template
                                                                 x-if="!ticket.comments || ticket.comments.length === 0">
@@ -841,9 +829,9 @@
 
                                                             <template x-for="(comment, ci) in [...(ticket.comments || [])].sort((a, b) => new Date(a.created_at) - new Date(b.created_at))" :key="ci">
                                                                 <div class="flex flex-col min-w-0 max-w-full w-full"
-                                                                    :class="(comment.user_id === authId) ? 'items-end' : 'items-start'">
+                                                                    :class="(((comment.user_id || comment.user?.id)) === authId) ? 'items-end' : 'items-start'">
                                                                     <div class="max-w-full w-full sm:max-w-[85%] p-4 sm:p-5 min-w-0"
-                                                                        :class="(comment.user_id === authId)
+                                                                        :class="(((comment.user_id || comment.user?.id)) === authId)
                                                                             ? 'bg-rose-950 text-white shadow-xl rounded-2xl sm:rounded-[2rem] !rounded-br-none'
                                                                             : 'fauna-panel text-slate-900 dark:text-white rounded-2xl sm:rounded-[2rem] !rounded-bl-none'">
                                                                         <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2 min-w-0">
@@ -1358,6 +1346,9 @@
                     },
                     toggleExpand(id) {
                         this.expandedId = this.expandedId === id ? null : id;
+                        if (this.expandedId) {
+                            this.$nextTick(() => this.scrollToLatestComment(id));
+                        }
                     },
                     toggleSelectAll() {
                         const filteredIds = this.filteredTickets.map(t => t.id);
@@ -1447,6 +1438,13 @@
                         window.showToast(`Ticket status updated to ${statusLabel}`, 'success');
                     },
 
+                    scrollToLatestComment(ticketId) {
+                        const el = document.getElementById('comments-container-' + ticketId);
+                        if (el) {
+                            el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+                        }
+                    },
+
                     handleNewComment({ ticketId, comment, ticketStatus }) {
                         // Replace the matching ticket with a new object so Alpine detects the change
                         this.allTickets = this.allTickets.map(t => {
@@ -1460,6 +1458,7 @@
                             }
                             return updated;
                         });
+                        this.$nextTick(() => this.scrollToLatestComment(ticketId));
                     },
 
                     async deleteTicket(id) {
@@ -1723,7 +1722,9 @@
                                 this.previews = [];
                                 window.showToast('Comment posted successfully.');
                             } else {
-                                window.showToast('Failed to post comment. Please try again.', 'error');
+                                const data = await r.json().catch(() => ({}));
+                                const errorMsg = data.error || data.message || (data.errors ? Object.values(data.errors).flat().join(' ') : 'Failed to post comment. Please try again.');
+                                window.showToast(errorMsg, 'error');
                             }
                         } catch (err) {
                             console.error('Comment error:', err);

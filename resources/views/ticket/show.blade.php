@@ -140,16 +140,16 @@
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-xs font-black tracking-wider
                             @if($ticket->priority === 'high') bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400
                             @elseif($ticket->priority === 'medium') bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400
-                            @else bg-rose-100 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400
+                            @else bg-green-100 text-green-600 dark:bg-green-950/30 dark:text-green-400
                             @endif">
                             @if($ticket->priority === 'high')
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                                <span>🚩</span>
                             @elseif($ticket->priority === 'medium')
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14"/></svg>
+                                <span>⚡</span>
                             @else
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                <span>⬇️</span>
                             @endif
-                            {{ $ticket->priority }}
+                            <span class="capitalize">{{ $ticket->priority }}</span>
                         </span>
                     </div>
 
@@ -276,7 +276,7 @@
                     Conversation
                 </h4>
 
-                <div class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
+                <div id="comments-container" class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-1 md:pr-2 custom-scrollbar relative overflow-hidden space-y-4">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-40"></div>
 
                     @if($ticket->comments && $ticket->comments->count() > 0)
@@ -576,19 +576,42 @@ function commentForm(isPastAttendant, actionUrl) {
                 const r = await fetch(actionUrl, {
                     method: 'POST',
                     body: form,
-                    redirect: 'manual'
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
                 });
-                if (r.ok || r.type === 'opaqueredirect') {
+                if (r.ok) {
                     window.location.reload();
+                } else {
+                    const data = await r.json().catch(() => ({}));
+                    const errorMsg = data.error || data.message || (data.errors ? Object.values(data.errors).flat().join(' ') : 'Failed to post comment. Please try again.');
+                    if (window.showToast) {
+                        window.showToast(errorMsg, 'error');
+                    } else {
+                        alert(errorMsg);
+                    }
                 }
             } catch (err) {
                 console.error('Comment submission failed:', err);
+                if (window.showToast) {
+                    window.showToast('An error occurred while posting comment. Please try again.', 'error');
+                } else {
+                    alert('An error occurred while posting comment. Please try again.');
+                }
+            } finally {
                 this.processing = false;
             }
         },
     };
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('comments-container');
+    if (container) {
+        container.scrollTop = container.scrollHeight;
+    }
+});
 </script>
 @endpush
 

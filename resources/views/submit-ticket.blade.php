@@ -517,19 +517,19 @@
                                     [
                                         'value' => 'low',
                                         'label' => 'Low',
-                                        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />',
-                                        'active' => 'bg-sky-50 dark:bg-sky-950/20 border-sky-400 text-sky-600 dark:text-sky-400',
+                                        'icon' => '⬇️',
+                                        'active' => 'bg-green-50 dark:bg-green-950/20 border-green-400 text-green-600 dark:text-green-400',
                                     ],
                                     [
                                         'value' => 'medium',
                                         'label' => 'Medium',
-                                        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14" />',
+                                        'icon' => '⚡',
                                         'active' => 'bg-amber-50 dark:bg-amber-900/20 border-amber-400 text-amber-600 dark:text-amber-400',
                                     ],
                                     [
                                         'value' => 'high',
                                         'label' => 'High',
-                                        'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />',
+                                        'icon' => '🚩',
                                         'active' => 'bg-red-50 dark:bg-red-900/20 border-red-400 text-red-600 dark:text-red-400',
                                     ],
                                 ];
@@ -543,9 +543,7 @@
                                     :class="priority === '{{ $opt['value'] }}' ? '{{ $opt['active'] }}' : '{{ $inactiveClasses }}'"
                                     class="flex flex-col items-center justify-center gap-2 py-4 rounded-2xl border-2 font-bold text-xs tracking-widest transition-all shadow-sm"
                                 >
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        {!! $opt['icon'] !!}
-                                    </svg>
+                                    <span class="text-xl">{{ $opt['icon'] }}</span>
                                     {{ $opt['label'] }}
                                 </button>
                             @endforeach
