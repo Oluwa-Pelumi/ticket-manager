@@ -49,7 +49,8 @@
             @error('matric_no')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
         </div>
 
-        {{-- Programme Select --}}
+        {{-- Programme Select (hidden for first user / admin setup) --}}
+        @if ($hasUsers)
         <div class="space-y-2">
             <label for="programme_id" class="block text-sm font-black tracking-[0.1em] italic text-slate-700 dark:text-slate-300">Programme</label>
             <select id="programme_id" name="programme_id" required
@@ -63,6 +64,7 @@
             </select>
             @error('programme_id')<p class="text-xs font-bold text-rose-500 mt-2">{{ $message }}</p>@enderror
         </div>
+        @endif
 
         <div class="space-y-2">
             <label for="password" class="block text-sm font-black tracking-widest italic text-slate-700 dark:text-slate-300">Password</label>

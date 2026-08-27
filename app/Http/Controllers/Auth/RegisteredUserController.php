@@ -27,7 +27,8 @@ class RegisteredUserController extends Controller
     public function create(): \Illuminate\View\View
     {
         $programmes = Programme::orderBy('name')->get(['id', 'name', 'slug']);
-        return view('auth.register', compact('programmes'));
+        $hasUsers   = User::exists();
+        return view('auth.register', compact('programmes', 'hasUsers'));
     }
 
     /**
@@ -55,7 +56,7 @@ class RegisteredUserController extends Controller
                 'numeric',
                 Rule::unique(User::class)->where(fn ($query) => $query->whereNotNull('email_verified_at')),
             ],
-            'programme_id' => 'required|exists:programmes,id',
+            'programme_id' => User::exists() ? 'required|exists:programmes,id' : 'nullable|exists:programmes,id',
         ]);
 
         // Remove any existing unverified user record matching the email or matric number

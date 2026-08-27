@@ -243,7 +243,9 @@ class TicketController extends Controller
             $category        = $ticket->category;
             $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+            }
         }
 
         // --- Notify ticket owner when status changes to in progress ---
@@ -252,7 +254,9 @@ class TicketController extends Controller
             $category        = $ticket->category;
             $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+            }
         }
 
         return back()->with('success', 'Ticket updated successfully.');
@@ -329,7 +333,9 @@ class TicketController extends Controller
                     $category        = $ticket->category;
                     $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_closed'));
+                    }
                 }
             }
         }
@@ -342,7 +348,9 @@ class TicketController extends Controller
                     $category        = $ticket->category;
                     $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_in_progress'));
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_in_progress'));
+                    }
                 }
             }
         }
@@ -424,7 +432,9 @@ class TicketController extends Controller
             $category        = $ticket->category;
             $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->id), $ticket->user->name, 'ticket_is_replied'));
+            }
         }
 
         // --- Reopen closed tickets and assign a new support staff member ---
@@ -555,7 +565,9 @@ class TicketController extends Controller
             $category        = $ticket->category;
             $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+            }
         }
 
         // Notify owner when status changes to in progress
@@ -564,7 +576,9 @@ class TicketController extends Controller
             $category        = $ticket->category;
             $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-            $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+            if ($ticket->user) {
+                $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+            }
         }
 
         return response()->json(['success' => true, 'status' => $status]);
@@ -669,7 +683,9 @@ class TicketController extends Controller
                     $category        = $ticket->category;
                     $ticketSubject   = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_closed'));
+                    }
                 }
             }
         }
@@ -682,7 +698,9 @@ class TicketController extends Controller
                     $category = $ticket->category;
                     $ticketSubject = $category ? $category->name : ucwords(str_replace('_', ' ', $ticket->subject));
 
-                    $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+                    if ($ticket->user) {
+                        $ticket->user->notify(new TicketNotification($ticketSubject, $notificationMsg, route('ticket.show', $ticket->hashid), $ticket->user->name, 'ticket_in_progress'));
+                    }
                 }
             }
         }

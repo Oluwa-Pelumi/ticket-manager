@@ -25,7 +25,8 @@
             editing: null,
             question: '',
             answer: '',
-            order: 0,
+            order: {{ count($faqs) + 1 }},
+            totalFaqs: {{ count($faqs) }},
             processing: false,
 
             startEdit(faq) {
@@ -42,7 +43,7 @@
                 this.editing = null;
                 this.question = '';
                 this.answer = '';
-                this.order = 0;
+                this.order = this.totalFaqs + 1;
                 this.processing = false;
             }
         }">
@@ -90,7 +91,10 @@
 
                         <div class="space-y-2">
                             <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400">Display Order</label>
-                            <input type="number" name="order" value="{{ old('order', 0) }}"
+                            <input type="number" name="order"
+                                value="{{ old('order', count($faqs) + 1) }}"
+                                min="1"
+                                max="{{ count($faqs) + 1 }}"
                                 class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-400 transition-all outline-none font-black" />
                         </div>
 
@@ -132,6 +136,8 @@
                         <div class="space-y-2">
                             <label class="text-xs font-black tracking-widest text-slate-600 dark:text-slate-400">Display Order</label>
                             <input type="number" name="order" x-model="order"
+                                min="1"
+                                x-bind:max="totalFaqs || 1"
                                 class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-[#1e3a5f] text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-400 transition-all outline-none font-black" />
                         </div>
 
