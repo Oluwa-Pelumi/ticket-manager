@@ -97,9 +97,9 @@ $ticketingSteps = [
                         {{-- Left Column: Text & CTAs --}}
                         <div class="lg:col-span-7 text-center lg:text-left">
                             {{-- Badge --}}
-                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/90 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-6 shadow-sm">
+                            {{-- <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/90 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md mb-6 shadow-sm">
                                 Streamlined Institutional Requests
-                            </div>
+                            </div> --}}
 
                             <h1 class="mb-6 max-w-2xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white drop-shadow-2xl leading-[1.1]" style="text-shadow: 0 2px 20px rgba(0,0,0,0.4);">
                                 Your Dedicated <br />
@@ -175,7 +175,7 @@ $ticketingSteps = [
                                 {{-- Micro Badge 1 (Top Right) --}}
                                 <div class="absolute -top-2 -right-2 sm:-right-4 px-4 py-2.5 rounded-2xl bg-white/10 border border-white/20 text-white shadow-2xl backdrop-blur-xl flex items-center gap-2.5 text-xs sm:text-sm font-bold">
                                     <span class="text-base">✨</span>
-                                    <span>24/7 Support Desk</span>
+                                    <span>Interactive Support Desk</span>
                                 </div>
                             </div>
                         </div>
