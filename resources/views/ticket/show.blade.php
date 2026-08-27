@@ -155,22 +155,13 @@
                             @elseif($ticket->priority === 'medium') bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400
                             @else bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 @endif">
                                 @if ($ticket->priority === 'high')
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                    </svg>
+                                    <span>🚩</span>
                                 @elseif($ticket->priority === 'medium')
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M5 12h14" />
-                                    </svg>
+                                    <span>⚡</span>
                                 @else
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                    </svg>
+                                    <span>⬇️</span>
                                 @endif
-                                {{ $ticket->priority }}
+                                <span class="capitalize">{{ $ticket->priority }}</span>
                             </span>
                         </div>
 
@@ -431,7 +422,7 @@
                         Conversation
                     </h4>
 
-                    <div
+                    <div id="comments-container"
                         class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto overflow-x-hidden pr-1 md:pr-2 custom-scrollbar relative space-y-4">
                         <div
                             class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40">
@@ -769,19 +760,43 @@
                             this.files.forEach(f => form.append('attachments[]', f));
                             const r = await fetch(actionUrl, {
                                 method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                },
                                 body: form,
-                                redirect: 'manual'
                             });
-                            if (r.ok || r.type === 'opaqueredirect') {
+
+                            const data = await r.json().catch(() => null);
+
+                            if (r.ok && data?.success) {
                                 window.location.reload();
+                            } else {
+                                const errMsg = data?.error || data?.message || (data?.errors ? Object.values(data.errors).flat().join(', ') : 'Failed to post comment.');
+                                if (window.showToast) {
+                                    window.showToast(errMsg, 'error');
+                                } else {
+                                    alert(errMsg);
+                                }
                             }
                         } catch (err) {
                             console.error('Comment submission failed:', err);
+                            if (window.showToast) {
+                                window.showToast('Network error while posting comment.', 'error');
+                            }
+                        } finally {
                             this.processing = false;
                         }
                     },
                 };
             }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('comments-container');
+                if (container) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            });
         </script>
     @endpush
 </x-authenticated-layout>

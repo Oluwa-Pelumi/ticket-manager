@@ -107,9 +107,9 @@
                 <select x-model="filters.priority" @change="currentPage = 1"
                     class="bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#28524a] rounded-xl pl-3 pr-8 py-2 text-[10px] md:text-xs font-medium text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-lime-500 outline-none transition-all cursor-pointer">
                     <option value="">All Priorities</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+                    <option value="low">⬇️ Low</option>
+                    <option value="medium">⚡ Medium</option>
+                    <option value="high">🚩 High</option>
                 </select>
             </div>
 
@@ -405,22 +405,10 @@
                                             'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400': ticket
                                                 .priority === 'low'
                                         }">
-                                        <svg x-show="ticket.priority === 'high'" class="w-3 h-3" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                                        </svg>
-                                        <svg x-show="ticket.priority === 'medium'" class="w-3 h-3" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                d="M5 12h14" />
-                                        </svg>
-                                        <svg x-show="ticket.priority === 'low'" class="w-3 h-3" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                        </svg>
-                                        <span class="hidden md:inline" x-text="ticket.priority"></span>
+                                        <span x-show="ticket.priority === 'high'">🚩</span>
+                                        <span x-show="ticket.priority === 'medium'">⚡</span>
+                                        <span x-show="ticket.priority === 'low'">⬇️</span>
+                                        <span class="hidden md:inline capitalize" x-text="ticket.priority"></span>
                                     </span>
                                 </td>
 

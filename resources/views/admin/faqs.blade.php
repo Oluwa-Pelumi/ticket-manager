@@ -93,8 +93,9 @@
                             <input
                                 type="number"
                                 name="order"
-                                value="{{ old('order', $editingFaq->order ?? 0) }}"
-                                min="0"
+                                value="{{ old('order', isset($editingFaq) ? ($editingFaq->order ?? 1) : (count($faqs) + 1)) }}"
+                                min="1"
+                                max="{{ isset($editingFaq) ? max(1, count($faqs)) : (count($faqs) + 1) }}"
                                 class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#18342f] border border-emerald-900/10 dark:border-[#1d3a34] text-slate-900 dark:text-white focus:ring-2 focus:ring-lime-500 transition-all outline-none font-medium"
                             />
                         </div>

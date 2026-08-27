@@ -116,8 +116,22 @@
                                     </p>
                                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[10px] md:text-xs text-slate-600">
                                         <div class="flex flex-wrap items-center gap-3 md:gap-4">
-                                            <span class="font-black tracking-widest text-slate-400">
-                                                Priority: <span class="text-slate-900 dark:text-white">{{ $ticket->priority }}</span>
+                                            <span class="font-black tracking-widest text-slate-400 inline-flex items-center gap-1">
+                                                Priority:
+                                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider
+                                                    @if($ticket->priority === 'high') bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400
+                                                    @elseif($ticket->priority === 'medium') bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400
+                                                    @else bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400
+                                                    @endif">
+                                                    @if($ticket->priority === 'high')
+                                                        <span>🚩</span>
+                                                    @elseif($ticket->priority === 'medium')
+                                                        <span>⚡</span>
+                                                    @else
+                                                        <span>⬇️</span>
+                                                    @endif
+                                                    <span class="capitalize">{{ $ticket->priority }}</span>
+                                                </span>
                                             </span>
                                             <span class="font-black tracking-widest text-slate-400">
                                                 Date: <span class="text-slate-900 dark:text-white">{{ $ticket->created_at->toFormattedDateString() }}</span>
