@@ -1175,7 +1175,7 @@
                                                         Conversation
                                                     </h4>
 
-                                                    <div
+                                                    <div :id="'comments-container-' + ticket.id"
                                                         class="fauna-panel mb-6 p-4 md:p-6 max-h-[400px] md:max-h-[500px] overflow-y-auto overflow-x-hidden pr-1 md:pr-2 custom-scrollbar relative space-y-4 min-w-0">
                                                         <div
                                                             class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-40">
@@ -1831,6 +1831,9 @@
                     },
                     toggleExpand(id) {
                         this.expandedId = this.expandedId === id ? null : id;
+                        if (this.expandedId === id) {
+                            this.scrollToLatestComment(id);
+                        }
                     },
                     toggleSelectAll() {
                         const filteredIds = this.filteredTickets.map(t => t.id);
@@ -1940,6 +1943,22 @@
                                 updated.status = ticketStatus;
                             }
                             return updated;
+                        });
+                        this.scrollToLatestComment(ticketId);
+                    },
+
+                    scrollToLatestComment(ticketId) {
+                        this.$nextTick(() => {
+                            const container = document.getElementById(`comments-container-${ticketId}`);
+                            if (container) {
+                                container.scrollTop = container.scrollHeight;
+                                setTimeout(() => {
+                                    container.scrollTo({
+                                        top: container.scrollHeight,
+                                        behavior: 'smooth'
+                                    });
+                                }, 100);
+                            }
                         });
                     },
 
@@ -2285,13 +2304,16 @@
                             this.files.forEach(f => form.append('attachments[]', f));
                             const r = await fetch(`/tickets/${ticketId}/comments`, {
                                 method: 'POST',
-                                body: form,
-                                redirect: 'manual'
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                },
+                                body: form
                             });
-                            this.submitting = false;
-                            if (r.ok) {
-                                const data = await r.json();
-                                if (data.success && data.comment) {
+                            const data = await r.json().catch(() => null);
+
+                            if (r.ok && data?.success) {
+                                if (data.comment) {
                                     // Use Alpine's $dispatch so the event bubbles through
                                     // the component tree and reaches @comment-added.window
                                     this.$dispatch('comment-added', {
@@ -2303,13 +2325,22 @@
                                 this.content = '';
                                 this.files = [];
                                 this.previews = [];
-                                window.showToast('Comment posted successfully.');
+                                if (window.showToast) {
+                                    window.showToast('Comment posted successfully.');
+                                }
                             } else {
-                                window.showToast('Failed to post comment. Please try again.', 'error');
+                                const errMsg = data?.error || data?.message || (data?.errors ? Object.values(data.errors).flat().join(', ') : 'Failed to post comment. Please try again.');
+                                if (window.showToast) {
+                                    window.showToast(errMsg, 'error');
+                                } else {
+                                    alert(errMsg);
+                                }
                             }
                         } catch (err) {
                             console.error('Comment error:', err);
-                            window.showToast('An error occurred. Please try again.', 'error');
+                            if (window.showToast) {
+                                window.showToast('An error occurred. Please try again.', 'error');
+                            }
                         } finally {
                             this.submitting = false;
                         }

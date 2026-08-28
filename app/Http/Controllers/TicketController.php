@@ -38,6 +38,12 @@ class TicketController extends Controller
      */
     public function save(Request $request)
     {
+        if ($request->filled('whatsapp_number')) {
+            $num = trim($request->input('whatsapp_number'));
+            $num = preg_replace('/^(\+\d{1,4})0+(\d+)/', '$1$2', $num);
+            $request->merge(['whatsapp_number' => $num]);
+        }
+
         // --- Validate submission ---
         $validated = $request->validate([
             'custom_recurrence_date' => 'nullable|date',

@@ -168,9 +168,7 @@
                         <div
                             class="text-[10px] font-black text-teal-900 dark:text-lime-400 mb-2 tracking-[0.2em] uppercase">
                             Description</div>
-                        <div
-                            class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[14px] md:text-md mb-8">
-                            {{ trim($ticket->content) }}</div>
+                        <div class="text-slate-600 dark:text-slate-400 whitespace-pre-wrap leading-relaxed text-[14px] md:text-md mb-8">{{ trim($ticket->content) }}</div>
 
                         @php
                             $imgExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
@@ -791,12 +789,21 @@
                 };
             }
 
-            document.addEventListener('DOMContentLoaded', () => {
+            function scrollToLatestComment() {
                 const container = document.getElementById('comments-container');
                 if (container) {
                     container.scrollTop = container.scrollHeight;
+                    setTimeout(() => {
+                        container.scrollTo({
+                            top: container.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
                 }
-            });
+            }
+
+            document.addEventListener('DOMContentLoaded', scrollToLatestComment);
+            window.addEventListener('load', scrollToLatestComment);
         </script>
     @endpush
 </x-authenticated-layout>

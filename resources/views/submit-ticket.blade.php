@@ -459,11 +459,12 @@
                                         <option :value="c.code" x-text="c.name" :selected="c.code === countryCode && c.name.startsWith('NG')"></option>
                                     </template>
                                 </select>
-                                <input maxlength="10" id="whatsapp" type="tel" x-model="whatsapp"
+                                <input maxlength="11" id="whatsapp" type="tel" x-model="whatsapp"
+                                    @input="whatsapp = whatsapp.replace(/^0+/, '').replace(/\D/g, '')"
                                     class="flex-1 px-5 py-4 bg-white dark:bg-[#18342f] text-slate-900 dark:text-white outline-none border-0 font-medium min-w-0"
                                     placeholder="8012345678" />
                             </div>
-                            <input type="hidden" name="whatsapp_number" :value="whatsapp ? countryCode + whatsapp : ''">
+                            <input type="hidden" name="whatsapp_number" :value="whatsapp ? countryCode + whatsapp.replace(/^0+/, '').replace(/\D/g, '') : ''">
                             @error('whatsapp_number')
                                 <div class="text-red-500 text-xs mt-1 font-semibold">{{ $message }}</div>
                             @enderror

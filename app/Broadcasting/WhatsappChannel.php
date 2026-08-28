@@ -38,9 +38,14 @@ class WhatsappChannel
 
         // --- Load Meta API credentials ---
         $token        = config('services.meta_whatsapp.token');
-        $rawVersion   = config('services.meta_whatsapp.version');
+        $rawVersion   = config('services.meta_whatsapp.version', 'v25.0');
         $phoneId      = config('services.meta_whatsapp.phone_id');
         $version      = str_starts_with($rawVersion, 'v') ? $rawVersion : "v{$rawVersion}";
+
+        if (empty($token) || empty($phoneId)) {
+            \Log::warning('WhatsApp notification skipped: Meta API token or phone ID not set in .env');
+            return;
+        }
 
         // --- Build template body parameters ---
         $components = [

@@ -16,8 +16,13 @@ class ProfileUpdateRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        if ($this->input('whatsapp_number') === '') {
+        $num = $this->input('whatsapp_number');
+        if ($num === '' || $num === null) {
             $this->merge(['whatsapp_number' => null]);
+        } else {
+            $num = trim($num);
+            $num = preg_replace('/^(\+\d{1,4})0+(\d+)/', '$1$2', $num);
+            $this->merge(['whatsapp_number' => $num]);
         }
     }
 
