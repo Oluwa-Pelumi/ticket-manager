@@ -168,7 +168,7 @@ $ticketingSteps = [
 
                             {{-- Static Illustration (Seamlessly blended, static layout) --}}
                             <div class="relative z-10 w-full max-w-lg">
-                                <img src="{{ asset('hero-illustration-1.png') }}?v=2"
+                                <img src="{{ asset('hero-illustration.png') }}?v=2"
                                      alt="Support System Illustration"
                                      class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] dark:drop-shadow-none" />
 
